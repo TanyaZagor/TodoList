@@ -8,14 +8,16 @@ import java.util.Locale;
 
 public class Task {
 
+    private Integer id;
     private String name;
     private String description;
     private Date  dateFinish;
 
-    public Task(String name, String  description, String dateFinish) {
+    public Task(Integer id, String name, String  description, Date dateFinish) {
+        this.id = id;
         this.name = name;
         this.description = description;
-        setDateFinish(dateFinish);
+        this.dateFinish = dateFinish;
     }
 
     public String getName() {
@@ -36,6 +38,14 @@ public class Task {
         this.name = name;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }
@@ -44,27 +54,9 @@ public class Task {
         this.dateFinish = dateFinish;
     }
 
-    public void update(String upd, String newData) {
-        if ("Description".equals(upd)) {
-            setDescription(newData);
-        } else if ("Date".equals(upd)) {
-            setDateFinish(newData);
-        } else if ("Name".equals(upd)) {
-            setName(newData);
-        }
-    }
-
-    public void setDateFinish(String dateFinish) {
-        DateFormat dateFormat = new SimpleDateFormat("dd.M.yyyy", Locale.ENGLISH);
-        try {
-            this.dateFinish = dateFormat.parse(dateFinish);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public String toString() {
-        return "Name: " + name + ", Description: " + description + ", Date: " + dateFinish;
+        return " Task id: " + id + ", Name: " + name + ", Description: " + description + ", Date: " + dateFinish;
     }
 }

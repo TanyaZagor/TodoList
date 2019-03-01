@@ -1,22 +1,27 @@
 package Entity;
 
-import Repository.TaskRepository;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class Project {
 
+    private Integer id;
     private String name;
-    private TaskRepository tasks;
+    private String description;
+    private Map<Integer, Task> tasks;
 
-    public Project(String name, TaskRepository tasks) {
+    public Project(Integer id, String name,String description) {
+        tasks = new LinkedHashMap<>();
+        this.id = id;
         this.name = name;
-        this.tasks = tasks;
+        this.description = description;
     }
 
     public String getName() {
         return name;
     }
 
-    public TaskRepository getTasks() {
+    public Map<Integer, Task> getTasks() {
         return tasks;
     }
 
@@ -24,8 +29,16 @@ public class Project {
         this.name = name;
     }
 
-    public void setTasks(TaskRepository tasks) {
-        this.tasks = tasks;
+    public String getDescription() {
+        return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "Project id: " + id + ", Name: " + name + ", Description: " + description;
+    }
 }

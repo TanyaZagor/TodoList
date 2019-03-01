@@ -1,50 +1,40 @@
 package Repository;
 
+import Entity.Project;
 import Entity.Task;
+import api.repository.ITaskRepository;
 
-import java.util.HashMap;
+import java.util.Date;
+import java.util.Map;
 
-public class TaskRepository {
-    private HashMap<String, Task> tasks;
+public class TaskRepository implements ITaskRepository {
+
+    private Map<Integer, Project> projects;
 
     public TaskRepository() {
-        tasks = new HashMap<>();
+        projects = ProjectRepository.getProjects();
     }
 
-    public boolean addTask(Task task) {
-        if (!tasks.containsKey(task.getName())) {
-            tasks.put(task.getName(), task);
-            return true;
+    public void addTask(Integer projectId, Integer taskId, String taskName, String description, Date dateFinish) {
+        if (!projects.get(projectId).getTasks().containsKey(taskId)) {
+            Task task = new Task(taskId, taskName, description, dateFinish);
+            projects.get(projectId).getTasks().put(taskId, task);
         }
-        return false;
     }
 
-    public boolean hasKey (String key) {
-        return tasks.containsKey(key);
-    }
-
-    public boolean deleteTask(String key) {
-        if (hasKey(key)) {
-            tasks.remove(key);
-            return true;
+    public void deleteTask(Integer projectId, Integer taskId) {
+        if (projects.get(projectId).getTasks().containsKey(taskId)) {
+            projects.get(projectId).getTasks().remove(taskId);
         }
-        return false;
+
     }
 
-    public void deleteAll() {
-        tasks.clear();
+    public void deleteAll(Integer projectId) {
+        projects.get(projectId).getTasks().clear();
     }
 
-    public void update(String name, String upd, String newData) {
-        tasks.get(name).update(upd, newData);
-    }
-
-    public HashMap<String, Task> getTasks() {
-        return tasks;
-    }
-
-    public void print() {
-        tasks.forEach((key, value) -> System.out.println(value));
+    public void print(Integer projectId) {
+        projects.get(projectId).getTasks().forEach((k, v) -> System.out.println(v));
     }
 
 
