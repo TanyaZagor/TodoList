@@ -3,7 +3,6 @@ package ru.zagorodnikova.tm.command.task;
 import ru.zagorodnikova.tm.Entity.Task;
 import ru.zagorodnikova.tm.bootstrap.Bootstrap;
 import ru.zagorodnikova.tm.command.AbstractCommand;
-import ru.zagorodnikova.tm.service.TaskRepositoryService;
 
 import java.util.Map;
 import java.util.Scanner;
@@ -31,7 +30,7 @@ public class TaskListCommand extends AbstractCommand {
         Scanner in = new Scanner(System.in);
         System.out.println("project id");
         String projectId = in.nextLine();
-        Map<Integer, Task> tasks = super.getBootstrap().getTaskRepositoryService().print(projectId);
+        Map<String, Task> tasks = super.getBootstrap().getTaskRepositoryService().print(projectId);
         if (tasks != null) {
             tasks.forEach((k, v) -> System.out.println(v));
         } else {

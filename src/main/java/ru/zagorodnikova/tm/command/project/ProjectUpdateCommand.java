@@ -26,13 +26,17 @@ public class ProjectUpdateCommand extends AbstractCommand {
     @Override
     public void execute() {
         Scanner in = new Scanner(System.in);
-        System.out.println("project id");
-        String projectId = in.nextLine();
-        System.out.println("Update: 1 - name\n2 - description\n3 - date start\n4 - date finish");
-        String updateId = in.nextLine();
-        System.out.println("New: ");
-        String newData = in.nextLine();
-        String result = super.getBootstrap().getProjectRepositoryService().updateProject(projectId, updateId, newData);
+        System.out.println("project name");
+        String oldProjectName = in.nextLine();
+        System.out.println("New project name");
+        String projectName = in.nextLine();
+        System.out.println("New description");
+        String description = in.nextLine();
+        System.out.println("New date start");
+        String dateStart = in.nextLine();
+        System.out.println("New date finish");
+        String dateFinish = in.nextLine();
+        String result = super.getBootstrap().getProjectRepositoryService().updateProject(oldProjectName, projectName, description, dateStart, dateFinish);
         if (result != null) {
             System.out.println(result);
         }

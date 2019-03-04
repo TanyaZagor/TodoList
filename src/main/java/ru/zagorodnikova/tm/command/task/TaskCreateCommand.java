@@ -7,7 +7,6 @@ import java.util.Scanner;
 public class TaskCreateCommand extends AbstractCommand {
 
     private String projectId;
-    private String taskId;
     private String taskName;
     private String description;
     private String dateStart;
@@ -33,8 +32,6 @@ public class TaskCreateCommand extends AbstractCommand {
         Scanner in = new Scanner(System.in);
         System.out.println("project id");
         projectId = in.nextLine();
-        System.out.println("task id");
-        taskId = in.nextLine();
         System.out.println("task name");
         taskName = in.nextLine();
         System.out.println("task description");

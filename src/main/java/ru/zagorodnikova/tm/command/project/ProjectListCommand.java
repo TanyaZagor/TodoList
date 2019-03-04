@@ -25,7 +25,7 @@ public class ProjectListCommand extends AbstractCommand {
     @Override
     public void execute() {
 
-        Map<Integer, Project> projects = super.getBootstrap().getProjectRepositoryService().print();
+        Map<String, Project> projects = super.getBootstrap().getProjectRepositoryService().print();
         projects.forEach((k, v) -> System.out.println(v));
     }
 }

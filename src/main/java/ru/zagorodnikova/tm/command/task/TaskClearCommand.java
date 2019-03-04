@@ -26,9 +26,9 @@ public class TaskClearCommand extends AbstractCommand {
     @Override
     public void execute() {
         Scanner in = new Scanner(System.in);
-        System.out.println("project id");
-        String projectId = in.nextLine();
-        String result = super.getBootstrap().getTaskRepositoryService().deleteAll(projectId);
+        System.out.println("project name");
+        String projectName = in.nextLine();
+        String result = super.getBootstrap().getTaskRepositoryService().deleteAll(projectName);
         if (result != null) {
             System.out.println(result);
         }

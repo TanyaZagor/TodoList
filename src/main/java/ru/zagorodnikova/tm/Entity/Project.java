@@ -2,19 +2,17 @@ package ru.zagorodnikova.tm.Entity;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
 public class Project {
 
-    private Integer id;
-    private String name;
+    private String id = UUID.randomUUID().toString();    private String name;
     private String description;
     private String dateFinish;
     private String dateStart;
-    private Map<Integer, Task> tasks;
 
-    public Project(Integer id, String name,String description, String dateStart, String dateFinish) {
-        tasks = new LinkedHashMap<>();
-        this.id = id;
+    public Project(String name,String description, String dateStart, String dateFinish) {
         this.name = name;
         this.description = description;
         this.dateStart = dateStart;
@@ -23,14 +21,6 @@ public class Project {
 
     public String getName() {
         return name;
-    }
-
-    public Map<Integer, Task> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(Map<Integer, Task> tasks) {
-        this.tasks = tasks;
     }
 
     public void setName(String name) {
@@ -45,8 +35,12 @@ public class Project {
         this.description = description;
     }
 
-    public Integer getId() {
+    public String  getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getDateFinish() {
@@ -67,6 +61,19 @@ public class Project {
 
     @Override
     public String toString() {
-        return "Project id: " + id + ", Name: " + name + ", Description: " + description + ", Date finish: " + dateFinish;
+        return "Project id: " + id + ", Name: " + name + ", Description: " + description+ ", Date start: " + dateStart + ", Date finish: " + dateFinish;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Project project = (Project) o;
+        return name.equals(project.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }

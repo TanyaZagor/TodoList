@@ -10,13 +10,12 @@ public class ProjectRepositoryService {
 
     private ProjectRepository projectRepository;
     private String result;
-    private Integer pId = null;
 
     public ProjectRepositoryService() {
         projectRepository = new ProjectRepository();
     }
 
-    public String  addProject(String projectId, String projectName, String description, String dateStart, String dateFinish) {
+    public String  addProject(String projectName, String description, String dateStart, String dateFinish) {
         result = null;
         if (projectRepository == null) {
             projectRepository = new ProjectRepository();
@@ -25,22 +24,20 @@ public class ProjectRepositoryService {
             return "Not enough data";
         }
         try {
-            pId = Integer.valueOf(projectId);
-            result = projectRepository.addProject(pId, projectName, description, dateStart, dateFinish);
+            projectRepository.persist(projectName, description, dateStart, dateFinish);
         } catch (NumberFormatException e) {
             result = "Wrong id";
         }
         return result;
     }
 
-    public String deleteProject( String projectId) {
+    public String deleteProject( String projectName) {
         result = null;
         if (projectRepository == null) {
             projectRepository = new ProjectRepository();
         }
         try {
-            Integer pId = Integer.valueOf(projectId);
-            result = projectRepository.deleteProject(pId);
+            projectRepository.remove(projectName);
         } catch (NumberFormatException e) {
             result = "Wrong id";
         }
@@ -51,28 +48,23 @@ public class ProjectRepositoryService {
         if (projectRepository == null) {
             projectRepository = new ProjectRepository();
         }
-        projectRepository.deleteAll();
+        projectRepository.removeAll();
     }
 
-    public Map<Integer, Project> print() {
+    public Map<String, Project> print() {
         if (projectRepository == null) {
             projectRepository = new ProjectRepository();
         }
         return projectRepository.print();
     }
 
-    public String updateProject(String projectId, String updateId, String newData) {
+    public String updateProject(String oldProjectName, String projectName, String description, String dateStart, String dateFinish) {
         result = null;
         if (projectRepository == null) {
             projectRepository = new ProjectRepository();
         }
         try {
-            Integer update = Integer.valueOf(updateId);
-            pId = Integer.valueOf(projectId);
-            if (newData.length() == 0) {
-                return "not enough data";
-            }
-            result = projectRepository.updateProject(pId, update, newData);
+            projectRepository.merge(oldProjectName, projectName, description, dateStart, dateFinish);
         } catch (NumberFormatException e) {
             result = "wrong update id";
         }

@@ -18,7 +18,7 @@ public class TaskRemoveCommand extends AbstractCommand {
 
     @Override
     public String description() {
-        return "command to remove task by id";
+        return "command to remove task";
     }
 
     @Override
@@ -26,9 +26,9 @@ public class TaskRemoveCommand extends AbstractCommand {
         Scanner in = new Scanner(System.in);
         System.out.println("project id");
         String projectId = in.nextLine();
-        System.out.println("task id");
-        String taskId = in.nextLine();
-        String result = super.getBootstrap().getTaskRepositoryService().deleteTask(projectId, taskId);
+        System.out.println("task name");
+        String taskName = in.nextLine();
+        String result = super.getBootstrap().getTaskRepositoryService().deleteTask(projectId, taskName);
         if (result != null) {
             System.out.println(result);
         }

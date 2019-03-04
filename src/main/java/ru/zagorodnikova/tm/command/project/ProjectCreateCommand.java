@@ -25,8 +25,6 @@ public class ProjectCreateCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        System.out.println("project id");
-        String projectId = in.nextLine();
         System.out.println("project name");
         String projectName = in.nextLine();
         System.out.println("project description");
@@ -35,7 +33,7 @@ public class ProjectCreateCommand extends AbstractCommand {
         String dateStart = in.nextLine();
         System.out.println("project date finish");
         String dateFinish = in.nextLine();
-        String result = super.getBootstrap().getProjectRepositoryService().addProject(projectId, projectName, description, dateStart, dateFinish);
+        String result = super.getBootstrap().getProjectRepositoryService().addProject(projectName, description, dateStart, dateFinish);
         if (result != null) {
             System.out.println(result);
         }

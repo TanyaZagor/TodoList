@@ -28,13 +28,17 @@ public class TaskUpdateCommand extends AbstractCommand {
         Scanner in = new Scanner(System.in);
         System.out.println("project id");
         String projectId = in.nextLine();
-        System.out.println("task id");
-        String taskId = in.nextLine();
-        System.out.println("Update: 1 - name\n2 - description\n3 - date start\n4 - date finish");
-        String updateId = in.nextLine();
-        System.out.println("New: ");
-        String newData = in.nextLine();
-        String result = super.getBootstrap().getTaskRepositoryService().updateTask(projectId, taskId, updateId, newData);
+        System.out.println("task name");
+        String oldTaskName = in.nextLine();
+        System.out.println("New task name");
+        String taskName = in.nextLine();
+        System.out.println("New description");
+        String description = in.nextLine();
+        System.out.println("New date start");
+        String dateStart = in.nextLine();
+        System.out.println("New date finish");
+        String dateFinish = in.nextLine();
+        String result = super.getBootstrap().getTaskRepositoryService().updateTask(projectId, oldTaskName, taskName, description, dateStart, dateFinish);
         if (result != null) {
             System.out.println(result);
         }

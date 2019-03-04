@@ -6,9 +6,10 @@ import java.util.Map;
 
 public interface IProjectRepository {
 
-    String addProject(Integer projectId, String projectName, String description, String dateStart, String dateFinish);
-    String deleteProject(Integer projectId);
-    void deleteAll();
-    Map<Integer, Project> print();
+    void persist(String projectName, String description, String dateStart, String dateFinish);
+    void remove(String projectName);
+    void removeAll();
+    void merge(String oldProjectName, String projectName, String description, String dateStart, String dateFinish);
+    Map<String, Project> print();
 
 }
