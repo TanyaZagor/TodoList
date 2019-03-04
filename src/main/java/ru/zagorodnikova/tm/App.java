@@ -1,3 +1,5 @@
+package ru.zagorodnikova.tm;
+
 import bootstrap.Bootstrap;
 
 public class App {
