@@ -16,17 +16,17 @@ public class ProjectRepositoryService {
         projectRepository = new ProjectRepository();
     }
 
-    public String  addProject(String projectId, String projectName, String description, String dateFinish) {
+    public String  addProject(String projectId, String projectName, String description, String dateStart, String dateFinish) {
         result = null;
         if (projectRepository == null) {
             projectRepository = new ProjectRepository();
         }
-        if (projectName.length() == 0 || description.length() == 0 || dateFinish.length() == 0) {
+        if (projectName.length() == 0 || description.length() == 0|| dateStart.length() == 0 || dateFinish.length() == 0) {
             return "Not enough data";
         }
         try {
             pId = Integer.valueOf(projectId);
-            result = projectRepository.addProject(pId, projectName, description, dateFinish);
+            result = projectRepository.addProject(pId, projectName, description, dateStart, dateFinish);
         } catch (NumberFormatException e) {
             result = "Wrong id";
         }

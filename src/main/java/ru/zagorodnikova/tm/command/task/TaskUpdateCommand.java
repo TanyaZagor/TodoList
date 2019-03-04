@@ -30,7 +30,7 @@ public class TaskUpdateCommand extends AbstractCommand {
         String projectId = in.nextLine();
         System.out.println("task id");
         String taskId = in.nextLine();
-        System.out.println("Update: 1 - name\n2 - description\n3 - date finish");
+        System.out.println("Update: 1 - name\n2 - description\n3 - date start\n4 - date finish");
         String updateId = in.nextLine();
         System.out.println("New: ");
         String newData = in.nextLine();

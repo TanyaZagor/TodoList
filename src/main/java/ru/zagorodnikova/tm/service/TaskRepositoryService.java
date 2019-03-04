@@ -12,17 +12,17 @@ public class TaskRepositoryService {
     private Integer tId = null;
     private String result;
 
-    public String addTask(String projectId, String name, String description, String date) {
+    public String addTask(String projectId, String name, String description, String dateStart, String dateFinish) {
         result = null;
         if (taskRepository == null) {
             taskRepository = new TaskRepository();
         }
-        if (name.length() == 0 || description.length() == 0 || date.length() == 0) {
+        if (name.length() == 0 || description.length() == 0 || dateStart.length() == 0|| dateFinish.length() == 0) {
             return "Not enough data";
         }
         try {
             pId = Integer.valueOf(projectId);
-            result = taskRepository.addTask(pId, name, description, date);
+            result = taskRepository.addTask(pId, name, description, dateStart, dateFinish);
         } catch (NumberFormatException e) {
             result = "wrong id";
         }

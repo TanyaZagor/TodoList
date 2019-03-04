@@ -3,8 +3,6 @@ package ru.zagorodnikova.tm.Repository;
 import ru.zagorodnikova.tm.Entity.Project;
 import ru.zagorodnikova.tm.api.repository.IProjectRepository;
 import ru.zagorodnikova.tm.bootstrap.Bootstrap;
-
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class ProjectRepository implements IProjectRepository {
@@ -12,10 +10,10 @@ public class ProjectRepository implements IProjectRepository {
     private static Map<Integer, Project> projects = Bootstrap.projects;
     private String result;
 
-    public String addProject(Integer projectId, String projectName, String description, String dateFinish) {
+    public String addProject(Integer projectId, String projectName, String description, String dateStart, String dateFinish) {
         result = null;
         if (!projects.containsKey(projectId)) {
-            Project project = new Project(projectId, projectName, description, dateFinish);
+            Project project = new Project(projectId, projectName, description, dateStart, dateFinish);
             projects.put(projectId, project);
         } else {
             result = "already there";
@@ -57,10 +55,14 @@ public class ProjectRepository implements IProjectRepository {
                     projects.get(projectId).setDescription(newData);
                     break;
                 case 3:
+                    projects.get(projectId).setDateStart(newData);
+                    break;
+                case 4:
                     projects.get(projectId).setDateFinish(newData);
                     break;
                 default:
-                    result = "wrong update id";
+                    result = "Wrong update id";
+                    break;
             }
         } else {
             result = "Wrong id";

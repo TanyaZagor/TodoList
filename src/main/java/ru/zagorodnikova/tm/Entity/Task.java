@@ -6,12 +6,14 @@ public class Task {
     private Integer id;
     private String name;
     private String description;
+    private String dateStart;
     private String dateFinish;
 
-    public Task(Integer id, String name, String  description, String dateFinish) {
+    public Task(Integer id, String name, String  description, String dateStart, String dateFinish) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.dateStart = dateStart;
         this.dateFinish = dateFinish;
     }
 
@@ -49,6 +51,13 @@ public class Task {
         this.dateFinish = dateFinish;
     }
 
+    public String getDateStart() {
+        return dateStart;
+    }
+
+    public void setDateStart(String dateStart) {
+        this.dateStart = dateStart;
+    }
 
     @Override
     public String toString() {

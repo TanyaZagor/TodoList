@@ -13,9 +13,9 @@ public class TaskRepository implements ITaskRepository {
     private Integer count = 10;
 
 
-    public String addTask(Integer projectId, String taskName, String description, String dateFinish) {
+    public String addTask(Integer projectId, String taskName, String description, String dateStart, String dateFinish) {
         result = null;
-        Task task = new Task(count++, taskName, description, dateFinish);
+        Task task = new Task(count++, taskName, description, dateStart, dateFinish);
         if (!projects.get(projectId).getTasks().containsValue(task)) {
 
             projects.get(projectId).getTasks().put(task.getId(), task);
@@ -46,10 +46,14 @@ public class TaskRepository implements ITaskRepository {
                     projects.get(projectId).getTasks().get(taskId).setDescription(newData);
                     break;
                 case 3:
+                    projects.get(projectId).getTasks().get(taskId).setDateStart(newData);
+                    break;
+                case 4:
                     projects.get(projectId).getTasks().get(taskId).setDateFinish(newData);
                     break;
                 default:
                     result = "wrong update id";
+                    break;
             }
         } else {
             result = "wrong id";

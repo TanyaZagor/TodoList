@@ -65,12 +65,12 @@ public class Bootstrap {
 
         commands.put(helpCommand.command(), helpCommand);
 
-        Project project1 = new Project(1, "Project1", "Description1", "20.02.2019");
-        Project project2 = new Project(2, "Project2", "Description2", "20.05.2019");
+        Project project1 = new Project(1, "Project1", "Description1", "20.02.2019", "20.05.2019");
+        Project project2 = new Project(2, "Project2", "Description2", "20.05.2019", "20.06.2019");
         Map<Integer, Task> tasks = new LinkedHashMap<>();
-        Task task1 = new Task(1, "task1", "des1", "20.02.2013");
-        Task task2 = new Task(2, "task2", "des2", "20.02.2013");
-        Task task3 = new Task(3, "task3", "des3", "20.02.2013");
+        Task task1 = new Task(1, "task1", "des1", "20.02.2013", "20.02.2014");
+        Task task2 = new Task(2, "task2", "des2", "20.02.2013", "20.02.2014");
+        Task task3 = new Task(3, "task3", "des3", "20.02.2013", "20.02.2014");
         tasks.put(task1.getId(), task1);
         tasks.put(task2.getId(), task2);
         tasks.put(task3.getId(), task3);

@@ -10,6 +10,7 @@ public class TaskCreateCommand extends AbstractCommand {
     private String taskId;
     private String taskName;
     private String description;
+    private String dateStart;
     private String dateFinish;
 
     public TaskCreateCommand(Bootstrap bootstrap) {
@@ -38,9 +39,11 @@ public class TaskCreateCommand extends AbstractCommand {
         taskName = in.nextLine();
         System.out.println("task description");
         description = in.nextLine();
+        System.out.println("task data start");
+        dateStart = in.nextLine();
         System.out.println("task data finish");
         dateFinish = in.nextLine();
-        String result = super.getBootstrap().getTaskRepositoryService().addTask(projectId, taskName, description, dateFinish);
+        String result = super.getBootstrap().getTaskRepositoryService().addTask(projectId, taskName, description, dateStart, dateFinish);
         if (result != null) {
             System.out.println(result);
         }

@@ -31,9 +31,11 @@ public class ProjectCreateCommand extends AbstractCommand {
         String projectName = in.nextLine();
         System.out.println("project description");
         String description = in.nextLine();
+        System.out.println("project date start");
+        String dateStart = in.nextLine();
         System.out.println("project date finish");
         String dateFinish = in.nextLine();
-        String result = super.getBootstrap().getProjectRepositoryService().addProject(projectId, projectName, description, dateFinish);
+        String result = super.getBootstrap().getProjectRepositoryService().addProject(projectId, projectName, description, dateStart, dateFinish);
         if (result != null) {
             System.out.println(result);
         }

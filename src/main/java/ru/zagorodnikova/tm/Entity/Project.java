@@ -9,13 +9,15 @@ public class Project {
     private String name;
     private String description;
     private String dateFinish;
+    private String dateStart;
     private Map<Integer, Task> tasks;
 
-    public Project(Integer id, String name,String description, String dateFinish) {
+    public Project(Integer id, String name,String description, String dateStart, String dateFinish) {
         tasks = new LinkedHashMap<>();
         this.id = id;
         this.name = name;
         this.description = description;
+        this.dateStart = dateStart;
         this.dateFinish = dateFinish;
     }
 
@@ -53,6 +55,14 @@ public class Project {
 
     public void setDateFinish(String dateFinish) {
         this.dateFinish = dateFinish;
+    }
+
+    public String getDateStart() {
+        return dateStart;
+    }
+
+    public void setDateStart(String dateStart) {
+        this.dateStart = dateStart;
     }
 
     @Override
