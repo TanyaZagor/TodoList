@@ -22,6 +22,6 @@ public class ProjectClearCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        super.getBootstrap().getProjectRepositoryService().deleteAll();
+        getBootstrap().getProjectService().deleteAll();
     }
 }

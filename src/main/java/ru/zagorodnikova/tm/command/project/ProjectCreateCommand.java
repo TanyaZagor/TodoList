@@ -2,12 +2,10 @@ package ru.zagorodnikova.tm.command.project;
 
 import ru.zagorodnikova.tm.bootstrap.Bootstrap;
 import ru.zagorodnikova.tm.command.AbstractCommand;
-import ru.zagorodnikova.tm.service.ProjectRepositoryService;
 
 import java.util.Scanner;
 
 public class ProjectCreateCommand extends AbstractCommand {
-    private Scanner in = new Scanner(System.in);
 
     public ProjectCreateCommand(Bootstrap bootstrap) {
         super(bootstrap);
@@ -25,6 +23,7 @@ public class ProjectCreateCommand extends AbstractCommand {
 
     @Override
     public void execute() {
+        Scanner in = new Scanner(System.in);
         System.out.println("project name");
         String projectName = in.nextLine();
         System.out.println("project description");
@@ -33,9 +32,6 @@ public class ProjectCreateCommand extends AbstractCommand {
         String dateStart = in.nextLine();
         System.out.println("project date finish");
         String dateFinish = in.nextLine();
-        String result = super.getBootstrap().getProjectRepositoryService().addProject(projectName, description, dateStart, dateFinish);
-        if (result != null) {
-            System.out.println(result);
-        }
+        getBootstrap().getProjectService().addProject(projectName, description, dateStart, dateFinish);
     }
 }

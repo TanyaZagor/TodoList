@@ -1,7 +1,7 @@
 package ru.zagorodnikova.tm.api.repository;
 
 
-import ru.zagorodnikova.tm.Entity.Task;
+import ru.zagorodnikova.tm.entity.Task;
 
 import java.util.Map;
 

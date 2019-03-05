@@ -1,7 +1,5 @@
-package ru.zagorodnikova.tm.Entity;
+package ru.zagorodnikova.tm.entity;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -12,6 +10,9 @@ public class Project {
     private String description;
     private String dateFinish;
     private String dateStart;
+
+    public Project() {
+    }
 
     public Project(String name,String description, String dateStart, String dateFinish) {
         this.name = name;

@@ -1,7 +1,6 @@
 package ru.zagorodnikova.tm.command.task;
 import ru.zagorodnikova.tm.bootstrap.Bootstrap;
 import ru.zagorodnikova.tm.command.AbstractCommand;
-import ru.zagorodnikova.tm.service.TaskRepositoryService;
 import java.util.Scanner;
 
 public class TaskCreateCommand extends AbstractCommand {
@@ -15,7 +14,6 @@ public class TaskCreateCommand extends AbstractCommand {
     public TaskCreateCommand(Bootstrap bootstrap) {
         super(bootstrap);
     }
-
 
     @Override
     public String command() {
@@ -40,9 +38,7 @@ public class TaskCreateCommand extends AbstractCommand {
         dateStart = in.nextLine();
         System.out.println("task data finish");
         dateFinish = in.nextLine();
-        String result = super.getBootstrap().getTaskRepositoryService().addTask(projectName, taskName, description, dateStart, dateFinish);
-        if (result != null) {
-            System.out.println(result);
-        }
+        getBootstrap().getTaskService().addTask(projectName, taskName, description, dateStart, dateFinish);
+
     }
 }

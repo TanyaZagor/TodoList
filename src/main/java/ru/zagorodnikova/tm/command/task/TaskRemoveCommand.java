@@ -2,7 +2,6 @@ package ru.zagorodnikova.tm.command.task;
 
 import ru.zagorodnikova.tm.bootstrap.Bootstrap;
 import ru.zagorodnikova.tm.command.AbstractCommand;
-import ru.zagorodnikova.tm.service.TaskRepositoryService;
 import java.util.Scanner;
 
 public class TaskRemoveCommand extends AbstractCommand {
@@ -28,9 +27,6 @@ public class TaskRemoveCommand extends AbstractCommand {
         String projectName = in.nextLine();
         System.out.println("task name");
         String taskName = in.nextLine();
-        String result = super.getBootstrap().getTaskRepositoryService().deleteTask(projectName, taskName);
-        if (result != null) {
-            System.out.println(result);
-        }
+        getBootstrap().getTaskService().deleteTask(projectName, taskName);
     }
 }

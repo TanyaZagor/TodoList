@@ -2,12 +2,9 @@ package ru.zagorodnikova.tm.command.project;
 
 import ru.zagorodnikova.tm.bootstrap.Bootstrap;
 import ru.zagorodnikova.tm.command.AbstractCommand;
-import ru.zagorodnikova.tm.service.ProjectRepositoryService;
-
 import java.util.Scanner;
 
 public class ProjectUpdateCommand extends AbstractCommand {
-
 
     public ProjectUpdateCommand(Bootstrap bootstrap) {
         super(bootstrap);
@@ -36,9 +33,7 @@ public class ProjectUpdateCommand extends AbstractCommand {
         String dateStart = in.nextLine();
         System.out.println("New date finish");
         String dateFinish = in.nextLine();
-        String result = super.getBootstrap().getProjectRepositoryService().updateProject(oldProjectName, projectName, description, dateStart, dateFinish);
-        if (result != null) {
-            System.out.println(result);
-        }
+        getBootstrap().getProjectService().updateProject(oldProjectName, projectName, description, dateStart, dateFinish);
+
     }
 }

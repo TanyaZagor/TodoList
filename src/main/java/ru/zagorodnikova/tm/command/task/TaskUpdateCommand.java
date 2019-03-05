@@ -2,12 +2,9 @@ package ru.zagorodnikova.tm.command.task;
 
 import ru.zagorodnikova.tm.bootstrap.Bootstrap;
 import ru.zagorodnikova.tm.command.AbstractCommand;
-import ru.zagorodnikova.tm.service.TaskRepositoryService;
-
 import java.util.Scanner;
 
 public class TaskUpdateCommand extends AbstractCommand {
-
 
     public TaskUpdateCommand(Bootstrap bootstrap) {
         super(bootstrap);
@@ -38,9 +35,7 @@ public class TaskUpdateCommand extends AbstractCommand {
         String dateStart = in.nextLine();
         System.out.println("New date finish");
         String dateFinish = in.nextLine();
-        String result = super.getBootstrap().getTaskRepositoryService().updateTask(projectName, oldTaskName, taskName, description, dateStart, dateFinish);
-        if (result != null) {
-            System.out.println(result);
-        }
+        getBootstrap().getTaskService().updateTask(projectName, oldTaskName, taskName, description, dateStart, dateFinish);
+
     }
 }

@@ -1,6 +1,6 @@
 package ru.zagorodnikova.tm.command.task;
 
-import ru.zagorodnikova.tm.Entity.Task;
+import ru.zagorodnikova.tm.entity.Task;
 import ru.zagorodnikova.tm.bootstrap.Bootstrap;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 
@@ -9,11 +9,9 @@ import java.util.Scanner;
 
 public class TaskListCommand extends AbstractCommand {
 
-
     public TaskListCommand(Bootstrap bootstrap) {
         super(bootstrap);
     }
-
 
     @Override
     public String command() {
@@ -30,11 +28,11 @@ public class TaskListCommand extends AbstractCommand {
         Scanner in = new Scanner(System.in);
         System.out.println("project name");
         String projectName = in.nextLine();
-        Map<String, Task> tasks = super.getBootstrap().getTaskRepositoryService().print(projectName);
-        if (tasks.size() != 0) {
-            tasks.forEach((k, v) -> System.out.println(v));
-        } else {
+        Map<String, Task> tasks = getBootstrap().getTaskService().print(projectName);
+        if (tasks == null || tasks.isEmpty()) {
             System.out.println("Wrong name");
+        } else {
+            tasks.forEach((k, v) -> System.out.println(v));
         }
 
     }

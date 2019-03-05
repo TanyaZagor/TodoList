@@ -1,7 +1,7 @@
-package ru.zagorodnikova.tm.Repository;
+package ru.zagorodnikova.tm.repository;
 
-import ru.zagorodnikova.tm.Entity.Project;
-import ru.zagorodnikova.tm.Entity.Task;
+import ru.zagorodnikova.tm.entity.Project;
+import ru.zagorodnikova.tm.entity.Task;
 import ru.zagorodnikova.tm.api.repository.ITaskRepository;
 import ru.zagorodnikova.tm.bootstrap.Bootstrap;
 
@@ -10,13 +10,11 @@ import java.util.Map;
 
 public class TaskRepository implements ITaskRepository {
 
-    private Map<String, Task> tasks = Bootstrap.tasks;
-    private Map<String, Project> projects = Bootstrap.projects;
-    private String result;
-
+    private final Bootstrap bootstrap = Bootstrap.getBootstrap();
+    private final Map<String, Project> projects = bootstrap.getProjects();
+    private final Map<String, Task> tasks = bootstrap.getTasks();
 
     public void persist(String projectName, String taskName, String description, String dateStart, String dateFinish) {
-        result = null;
         Map<String, Project> map = new LinkedHashMap<>();
         projects.forEach((k, v) -> {
             if (v.getName().equals(projectName)) {
@@ -28,8 +26,6 @@ public class TaskRepository implements ITaskRepository {
             Task task = new Task(project.getId(), taskName, description, dateStart, dateFinish);
             if (!tasks.containsValue(task)) {
                 tasks.put(task.getId(), task);
-            } else {
-                result = "already there";
             }
         }
     }

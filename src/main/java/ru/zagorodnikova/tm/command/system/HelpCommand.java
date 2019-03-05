@@ -4,7 +4,6 @@ import ru.zagorodnikova.tm.bootstrap.Bootstrap;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 
 public class HelpCommand extends AbstractCommand {
-    private Bootstrap bootstrap;
 
     public HelpCommand(Bootstrap bootstrap) {
         super(bootstrap);
@@ -22,6 +21,6 @@ public class HelpCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        bootstrap.commands.forEach((k, v) -> System.out.println(k + ": " + v.description()));
+        getBootstrap().getCommands().forEach((k, v) -> System.out.println(k + ": " + v.description()));
     }
 }

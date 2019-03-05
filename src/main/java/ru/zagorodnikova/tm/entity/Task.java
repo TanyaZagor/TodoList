@@ -1,4 +1,4 @@
-package ru.zagorodnikova.tm.Entity;
+package ru.zagorodnikova.tm.entity;
 
 
 import java.util.Objects;
@@ -12,6 +12,9 @@ public class Task {
     private String description;
     private String dateStart;
     private String dateFinish;
+
+    public Task(){
+    }
 
     public Task(String projectId, String name, String  description, String dateStart, String dateFinish) {
         this.name = name;

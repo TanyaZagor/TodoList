@@ -1,7 +1,7 @@
-package ru.zagorodnikova.tm.Repository;
+package ru.zagorodnikova.tm.repository;
 
-import ru.zagorodnikova.tm.Entity.Project;
-import ru.zagorodnikova.tm.Entity.Task;
+import ru.zagorodnikova.tm.entity.Project;
+import ru.zagorodnikova.tm.entity.Task;
 import ru.zagorodnikova.tm.api.repository.IProjectRepository;
 import ru.zagorodnikova.tm.bootstrap.Bootstrap;
 
@@ -10,17 +10,14 @@ import java.util.Map;
 
 public class ProjectRepository implements IProjectRepository {
 
-    private static Map<String, Project> projects = Bootstrap.projects;
-    private static Map<String, Task> tasks = Bootstrap.tasks;
-    private String result;
+    private final Bootstrap bootstrap = Bootstrap.getBootstrap();
+    private final Map<String, Project> projects = bootstrap.getProjects();
+    private final Map<String, Task> tasks = bootstrap.getTasks();
 
     public void persist(String projectName, String description, String dateStart, String dateFinish) {
-        result = null;
         Project project = new Project(projectName, description, dateStart, dateFinish);
         if (!projects.containsValue(project)) {
             projects.put(project.getId(), project);
-        } else {
-            result = "already there";
         }
     }
 
@@ -59,7 +56,6 @@ public class ProjectRepository implements IProjectRepository {
         }
         return project;
     }
-
 
     public void merge(String oldProjectName, String projectName, String description, String dateStart, String dateFinish) {
         final Project project = new Project(projectName, description, dateStart, dateFinish);

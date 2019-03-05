@@ -1,6 +1,6 @@
 package ru.zagorodnikova.tm.api.repository;
 
-import ru.zagorodnikova.tm.Entity.Project;
+import ru.zagorodnikova.tm.entity.Project;
 
 import java.util.Map;
 

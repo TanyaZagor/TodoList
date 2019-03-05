@@ -1,6 +1,6 @@
 package ru.zagorodnikova.tm.command.project;
 
-import ru.zagorodnikova.tm.Entity.Project;
+import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.bootstrap.Bootstrap;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 
@@ -25,7 +25,9 @@ public class ProjectListCommand extends AbstractCommand {
     @Override
     public void execute() {
 
-        Map<String, Project> projects = super.getBootstrap().getProjectRepositoryService().print();
-        projects.forEach((k, v) -> System.out.println(v));
+        Map<String, Project> projects = getBootstrap().getProjectService().print();
+        if (!(projects == null || projects.isEmpty())) {
+            projects.forEach((k, v) -> System.out.println(v));
+        }
     }
 }
