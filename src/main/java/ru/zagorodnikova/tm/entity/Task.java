@@ -7,6 +7,7 @@ import java.util.UUID;
 public class Task {
 
     private String id = UUID.randomUUID().toString();
+    private String userId;
     private String projectId;
     private String name;
     private String description;
@@ -16,7 +17,8 @@ public class Task {
     public Task(){
     }
 
-    public Task(String projectId, String name, String  description, String dateStart, String dateFinish) {
+    public Task(String userId, String projectId, String name, String  description, String dateStart, String dateFinish) {
+        this.userId = userId;
         this.name = name;
         this.projectId = projectId;
         this.description = description;
@@ -72,6 +74,14 @@ public class Task {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     @Override

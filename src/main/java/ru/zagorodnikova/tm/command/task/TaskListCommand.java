@@ -9,6 +9,8 @@ import java.util.Scanner;
 
 public class TaskListCommand extends AbstractCommand {
 
+    private final Scanner in = getBootstrap().getScanner();
+
     public TaskListCommand(Bootstrap bootstrap) {
         super(bootstrap);
     }
@@ -25,7 +27,6 @@ public class TaskListCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        Scanner in = new Scanner(System.in);
         System.out.println("project name");
         String projectName = in.nextLine();
         Map<String, Task> tasks = getBootstrap().getTaskService().print(projectName);
@@ -35,5 +36,10 @@ public class TaskListCommand extends AbstractCommand {
             tasks.forEach((k, v) -> System.out.println(v));
         }
 
+    }
+
+    @Override
+    public boolean isSecure() {
+        return true;
     }
 }

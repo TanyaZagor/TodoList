@@ -7,6 +7,7 @@
     <groupId>com.ex</groupId>
     <artifactId>TodoList</artifactId>
     <version>1.0-SNAPSHOT</version>
+
     <build>
         <finalName>TodoList</finalName>
         <plugins>

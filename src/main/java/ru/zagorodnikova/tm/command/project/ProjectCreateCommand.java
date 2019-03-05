@@ -7,6 +7,8 @@ import java.util.Scanner;
 
 public class ProjectCreateCommand extends AbstractCommand {
 
+    private final Scanner in = getBootstrap().getScanner();
+
     public ProjectCreateCommand(Bootstrap bootstrap) {
         super(bootstrap);
     }
@@ -23,7 +25,6 @@ public class ProjectCreateCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        Scanner in = new Scanner(System.in);
         System.out.println("project name");
         String projectName = in.nextLine();
         System.out.println("project description");
@@ -33,5 +34,10 @@ public class ProjectCreateCommand extends AbstractCommand {
         System.out.println("project date finish");
         String dateFinish = in.nextLine();
         getBootstrap().getProjectService().addProject(projectName, description, dateStart, dateFinish);
+    }
+
+    @Override
+    public boolean isSecure() {
+        return true;
     }
 }

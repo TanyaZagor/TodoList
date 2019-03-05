@@ -4,7 +4,6 @@ import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.entity.Task;
 import ru.zagorodnikova.tm.api.repository.IProjectRepository;
 import ru.zagorodnikova.tm.bootstrap.Bootstrap;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -15,7 +14,7 @@ public class ProjectRepository implements IProjectRepository {
     private final Map<String, Task> tasks = bootstrap.getTasks();
 
     public void persist(String projectName, String description, String dateStart, String dateFinish) {
-        Project project = new Project(projectName, description, dateStart, dateFinish);
+        Project project = new Project(bootstrap.getCurrentUser().getId(), projectName, description, dateStart, dateFinish);
         if (!projects.containsValue(project)) {
             projects.put(project.getId(), project);
         }
@@ -36,17 +35,23 @@ public class ProjectRepository implements IProjectRepository {
     }
 
     public void removeAll() {
-        projects.clear();
+        projects.entrySet().removeIf((v) -> v.getValue().getUserId().equals(bootstrap.getCurrentUser().getId()));
     }
 
     public Map<String, Project> findAll() {
-        return projects;
-}
+        Map<String, Project> map = new LinkedHashMap<>();
+        projects.forEach((k, v) -> {
+            if (v.getUserId().equals(bootstrap.getCurrentUser().getId())) {
+                map.put(v.getName(), v);
+            }
+        });
+        return map;
+    }
 
     public Project findOne(String projectName){
         Map<String, Project> map = new LinkedHashMap<>();
         projects.forEach((k, v) -> {
-            if (v.getName().equals(projectName)) {
+            if (v.getName().equals(projectName) && v.getUserId().equals(bootstrap.getCurrentUser().getId())) {
                 map.put(v.getName(), v);
             }
         });
@@ -58,9 +63,9 @@ public class ProjectRepository implements IProjectRepository {
     }
 
     public void merge(String oldProjectName, String projectName, String description, String dateStart, String dateFinish) {
-        final Project project = new Project(projectName, description, dateStart, dateFinish);
+        final Project project = new Project(bootstrap.getCurrentUser().getId(), projectName, description, dateStart, dateFinish);
         projects.forEach((k, v) -> {
-            if(v.getName().equals(oldProjectName)) {
+            if(v.getName().equals(oldProjectName) && v.getUserId().equals(bootstrap.getCurrentUser().getId())) {
                 project.setId(k);
                 projects.put(k, project);
             }

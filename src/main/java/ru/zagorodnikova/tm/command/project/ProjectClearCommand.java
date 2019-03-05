@@ -24,4 +24,9 @@ public class ProjectClearCommand extends AbstractCommand {
     public void execute() {
         getBootstrap().getProjectService().deleteAll();
     }
+
+    @Override
+    public boolean isSecure() {
+        return true;
+    }
 }

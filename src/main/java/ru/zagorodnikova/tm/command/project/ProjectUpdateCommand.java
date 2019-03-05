@@ -6,6 +6,8 @@ import java.util.Scanner;
 
 public class ProjectUpdateCommand extends AbstractCommand {
 
+    private final Scanner in = getBootstrap().getScanner();
+
     public ProjectUpdateCommand(Bootstrap bootstrap) {
         super(bootstrap);
     }
@@ -22,7 +24,6 @@ public class ProjectUpdateCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        Scanner in = new Scanner(System.in);
         System.out.println("project name");
         String oldProjectName = in.nextLine();
         System.out.println("New project name");
@@ -35,5 +36,10 @@ public class ProjectUpdateCommand extends AbstractCommand {
         String dateFinish = in.nextLine();
         getBootstrap().getProjectService().updateProject(oldProjectName, projectName, description, dateStart, dateFinish);
 
+    }
+
+    @Override
+    public boolean isSecure() {
+        return true;
     }
 }

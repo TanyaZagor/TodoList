@@ -6,15 +6,18 @@ import java.util.UUID;
 public class Project {
 
     private String id = UUID.randomUUID().toString();
+    private String userId;
     private String name;
     private String description;
     private String dateFinish;
     private String dateStart;
 
+
     public Project() {
     }
 
-    public Project(String name,String description, String dateStart, String dateFinish) {
+    public Project(String userId, String name,String description, String dateStart, String dateFinish) {
+        this.userId = userId;
         this.name = name;
         this.description = description;
         this.dateStart = dateStart;
@@ -61,6 +64,14 @@ public class Project {
         this.dateStart = dateStart;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     @Override
     public String toString() {
         return "Name: " + name + ", Description: " + description+ ", Date start: " + dateStart + ", Date finish: " + dateFinish;
@@ -71,11 +82,12 @@ public class Project {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Project project = (Project) o;
-        return name.equals(project.name);
+        return Objects.equals(userId, project.userId) &&
+                Objects.equals(name, project.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(userId, name);
     }
 }

@@ -30,4 +30,9 @@ public class ProjectListCommand extends AbstractCommand {
             projects.forEach((k, v) -> System.out.println(v));
         }
     }
+
+    @Override
+    public boolean isSecure() {
+        return true;
+    }
 }

@@ -17,13 +17,13 @@ public class TaskRepository implements ITaskRepository {
     public void persist(String projectName, String taskName, String description, String dateStart, String dateFinish) {
         Map<String, Project> map = new LinkedHashMap<>();
         projects.forEach((k, v) -> {
-            if (v.getName().equals(projectName)) {
+            if (v.getName().equals(projectName) && v.getUserId().equals(bootstrap.getCurrentUser().getId())) {
                 map.put(v.getName(), v);
             }
         });
         if (map.size() != 0) {
             Project project= map.get(projectName);
-            Task task = new Task(project.getId(), taskName, description, dateStart, dateFinish);
+            Task task = new Task(bootstrap.getCurrentUser().getId(), project.getId(), taskName, description, dateStart, dateFinish);
             if (!tasks.containsValue(task)) {
                 tasks.put(task.getId(), task);
             }
@@ -33,7 +33,7 @@ public class TaskRepository implements ITaskRepository {
     public void remove(String  projectName, String taskName) {
         Map<String, Project> map = new LinkedHashMap<>();
         projects.forEach((k, v) -> {
-            if (v.getName().equals(projectName)) {
+            if (v.getName().equals(projectName) && v.getUserId().equals(bootstrap.getCurrentUser().getId())) {
                 map.put(v.getName(), v);
             }
         });
@@ -46,13 +46,13 @@ public class TaskRepository implements ITaskRepository {
     public void merge(String projectName, String oldTaskName, String taskName, String description, String dateStart, String dateFinish) {
         Map<String, Project> map = new LinkedHashMap<>();
         projects.forEach((k, v) -> {
-            if (v.getName().equals(projectName)) {
+            if (v.getName().equals(projectName) && v.getUserId().equals(bootstrap.getCurrentUser().getId())) {
                 map.put(v.getName(), v);
             }
         });
         if (map.size() != 0) {
             Project project= map.get(projectName);
-            final Task task = new Task(project.getId(), taskName, description, dateStart, dateFinish);
+            final Task task = new Task(bootstrap.getCurrentUser().getId(), project.getId(), taskName, description, dateStart, dateFinish);
             tasks.forEach((k, v) -> {
                 if(v.getProjectId().equals(project.getId()) && v.getName().equals(oldTaskName)) {
                     task.setId(k);
@@ -66,7 +66,7 @@ public class TaskRepository implements ITaskRepository {
     public void removeAll(String projectName) {
         Map<String, Project> map = new LinkedHashMap<>();
         projects.forEach((k, v) -> {
-            if (v.getName().equals(projectName)) {
+            if (v.getName().equals(projectName) && v.getUserId().equals(bootstrap.getCurrentUser().getId())) {
                 map.put(v.getName(), v);
             }
         });
@@ -79,7 +79,7 @@ public class TaskRepository implements ITaskRepository {
     public Map<String, Task> findAll(String projectName) {
         Map<String, Project> map = new LinkedHashMap<>();
         projects.forEach((k, v) -> {
-            if (v.getName().equals(projectName)) {
+            if (v.getName().equals(projectName) && v.getUserId().equals(bootstrap.getCurrentUser().getId())) {
                 map.put(v.getName(), v);
             }
         });
@@ -87,7 +87,7 @@ public class TaskRepository implements ITaskRepository {
         if (map.size() != 0) {
             Project project= map.get(projectName);
             tasks.forEach((k, v) -> {
-                if(v.getProjectId().equals(project.getId())) {
+                if(v.getProjectId().equals(project.getId()) && v.getUserId().equals(bootstrap.getCurrentUser().getId())) {
                     mapTaskByProjectId.put(k, v);
                 }
             });
@@ -99,7 +99,7 @@ public class TaskRepository implements ITaskRepository {
     public Task findOne(String  projectName, String taskName) {
         Map<String, Project> map = new LinkedHashMap<>();
         projects.forEach((k, v) -> {
-            if (v.getName().equals(projectName)) {
+            if (v.getName().equals(projectName) && v.getUserId().equals(bootstrap.getCurrentUser().getId())) {
                 map.put(v.getName(), v);
             }
         });

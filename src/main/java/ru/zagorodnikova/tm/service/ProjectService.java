@@ -15,20 +15,20 @@ public class ProjectService {
 
     public void addProject(String projectName, String description, String dateStart, String dateFinish) {
         if (projectName == null || projectName.isEmpty()) {
-            throw new RuntimeException();
+            return;
         } else if (description == null || description.isEmpty()) {
-            throw new RuntimeException();
+            return;
         } else if (dateStart == null || dateStart.isEmpty()) {
-            throw new RuntimeException();
+            return;
         } else if (dateFinish == null || dateFinish.isEmpty()) {
-            throw new RuntimeException();
+            return;
         }
         projectRepository.persist(projectName, description, dateStart, dateFinish);
     }
 
     public void deleteProject( String projectName) {
         if (projectName == null || projectName.isEmpty()) {
-            throw new RuntimeException();
+            return;
         }
         projectRepository.remove(projectName);
 
@@ -46,22 +46,22 @@ public class ProjectService {
 
     public Project findOne(String projectName) {
         if (projectName == null || projectName.isEmpty()) {
-            throw new RuntimeException();
+            return null;
         }
         return projectRepository.findOne(projectName);
     }
 
     public void updateProject(String oldProjectName, String projectName, String description, String dateStart, String dateFinish) {
         if (oldProjectName == null || oldProjectName.isEmpty()) {
-            throw new RuntimeException();
+            return;
         } else if (projectName == null || projectName.isEmpty()) {
-            throw new RuntimeException();
+            return;
         } else if (description == null || description.isEmpty()) {
-            throw new RuntimeException();
+            return;
         } else if (dateStart == null || dateStart.isEmpty()) {
-            throw new RuntimeException();
+            return;
         } else if (dateFinish == null || dateFinish.isEmpty()) {
-            throw new RuntimeException();
+            return;
         }
         projectRepository.merge(oldProjectName, projectName, description, dateStart, dateFinish);
 

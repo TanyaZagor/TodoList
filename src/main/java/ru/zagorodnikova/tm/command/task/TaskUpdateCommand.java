@@ -6,6 +6,8 @@ import java.util.Scanner;
 
 public class TaskUpdateCommand extends AbstractCommand {
 
+    private final Scanner in = getBootstrap().getScanner();
+
     public TaskUpdateCommand(Bootstrap bootstrap) {
         super(bootstrap);
     }
@@ -22,7 +24,6 @@ public class TaskUpdateCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        Scanner in = new Scanner(System.in);
         System.out.println("project name");
         String projectName = in.nextLine();
         System.out.println("task name");
@@ -37,5 +38,10 @@ public class TaskUpdateCommand extends AbstractCommand {
         String dateFinish = in.nextLine();
         getBootstrap().getTaskService().updateTask(projectName, oldTaskName, taskName, description, dateStart, dateFinish);
 
+    }
+
+    @Override
+    public boolean isSecure() {
+        return true;
     }
 }

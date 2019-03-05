@@ -5,11 +5,7 @@ import java.util.Scanner;
 
 public class TaskCreateCommand extends AbstractCommand {
 
-    private String projectName;
-    private String taskName;
-    private String description;
-    private String dateStart;
-    private String dateFinish;
+    private final Scanner in = getBootstrap().getScanner();
 
     public TaskCreateCommand(Bootstrap bootstrap) {
         super(bootstrap);
@@ -27,18 +23,22 @@ public class TaskCreateCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        Scanner in = new Scanner(System.in);
         System.out.println("project name");
-        projectName = in.nextLine();
+        String projectName = in.nextLine();
         System.out.println("task name");
-        taskName = in.nextLine();
+        String taskName = in.nextLine();
         System.out.println("task description");
-        description = in.nextLine();
+        String description = in.nextLine();
         System.out.println("task data start");
-        dateStart = in.nextLine();
+        String dateStart = in.nextLine();
         System.out.println("task data finish");
-        dateFinish = in.nextLine();
+        String dateFinish = in.nextLine();
         getBootstrap().getTaskService().addTask(projectName, taskName, description, dateStart, dateFinish);
 
+    }
+
+    @Override
+    public boolean isSecure() {
+        return true;
     }
 }

@@ -1,31 +1,30 @@
-package ru.zagorodnikova.tm.command.system;
+package ru.zagorodnikova.tm.command.user;
 
 import ru.zagorodnikova.tm.bootstrap.Bootstrap;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 
-public class HelpCommand extends AbstractCommand {
-
-    public HelpCommand(Bootstrap bootstrap) {
+public class UserShowCommand extends AbstractCommand {
+    public UserShowCommand(Bootstrap bootstrap) {
         super(bootstrap);
     }
 
     @Override
     public String command() {
-        return "help";
+        return "show user";
     }
 
     @Override
     public String description() {
-        return "commands help";
+        return "command to show user data";
     }
 
     @Override
     public void execute() {
-        getBootstrap().getCommands().forEach((k, v) -> System.out.println(k + ": " + v.description()));
+        System.out.println(getBootstrap().getCurrentUser());
     }
 
     @Override
     public boolean isSecure() {
-        return false;
+        return true;
     }
 }

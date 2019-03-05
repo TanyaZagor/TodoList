@@ -6,7 +6,8 @@ import ru.zagorodnikova.tm.command.AbstractCommand;
 import java.util.Scanner;
 
 public class ProjectRemoveCommand extends AbstractCommand {
-   Scanner in = new Scanner(System.in);
+
+    private final Scanner in = getBootstrap().getScanner();
 
     public ProjectRemoveCommand(Bootstrap bootstrap) {
         super(bootstrap);
@@ -28,5 +29,10 @@ public class ProjectRemoveCommand extends AbstractCommand {
         System.out.println("project name");
         String projectName = in.nextLine();
         getBootstrap().getProjectService().deleteProject(projectName);
+    }
+
+    @Override
+    public boolean isSecure() {
+        return true;
     }
 }

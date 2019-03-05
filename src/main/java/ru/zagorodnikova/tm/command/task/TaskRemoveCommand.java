@@ -6,6 +6,8 @@ import java.util.Scanner;
 
 public class TaskRemoveCommand extends AbstractCommand {
 
+    private final Scanner in = getBootstrap().getScanner();
+
     public TaskRemoveCommand(Bootstrap bootstrap) {
         super(bootstrap);
     }
@@ -22,11 +24,15 @@ public class TaskRemoveCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        Scanner in = new Scanner(System.in);
         System.out.println("project name");
         String projectName = in.nextLine();
         System.out.println("task name");
         String taskName = in.nextLine();
         getBootstrap().getTaskService().deleteTask(projectName, taskName);
+    }
+
+    @Override
+    public boolean isSecure() {
+        return true;
     }
 }

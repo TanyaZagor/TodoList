@@ -15,15 +15,15 @@ public class TaskService {
 
     public void addTask(String projectName, String taskName, String description, String dateStart, String dateFinish) {
         if (projectName == null || projectName.isEmpty()) {
-            throw new RuntimeException();
+            return;
         } else if (taskName == null || taskName.isEmpty()) {
-            throw new RuntimeException();
+            return;
         } else if (description == null || description.isEmpty()) {
-            throw new RuntimeException();
+            return;
         } else if (dateStart == null || dateStart.isEmpty()) {
-            throw new RuntimeException();
+            return;
         } else if (dateFinish == null || dateFinish.isEmpty()) {
-            throw new RuntimeException();
+            return;
         }
         taskRepository.persist(projectName, taskName, description, dateStart, dateFinish);
     }
@@ -45,15 +45,15 @@ public class TaskService {
 
     public void updateTask(String projectName, String oldTaskName, String taskName, String description, String dateStart, String dateFinish) {
         if (projectName == null || projectName.isEmpty()) {
-            throw new RuntimeException();
+            return;
         } else if (taskName == null || taskName.isEmpty()) {
-            throw new RuntimeException();
+            return;
         } else if (description == null || description.isEmpty()) {
-            throw new RuntimeException();
+            return;
         } else if (dateStart == null || dateStart.isEmpty()) {
-            throw new RuntimeException();
+            return;
         } else if (dateFinish == null || dateFinish.isEmpty()) {
-            throw new RuntimeException();
+            return;
         }
         taskRepository.merge(projectName,oldTaskName, taskName, description, dateStart, dateFinish);
 
@@ -61,14 +61,14 @@ public class TaskService {
 
     public Map<String, Task> print(String projectName) {
         if (projectName == null || projectName.isEmpty()) {
-            throw new RuntimeException();
+            return null;
         }
         return  taskRepository.findAll(projectName);
     }
 
     public Task findOne(String projectName, String taskName) {
         if (projectName == null || projectName.isEmpty()) {
-            throw new RuntimeException();
+            return null;
         }
         return  taskRepository.findOne(projectName, taskName);
     }

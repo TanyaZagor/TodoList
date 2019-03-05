@@ -8,6 +8,8 @@ import java.util.Scanner;
 
 public class TaskFindOneCommand extends AbstractCommand {
 
+    private final Scanner in = getBootstrap().getScanner();
+
     public TaskFindOneCommand(Bootstrap bootstrap) {
         super(bootstrap);
     }
@@ -24,7 +26,6 @@ public class TaskFindOneCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        Scanner in = new Scanner(System.in);
         System.out.println("project name");
         String projectName = in.nextLine();
         System.out.println("task name");
@@ -33,5 +34,10 @@ public class TaskFindOneCommand extends AbstractCommand {
         if (task != null) {
             System.out.println(task);
         }
+    }
+
+    @Override
+    public boolean isSecure() {
+        return true;
     }
 }
