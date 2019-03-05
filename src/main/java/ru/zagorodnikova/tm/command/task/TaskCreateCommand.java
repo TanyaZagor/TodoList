@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class TaskCreateCommand extends AbstractCommand {
 
-    private String projectId;
+    private String projectName;
     private String taskName;
     private String description;
     private String dateStart;
@@ -30,8 +30,8 @@ public class TaskCreateCommand extends AbstractCommand {
     @Override
     public void execute() {
         Scanner in = new Scanner(System.in);
-        System.out.println("project id");
-        projectId = in.nextLine();
+        System.out.println("project name");
+        projectName = in.nextLine();
         System.out.println("task name");
         taskName = in.nextLine();
         System.out.println("task description");
@@ -40,7 +40,7 @@ public class TaskCreateCommand extends AbstractCommand {
         dateStart = in.nextLine();
         System.out.println("task data finish");
         dateFinish = in.nextLine();
-        String result = super.getBootstrap().getTaskRepositoryService().addTask(projectId, taskName, description, dateStart, dateFinish);
+        String result = super.getBootstrap().getTaskRepositoryService().addTask(projectName, taskName, description, dateStart, dateFinish);
         if (result != null) {
             System.out.println(result);
         }

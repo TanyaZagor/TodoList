@@ -10,7 +10,7 @@ public class TaskRepositoryService {
     private TaskRepository taskRepository;
     private String result;
 
-    public String addTask(String projectId, String name, String description, String dateStart, String dateFinish) {
+    public String addTask(String projectName, String name, String description, String dateStart, String dateFinish) {
         result = null;
         if (taskRepository == null) {
             taskRepository = new TaskRepository();
@@ -18,24 +18,16 @@ public class TaskRepositoryService {
         if (name.length() == 0 || description.length() == 0 || dateStart.length() == 0|| dateFinish.length() == 0) {
             return "Not enough data";
         }
-        try {
-            taskRepository.persist(projectId, name, description, dateStart, dateFinish);
-        } catch (NumberFormatException e) {
-            result = "wrong id";
-        }
+        taskRepository.persist(projectName, name, description, dateStart, dateFinish);
         return result;
     }
 
-    public String deleteTask(String projectId, String taskId){
+    public String deleteTask(String projectName, String taskId){
         result = null;
         if (taskRepository == null) {
             taskRepository = new TaskRepository();
         }
-        try {
-            taskRepository.remove(projectId, taskId);
-        } catch (NumberFormatException e) {
-            result = "wrong id";
-        }
+        taskRepository.remove(projectName, taskId);
         return result;
     }
 
@@ -44,31 +36,30 @@ public class TaskRepositoryService {
         if (taskRepository == null) {
             taskRepository = new TaskRepository();
         }
-        try {
-            taskRepository.removeAll(projectName);
-        } catch (NumberFormatException e) {
-            result = "wrong id";
-        }
+        taskRepository.removeAll(projectName);
         return result;
     }
 
-    public String updateTask(String projectId, String oldTaskName, String taskName, String description, String dateStart, String dateFinish) {
+    public String updateTask(String projectName, String oldTaskName, String taskName, String description, String dateStart, String dateFinish) {
         result = null;
         if (taskRepository == null) {
             taskRepository = new TaskRepository();
         }
-        try {
-            taskRepository.merge(projectId,oldTaskName, taskName, description, dateStart, dateFinish);
-        } catch (NumberFormatException e) {
-            result = "wrong update id";
-        }
+        taskRepository.merge(projectName,oldTaskName, taskName, description, dateStart, dateFinish);
         return result;
     }
 
-    public Map<String, Task> print(String projectId) {
+    public Map<String, Task> print(String projectName) {
         if (taskRepository == null) {
             taskRepository = new TaskRepository();
         }
-        return  taskRepository.findAll(projectId);
+        return  taskRepository.findAll(projectName);
+    }
+
+    public Task findOne(String projectName, String taskName) {
+        if (taskRepository == null) {
+            taskRepository = new TaskRepository();
+        }
+        return  taskRepository.findOne(projectName, taskName);
     }
 }

@@ -4,25 +4,21 @@ import ru.zagorodnikova.tm.Entity.Task;
 import ru.zagorodnikova.tm.bootstrap.Bootstrap;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 
-import java.util.Map;
 import java.util.Scanner;
 
-public class TaskListCommand extends AbstractCommand {
-
-
-    public TaskListCommand(Bootstrap bootstrap) {
+public class TaskFindOneCommand extends AbstractCommand {
+    public TaskFindOneCommand(Bootstrap bootstrap) {
         super(bootstrap);
     }
 
-
     @Override
     public String command() {
-        return "task list";
+        return "print one task";
     }
 
     @Override
     public String description() {
-        return "command to print out task list";
+        return "Command to find one task";
     }
 
     @Override
@@ -30,12 +26,9 @@ public class TaskListCommand extends AbstractCommand {
         Scanner in = new Scanner(System.in);
         System.out.println("project name");
         String projectName = in.nextLine();
-        Map<String, Task> tasks = super.getBootstrap().getTaskRepositoryService().print(projectName);
-        if (tasks.size() != 0) {
-            tasks.forEach((k, v) -> System.out.println(v));
-        } else {
-            System.out.println("Wrong name");
-        }
-
+        System.out.println("task name");
+        String taskName = in.nextLine();
+        Task task = super.getBootstrap().getTaskRepositoryService().findOne(projectName, taskName);
+        System.out.println(task);
     }
 }

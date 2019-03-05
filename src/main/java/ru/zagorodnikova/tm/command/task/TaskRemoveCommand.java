@@ -24,11 +24,11 @@ public class TaskRemoveCommand extends AbstractCommand {
     @Override
     public void execute() {
         Scanner in = new Scanner(System.in);
-        System.out.println("project id");
-        String projectId = in.nextLine();
+        System.out.println("project name");
+        String projectName = in.nextLine();
         System.out.println("task name");
         String taskName = in.nextLine();
-        String result = super.getBootstrap().getTaskRepositoryService().deleteTask(projectId, taskName);
+        String result = super.getBootstrap().getTaskRepositoryService().deleteTask(projectName, taskName);
         if (result != null) {
             System.out.println(result);
         }

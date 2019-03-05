@@ -43,12 +43,14 @@ public class Bootstrap {
         ProjectCreateCommand projectCreateCommand = new ProjectCreateCommand(bootstrap);
         ProjectListCommand projectListCommand = new ProjectListCommand(bootstrap);
         ProjectUpdateCommand projectUpdateCommand = new ProjectUpdateCommand(bootstrap);
+        ProjectFindOneCommand projectFindOneCommand = new ProjectFindOneCommand(bootstrap);
 
         TaskClearCommand taskClearCommand = new TaskClearCommand(bootstrap);
         TaskCreateCommand taskCreateCommand = new TaskCreateCommand(bootstrap);
         TaskListCommand taskListCommand = new TaskListCommand(bootstrap);
         TaskRemoveCommand taskRemoveCommand = new TaskRemoveCommand(bootstrap);
         TaskUpdateCommand taskUpdateCommand = new TaskUpdateCommand(bootstrap);
+        TaskFindOneCommand taskFindOneCommand = new TaskFindOneCommand(bootstrap);
 
         HelpCommand helpCommand = new HelpCommand(bootstrap);
 
@@ -57,12 +59,14 @@ public class Bootstrap {
         commands.put(projectCreateCommand.command(), projectCreateCommand);
         commands.put(projectListCommand.command(), projectListCommand);
         commands.put(projectUpdateCommand.command(), projectUpdateCommand);
+        commands.put(projectFindOneCommand.command(), projectFindOneCommand);
 
         commands.put(taskClearCommand.command(), taskClearCommand);
         commands.put(taskCreateCommand.command(), taskCreateCommand);
         commands.put(taskListCommand.command(), taskListCommand);
         commands.put(taskRemoveCommand.command(), taskRemoveCommand);
         commands.put(taskUpdateCommand.command(), taskUpdateCommand);
+        commands.put(taskFindOneCommand.command(), taskFindOneCommand);
 
         commands.put(helpCommand.command(), helpCommand);
 

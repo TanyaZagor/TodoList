@@ -55,7 +55,15 @@ public class ProjectRepositoryService {
         if (projectRepository == null) {
             projectRepository = new ProjectRepository();
         }
-        return projectRepository.print();
+        return projectRepository.findAll();
+    }
+
+    public Project findOne(String projectName) {
+        if (projectRepository == null) {
+            projectRepository = new ProjectRepository();
+        }
+
+        return projectRepository.findOne(projectName);
     }
 
     public String updateProject(String oldProjectName, String projectName, String description, String dateStart, String dateFinish) {

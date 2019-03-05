@@ -26,8 +26,8 @@ public class TaskUpdateCommand extends AbstractCommand {
     @Override
     public void execute() {
         Scanner in = new Scanner(System.in);
-        System.out.println("project id");
-        String projectId = in.nextLine();
+        System.out.println("project name");
+        String projectName = in.nextLine();
         System.out.println("task name");
         String oldTaskName = in.nextLine();
         System.out.println("New task name");
@@ -38,7 +38,7 @@ public class TaskUpdateCommand extends AbstractCommand {
         String dateStart = in.nextLine();
         System.out.println("New date finish");
         String dateFinish = in.nextLine();
-        String result = super.getBootstrap().getTaskRepositoryService().updateTask(projectId, oldTaskName, taskName, description, dateStart, dateFinish);
+        String result = super.getBootstrap().getTaskRepositoryService().updateTask(projectName, oldTaskName, taskName, description, dateStart, dateFinish);
         if (result != null) {
             System.out.println(result);
         }

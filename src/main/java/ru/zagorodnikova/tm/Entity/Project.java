@@ -7,7 +7,8 @@ import java.util.UUID;
 
 public class Project {
 
-    private String id = UUID.randomUUID().toString();    private String name;
+    private String id = UUID.randomUUID().toString();
+    private String name;
     private String description;
     private String dateFinish;
     private String dateStart;
@@ -61,7 +62,7 @@ public class Project {
 
     @Override
     public String toString() {
-        return "Project id: " + id + ", Name: " + name + ", Description: " + description+ ", Date start: " + dateStart + ", Date finish: " + dateFinish;
+        return "Name: " + name + ", Description: " + description+ ", Date start: " + dateStart + ", Date finish: " + dateFinish;
     }
 
     @Override
