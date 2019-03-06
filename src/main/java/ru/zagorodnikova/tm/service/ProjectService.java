@@ -14,22 +14,15 @@ public class ProjectService {
     }
 
     public void addProject(String projectName, String description, String dateStart, String dateFinish) {
-        if (projectName == null || projectName.isEmpty()) {
-            return;
-        } else if (description == null || description.isEmpty()) {
-            return;
-        } else if (dateStart == null || dateStart.isEmpty()) {
-            return;
-        } else if (dateFinish == null || dateFinish.isEmpty()) {
-            return;
-        }
+        if (projectName == null || projectName.isEmpty()) return;
+        if (description == null || description.isEmpty()) return;
+        if (dateStart == null || dateStart.isEmpty()) return;
+        if (dateFinish == null || dateFinish.isEmpty()) return;
         projectRepository.persist(projectName, description, dateStart, dateFinish);
     }
 
     public void deleteProject( String projectName) {
-        if (projectName == null || projectName.isEmpty()) {
-            return;
-        }
+        if (projectName == null || projectName.isEmpty()) return;
         projectRepository.remove(projectName);
 
     }
@@ -45,24 +38,16 @@ public class ProjectService {
     }
 
     public Project findOne(String projectName) {
-        if (projectName == null || projectName.isEmpty()) {
-            return null;
-        }
+        if (projectName == null || projectName.isEmpty()) return null;
         return projectRepository.findOne(projectName);
     }
 
     public void updateProject(String oldProjectName, String projectName, String description, String dateStart, String dateFinish) {
-        if (oldProjectName == null || oldProjectName.isEmpty()) {
-            return;
-        } else if (projectName == null || projectName.isEmpty()) {
-            return;
-        } else if (description == null || description.isEmpty()) {
-            return;
-        } else if (dateStart == null || dateStart.isEmpty()) {
-            return;
-        } else if (dateFinish == null || dateFinish.isEmpty()) {
-            return;
-        }
+        if (oldProjectName == null || oldProjectName.isEmpty()) return;
+        if (projectName == null || projectName.isEmpty()) return;
+        if (description == null || description.isEmpty()) return;
+        if (dateStart == null || dateStart.isEmpty()) return;
+        if (dateFinish == null || dateFinish.isEmpty()) return;
         projectRepository.merge(oldProjectName, projectName, description, dateStart, dateFinish);
 
     }
