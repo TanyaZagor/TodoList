@@ -20,8 +20,6 @@ import java.util.*;
 
 public class Bootstrap {
 
-    private static Bootstrap bootstrap;
-
     private final Scanner scanner = new Scanner(System.in);
     private final Map<String, AbstractCommand> commands = new HashMap<>();
     private final ProjectRepository projectRepository = new ProjectRepository();
@@ -32,18 +30,8 @@ public class Bootstrap {
     private final UserService userService = new UserService(userRepository);
     private User currentUser;
 
-    private Bootstrap() {
-    }
 
-    public static Bootstrap getBootstrap() {
-        if (bootstrap != null) {
-            return bootstrap;
-        }
-        return new Bootstrap();
-    }
-
-    public static void init() {
-        Bootstrap bootstrap = getBootstrap();
+    public static void init(Bootstrap bootstrap) {
 
         bootstrap.initCommands(bootstrap);
         bootstrap.initProjectsAndUsers();
