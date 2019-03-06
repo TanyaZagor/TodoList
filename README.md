@@ -1,7 +1,7 @@
 
 TodoList
 =============
-Программа для записи проектов и задач.
+Консольная программа с авторизацией для записи проектов и задач.
 
 Требования к software
 =============
@@ -26,10 +26,16 @@ TodoList
 - cd target 
 - java -jar ./TodoList.jar
 
-Команда и программе
+Команда в программе
 =============                   
 Command       | Command description
 ------------- | -------------
+sign in  | command to sign in
+sign up  | command to sign up 
+sign out  | command to sign out
+show user  | command to show user data 
+update user  | command to update user
+change password  | command to change password 
 clear projects  | command to clear projects
 create project  | command to create project 
 print one project  | command to print one project
