@@ -1,17 +1,17 @@
 package ru.zagorodnikova.tm.command;
 
-import ru.zagorodnikova.tm.bootstrap.Bootstrap;
+import ru.zagorodnikova.tm.api.ServiceLocator;
 
 public abstract class AbstractCommand {
 
-    private Bootstrap bootstrap;
+    private ServiceLocator serviceLocator;
 
-    public AbstractCommand(Bootstrap bootstrap) {
-        this.bootstrap = bootstrap;
+    public AbstractCommand(ServiceLocator serviceLocator) {
+        this.serviceLocator = serviceLocator;
     }
 
-    public Bootstrap getBootstrap() {
-        return bootstrap;
+    public ServiceLocator getServiceLocator() {
+        return serviceLocator;
     }
 
     abstract public String command();

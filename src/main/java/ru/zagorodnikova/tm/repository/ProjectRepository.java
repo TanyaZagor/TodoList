@@ -13,7 +13,7 @@ public class ProjectRepository implements IProjectRepository {
     private final Map<String, Project> projects = new LinkedHashMap<>();
 
     public Project persist(String userId, String projectName, String description, String dateStart, String dateFinish) {
-        Project project = new Project(userId, projectName, description, dateStart, dateFinish);
+        final Project project = new Project(userId, projectName, description, dateStart, dateFinish);
         projects.put(project.getId(), project);
         return project;
     }
@@ -27,7 +27,7 @@ public class ProjectRepository implements IProjectRepository {
     }
 
     public List<Project> findAll(String userId) {
-        List<Project> list = new ArrayList<>();
+        final List<Project> list = new ArrayList<>();
         projects.forEach((k, v) -> {
             if (v.getUserId().equals(userId)) {
                 list.add(v);
@@ -37,7 +37,7 @@ public class ProjectRepository implements IProjectRepository {
     }
 
     public Project findOne(String userId, String projectName){
-        List<Project> list = new ArrayList<>();
+        final List<Project> list = new ArrayList<>();
         projects.forEach((k, v) -> {
             if (v.getName().equals(projectName) && v.getUserId().equals(userId)) {
                 list.add(v);

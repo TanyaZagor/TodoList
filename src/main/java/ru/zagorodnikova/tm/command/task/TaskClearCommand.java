@@ -1,16 +1,16 @@
 package ru.zagorodnikova.tm.command.task;
 
-import ru.zagorodnikova.tm.bootstrap.Bootstrap;
+import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 
 import java.util.Scanner;
 
 public class TaskClearCommand extends AbstractCommand {
 
-    private final Scanner in = getBootstrap().getScanner();
+    private final Scanner in = getServiceLocator().getScanner();
 
-    public TaskClearCommand(Bootstrap bootstrap) {
-        super(bootstrap);
+    public TaskClearCommand(ServiceLocator serviceLocator) {
+        super(serviceLocator);
     }
 
     @Override
@@ -27,7 +27,7 @@ public class TaskClearCommand extends AbstractCommand {
     public void execute() {
         System.out.println("project name");
         String projectName = in.nextLine();
-        getBootstrap().getTaskService().removeAllInProject(getBootstrap().getCurrentUser().getId(), projectName);
+        getServiceLocator().getTaskService().removeAllInProject(getServiceLocator().getCurrentUser().getId(), projectName);
 
     }
 

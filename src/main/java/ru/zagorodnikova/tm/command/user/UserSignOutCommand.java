@@ -1,11 +1,11 @@
 package ru.zagorodnikova.tm.command.user;
 
-import ru.zagorodnikova.tm.bootstrap.Bootstrap;
+import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 
 public class UserSignOutCommand extends AbstractCommand {
-    public UserSignOutCommand(Bootstrap bootstrap) {
-        super(bootstrap);
+    public UserSignOutCommand(ServiceLocator serviceLocator) {
+        super(serviceLocator);
     }
 
     @Override
@@ -20,7 +20,7 @@ public class UserSignOutCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        getBootstrap().setCurrentUser(null);
+        getServiceLocator().setCurrentUser(null);
     }
 
     @Override

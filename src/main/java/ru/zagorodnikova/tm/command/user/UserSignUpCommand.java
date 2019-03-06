@@ -1,6 +1,6 @@
 package ru.zagorodnikova.tm.command.user;
 
-import ru.zagorodnikova.tm.bootstrap.Bootstrap;
+import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.entity.RoleType;
 import ru.zagorodnikova.tm.entity.User;
@@ -9,10 +9,10 @@ import java.util.Scanner;
 
 public class UserSignUpCommand extends AbstractCommand {
 
-    private final Scanner in = getBootstrap().getScanner();
+    private final Scanner in = getServiceLocator().getScanner();
 
-    public UserSignUpCommand(Bootstrap bootstrap) {
-        super(bootstrap);
+    public UserSignUpCommand(ServiceLocator serviceLocator) {
+        super(serviceLocator);
     }
 
     @Override
@@ -37,9 +37,9 @@ public class UserSignUpCommand extends AbstractCommand {
         String lastName = in.nextLine();
         System.out.println("New email");
         String email = in.nextLine();
-        User user = getBootstrap().getUserService().signUp(login, password, firstName, lastName, email, RoleType.USER);
+        User user = getServiceLocator().getUserService().signUp(login, password, firstName, lastName, email, RoleType.USER);
         if (user != null) {
-            getBootstrap().setCurrentUser(user);
+            getServiceLocator().setCurrentUser(user);
             System.out.println(user);
         }
     }

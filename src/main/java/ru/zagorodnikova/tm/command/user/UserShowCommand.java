@@ -1,11 +1,11 @@
 package ru.zagorodnikova.tm.command.user;
 
-import ru.zagorodnikova.tm.bootstrap.Bootstrap;
+import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 
 public class UserShowCommand extends AbstractCommand {
-    public UserShowCommand(Bootstrap bootstrap) {
-        super(bootstrap);
+    public UserShowCommand(ServiceLocator serviceLocator) {
+        super(serviceLocator);
     }
 
     @Override
@@ -20,7 +20,7 @@ public class UserShowCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        System.out.println(getBootstrap().getCurrentUser());
+        System.out.println(getServiceLocator().getCurrentUser());
     }
 
     @Override

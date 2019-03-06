@@ -1,13 +1,13 @@
 package ru.zagorodnikova.tm.command.project;
 
-import ru.zagorodnikova.tm.bootstrap.Bootstrap;
+import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 
 
 public class ProjectClearCommand extends AbstractCommand {
 
-    public ProjectClearCommand(Bootstrap bootstrap) {
-        super(bootstrap);
+    public ProjectClearCommand(ServiceLocator serviceLocator) {
+        super(serviceLocator);
     }
 
     @Override
@@ -22,8 +22,7 @@ public class ProjectClearCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        getBootstrap().getTaskService().removeAll(getBootstrap().getCurrentUser().getId());
-        getBootstrap().getProjectService().removeAll(getBootstrap().getCurrentUser().getId());
+        getServiceLocator().getProjectService().removeAll(getServiceLocator().getCurrentUser().getId());
     }
 
     @Override

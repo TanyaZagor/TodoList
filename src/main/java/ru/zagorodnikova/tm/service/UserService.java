@@ -1,15 +1,15 @@
 package ru.zagorodnikova.tm.service;
 
+import ru.zagorodnikova.tm.api.repository.IUserRepository;
 import ru.zagorodnikova.tm.api.service.IUserService;
 import ru.zagorodnikova.tm.entity.RoleType;
 import ru.zagorodnikova.tm.entity.User;
-import ru.zagorodnikova.tm.repository.UserRepository;
 
 public class UserService implements IUserService {
 
-    private final UserRepository userRepository;
+    private final IUserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(IUserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

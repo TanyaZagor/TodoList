@@ -1,17 +1,17 @@
 package ru.zagorodnikova.tm.command.task;
 
+import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.entity.Task;
-import ru.zagorodnikova.tm.bootstrap.Bootstrap;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 
 import java.util.Scanner;
 
 public class TaskFindOneCommand extends AbstractCommand {
 
-    private final Scanner in = getBootstrap().getScanner();
+    private final Scanner in = getServiceLocator().getScanner();
 
-    public TaskFindOneCommand(Bootstrap bootstrap) {
-        super(bootstrap);
+    public TaskFindOneCommand(ServiceLocator serviceLocator) {
+        super(serviceLocator);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class TaskFindOneCommand extends AbstractCommand {
         String projectName = in.nextLine();
         System.out.println("task name");
         String taskName = in.nextLine();
-        Task task = getBootstrap().getTaskService().findOne(getBootstrap().getCurrentUser().getId(), projectName, taskName);
+        Task task = getServiceLocator().getTaskService().findOne(getServiceLocator().getCurrentUser().getId(), projectName, taskName);
         if (task != null) {
             System.out.println(task);
         }

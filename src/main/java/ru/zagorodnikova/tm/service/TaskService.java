@@ -1,19 +1,20 @@
 package ru.zagorodnikova.tm.service;
 
+import ru.zagorodnikova.tm.api.repository.IProjectRepository;
+import ru.zagorodnikova.tm.api.repository.ITaskRepository;
 import ru.zagorodnikova.tm.api.service.ITaskService;
 import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.entity.Task;
-import ru.zagorodnikova.tm.repository.ProjectRepository;
-import ru.zagorodnikova.tm.repository.TaskRepository;
 
 import java.util.List;
 
 
 public class TaskService implements ITaskService {
-    private final TaskRepository taskRepository;
-    private final ProjectRepository projectRepository;
 
-    public TaskService(TaskRepository taskRepository, ProjectRepository projectRepository) {
+    private final ITaskRepository taskRepository;
+    private final IProjectRepository projectRepository;
+
+    public TaskService(ITaskRepository taskRepository, IProjectRepository projectRepository) {
         this.taskRepository = taskRepository;
         this.projectRepository = projectRepository;
 
@@ -21,7 +22,7 @@ public class TaskService implements ITaskService {
 
     public Task persist(String userId, String projectName, String taskName, String description, String dateStart, String dateFinish) {
         if (projectName == null || projectName.isEmpty()) return null;
-        Project project = projectRepository.findOne(userId, projectName);
+        final Project project = projectRepository.findOne(userId, projectName);
         if (project != null) {
             if (taskName == null || taskName.isEmpty()) return null;
             if (description == null || description.isEmpty()) return null;
@@ -35,7 +36,7 @@ public class TaskService implements ITaskService {
 
     public void remove(String userId, String projectName, String taskId){
         if (projectName == null || projectName.isEmpty()) return;
-        Project project = projectRepository.findOne(userId, projectName);
+        final Project project = projectRepository.findOne(userId, projectName);
         if (project != null) {
             taskRepository.remove(project.getId(), taskId);
         }
@@ -48,7 +49,7 @@ public class TaskService implements ITaskService {
 
     public void removeAllInProject(String userId, String projectName) {
         if (projectName == null || projectName.isEmpty()) return;
-        Project project = projectRepository.findOne(userId, projectName);
+        final Project project = projectRepository.findOne(userId, projectName);
         if (project != null) {
             taskRepository.removeAllInProject(project.getId());
         }
@@ -56,7 +57,7 @@ public class TaskService implements ITaskService {
 
     public void merge(String userId, String projectName, String oldTaskName, String taskName, String description, String dateStart, String dateFinish) {
         if (projectName == null || projectName.isEmpty()) return;
-        Project project = projectRepository.findOne(userId, projectName);
+        final Project project = projectRepository.findOne(userId, projectName);
         if (project != null) {
             if (taskName == null || taskName.isEmpty()) return;
             if (description == null || description.isEmpty()) return;
@@ -69,7 +70,7 @@ public class TaskService implements ITaskService {
 
     public List<Task> findAll(String userId, String projectName) {
         if (projectName == null || projectName.isEmpty()) return null;
-        Project project = projectRepository.findOne(userId, projectName);
+        final Project project = projectRepository.findOne(userId, projectName);
         if (project != null) {
             return  taskRepository.findAll(project.getId());
         }
@@ -78,7 +79,7 @@ public class TaskService implements ITaskService {
 
     public Task findOne(String userId, String projectName, String taskName) {
         if (projectName == null || projectName.isEmpty()) return null;
-        Project project = projectRepository.findOne(userId, projectName);
+        final Project project = projectRepository.findOne(userId, projectName);
         if (project != null) {
             if (taskName == null || taskName.isEmpty()) return null;
             return  taskRepository.findOne(project.getId(), taskName);

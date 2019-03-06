@@ -1,6 +1,6 @@
 package ru.zagorodnikova.tm.command.user;
 
-import ru.zagorodnikova.tm.bootstrap.Bootstrap;
+import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.entity.User;
 
@@ -8,10 +8,10 @@ import java.util.Scanner;
 
 public class UserSignInCommand extends AbstractCommand {
 
-    private final Scanner in = getBootstrap().getScanner();
+    private final Scanner in = getServiceLocator().getScanner();
 
-    public UserSignInCommand(Bootstrap bootstrap) {
-        super(bootstrap);
+    public UserSignInCommand(ServiceLocator serviceLocator) {
+        super(serviceLocator);
     }
 
     @Override
@@ -30,9 +30,9 @@ public class UserSignInCommand extends AbstractCommand {
         String login = in.nextLine();
         System.out.println("Password");
         String password = in.nextLine();
-        User user = getBootstrap().getUserService().signIn(login, password);
+        User user = getServiceLocator().getUserService().signIn(login, password);
         if (user!= null) {
-            getBootstrap().setCurrentUser(user);
+            getServiceLocator().setCurrentUser(user);
             System.out.println(user);
         }
     }

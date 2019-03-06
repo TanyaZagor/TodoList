@@ -1,15 +1,15 @@
 package ru.zagorodnikova.tm.command.project;
 
-import ru.zagorodnikova.tm.bootstrap.Bootstrap;
+import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import java.util.Scanner;
 
 public class ProjectUpdateCommand extends AbstractCommand {
 
-    private final Scanner in = getBootstrap().getScanner();
+    private final Scanner in = getServiceLocator().getScanner();
 
-    public ProjectUpdateCommand(Bootstrap bootstrap) {
-        super(bootstrap);
+    public ProjectUpdateCommand(ServiceLocator serviceLocator) {
+        super(serviceLocator);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class ProjectUpdateCommand extends AbstractCommand {
         String dateStart = in.nextLine();
         System.out.println("New date finish");
         String dateFinish = in.nextLine();
-        getBootstrap().getProjectService().merge(getBootstrap().getCurrentUser().getId(), oldProjectName, projectName, description, dateStart, dateFinish);
+        getServiceLocator().getProjectService().merge(getServiceLocator().getCurrentUser().getId(), oldProjectName, projectName, description, dateStart, dateFinish);
 
     }
 

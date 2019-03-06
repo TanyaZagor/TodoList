@@ -1,12 +1,12 @@
 package ru.zagorodnikova.tm.command.system;
 
-import ru.zagorodnikova.tm.bootstrap.Bootstrap;
+import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 
 public class HelpCommand extends AbstractCommand {
 
-    public HelpCommand(Bootstrap bootstrap) {
-        super(bootstrap);
+    public HelpCommand(ServiceLocator serviceLocator) {
+        super(serviceLocator);
     }
 
     @Override
@@ -21,7 +21,7 @@ public class HelpCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        getBootstrap().getCommands().forEach((k, v) -> System.out.println(k + ": " + v.description()));
+        getServiceLocator().getCommands().forEach((k, v) -> System.out.println(k + ": " + v.description()));
     }
 
     @Override

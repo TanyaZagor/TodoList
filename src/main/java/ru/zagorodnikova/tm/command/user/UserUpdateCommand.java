@@ -1,16 +1,16 @@
 package ru.zagorodnikova.tm.command.user;
 
-import ru.zagorodnikova.tm.bootstrap.Bootstrap;
+import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 
 import java.util.Scanner;
 
 public class UserUpdateCommand extends AbstractCommand {
 
-    private final Scanner in = getBootstrap().getScanner();
+    private final Scanner in = getServiceLocator().getScanner();
 
-    public UserUpdateCommand(Bootstrap bootstrap) {
-        super(bootstrap);
+    public UserUpdateCommand(ServiceLocator serviceLocator) {
+        super(serviceLocator);
     }
 
     @Override
@@ -31,7 +31,7 @@ public class UserUpdateCommand extends AbstractCommand {
         String lastName = in.nextLine();
         System.out.println("New email");
         String email = in.nextLine();
-        getBootstrap().getUserService().update(getBootstrap().getCurrentUser().getId(), firstName, lastName, email);
+        getServiceLocator().getUserService().update(getServiceLocator().getCurrentUser().getId(), firstName, lastName, email);
     }
 
     @Override

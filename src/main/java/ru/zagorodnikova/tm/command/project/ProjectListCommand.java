@@ -1,15 +1,15 @@
 package ru.zagorodnikova.tm.command.project;
 
+import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.entity.Project;
-import ru.zagorodnikova.tm.bootstrap.Bootstrap;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 
 import java.util.List;
 
 public class ProjectListCommand extends AbstractCommand {
 
-    public ProjectListCommand(Bootstrap bootstrap) {
-        super(bootstrap);
+    public ProjectListCommand(ServiceLocator serviceLocator) {
+        super(serviceLocator);
     }
 
     @Override
@@ -25,7 +25,7 @@ public class ProjectListCommand extends AbstractCommand {
     @Override
     public void execute() {
 
-        List<Project> projects = getBootstrap().getProjectService().findAll(getBootstrap().getCurrentUser().getId());
+        List<Project> projects = getServiceLocator().getProjectService().findAll(getServiceLocator().getCurrentUser().getId());
 
         if (!(projects == null || projects.isEmpty())) {
             projects.forEach(System.out::println);

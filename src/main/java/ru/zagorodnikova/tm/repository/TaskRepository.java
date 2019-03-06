@@ -13,7 +13,7 @@ public class TaskRepository implements ITaskRepository {
     private final Map<String, Task> tasks = new LinkedHashMap<>();
 
     public Task persist(String userId, String projectId, String taskName, String description, String dateStart, String dateFinish) {
-        Task task = new Task(userId, projectId, taskName, description, dateStart, dateFinish);
+        final Task task = new Task(userId, projectId, taskName, description, dateStart, dateFinish);
         if (!tasks.containsValue(task)) {
             tasks.put(task.getId(), task);
             return task;
@@ -26,7 +26,6 @@ public class TaskRepository implements ITaskRepository {
     }
 
     public void merge(String projectId, String oldTaskName, String taskName, String description, String dateStart, String dateFinish) {
-
         tasks.forEach((k, v) -> {
             if(v.getProjectId().equals(projectId) && v.getName().equals(oldTaskName)) {
                 v.setName(taskName);
@@ -47,7 +46,7 @@ public class TaskRepository implements ITaskRepository {
     }
 
     public List<Task> findAll(String projectId) {
-        List<Task> list = new ArrayList<>();
+        final List<Task> list = new ArrayList<>();
         tasks.forEach((k, v) -> {
             if(v.getProjectId().equals(projectId)) {
                 list.add(v);
@@ -59,7 +58,7 @@ public class TaskRepository implements ITaskRepository {
     }
 
     public Task findOne(String  projectId, String taskName) {
-        List<Task> list = new ArrayList<>();
+        final List<Task> list = new ArrayList<>();
         tasks.forEach((k, v) -> {
             if(v.getProjectId().equals(projectId) && v.getName().equals(taskName)) {
                 list.add(v);

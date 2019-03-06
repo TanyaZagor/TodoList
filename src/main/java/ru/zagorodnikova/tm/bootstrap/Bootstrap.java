@@ -1,9 +1,15 @@
 package ru.zagorodnikova.tm.bootstrap;
 
+import ru.zagorodnikova.tm.api.ServiceLocator;
+import ru.zagorodnikova.tm.api.repository.IProjectRepository;
+import ru.zagorodnikova.tm.api.repository.ITaskRepository;
+import ru.zagorodnikova.tm.api.repository.IUserRepository;
+import ru.zagorodnikova.tm.api.service.IProjectService;
+import ru.zagorodnikova.tm.api.service.ITaskService;
+import ru.zagorodnikova.tm.api.service.IUserService;
 import ru.zagorodnikova.tm.command.user.*;
 import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.entity.RoleType;
-import ru.zagorodnikova.tm.entity.Task;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.command.project.*;
 import ru.zagorodnikova.tm.command.system.HelpCommand;
@@ -18,20 +24,20 @@ import ru.zagorodnikova.tm.service.UserService;
 
 import java.util.*;
 
-public class Bootstrap {
+public class Bootstrap implements ServiceLocator {
 
     private final Scanner scanner = new Scanner(System.in);
     private final Map<String, AbstractCommand> commands = new HashMap<>();
-    private final ProjectRepository projectRepository = new ProjectRepository();
-    private final TaskRepository taskRepository = new TaskRepository();
-    private final UserRepository userRepository = new UserRepository();
-    private final ProjectService projectService = new ProjectService(projectRepository);
-    private final TaskService taskService = new TaskService(taskRepository, projectRepository);
-    private final UserService userService = new UserService(userRepository);
+    private final IProjectRepository projectRepository = new ProjectRepository();
+    private final ITaskRepository taskRepository = new TaskRepository();
+    private final IUserRepository userRepository = new UserRepository();
+    private final IProjectService projectService = new ProjectService(projectRepository);
+    private final ITaskService taskService = new TaskService(taskRepository, projectRepository);
+    private final IUserService userService = new UserService(userRepository);
     private User currentUser;
 
 
-    public static void init(Bootstrap bootstrap) {
+    public void init(Bootstrap bootstrap) {
 
         bootstrap.initCommands(bootstrap);
         bootstrap.initProjectsAndUsers();
@@ -40,7 +46,6 @@ public class Bootstrap {
     }
 
     private void start() {
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome");
         String command = "";
         while (!"exit".equals(command)) {
@@ -52,10 +57,13 @@ public class Bootstrap {
 
     private void execute(String command) {
         if (command == null || command.isEmpty()) return;
-        AbstractCommand abstractCommand = commands.get(command);
+        final AbstractCommand abstractCommand = commands.get(command);
         if (abstractCommand == null) return;
-        if (abstractCommand.isSecure() && isAuth()) {
-            abstractCommand.execute();
+        if (abstractCommand.isSecure()) {
+            if (isAuth()) {
+                abstractCommand.execute();
+            }
+
         } else {
             abstractCommand.execute();
         }
@@ -118,11 +126,11 @@ public class Bootstrap {
         return scanner;
     }
 
-    public ProjectService getProjectService() {
+    public IProjectService getProjectService() {
         return projectService;
     }
 
-    public TaskService getTaskService() {
+    public ITaskService getTaskService() {
         return taskService;
     }
 
@@ -130,7 +138,7 @@ public class Bootstrap {
         return commands;
     }
 
-    public UserService getUserService() {
+    public IUserService getUserService() {
         return userService;
     }
 

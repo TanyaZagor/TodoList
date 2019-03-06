@@ -1,14 +1,14 @@
 package ru.zagorodnikova.tm.command.task;
-import ru.zagorodnikova.tm.bootstrap.Bootstrap;
+import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import java.util.Scanner;
 
 public class TaskCreateCommand extends AbstractCommand {
 
-    private final Scanner in = getBootstrap().getScanner();
+    private final Scanner in = getServiceLocator().getScanner();
 
-    public TaskCreateCommand(Bootstrap bootstrap) {
-        super(bootstrap);
+    public TaskCreateCommand(ServiceLocator serviceLocator) {
+        super(serviceLocator);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class TaskCreateCommand extends AbstractCommand {
         String dateStart = in.nextLine();
         System.out.println("task data finish");
         String dateFinish = in.nextLine();
-        getBootstrap().getTaskService().persist(getBootstrap().getCurrentUser().getId(), projectName, taskName, description, dateStart, dateFinish);
+        getServiceLocator().getTaskService().persist(getServiceLocator().getCurrentUser().getId(), projectName, taskName, description, dateStart, dateFinish);
 
     }
 

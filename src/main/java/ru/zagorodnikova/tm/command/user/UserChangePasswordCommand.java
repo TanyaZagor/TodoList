@@ -1,5 +1,6 @@
 package ru.zagorodnikova.tm.command.user;
 
+import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.bootstrap.Bootstrap;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 
@@ -7,10 +8,10 @@ import java.util.Scanner;
 
 public class UserChangePasswordCommand extends AbstractCommand {
 
-    private final Scanner in = getBootstrap().getScanner();
+    private final Scanner in = getServiceLocator().getScanner();
 
-    public UserChangePasswordCommand(Bootstrap bootstrap) {
-        super(bootstrap);
+    public UserChangePasswordCommand(ServiceLocator serviceLocator) {
+        super(serviceLocator);
     }
 
     @Override
@@ -31,7 +32,7 @@ public class UserChangePasswordCommand extends AbstractCommand {
         String password = in.nextLine();
         System.out.println("New password");
         String newPassword = in.nextLine();
-        getBootstrap().getUserService().changePassword(getBootstrap().getCurrentUser().getId(), login, password, newPassword);
+        getServiceLocator().getUserService().changePassword(getServiceLocator().getCurrentUser().getId(), login, password, newPassword);
     }
 
     @Override
