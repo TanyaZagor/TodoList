@@ -3,15 +3,17 @@ package ru.zagorodnikova.tm.api.repository;
 
 import ru.zagorodnikova.tm.entity.Task;
 
-import java.util.Map;
+import java.util.List;
+
 
 public interface ITaskRepository {
 
-    void persist(String projectName, String taskName, String description, String dateStart, String dateFinish);
-    void remove(String projectName, String taskId);
-    void removeAll(String  projectName);
-    void merge(String  projectName, String oldTaskName, String taskName, String description, String dateStart, String dateFinish);
-    Map<String, Task> findAll(String  projectName);
-    Task findOne(String projectName, String taskName);
+    Task persist(String userId, String projectId, String taskName, String description, String dateStart, String dateFinish);
+    void remove(String projectId, String taskId);
+    void removeAllInProject(String  projectId);
+    void removeAll(String userId);
+    void merge(String  projectId, String oldTaskName, String taskName, String description, String dateStart, String dateFinish);
+    List<Task> findAll(String  projectId);
+    Task findOne(String projectId, String taskName);
 
 }

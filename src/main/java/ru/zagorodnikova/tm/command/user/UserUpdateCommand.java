@@ -31,7 +31,7 @@ public class UserUpdateCommand extends AbstractCommand {
         String lastName = in.nextLine();
         System.out.println("New email");
         String email = in.nextLine();
-        getBootstrap().getUserService().update(firstName, lastName, email);
+        getBootstrap().getUserService().update(getBootstrap().getCurrentUser().getId(), firstName, lastName, email);
     }
 
     @Override

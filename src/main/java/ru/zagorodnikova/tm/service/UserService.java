@@ -1,8 +1,11 @@
 package ru.zagorodnikova.tm.service;
 
+import ru.zagorodnikova.tm.api.service.IUserService;
+import ru.zagorodnikova.tm.entity.RoleType;
+import ru.zagorodnikova.tm.entity.User;
 import ru.zagorodnikova.tm.repository.UserRepository;
 
-public class UserService {
+public class UserService implements IUserService {
 
     private final UserRepository userRepository;
 
@@ -10,37 +13,33 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void signIn(String login, String password) {
-        if (login == null || login.isEmpty()) return;
-        if (password == null || password.isEmpty()) return;
-        userRepository.signIn(login, password);
+    public User signIn(String login, String password) {
+        if (login == null || login.isEmpty()) return null;
+        if (password == null || password.isEmpty()) return null;
+        return userRepository.signIn(login, password);
     }
 
-    public void signOut() {
-        userRepository.signOut();
+    public User signUp(String login, String password, String fistName, String lastName, String email, RoleType roleType) {
+        if (login == null || login.isEmpty()) return null;
+        if (password == null || password.isEmpty()) return null;
+        if (fistName == null || fistName.isEmpty()) return null;
+        if (lastName == null || lastName.isEmpty()) return null;
+        if (email == null || email.isEmpty()) return null;
+
+        return userRepository.signUp(login, password, fistName, lastName, email, roleType);
     }
 
-    public void signUp(String login, String password, String fistName, String lastName, String email) {
-        if (login == null || login.isEmpty()) return;
-        if (password == null || password.isEmpty()) return;
-        if (fistName == null || fistName.isEmpty()) return;
-        if (lastName == null || lastName.isEmpty()) return;
-        if (email == null || email.isEmpty()) return;
-
-        userRepository.signUp(login, password, fistName, lastName, email);
-    }
-
-    public void changePassword(String login, String oldPassword, String newPassword) {
+    public void changePassword(String userId, String login, String oldPassword, String newPassword) {
         if (login == null || login.isEmpty()) return;
         if (oldPassword == null || oldPassword.isEmpty()) return;
         if (newPassword == null || newPassword.isEmpty()) return;
-        userRepository.changePassword(login, oldPassword, newPassword);
+        userRepository.changePassword(userId,login, oldPassword, newPassword);
     }
 
-    public void update(String firstName, String lastName, String email) {
+    public void update(String userId, String firstName, String lastName, String email) {
         if (firstName == null || firstName.isEmpty()) return;
         if (lastName == null || lastName.isEmpty()) return;
         if (email == null || email.isEmpty()) return;
-        userRepository.update(firstName, lastName, email);
+        userRepository.update(userId, firstName, lastName, email);
     }
 }

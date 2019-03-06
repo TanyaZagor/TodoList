@@ -36,7 +36,7 @@ public class TaskUpdateCommand extends AbstractCommand {
         String dateStart = in.nextLine();
         System.out.println("New date finish");
         String dateFinish = in.nextLine();
-        getBootstrap().getTaskService().updateTask(projectName, oldTaskName, taskName, description, dateStart, dateFinish);
+        getBootstrap().getTaskService().merge(getBootstrap().getCurrentUser().getId(), projectName, oldTaskName, taskName, description, dateStart, dateFinish);
 
     }
 

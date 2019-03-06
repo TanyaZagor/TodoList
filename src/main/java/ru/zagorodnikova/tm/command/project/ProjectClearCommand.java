@@ -22,7 +22,8 @@ public class ProjectClearCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        getBootstrap().getProjectService().deleteAll();
+        getBootstrap().getTaskService().removeAll(getBootstrap().getCurrentUser().getId());
+        getBootstrap().getProjectService().removeAll(getBootstrap().getCurrentUser().getId());
     }
 
     @Override

@@ -30,7 +30,7 @@ public class TaskFindOneCommand extends AbstractCommand {
         String projectName = in.nextLine();
         System.out.println("task name");
         String taskName = in.nextLine();
-        Task task = getBootstrap().getTaskService().findOne(projectName, taskName);
+        Task task = getBootstrap().getTaskService().findOne(getBootstrap().getCurrentUser().getId(), projectName, taskName);
         if (task != null) {
             System.out.println(task);
         }

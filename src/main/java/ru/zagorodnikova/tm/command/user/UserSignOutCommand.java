@@ -20,7 +20,7 @@ public class UserSignOutCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        getBootstrap().getUserService().signOut();
+        getBootstrap().setCurrentUser(null);
     }
 
     @Override

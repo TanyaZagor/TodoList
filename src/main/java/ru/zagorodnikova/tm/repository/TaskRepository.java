@@ -1,123 +1,74 @@
 package ru.zagorodnikova.tm.repository;
 
-import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.entity.Task;
 import ru.zagorodnikova.tm.api.repository.ITaskRepository;
-import ru.zagorodnikova.tm.bootstrap.Bootstrap;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TaskRepository implements ITaskRepository {
 
-    private final Bootstrap bootstrap = Bootstrap.getBootstrap();
-    private final Map<String, Project> projects = bootstrap.getProjects();
-    private final Map<String, Task> tasks = bootstrap.getTasks();
+    private final Map<String, Task> tasks = new LinkedHashMap<>();
 
-    public void persist(String projectName, String taskName, String description, String dateStart, String dateFinish) {
-        Map<String, Project> map = new LinkedHashMap<>();
-        projects.forEach((k, v) -> {
-            if (v.getName().equals(projectName) && v.getUserId().equals(bootstrap.getCurrentUser().getId())) {
-                map.put(v.getName(), v);
-            }
-        });
-        if (map.size() != 0) {
-            Project project= map.get(projectName);
-            Task task = new Task(bootstrap.getCurrentUser().getId(), project.getId(), taskName, description, dateStart, dateFinish);
-            if (!tasks.containsValue(task)) {
-                tasks.put(task.getId(), task);
-            }
+    public Task persist(String userId, String projectId, String taskName, String description, String dateStart, String dateFinish) {
+        Task task = new Task(userId, projectId, taskName, description, dateStart, dateFinish);
+        if (!tasks.containsValue(task)) {
+            tasks.put(task.getId(), task);
+            return task;
         }
+        return null;
     }
 
-    public void remove(String  projectName, String taskName) {
-        Map<String, Project> map = new LinkedHashMap<>();
-        projects.forEach((k, v) -> {
-            if (v.getName().equals(projectName) && v.getUserId().equals(bootstrap.getCurrentUser().getId())) {
-                map.put(v.getName(), v);
-            }
-        });
-        if (map.size() != 0) {
-            Project project= map.get(projectName);
-            tasks.entrySet().removeIf((v) -> (v.getValue().getProjectId().equals(project.getId()) && v.getValue().getName().equals(taskName)));
-        }
+    public void remove(String  projectId, String taskName) {
+        tasks.entrySet().removeIf((v) -> (v.getValue().getProjectId().equals(projectId) && v.getValue().getName().equals(taskName)));
     }
 
-    public void merge(String projectName, String oldTaskName, String taskName, String description, String dateStart, String dateFinish) {
-        Map<String, Project> map = new LinkedHashMap<>();
-        projects.forEach((k, v) -> {
-            if (v.getName().equals(projectName) && v.getUserId().equals(bootstrap.getCurrentUser().getId())) {
-                map.put(v.getName(), v);
+    public void merge(String projectId, String oldTaskName, String taskName, String description, String dateStart, String dateFinish) {
+
+        tasks.forEach((k, v) -> {
+            if(v.getProjectId().equals(projectId) && v.getName().equals(oldTaskName)) {
+                v.setName(taskName);
+                v.setDescription(description);
+                v.setDateStart(dateStart);
+                v.setDateFinish(dateFinish);
             }
         });
-        if (map.size() != 0) {
-            Project project= map.get(projectName);
-            final Task task = new Task(bootstrap.getCurrentUser().getId(), project.getId(), taskName, description, dateStart, dateFinish);
-            tasks.forEach((k, v) -> {
-                if(v.getProjectId().equals(project.getId()) && v.getName().equals(oldTaskName)) {
-                    task.setId(k);
-                    tasks.put(k, task);
-                }
-            });
-        }
+    }
+
+
+    public void removeAll(String userId) {
+        tasks.entrySet().removeIf((v) -> v.getValue().getUserId().equals(userId));
+    }
+
+    public void removeAllInProject(String projectId) {
+        tasks.entrySet().removeIf((v) -> v.getValue().getProjectId().equals(projectId));
+    }
+
+    public List<Task> findAll(String projectId) {
+        List<Task> list = new ArrayList<>();
+        tasks.forEach((k, v) -> {
+            if(v.getProjectId().equals(projectId)) {
+                list.add(v);
+            }
+        });
+
+        return list;
 
     }
 
-    public void removeAll(String projectName) {
-        Map<String, Project> map = new LinkedHashMap<>();
-        projects.forEach((k, v) -> {
-            if (v.getName().equals(projectName) && v.getUserId().equals(bootstrap.getCurrentUser().getId())) {
-                map.put(v.getName(), v);
+    public Task findOne(String  projectId, String taskName) {
+        List<Task> list = new ArrayList<>();
+        tasks.forEach((k, v) -> {
+            if(v.getProjectId().equals(projectId) && v.getName().equals(taskName)) {
+                list.add(v);
             }
         });
-        if (map.size() != 0) {
-            Project project= map.get(projectName);
-            tasks.entrySet().removeIf((v) -> v.getValue().getProjectId().equals(project.getId()));
+        if (list.size() > 0) {
+            return list.get(0);
         }
-    }
-
-    public Map<String, Task> findAll(String projectName) {
-        Map<String, Project> map = new LinkedHashMap<>();
-        projects.forEach((k, v) -> {
-            if (v.getName().equals(projectName) && v.getUserId().equals(bootstrap.getCurrentUser().getId())) {
-                map.put(v.getName(), v);
-            }
-        });
-        Map<String, Task> mapTaskByProjectId = new LinkedHashMap<>();
-        if (map.size() != 0) {
-            Project project= map.get(projectName);
-            tasks.forEach((k, v) -> {
-                if(v.getProjectId().equals(project.getId()) && v.getUserId().equals(bootstrap.getCurrentUser().getId())) {
-                    mapTaskByProjectId.put(k, v);
-                }
-            });
-        }
-        return mapTaskByProjectId;
-
-    }
-
-    public Task findOne(String  projectName, String taskName) {
-        Map<String, Project> map = new LinkedHashMap<>();
-        projects.forEach((k, v) -> {
-            if (v.getName().equals(projectName) && v.getUserId().equals(bootstrap.getCurrentUser().getId())) {
-                map.put(v.getName(), v);
-            }
-        });
-        Task task = null;
-        if (map.size() != 0) {
-            Project project= map.get(projectName);
-            Map<String, Task> mapTasks = new LinkedHashMap<>();
-            tasks.forEach((k, v) -> {
-                if (v.getProjectId().equals(project.getId()) && v.getName().equals(taskName)) {
-                    mapTasks.put(v.getProjectId(), v);
-                }
-            });
-
-            if (mapTasks.size() != 0) {
-                task = mapTasks.get(project.getId());
-            }
-        }
-        return task;
+        return null;
     }
 
 }

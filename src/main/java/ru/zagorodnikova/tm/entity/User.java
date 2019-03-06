@@ -1,7 +1,6 @@
 package ru.zagorodnikova.tm.entity;
 
-import ru.zagorodnikova.tm.utils.Utils;
-
+import ru.zagorodnikova.tm.util.HashPassword;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -18,13 +17,13 @@ public class User {
     public User() {
     }
 
-    public User(String login, String password, String firstName, String lastName, String email) {
+    public User(String login, String password, String firstName, String lastName, String email, RoleType roleType) {
         this.login = login;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.password = Utils.hashPassword(password);
-        this.roleType = RoleType.USER;
+        this.password = HashPassword.hashPassword(password);
+        this.roleType = roleType;
     }
 
     public String getLogin() {
@@ -40,7 +39,7 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.password = Utils.hashPassword(password);
+        this.password = HashPassword.hashPassword(password);
     }
 
     public RoleType getRoleType() {

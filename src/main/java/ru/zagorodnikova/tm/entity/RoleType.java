@@ -1,17 +1,18 @@
 package ru.zagorodnikova.tm.entity;
 
 public enum RoleType {
-    ADMIN,
-    USER;
+    ADMIN("admin"),
+    USER("user");
 
-    public String displayName() {
-        switch (this) {
-            case ADMIN:
-                return "admin";
-            case USER:
-                return "user";
-        }
-        return null;
+    private final String displayName;
+
+    RoleType(final String display) {
+        this.displayName = display;
     }
 
+
+    @Override
+    public String toString() {
+        return this.displayName;
+    }
 }

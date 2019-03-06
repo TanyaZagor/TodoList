@@ -33,7 +33,7 @@ public class TaskCreateCommand extends AbstractCommand {
         String dateStart = in.nextLine();
         System.out.println("task data finish");
         String dateFinish = in.nextLine();
-        getBootstrap().getTaskService().addTask(projectName, taskName, description, dateStart, dateFinish);
+        getBootstrap().getTaskService().persist(getBootstrap().getCurrentUser().getId(), projectName, taskName, description, dateStart, dateFinish);
 
     }
 

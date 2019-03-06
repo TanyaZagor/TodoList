@@ -22,18 +22,15 @@ public class Bootstrap {
 
     private static Bootstrap bootstrap;
 
-    private static final Scanner scanner = new Scanner(System.in);
-    private static final Map<String, AbstractCommand> commands = new HashMap<>();
-    private static final Map<String, Project> projects = new LinkedHashMap<>();
-    private static final Map<String, Task> tasks = new LinkedHashMap<>();
-    private static final Map<String, User> users = new LinkedHashMap<>();
-    private static final ProjectRepository projectRepository = new ProjectRepository();
-    private static final TaskRepository taskRepository = new TaskRepository();
-    private static final UserRepository userRepository = new UserRepository();
-    private static final ProjectService projectService = new ProjectService(projectRepository);
-    private static final TaskService taskService = new TaskService(taskRepository);
-    private static final UserService userService = new UserService(userRepository);
-    private static User currentUser;
+    private final Scanner scanner = new Scanner(System.in);
+    private final Map<String, AbstractCommand> commands = new HashMap<>();
+    private final ProjectRepository projectRepository = new ProjectRepository();
+    private final TaskRepository taskRepository = new TaskRepository();
+    private final UserRepository userRepository = new UserRepository();
+    private final ProjectService projectService = new ProjectService(projectRepository);
+    private final TaskService taskService = new TaskService(taskRepository, projectRepository);
+    private final UserService userService = new UserService(userRepository);
+    private User currentUser;
 
     private Bootstrap() {
     }
@@ -69,10 +66,8 @@ public class Bootstrap {
         if (command == null || command.isEmpty()) return;
         AbstractCommand abstractCommand = commands.get(command);
         if (abstractCommand == null) return;
-        if (abstractCommand.isSecure()) {
-            if (currentUser != null) {
-                abstractCommand.execute();
-            }
+        if (abstractCommand.isSecure() && isAuth()) {
+            abstractCommand.execute();
         } else {
             abstractCommand.execute();
         }
@@ -80,80 +75,55 @@ public class Bootstrap {
     }
 
     private void initProjectsAndUsers() {
-        User user1 = new User("login", "password", "first name", "last name", "email@email.ru");
-        User user2 = new User("login2", "password2", "first name", "last name", "email@email.ru");
-        user2.setRoleType(RoleType.ADMIN);
+        User user1 = userService.signUp("login", "password", "first name", "last name", "email@email.ru", RoleType.USER);
+        User user2 = userService.signUp("login2", "password2", "first name", "last name", "email@email.ru", RoleType.ADMIN);
 
-        users.put(user1.getId(), user1);
-        users.put(user2.getId(), user2);
+        Project project1 = projectService.persist(user1.getId(), "Project1", "Description1", "20.02.2019", "20.05.2019");
+        Project project2 = projectService.persist(user2.getId(), "Project2", "Description2", "20.05.2019", "20.06.2019");
+        Project project3 = projectService.persist(user2.getId(), "Project1", "Description1", "20.02.2016", "20.05.2016");
 
-        Project project1 = new Project(user1.getId(), "Project1", "Description1", "20.02.2019", "20.05.2019");
-        Project project2 = new Project(user2.getId(), "Project2", "Description2", "20.05.2019", "20.06.2019");
-        Project project3 = new Project(user2.getId(), "Project1", "Description1", "20.02.2019", "20.05.2019");
-        Task task1 = new Task(project1.getUserId(), project1.getId(), "task1", "des1", "20.02.2013", "20.02.2014");
-        Task task2 = new Task(project1.getUserId(), project1.getId(), "task2", "des2", "20.02.2013", "20.02.2014");
-        Task task3 = new Task(project2.getUserId(), project2.getId(), "task3", "des3", "20.02.2013", "20.02.2014");
-        Task task10 = new Task(project3.getUserId(), project3.getId(), "task1", "des1", "20.02.2013", "20.02.2014");
-        Task task20 = new Task(project3.getUserId(), project3.getId(), "task2", "des2", "20.02.2013", "20.02.2014");
-        Task task30 = new Task(project2.getUserId(), project2.getId(), "task3", "des3", "20.02.2013", "20.02.2014");
-        tasks.put(task1.getId(), task1);
-        tasks.put(task2.getId(), task2);
-        tasks.put(task3.getId(), task3);
-        tasks.put(task10.getId(), task10);
-        tasks.put(task20.getId(), task20);
-        tasks.put(task30.getId(), task30);
-        projects.put(project1.getId(), project1);
-        projects.put(project2.getId(), project2);
-        projects.put(project3.getId(), project3);
+        taskService.persist(project1.getUserId(), project1.getName(), "task1", "des1", "20.02.2013", "20.02.2014");
+        taskService.persist(project1.getUserId(), project1.getName(), "task2", "des2", "20.02.2013", "20.02.2014");
+        taskService.persist(project2.getUserId(), project2.getName(), "task3", "des3", "20.02.2013", "20.02.2014");
+        taskService.persist(project2.getUserId(), project2.getName(), "task3", "des3", "20.02.2013", "20.02.2014");
+        taskService.persist(project3.getUserId(), project3.getName(), "task1", "des1", "20.02.2013", "20.02.2014");
+        taskService.persist(project3.getUserId(), project3.getName(), "task2", "des2", "20.02.2013", "20.02.2014");
+
     }
 
     private void initCommands(Bootstrap bootstrap) {
 
-        ProjectClearCommand projectClearCommand = new ProjectClearCommand(bootstrap);
-        ProjectRemoveCommand projectRemoveCommand = new ProjectRemoveCommand(bootstrap);
-        ProjectCreateCommand projectCreateCommand = new ProjectCreateCommand(bootstrap);
-        ProjectListCommand projectListCommand = new ProjectListCommand(bootstrap);
-        ProjectUpdateCommand projectUpdateCommand = new ProjectUpdateCommand(bootstrap);
-        ProjectFindOneCommand projectFindOneCommand = new ProjectFindOneCommand(bootstrap);
+        addCommand(new ProjectCreateCommand(bootstrap));
+        addCommand(new ProjectClearCommand(bootstrap));
+        addCommand(new ProjectFindOneCommand(bootstrap));
+        addCommand(new ProjectListCommand(bootstrap));
+        addCommand(new ProjectRemoveCommand(bootstrap));
+        addCommand(new ProjectUpdateCommand(bootstrap));
 
-        TaskClearCommand taskClearCommand = new TaskClearCommand(bootstrap);
-        TaskCreateCommand taskCreateCommand = new TaskCreateCommand(bootstrap);
-        TaskListCommand taskListCommand = new TaskListCommand(bootstrap);
-        TaskRemoveCommand taskRemoveCommand = new TaskRemoveCommand(bootstrap);
-        TaskUpdateCommand taskUpdateCommand = new TaskUpdateCommand(bootstrap);
-        TaskFindOneCommand taskFindOneCommand = new TaskFindOneCommand(bootstrap);
+        addCommand(new TaskCreateCommand(bootstrap));
+        addCommand(new TaskClearCommand(bootstrap));
+        addCommand(new TaskFindOneCommand(bootstrap));
+        addCommand(new TaskListCommand(bootstrap));
+        addCommand(new TaskRemoveCommand(bootstrap));
+        addCommand(new TaskUpdateCommand(bootstrap));
 
-        UserChangePasswordCommand userChangePassword = new UserChangePasswordCommand(bootstrap);
-        UserSignInCommand userSignInCommand = new UserSignInCommand(bootstrap);
-        UserSignUpCommand userSignUpCommand = new UserSignUpCommand(bootstrap);
-        UserSignOutCommand userSignOutCommand = new UserSignOutCommand(bootstrap);
-        UserShowCommand userShowCommand = new UserShowCommand(bootstrap);
-        UserUpdateCommand userUpdateCommand = new UserUpdateCommand(bootstrap);
+        addCommand(new UserSignUpCommand(bootstrap));
+        addCommand(new UserSignInCommand(bootstrap));
+        addCommand(new UserSignOutCommand(bootstrap));
+        addCommand(new UserChangePasswordCommand(bootstrap));
+        addCommand(new UserShowCommand(bootstrap));
+        addCommand(new UserUpdateCommand(bootstrap));
 
-        HelpCommand helpCommand = new HelpCommand(bootstrap);
+        addCommand(new HelpCommand(bootstrap));
 
-        commands.put(projectClearCommand.command(), projectClearCommand);
-        commands.put(projectRemoveCommand.command(), projectRemoveCommand);
-        commands.put(projectCreateCommand.command(), projectCreateCommand);
-        commands.put(projectListCommand.command(), projectListCommand);
-        commands.put(projectUpdateCommand.command(), projectUpdateCommand);
-        commands.put(projectFindOneCommand.command(), projectFindOneCommand);
+    }
 
-        commands.put(taskClearCommand.command(), taskClearCommand);
-        commands.put(taskCreateCommand.command(), taskCreateCommand);
-        commands.put(taskListCommand.command(), taskListCommand);
-        commands.put(taskRemoveCommand.command(), taskRemoveCommand);
-        commands.put(taskUpdateCommand.command(), taskUpdateCommand);
-        commands.put(taskFindOneCommand.command(), taskFindOneCommand);
+    private void addCommand(AbstractCommand command) {
+        commands.put(command.command(), command);
+    }
 
-        commands.put(userChangePassword.command(), userChangePassword);
-        commands.put(userSignInCommand.command(), userSignInCommand);
-        commands.put(userSignOutCommand.command(), userSignOutCommand);
-        commands.put(userSignUpCommand.command(), userSignUpCommand);
-        commands.put(userShowCommand.command(), userShowCommand);
-        commands.put(userUpdateCommand.command(), userUpdateCommand);
-
-        commands.put(helpCommand.command(), helpCommand);
+    private boolean isAuth() {
+        return currentUser != null;
     }
 
     public Scanner getScanner() {
@@ -172,18 +142,6 @@ public class Bootstrap {
         return commands;
     }
 
-    public Map<String, Project> getProjects() {
-        return projects;
-    }
-
-    public Map<String, Task> getTasks() {
-        return tasks;
-    }
-
-    public Map<String, User> getUsers() {
-        return users;
-    }
-
     public UserService getUserService() {
         return userService;
     }
@@ -192,7 +150,7 @@ public class Bootstrap {
         return currentUser;
     }
 
-    public static void setCurrentUser(User currentUser) {
-        Bootstrap.currentUser = currentUser;
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
     }
 }

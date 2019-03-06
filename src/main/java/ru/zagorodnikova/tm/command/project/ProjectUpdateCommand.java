@@ -34,7 +34,7 @@ public class ProjectUpdateCommand extends AbstractCommand {
         String dateStart = in.nextLine();
         System.out.println("New date finish");
         String dateFinish = in.nextLine();
-        getBootstrap().getProjectService().updateProject(oldProjectName, projectName, description, dateStart, dateFinish);
+        getBootstrap().getProjectService().merge(getBootstrap().getCurrentUser().getId(), oldProjectName, projectName, description, dateStart, dateFinish);
 
     }
 

@@ -4,7 +4,7 @@ import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.bootstrap.Bootstrap;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 
-import java.util.Map;
+import java.util.List;
 
 public class ProjectListCommand extends AbstractCommand {
 
@@ -25,9 +25,10 @@ public class ProjectListCommand extends AbstractCommand {
     @Override
     public void execute() {
 
-        Map<String, Project> projects = getBootstrap().getProjectService().print();
+        List<Project> projects = getBootstrap().getProjectService().findAll(getBootstrap().getCurrentUser().getId());
+
         if (!(projects == null || projects.isEmpty())) {
-            projects.forEach((k, v) -> System.out.println(v));
+            projects.forEach(System.out::println);
         }
     }
 

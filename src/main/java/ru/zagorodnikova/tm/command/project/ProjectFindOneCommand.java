@@ -28,7 +28,7 @@ public class ProjectFindOneCommand extends AbstractCommand {
     public void execute() {
         System.out.println("project name");
         String projectName = in.nextLine();
-        Project project = getBootstrap().getProjectService().findOne(projectName);
+        Project project = getBootstrap().getProjectService().findOne(getBootstrap().getCurrentUser().getId(), projectName);
         if (project != null) {
             System.out.println(project);
         }

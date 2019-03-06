@@ -28,7 +28,8 @@ public class ProjectRemoveCommand extends AbstractCommand {
     public void execute() {
         System.out.println("project name");
         String projectName = in.nextLine();
-        getBootstrap().getProjectService().deleteProject(projectName);
+        getBootstrap().getTaskService().removeAllInProject(getBootstrap().getCurrentUser().getId(), projectName);
+        getBootstrap().getProjectService().remove(getBootstrap().getCurrentUser().getId(), projectName);
     }
 
     @Override

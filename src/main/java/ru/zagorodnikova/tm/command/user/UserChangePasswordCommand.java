@@ -31,7 +31,7 @@ public class UserChangePasswordCommand extends AbstractCommand {
         String password = in.nextLine();
         System.out.println("New password");
         String newPassword = in.nextLine();
-        getBootstrap().getUserService().changePassword(login, password, newPassword);
+        getBootstrap().getUserService().changePassword(getBootstrap().getCurrentUser().getId(), login, password, newPassword);
     }
 
     @Override

@@ -2,6 +2,7 @@ package ru.zagorodnikova.tm.command.project;
 
 import ru.zagorodnikova.tm.bootstrap.Bootstrap;
 import ru.zagorodnikova.tm.command.AbstractCommand;
+import ru.zagorodnikova.tm.entity.Project;
 
 import java.util.Scanner;
 
@@ -33,7 +34,8 @@ public class ProjectCreateCommand extends AbstractCommand {
         String dateStart = in.nextLine();
         System.out.println("project date finish");
         String dateFinish = in.nextLine();
-        getBootstrap().getProjectService().addProject(projectName, description, dateStart, dateFinish);
+        Project project = getBootstrap().getProjectService().persist(getBootstrap().getCurrentUser().getId(), projectName, description, dateStart, dateFinish);
+        System.out.println(project);
     }
 
     @Override

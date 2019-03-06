@@ -1,6 +1,6 @@
-package ru.zagorodnikova.tm.utils;
+package ru.zagorodnikova.tm.util;
 
-public class Utils {
+public class HashPassword {
 
     public static String hashPassword(String password) {
         try {
