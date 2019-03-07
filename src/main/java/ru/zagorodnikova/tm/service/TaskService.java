@@ -21,7 +21,7 @@ public class TaskService implements ITaskService {
 
     }
 
-    public Task persist(String userId, String projectName, String taskName, String description, String dateStart, String dateFinish) {
+    public AbstractEntity persist(String userId, String projectName, String taskName, String description, String dateStart, String dateFinish) {
         if (projectName == null || projectName.isEmpty()) return null;
         Project newProject = new Project();
         newProject.setName(projectName);
@@ -33,7 +33,7 @@ public class TaskService implements ITaskService {
             if (dateStart == null || dateStart.isEmpty()) return null;
             if (dateFinish == null || dateFinish.isEmpty()) return null;
             Task task = new Task(userId, project.getId(), taskName, description, dateStart, dateFinish);
-            return (Task) taskRepository.persist(task);
+            return taskRepository.persist(task);
         }
         return null;
     }
@@ -84,7 +84,7 @@ public class TaskService implements ITaskService {
             if (description == null || description.isEmpty()) return;
             if (dateStart == null || dateStart.isEmpty()) return;
             if (dateFinish == null || dateFinish.isEmpty()) return;
-            Task task = findOne(userId, projectName, oldTaskName);
+            Task task = (Task) findOne(userId, projectName, oldTaskName);
             task.setName(taskName);
             task.setDescription(description);
             task.setDateStart(dateStart);
@@ -108,7 +108,7 @@ public class TaskService implements ITaskService {
         return null;
     }
 
-    public Task findOne(String userId, String projectName, String taskName) {
+    public AbstractEntity findOne(String userId, String projectName, String taskName) {
         if (projectName == null || projectName.isEmpty()) return null;
         Project newProject = new Project();
         newProject.setName(projectName);
@@ -119,7 +119,7 @@ public class TaskService implements ITaskService {
             Task task = new Task();
             task.setProjectId(project.getId());
             task.setName(taskName);
-            return  (Task) taskRepository.findOne(task);
+            return taskRepository.findOne(task);
         }
         return null;
     }

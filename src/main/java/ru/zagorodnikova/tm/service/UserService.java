@@ -2,6 +2,7 @@ package ru.zagorodnikova.tm.service;
 
 import ru.zagorodnikova.tm.api.repository.IUserRepository;
 import ru.zagorodnikova.tm.api.service.IUserService;
+import ru.zagorodnikova.tm.entity.AbstractEntity;
 import ru.zagorodnikova.tm.entity.RoleType;
 import ru.zagorodnikova.tm.entity.User;
 
@@ -13,7 +14,7 @@ public class UserService implements IUserService {
         this.userRepository = userRepository;
     }
 
-    public User signIn(String login, String password) {
+    public AbstractEntity signIn(String login, String password) {
         if (login == null || login.isEmpty()) return null;
         if (password == null || password.isEmpty()) return null;
         User user = new User();
@@ -22,14 +23,14 @@ public class UserService implements IUserService {
         return userRepository.signIn(user);
     }
 
-    public User signUp(String login, String password, String fistName, String lastName, String email, RoleType roleType) {
+    public AbstractEntity signUp(String login, String password, String fistName, String lastName, String email, RoleType roleType) {
         if (login == null || login.isEmpty()) return null;
         if (password == null || password.isEmpty()) return null;
         if (fistName == null || fistName.isEmpty()) return null;
         if (lastName == null || lastName.isEmpty()) return null;
         if (email == null || email.isEmpty()) return null;
         User user = new User(login, password, fistName, lastName, email, roleType);
-        return (User) userRepository.persist(user);
+        return userRepository.persist(user);
     }
 
     public void changePassword(String userId, String login, String oldPassword, String newPassword) {

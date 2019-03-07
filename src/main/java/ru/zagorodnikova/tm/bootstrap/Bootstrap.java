@@ -73,12 +73,12 @@ public class Bootstrap implements ServiceLocator {
     }
 
     private void initProjectsAndUsers() {
-        User user1 = userService.signUp("login", "password", "first name", "last name", "email@email.ru", RoleType.USER);
-        User user2 = userService.signUp("login2", "password2", "first name", "last name", "email@email.ru", RoleType.ADMIN);
+        User user1 = (User) userService.signUp("login", "password", "first name", "last name", "email@email.ru", RoleType.USER);
+        User user2 = (User) userService.signUp("login2", "password2", "first name", "last name", "email@email.ru", RoleType.ADMIN);
 
-        Project project1 = projectService.persist(user1.getId(), "Project1", "Description1", "20.02.2019", "20.05.2019");
-        Project project2 = projectService.persist(user2.getId(), "Project2", "Description2", "20.05.2019", "20.06.2019");
-        Project project3 = projectService.persist(user2.getId(), "Project1", "Description1", "20.02.2016", "20.05.2016");
+        Project project1 = (Project) projectService.persist(user1.getId(), "Project1", "Description1", "20.02.2019", "20.05.2019");
+        Project project2 = (Project) projectService.persist(user2.getId(), "Project2", "Description2", "20.05.2019", "20.06.2019");
+        Project project3 = (Project) projectService.persist(user2.getId(), "Project1", "Description1", "20.02.2016", "20.05.2016");
 
         taskService.persist(project1.getUserId(), project1.getName(), "task1", "des1", "20.02.2013", "20.02.2014");
         taskService.persist(project1.getUserId(), project1.getName(), "task2", "des2", "20.02.2013", "20.02.2014");

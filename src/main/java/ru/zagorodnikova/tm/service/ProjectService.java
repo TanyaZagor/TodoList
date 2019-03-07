@@ -18,7 +18,7 @@ public class ProjectService implements IProjectService {
         this.taskRepository = taskRepository;
     }
 
-    public Project persist(String userId, String projectName, String description, String dateStart, String dateFinish) {
+    public AbstractEntity persist(String userId, String projectName, String description, String dateStart, String dateFinish) {
         if (projectName == null || projectName.isEmpty()) return null;
         Project newProject = new Project();
         newProject.setName(projectName);
@@ -32,7 +32,7 @@ public class ProjectService implements IProjectService {
             newProject.setUserId(userId);
             newProject.setDateStart(dateStart);
             newProject.setDateFinish(dateFinish);
-            return (Project) projectRepository.persist(newProject);
+            return projectRepository.persist(newProject);
         }
         return null;
     }
@@ -62,12 +62,12 @@ public class ProjectService implements IProjectService {
         return projectRepository.findAll(project);
     }
 
-    public Project findOne(String userId, String projectName) {
+    public AbstractEntity findOne(String userId, String projectName) {
         if (projectName == null || projectName.isEmpty()) return null;
         Project newProject = new Project();
         newProject.setName(projectName);
         newProject.setUserId(userId);
-        return (Project) projectRepository.findOne(newProject);
+        return projectRepository.findOne(newProject);
     }
 
     public void merge(String userId, String oldProjectName, String projectName, String description, String dateStart, String dateFinish) {

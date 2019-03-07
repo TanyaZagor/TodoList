@@ -30,7 +30,7 @@ public class UserSignInCommand extends AbstractCommand {
         String login = in.nextLine();
         System.out.println("Password");
         String password = in.nextLine();
-        User user = getServiceLocator().getUserService().signIn(login, password);
+        User user = (User) getServiceLocator().getUserService().signIn(login, password);
         if (user!= null) {
             getServiceLocator().setCurrentUser(user);
             System.out.println(user);

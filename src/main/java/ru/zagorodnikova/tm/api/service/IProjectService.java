@@ -7,10 +7,10 @@ import java.util.List;
 
 public interface IProjectService {
 
-    Project persist(String userId, String projectName, String description, String dateStart, String dateFinish);
+    AbstractEntity persist(String userId, String projectName, String description, String dateStart, String dateFinish);
     void remove(String userId, String projectName);
     void removeAll(String userId);
     List<AbstractEntity> findAll(String userId);
-    Project findOne(String userId, String projectName);
+    AbstractEntity findOne(String userId, String projectName);
     void merge(String userId, String oldProjectName, String projectName, String description, String dateStart, String dateFinish);
 }
