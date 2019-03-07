@@ -6,6 +6,8 @@ import ru.zagorodnikova.tm.entity.AbstractEntity;
 import ru.zagorodnikova.tm.entity.RoleType;
 import ru.zagorodnikova.tm.entity.User;
 
+import java.util.List;
+
 public class UserService implements IUserService {
 
     private final IUserRepository userRepository;
@@ -73,5 +75,11 @@ public class UserService implements IUserService {
             userRepository.removeAll(admin);
         }
 
+    }
+
+    public List<AbstractEntity> findAll(RoleType roleType) {
+        User user = new User();
+        user.setRoleType(roleType);
+        return userRepository.findAll(user);
     }
 }

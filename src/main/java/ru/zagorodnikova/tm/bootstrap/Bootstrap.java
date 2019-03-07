@@ -110,6 +110,7 @@ public class Bootstrap implements ServiceLocator {
         addCommand(new UserUpdateCommand(bootstrap));
         addCommand(new UserClearCommand(bootstrap));
         addCommand(new UserRemoveCommand(bootstrap));
+        addCommand(new UserListCommand(bootstrap));
 
         addCommand(new HelpCommand(bootstrap));
 

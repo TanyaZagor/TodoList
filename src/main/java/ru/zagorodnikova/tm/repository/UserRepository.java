@@ -80,7 +80,9 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
 
     @Override
     public List<AbstractEntity> findAll(AbstractEntity abstractEntity) {
-        return null;
+        List<AbstractEntity> usersList = new ArrayList<>();
+        users.forEach((k, v) -> usersList.add(v));
+        return usersList;
     }
 
     public boolean checkPassword(AbstractEntity abstractEntity) {

@@ -27,7 +27,6 @@ public class ProjectListCommand extends AbstractCommand {
     public void execute() {
 
         List<AbstractEntity> projects = getServiceLocator().getProjectService().findAll(getServiceLocator().getCurrentUser().getId());
-
         if (!(projects == null || projects.isEmpty())) {
             projects.forEach(System.out::println);
         }
