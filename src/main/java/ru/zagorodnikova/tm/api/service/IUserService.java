@@ -10,7 +10,7 @@ public interface IUserService {
     AbstractEntity signUp(String login, String password, String fistName, String lastName, String email, RoleType roleType);
     void changePassword(String userId, String login, String oldPassword, String newPassword);
     void update(String userId, String firstName, String lastName, String email);
-    void removeAll(RoleType roleType);
+    void removeAll(String userId);
     void remove(String userId);
     List<AbstractEntity> findAll(RoleType roleType);
 }

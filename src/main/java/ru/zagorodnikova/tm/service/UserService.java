@@ -8,7 +8,7 @@ import ru.zagorodnikova.tm.entity.User;
 
 import java.util.List;
 
-public class UserService implements IUserService {
+public class UserService extends AbstractService implements IUserService {
 
     private final IUserRepository userRepository;
 
@@ -68,13 +68,10 @@ public class UserService implements IUserService {
         userRepository.removeAll(user);
     }
 
-    public void removeAll(RoleType roleType) {
-        User admin = new User();
-        admin.setRoleType(roleType);
-        if (roleType.equals(RoleType.ADMIN)) {
-            userRepository.removeAll(admin);
-        }
-
+    public void removeAll(String userId) {
+        User user = new User();
+        user.setId(userId);
+        userRepository.removeAll(user);
     }
 
     public List<AbstractEntity> findAll(RoleType roleType) {

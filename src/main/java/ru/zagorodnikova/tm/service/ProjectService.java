@@ -8,7 +8,7 @@ import ru.zagorodnikova.tm.entity.Project;
 
 import java.util.List;
 
-public class ProjectService implements IProjectService {
+public class ProjectService extends AbstractService implements IProjectService {
 
     private final IProjectRepository projectRepository;
     private final ITaskRepository taskRepository;

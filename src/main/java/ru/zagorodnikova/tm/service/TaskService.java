@@ -10,7 +10,7 @@ import ru.zagorodnikova.tm.entity.Task;
 import java.util.List;
 
 
-public class TaskService implements ITaskService {
+public class TaskService extends AbstractService implements ITaskService {
 
     private final ITaskRepository taskRepository;
     private final IProjectRepository projectRepository;
