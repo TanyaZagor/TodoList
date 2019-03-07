@@ -2,10 +2,10 @@ package ru.zagorodnikova.tm.repository;
 
 import ru.zagorodnikova.tm.api.repository.IUserRepository;
 import ru.zagorodnikova.tm.entity.AbstractEntity;
-import ru.zagorodnikova.tm.entity.RoleType;
 import ru.zagorodnikova.tm.entity.User;
 import ru.zagorodnikova.tm.util.UtilPassword;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,38 +14,23 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
 
     private final Map<String, User> users = new LinkedHashMap<>();
 
-    public User signIn(String login, String password) {
-        final Map<String, User> map = new LinkedHashMap<>();
+    public User signIn(AbstractEntity abstractEntity) {
+        User user = (User) abstractEntity;
+        Map<String, User> map = new LinkedHashMap<>();
         users.forEach((k, v) -> {
-            if (v.getLogin().equals(login) && v.getPassword().equals(UtilPassword.hashPassword(password))) {
+            if (v.getLogin().equals(user.getLogin()) && v.getPassword().equals(user.getPassword())) {
                 map.put(v.getLogin(), v);
             }
         });
         if (map.size() != 0) {
-            return map.get(login);
+            return map.get(user.getLogin());
         }
         return null;
     }
 
-    public User signUp(String login, String password, String firstName, String lastName, String email, RoleType roleType) {
-        final User user = new User(login, password, firstName, lastName, email, roleType);
-        if (!users.containsValue(user)) {
-            users.put(user.getId(), user);
-            return user;
-        }
-        return null;
-    }
-
-    public void update(String userId, String firstName, String lastName, String email) {
-        users.get(userId).setFirstName(firstName);
-        users.get(userId).setLastName(lastName);
-        users.get(userId).setEmail(email);
-    }
-
-    public void changePassword(String userId, String login, String password, String newPassword) {
-        if (users.get(userId).getPassword().equals(password) && users.get(userId).getLogin().equals(login)) {
-            users.get(userId).setPassword(newPassword);
-        }
+    public void changePassword(AbstractEntity abstractEntity) {
+        User user = (User) abstractEntity;
+        users.get(user.getId()).setPassword(user.getPassword());
     }
 
     @Override
@@ -70,16 +55,34 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
 
     @Override
     public AbstractEntity findOne(AbstractEntity abstractEntity) {
+        User user = (User) abstractEntity;
+        final List<User> list = new ArrayList<>();
+        users.forEach((k, v) -> {
+            if (v.getLogin().equals(user.getLogin())) {
+                list.add(v);
+            }
+        });
+        if (list.size() > 0) {
+            return list.get(0);
+        }
         return null;
     }
 
     @Override
     public void merge(AbstractEntity abstractEntity) {
-
+        User user = (User) abstractEntity;
+        users.get(user.getId()).setFirstName(user.getFirstName());
+        users.get(user.getId()).setLastName(user.getLastName());
+        users.get(user.getId()).setEmail(user.getEmail());
     }
 
     @Override
     public List<AbstractEntity> findAll(AbstractEntity abstractEntity) {
         return null;
+    }
+
+    public boolean checkPassword(AbstractEntity abstractEntity) {
+        User user = (User) abstractEntity;
+        return users.get(user.getId()).getPassword().equals(user.getPassword()) && users.get(user.getId()).getLogin().equals(user.getLogin());
     }
 }

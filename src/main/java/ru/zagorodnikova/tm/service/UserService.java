@@ -16,7 +16,10 @@ public class UserService implements IUserService {
     public User signIn(String login, String password) {
         if (login == null || login.isEmpty()) return null;
         if (password == null || password.isEmpty()) return null;
-        return userRepository.signIn(login, password);
+        User user = new User();
+        user.setLogin(login);
+        user.setPassword(password);
+        return userRepository.signIn(user);
     }
 
     public User signUp(String login, String password, String fistName, String lastName, String email, RoleType roleType) {
@@ -25,21 +28,34 @@ public class UserService implements IUserService {
         if (fistName == null || fistName.isEmpty()) return null;
         if (lastName == null || lastName.isEmpty()) return null;
         if (email == null || email.isEmpty()) return null;
-
-        return userRepository.signUp(login, password, fistName, lastName, email, roleType);
+        User user = new User(login, password, fistName, lastName, email, roleType);
+        return (User) userRepository.persist(user);
     }
 
     public void changePassword(String userId, String login, String oldPassword, String newPassword) {
         if (login == null || login.isEmpty()) return;
         if (oldPassword == null || oldPassword.isEmpty()) return;
         if (newPassword == null || newPassword.isEmpty()) return;
-        userRepository.changePassword(userId,login, oldPassword, newPassword);
+        User user = new User();
+        user.setId(userId);
+        user.setPassword(oldPassword);
+        user.setLogin(login);
+        if (userRepository.checkPassword(user)) {
+            user.setPassword(newPassword);
+            userRepository.changePassword(user);
+        }
+
     }
 
     public void update(String userId, String firstName, String lastName, String email) {
         if (firstName == null || firstName.isEmpty()) return;
         if (lastName == null || lastName.isEmpty()) return;
         if (email == null || email.isEmpty()) return;
-        userRepository.update(userId, firstName, lastName, email);
+        User user = new User();
+        user.setId(userId);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmail(email);
+        userRepository.merge(user);
     }
 }
