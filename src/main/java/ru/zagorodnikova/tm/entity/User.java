@@ -5,7 +5,7 @@ import ru.zagorodnikova.tm.util.UtilPassword;
 import java.util.Objects;
 import java.util.UUID;
 
-public class User {
+public class User extends AbstractEntity {
 
     private String id = UUID.randomUUID().toString();
     private String login;
