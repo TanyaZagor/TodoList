@@ -14,9 +14,7 @@ import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.command.project.*;
 import ru.zagorodnikova.tm.command.system.HelpCommand;
 import ru.zagorodnikova.tm.command.task.*;
-import ru.zagorodnikova.tm.entity.Task;
 import ru.zagorodnikova.tm.entity.User;
-import ru.zagorodnikova.tm.repository.AbstractRepository;
 import ru.zagorodnikova.tm.repository.ProjectRepository;
 import ru.zagorodnikova.tm.repository.TaskRepository;
 import ru.zagorodnikova.tm.repository.UserRepository;
@@ -65,7 +63,6 @@ public class Bootstrap implements ServiceLocator {
             if (isAuth()) {
                 abstractCommand.execute();
             }
-
         } else {
             abstractCommand.execute();
         }
@@ -111,6 +108,8 @@ public class Bootstrap implements ServiceLocator {
         addCommand(new UserChangePasswordCommand(bootstrap));
         addCommand(new UserShowCommand(bootstrap));
         addCommand(new UserUpdateCommand(bootstrap));
+        addCommand(new UserClearCommand(bootstrap));
+        addCommand(new UserRemoveCommand(bootstrap));
 
         addCommand(new HelpCommand(bootstrap));
 

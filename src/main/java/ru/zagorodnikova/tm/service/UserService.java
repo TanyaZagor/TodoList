@@ -59,4 +59,19 @@ public class UserService implements IUserService {
         user.setEmail(email);
         userRepository.merge(user);
     }
+
+    public void remove(String userId) {
+        User user = new User();
+        user.setId(userId);
+        userRepository.removeAll(user);
+    }
+
+    public void removeAll(RoleType roleType) {
+        User admin = new User();
+        admin.setRoleType(roleType);
+        if (roleType.equals(RoleType.ADMIN)) {
+            userRepository.removeAll(admin);
+        }
+
+    }
 }

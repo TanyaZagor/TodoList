@@ -2,6 +2,7 @@ package ru.zagorodnikova.tm.repository;
 
 import ru.zagorodnikova.tm.api.repository.IUserRepository;
 import ru.zagorodnikova.tm.entity.AbstractEntity;
+import ru.zagorodnikova.tm.entity.RoleType;
 import ru.zagorodnikova.tm.entity.User;
 import ru.zagorodnikova.tm.util.UtilPassword;
 
@@ -45,12 +46,13 @@ public class UserRepository extends AbstractRepository implements IUserRepositor
 
     @Override
     public void remove(AbstractEntity abstractEntity) {
-
+        User user = (User) abstractEntity;
+        users.remove(user.getId());
     }
 
     @Override
     public void removeAll(AbstractEntity abstractEntity) {
-
+        users.entrySet().removeIf((v) -> !v.getValue().getRoleType().equals(RoleType.ADMIN));
     }
 
     @Override
