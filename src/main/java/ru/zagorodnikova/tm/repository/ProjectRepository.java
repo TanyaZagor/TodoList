@@ -1,45 +1,50 @@
 package ru.zagorodnikova.tm.repository;
 
-import ru.zagorodnikova.tm.entity.Project;
+import ru.zagorodnikova.tm.entity.AbstractEntity;
 import ru.zagorodnikova.tm.api.repository.IProjectRepository;
+import ru.zagorodnikova.tm.entity.Project;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ProjectRepository implements IProjectRepository {
+public class ProjectRepository extends AbstractRepository  implements IProjectRepository {
 
     private final Map<String, Project> projects = new LinkedHashMap<>();
 
-    public Project persist(String userId, String projectName, String description, String dateStart, String dateFinish) {
-        final Project project = new Project(userId, projectName, description, dateStart, dateFinish);
+    public AbstractEntity persist(AbstractEntity abstractEntity) {
+        Project project = (Project) abstractEntity;
         projects.put(project.getId(), project);
         return project;
     }
 
-    public void remove(String  projectId) {
-        projects.remove(projectId);
+    public void remove(AbstractEntity abstractEntity) {
+        Project project = (Project) abstractEntity;
+        projects.remove(project.getId());
     }
 
-    public void removeAll(String userId) {
-        projects.entrySet().removeIf((v) -> v.getValue().getUserId().equals(userId));
+    public void removeAll(AbstractEntity abstractEntity) {
+        Project project = (Project) abstractEntity;
+        projects.entrySet().removeIf((v) -> v.getValue().getUserId().equals(project.getUserId()));
     }
 
-    public List<Project> findAll(String userId) {
-        final List<Project> list = new ArrayList<>();
+    public List<AbstractEntity> findAll(AbstractEntity abstractEntity) {
+        Project project = (Project) abstractEntity;
+        final List<AbstractEntity> list = new ArrayList<>();
         projects.forEach((k, v) -> {
-            if (v.getUserId().equals(userId)) {
+            if (v.getUserId().equals(project.getUserId())) {
                 list.add(v);
             }
         });
         return list;
     }
 
-    public Project findOne(String userId, String projectName){
+    public AbstractEntity findOne(AbstractEntity abstractEntity){
+        Project project = (Project) abstractEntity;
         final List<Project> list = new ArrayList<>();
         projects.forEach((k, v) -> {
-            if (v.getName().equals(projectName) && v.getUserId().equals(userId)) {
+            if (v.getName().equals(project.getName()) && v.getUserId().equals(project.getUserId())) {
                 list.add(v);
             }
         });
@@ -49,11 +54,12 @@ public class ProjectRepository implements IProjectRepository {
         return null;
     }
 
-    public void merge(String projectId, String projectName, String description, String dateStart, String dateFinish) {
-        projects.get(projectId).setName(projectName);
-        projects.get(projectId).setDescription(description);
-        projects.get(projectId).setDateStart(dateStart);
-        projects.get(projectId).setDateFinish(dateFinish);
+    public void merge(AbstractEntity abstractEntity) {
+        Project project = (Project) abstractEntity;
+        projects.get(project.getId()).setName(project.getName());
+        projects.get(project.getId()).setDescription(project.getDescription());
+        projects.get(project.getId()).setDateStart(project.getDateStart());
+        projects.get(project.getId()).setDateFinish(project.getDateFinish());
     }
 
 }

@@ -1,6 +1,7 @@
 package ru.zagorodnikova.tm.command.task;
 
 import ru.zagorodnikova.tm.api.ServiceLocator;
+import ru.zagorodnikova.tm.entity.AbstractEntity;
 import ru.zagorodnikova.tm.entity.Task;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 
@@ -29,7 +30,7 @@ public class TaskListCommand extends AbstractCommand {
     public void execute() {
         System.out.println("project name");
         String projectName = in.nextLine();
-        List<Task> tasks = getServiceLocator().getTaskService().findAll(getServiceLocator().getCurrentUser().getId(), projectName);
+        List<AbstractEntity> tasks = getServiceLocator().getTaskService().findAll(getServiceLocator().getCurrentUser().getId(), projectName);
         if (tasks.size() > 0) {
             tasks.forEach(System.out::println);
         }

@@ -4,7 +4,7 @@ package ru.zagorodnikova.tm.entity;
 import java.util.Objects;
 import java.util.UUID;
 
-public class Task {
+public class Task extends AbstractEntity {
 
     private String id = UUID.randomUUID().toString();
     private String userId;

@@ -14,7 +14,9 @@ import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.command.project.*;
 import ru.zagorodnikova.tm.command.system.HelpCommand;
 import ru.zagorodnikova.tm.command.task.*;
+import ru.zagorodnikova.tm.entity.Task;
 import ru.zagorodnikova.tm.entity.User;
+import ru.zagorodnikova.tm.repository.AbstractRepository;
 import ru.zagorodnikova.tm.repository.ProjectRepository;
 import ru.zagorodnikova.tm.repository.TaskRepository;
 import ru.zagorodnikova.tm.repository.UserRepository;
@@ -31,7 +33,7 @@ public class Bootstrap implements ServiceLocator {
     private final IProjectRepository projectRepository = new ProjectRepository();
     private final ITaskRepository taskRepository = new TaskRepository();
     private final IUserRepository userRepository = new UserRepository();
-    private final IProjectService projectService = new ProjectService(projectRepository);
+    private final IProjectService projectService = new ProjectService(projectRepository, taskRepository);
     private final ITaskService taskService = new TaskService(taskRepository, projectRepository);
     private final IUserService userService = new UserService(userRepository);
     private User currentUser;

@@ -1,14 +1,16 @@
 package ru.zagorodnikova.tm.repository;
 
 import ru.zagorodnikova.tm.api.repository.IUserRepository;
+import ru.zagorodnikova.tm.entity.AbstractEntity;
 import ru.zagorodnikova.tm.entity.RoleType;
 import ru.zagorodnikova.tm.entity.User;
 import ru.zagorodnikova.tm.util.UtilPassword;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
-public class UserRepository implements IUserRepository {
+public class UserRepository extends AbstractRepository implements IUserRepository {
 
     private final Map<String, User> users = new LinkedHashMap<>();
 
@@ -46,4 +48,38 @@ public class UserRepository implements IUserRepository {
         }
     }
 
+    @Override
+    public AbstractEntity persist(AbstractEntity abstractEntity) {
+        User user = (User) abstractEntity;
+        if (!users.containsValue(user)) {
+            users.put(user.getId(), user);
+            return user;
+        }
+        return null;
+    }
+
+    @Override
+    public void remove(AbstractEntity abstractEntity) {
+
+    }
+
+    @Override
+    public void removeAll(AbstractEntity abstractEntity) {
+
+    }
+
+    @Override
+    public AbstractEntity findOne(AbstractEntity abstractEntity) {
+        return null;
+    }
+
+    @Override
+    public void merge(AbstractEntity abstractEntity) {
+
+    }
+
+    @Override
+    public List<AbstractEntity> findAll(AbstractEntity abstractEntity) {
+        return null;
+    }
 }

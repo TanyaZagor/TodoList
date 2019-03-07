@@ -1,6 +1,7 @@
 package ru.zagorodnikova.tm.command.project;
 
 import ru.zagorodnikova.tm.api.ServiceLocator;
+import ru.zagorodnikova.tm.entity.AbstractEntity;
 import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 
@@ -25,7 +26,7 @@ public class ProjectListCommand extends AbstractCommand {
     @Override
     public void execute() {
 
-        List<Project> projects = getServiceLocator().getProjectService().findAll(getServiceLocator().getCurrentUser().getId());
+        List<AbstractEntity> projects = getServiceLocator().getProjectService().findAll(getServiceLocator().getCurrentUser().getId());
 
         if (!(projects == null || projects.isEmpty())) {
             projects.forEach(System.out::println);

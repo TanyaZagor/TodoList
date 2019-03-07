@@ -3,6 +3,7 @@ package ru.zagorodnikova.tm.service;
 import ru.zagorodnikova.tm.api.repository.IProjectRepository;
 import ru.zagorodnikova.tm.api.repository.ITaskRepository;
 import ru.zagorodnikova.tm.api.service.ITaskService;
+import ru.zagorodnikova.tm.entity.AbstractEntity;
 import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.entity.Task;
 
@@ -22,67 +23,103 @@ public class TaskService implements ITaskService {
 
     public Task persist(String userId, String projectName, String taskName, String description, String dateStart, String dateFinish) {
         if (projectName == null || projectName.isEmpty()) return null;
-        final Project project = projectRepository.findOne(userId, projectName);
+        Project newProject = new Project();
+        newProject.setName(projectName);
+        newProject.setUserId(userId);
+        Project project = (Project) projectRepository.findOne(newProject);
         if (project != null) {
             if (taskName == null || taskName.isEmpty()) return null;
             if (description == null || description.isEmpty()) return null;
             if (dateStart == null || dateStart.isEmpty()) return null;
             if (dateFinish == null || dateFinish.isEmpty()) return null;
-
-            return taskRepository.persist(userId, project.getId(), taskName, description, dateStart, dateFinish);
+            Task task = new Task(userId, project.getId(), taskName, description, dateStart, dateFinish);
+            return (Task) taskRepository.persist(task);
         }
         return null;
     }
 
-    public void remove(String userId, String projectName, String taskId){
+    public void remove(String userId, String projectName, String taskName){
         if (projectName == null || projectName.isEmpty()) return;
-        final Project project = projectRepository.findOne(userId, projectName);
+        Project newProject = new Project();
+        newProject.setName(projectName);
+        newProject.setUserId(userId);
+        Project project = (Project) projectRepository.findOne(newProject);
         if (project != null) {
-            taskRepository.remove(project.getId(), taskId);
+            Task task = new Task();
+            task.setUserId(userId);
+            task.setProjectId(project.getId());
+            task.setName(taskName);
+            taskRepository.remove(task);
         }
 
     }
 
     public void removeAll(String userId) {
-        taskRepository.removeAll(userId);
+        Task task = new Task();
+        task.setUserId(userId);
+        taskRepository.removeAll(task);
     }
 
     public void removeAllInProject(String userId, String projectName) {
         if (projectName == null || projectName.isEmpty()) return;
-        final Project project = projectRepository.findOne(userId, projectName);
+        Project newProject = new Project();
+        newProject.setName(projectName);
+        newProject.setUserId(userId);
+        Project project = (Project) projectRepository.findOne(newProject);
         if (project != null) {
-            taskRepository.removeAllInProject(project.getId());
+            Task task = new Task();
+            task.setProjectId(project.getId());
+            taskRepository.removeAllInProject(task);
         }
     }
 
     public void merge(String userId, String projectName, String oldTaskName, String taskName, String description, String dateStart, String dateFinish) {
         if (projectName == null || projectName.isEmpty()) return;
-        final Project project = projectRepository.findOne(userId, projectName);
+        Project newProject = new Project();
+        newProject.setName(projectName);
+        newProject.setUserId(userId);
+        Project project = (Project) projectRepository.findOne(newProject);
         if (project != null) {
             if (taskName == null || taskName.isEmpty()) return;
             if (description == null || description.isEmpty()) return;
             if (dateStart == null || dateStart.isEmpty()) return;
             if (dateFinish == null || dateFinish.isEmpty()) return;
-            taskRepository.merge(project.getId(),oldTaskName, taskName, description, dateStart, dateFinish);
+            Task task = findOne(userId, projectName, oldTaskName);
+            task.setName(taskName);
+            task.setDescription(description);
+            task.setDateStart(dateStart);
+            task.setDateFinish(dateFinish);
+            taskRepository.merge(task);
         }
 
     }
 
-    public List<Task> findAll(String userId, String projectName) {
+    public List<AbstractEntity> findAll(String userId, String projectName) {
         if (projectName == null || projectName.isEmpty()) return null;
-        final Project project = projectRepository.findOne(userId, projectName);
+        Project newProject = new Project();
+        newProject.setName(projectName);
+        newProject.setUserId(userId);
+        Project project = (Project) projectRepository.findOne(newProject);
         if (project != null) {
-            return  taskRepository.findAll(project.getId());
+            Task task = new Task();
+            task.setProjectId(project.getId());
+            return  taskRepository.findAll(task);
         }
         return null;
     }
 
     public Task findOne(String userId, String projectName, String taskName) {
         if (projectName == null || projectName.isEmpty()) return null;
-        final Project project = projectRepository.findOne(userId, projectName);
+        Project newProject = new Project();
+        newProject.setName(projectName);
+        newProject.setUserId(userId);
+        Project project = (Project) projectRepository.findOne(newProject);
         if (project != null) {
             if (taskName == null || taskName.isEmpty()) return null;
-            return  taskRepository.findOne(project.getId(), taskName);
+            Task task = new Task();
+            task.setProjectId(project.getId());
+            task.setName(taskName);
+            return  (Task) taskRepository.findOne(task);
         }
         return null;
     }

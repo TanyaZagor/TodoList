@@ -3,7 +3,7 @@ package ru.zagorodnikova.tm.entity;
 import java.util.Objects;
 import java.util.UUID;
 
-public class Project {
+public class Project extends AbstractEntity {
 
     private String id = UUID.randomUUID().toString();
     private String userId;

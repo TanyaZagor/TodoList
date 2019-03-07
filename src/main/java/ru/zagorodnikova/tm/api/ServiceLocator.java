@@ -24,4 +24,5 @@ public interface ServiceLocator {
     Map<String, AbstractCommand> getCommands();
 
     void setCurrentUser(User user);
+
 }
