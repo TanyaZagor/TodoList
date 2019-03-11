@@ -7,6 +7,7 @@ import ru.zagorodnikova.tm.api.repository.IUserRepository;
 import ru.zagorodnikova.tm.api.service.IProjectService;
 import ru.zagorodnikova.tm.api.service.ITaskService;
 import ru.zagorodnikova.tm.api.service.IUserService;
+import ru.zagorodnikova.tm.command.system.AboutCommand;
 import ru.zagorodnikova.tm.command.user.*;
 import ru.zagorodnikova.tm.entity.AbstractEntity;
 import ru.zagorodnikova.tm.entity.Project;
@@ -114,6 +115,7 @@ public class Bootstrap implements ServiceLocator {
         addCommand(new UserListCommand(bootstrap));
 
         addCommand(new HelpCommand(bootstrap));
+        addCommand(new AboutCommand(bootstrap));
 
     }
 
