@@ -1,8 +1,16 @@
 package ru.zagorodnikova.tm.entity;
 
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.util.Objects;
 import java.util.UUID;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class Project extends AbstractEntity {
 
     private String id = UUID.randomUUID().toString();
@@ -13,63 +21,12 @@ public class Project extends AbstractEntity {
     private String dateStart;
 
 
-    public Project() {
-    }
-
     public Project(String userId, String name,String description, String dateStart, String dateFinish) {
         this.userId = userId;
         this.name = name;
         this.description = description;
         this.dateStart = dateStart;
         this.dateFinish = dateFinish;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String  getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getDateFinish() {
-        return dateFinish;
-    }
-
-    public void setDateFinish(String dateFinish) {
-        this.dateFinish = dateFinish;
-    }
-
-    public String getDateStart() {
-        return dateStart;
-    }
-
-    public void setDateStart(String dateStart) {
-        this.dateStart = dateStart;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     @Override

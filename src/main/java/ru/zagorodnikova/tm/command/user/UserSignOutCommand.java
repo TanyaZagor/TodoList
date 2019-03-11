@@ -4,8 +4,7 @@ import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 
 public class UserSignOutCommand extends AbstractCommand {
-    public UserSignOutCommand(ServiceLocator serviceLocator) {
-        super(serviceLocator);
+    public UserSignOutCommand() {
     }
 
     @Override

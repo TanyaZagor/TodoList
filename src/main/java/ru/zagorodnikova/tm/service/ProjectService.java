@@ -1,5 +1,7 @@
 package ru.zagorodnikova.tm.service;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.repository.IProjectRepository;
 import ru.zagorodnikova.tm.api.repository.ITaskRepository;
 import ru.zagorodnikova.tm.api.service.IProjectService;
@@ -13,12 +15,13 @@ public class ProjectService extends AbstractService implements IProjectService {
     private final IProjectRepository<AbstractEntity> projectRepository;
     private final ITaskRepository<AbstractEntity> taskRepository;
 
-    public ProjectService(IProjectRepository<AbstractEntity> projectRepository, ITaskRepository<AbstractEntity> taskRepository) {
+    public ProjectService(@NotNull IProjectRepository<AbstractEntity> projectRepository, @NotNull ITaskRepository<AbstractEntity> taskRepository) {
         this.projectRepository = projectRepository;
         this.taskRepository = taskRepository;
     }
 
-    public AbstractEntity persist(String userId, String projectName, String description, String dateStart, String dateFinish) {
+    @Nullable
+    public AbstractEntity persist(@NotNull String userId, @Nullable String projectName, @Nullable String description, @Nullable String dateStart, @Nullable String dateFinish) {
         if (projectName == null || projectName.isEmpty()) return null;
         Project newProject = new Project();
         newProject.setName(projectName);
@@ -37,7 +40,7 @@ public class ProjectService extends AbstractService implements IProjectService {
         return null;
     }
 
-    public void remove(String userId, String projectName) {
+    public void remove(@NotNull String userId, @Nullable String projectName) {
         if (projectName == null || projectName.isEmpty()) return;
         Project newProject= new Project();
         newProject.setName(projectName);
@@ -49,20 +52,22 @@ public class ProjectService extends AbstractService implements IProjectService {
         }
     }
 
-    public void removeAll(String userId) {
+    public void removeAll(@NotNull String userId) {
         Project project = new Project();
         project.setUserId(userId);
         projectRepository.removeAll(project);
         taskRepository.removeAll(project);
     }
 
-    public List<AbstractEntity> findAll(String userId) {
+    @Nullable
+    public List<AbstractEntity> findAll(@NotNull String userId) {
         Project project = new Project();
         project.setUserId(userId);
         return projectRepository.findAll(project);
     }
 
-    public AbstractEntity findOne(String userId, String projectName) {
+    @Nullable
+    public AbstractEntity findOne(@NotNull String userId, @Nullable String projectName) {
         if (projectName == null || projectName.isEmpty()) return null;
         Project newProject = new Project();
         newProject.setName(projectName);
@@ -70,7 +75,7 @@ public class ProjectService extends AbstractService implements IProjectService {
         return projectRepository.findOne(newProject);
     }
 
-    public void merge(String userId, String oldProjectName, String projectName, String description, String dateStart, String dateFinish) {
+    public void merge(@NotNull String userId, @Nullable String oldProjectName, @Nullable String projectName, @Nullable String description, @Nullable String dateStart, @Nullable String dateFinish) {
         if (oldProjectName == null || oldProjectName.isEmpty()) return;
         Project newProject = new Project();
         newProject.setName(oldProjectName);

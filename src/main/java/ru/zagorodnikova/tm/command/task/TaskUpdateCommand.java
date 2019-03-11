@@ -6,10 +6,9 @@ import java.util.Scanner;
 
 public class TaskUpdateCommand extends AbstractCommand {
 
-    private final Scanner in = getServiceLocator().getScanner();
+    private Scanner in;
 
-    public TaskUpdateCommand(ServiceLocator serviceLocator) {
-        super(serviceLocator);
+    public TaskUpdateCommand() {
     }
 
     @Override
@@ -24,6 +23,7 @@ public class TaskUpdateCommand extends AbstractCommand {
 
     @Override
     public void execute() {
+        in = getServiceLocator().getScanner();
         System.out.println("project name");
         String projectName = in.nextLine();
         System.out.println("task name");

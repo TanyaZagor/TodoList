@@ -4,8 +4,7 @@ import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 
 public class UserShowCommand extends AbstractCommand {
-    public UserShowCommand(ServiceLocator serviceLocator) {
-        super(serviceLocator);
+    public UserShowCommand() {
     }
 
     @Override

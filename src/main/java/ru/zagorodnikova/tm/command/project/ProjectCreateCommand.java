@@ -1,7 +1,6 @@
 package ru.zagorodnikova.tm.command.project;
 
-import ru.zagorodnikova.tm.api.ServiceLocator;
-import ru.zagorodnikova.tm.bootstrap.Bootstrap;
+
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.entity.Project;
 
@@ -9,10 +8,9 @@ import java.util.Scanner;
 
 public class ProjectCreateCommand extends AbstractCommand {
 
-    private final Scanner in = getServiceLocator().getScanner();
+    private Scanner in;
 
-    public ProjectCreateCommand(ServiceLocator serviceLocator) {
-        super(serviceLocator);
+    public ProjectCreateCommand() {
     }
 
     @Override
@@ -27,6 +25,7 @@ public class ProjectCreateCommand extends AbstractCommand {
 
     @Override
     public void execute() {
+        in = getServiceLocator().getScanner();
         System.out.println("project name");
         String projectName = in.nextLine();
         System.out.println("project description");

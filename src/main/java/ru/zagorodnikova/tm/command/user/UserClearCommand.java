@@ -4,8 +4,7 @@ import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 
 public class UserClearCommand extends AbstractCommand {
-    public UserClearCommand(ServiceLocator serviceLocator) {
-        super(serviceLocator);
+    public UserClearCommand() {
     }
 
     @Override

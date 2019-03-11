@@ -1,5 +1,7 @@
 package ru.zagorodnikova.tm.repository;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.entity.AbstractEntity;
 import ru.zagorodnikova.tm.api.repository.IProjectRepository;
 import ru.zagorodnikova.tm.entity.Project;
@@ -13,23 +15,25 @@ public class ProjectRepository extends AbstractRepository<AbstractEntity> implem
 
     private final Map<String, Project> projects = new LinkedHashMap<>();
 
-    public AbstractEntity persist(AbstractEntity abstractEntity) {
+    @Nullable
+    public AbstractEntity persist(@NotNull AbstractEntity abstractEntity) {
         Project project = (Project) abstractEntity;
         projects.put(project.getId(), project);
         return project;
     }
 
-    public void remove(AbstractEntity abstractEntity) {
+    public void remove(@NotNull AbstractEntity abstractEntity) {
         Project project = (Project) abstractEntity;
         projects.remove(project.getId());
     }
 
-    public void removeAll(AbstractEntity abstractEntity) {
+    public void removeAll(@NotNull AbstractEntity abstractEntity) {
         Project project = (Project) abstractEntity;
         projects.entrySet().removeIf((v) -> v.getValue().getUserId().equals(project.getUserId()));
     }
 
-    public List<AbstractEntity> findAll(AbstractEntity abstractEntity) {
+    @Nullable
+    public List<AbstractEntity> findAll(@NotNull AbstractEntity abstractEntity) {
         Project project = (Project) abstractEntity;
         final List<AbstractEntity> list = new ArrayList<>();
         projects.forEach((k, v) -> {
@@ -40,7 +44,8 @@ public class ProjectRepository extends AbstractRepository<AbstractEntity> implem
         return list;
     }
 
-    public AbstractEntity findOne(AbstractEntity abstractEntity){
+    @Nullable
+    public AbstractEntity findOne(@NotNull AbstractEntity abstractEntity){
         Project project = (Project) abstractEntity;
         final List<Project> list = new ArrayList<>();
         projects.forEach((k, v) -> {
@@ -54,7 +59,7 @@ public class ProjectRepository extends AbstractRepository<AbstractEntity> implem
         return null;
     }
 
-    public void merge(AbstractEntity abstractEntity) {
+    public void merge(@NotNull AbstractEntity abstractEntity) {
         Project project = (Project) abstractEntity;
         projects.get(project.getId()).setName(project.getName());
         projects.get(project.getId()).setDescription(project.getDescription());

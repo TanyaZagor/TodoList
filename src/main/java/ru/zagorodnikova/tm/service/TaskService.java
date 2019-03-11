@@ -1,5 +1,7 @@
 package ru.zagorodnikova.tm.service;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.repository.IProjectRepository;
 import ru.zagorodnikova.tm.api.repository.ITaskRepository;
 import ru.zagorodnikova.tm.api.service.ITaskService;
@@ -15,13 +17,14 @@ public class TaskService extends AbstractService implements ITaskService {
     private final ITaskRepository<AbstractEntity> taskRepository;
     private final IProjectRepository<AbstractEntity> projectRepository;
 
-    public TaskService(ITaskRepository<AbstractEntity> taskRepository, IProjectRepository<AbstractEntity> projectRepository) {
+    public TaskService(@NotNull ITaskRepository<AbstractEntity> taskRepository, @NotNull IProjectRepository<AbstractEntity> projectRepository) {
         this.taskRepository = taskRepository;
         this.projectRepository = projectRepository;
 
     }
 
-    public AbstractEntity persist(String userId, String projectName, String taskName, String description, String dateStart, String dateFinish) {
+    @Nullable
+    public AbstractEntity persist(@NotNull String userId, @Nullable String projectName, @Nullable String taskName, @Nullable String description, @Nullable String dateStart, @Nullable String dateFinish) {
         if (projectName == null || projectName.isEmpty()) return null;
         Project newProject = new Project();
         newProject.setName(projectName);
@@ -38,7 +41,7 @@ public class TaskService extends AbstractService implements ITaskService {
         return null;
     }
 
-    public void remove(String userId, String projectName, String taskName){
+    public void remove(@NotNull String userId, @Nullable String projectName, @Nullable String taskName){
         if (projectName == null || projectName.isEmpty()) return;
         Project newProject = new Project();
         newProject.setName(projectName);
@@ -54,13 +57,13 @@ public class TaskService extends AbstractService implements ITaskService {
 
     }
 
-    public void removeAll(String userId) {
+    public void removeAll(@NotNull String userId) {
         Task task = new Task();
         task.setUserId(userId);
         taskRepository.removeAll(task);
     }
 
-    public void removeAllInProject(String userId, String projectName) {
+    public void removeAllInProject(@NotNull String userId, @Nullable String projectName) {
         if (projectName == null || projectName.isEmpty()) return;
         Project newProject = new Project();
         newProject.setName(projectName);
@@ -73,7 +76,7 @@ public class TaskService extends AbstractService implements ITaskService {
         }
     }
 
-    public void merge(String userId, String projectName, String oldTaskName, String taskName, String description, String dateStart, String dateFinish) {
+    public void merge(@NotNull String userId, @Nullable String projectName, @Nullable String oldTaskName, @Nullable String taskName, @Nullable String description, @Nullable String dateStart, @Nullable String dateFinish) {
         if (projectName == null || projectName.isEmpty()) return;
         Project newProject = new Project();
         newProject.setName(projectName);
@@ -94,7 +97,8 @@ public class TaskService extends AbstractService implements ITaskService {
 
     }
 
-    public List<AbstractEntity> findAll(String userId, String projectName) {
+    @Nullable
+    public List<AbstractEntity> findAll(@NotNull String userId, @Nullable String projectName) {
         if (projectName == null || projectName.isEmpty()) return null;
         Project newProject = new Project();
         newProject.setName(projectName);
@@ -108,7 +112,8 @@ public class TaskService extends AbstractService implements ITaskService {
         return null;
     }
 
-    public AbstractEntity findOne(String userId, String projectName, String taskName) {
+    @Nullable
+    public AbstractEntity findOne(@NotNull String userId, @Nullable String projectName, @Nullable String taskName) {
         if (projectName == null || projectName.isEmpty()) return null;
         Project newProject = new Project();
         newProject.setName(projectName);

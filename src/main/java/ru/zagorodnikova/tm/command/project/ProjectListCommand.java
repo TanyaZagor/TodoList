@@ -2,15 +2,13 @@ package ru.zagorodnikova.tm.command.project;
 
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.entity.AbstractEntity;
-import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 
 import java.util.List;
 
 public class ProjectListCommand extends AbstractCommand {
 
-    public ProjectListCommand(ServiceLocator serviceLocator) {
-        super(serviceLocator);
+    public ProjectListCommand() {
     }
 
     @Override

@@ -7,10 +7,9 @@ import java.util.Scanner;
 
 public class TaskRemoveCommand extends AbstractCommand {
 
-    private final Scanner in = getServiceLocator().getScanner();
+    private Scanner in;
 
-    public TaskRemoveCommand(ServiceLocator serviceLocator) {
-        super(serviceLocator);
+    public TaskRemoveCommand() {
     }
 
     @Override
@@ -25,6 +24,7 @@ public class TaskRemoveCommand extends AbstractCommand {
 
     @Override
     public void execute() {
+        in = getServiceLocator().getScanner();
         System.out.println("project name");
         String projectName = in.nextLine();
         System.out.println("task name");

@@ -7,10 +7,9 @@ import java.util.Scanner;
 
 public class UserUpdateCommand extends AbstractCommand {
 
-    private final Scanner in = getServiceLocator().getScanner();
+    private Scanner in;
 
-    public UserUpdateCommand(ServiceLocator serviceLocator) {
-        super(serviceLocator);
+    public UserUpdateCommand() {
     }
 
     @Override
@@ -25,6 +24,7 @@ public class UserUpdateCommand extends AbstractCommand {
 
     @Override
     public void execute() {
+        in = getServiceLocator().getScanner();
         System.out.println("New first name");
         String firstName = in.nextLine();
         System.out.println("New last name");

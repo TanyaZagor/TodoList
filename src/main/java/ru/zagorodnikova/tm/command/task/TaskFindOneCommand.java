@@ -8,10 +8,9 @@ import java.util.Scanner;
 
 public class TaskFindOneCommand extends AbstractCommand {
 
-    private final Scanner in = getServiceLocator().getScanner();
+    private Scanner in;
 
-    public TaskFindOneCommand(ServiceLocator serviceLocator) {
-        super(serviceLocator);
+    public TaskFindOneCommand(){
     }
 
     @Override
@@ -26,6 +25,7 @@ public class TaskFindOneCommand extends AbstractCommand {
 
     @Override
     public void execute() {
+        in = getServiceLocator().getScanner();
         System.out.println("project name");
         String projectName = in.nextLine();
         System.out.println("task name");

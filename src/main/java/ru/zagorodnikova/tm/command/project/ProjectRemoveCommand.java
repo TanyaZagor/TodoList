@@ -7,11 +7,9 @@ import java.util.Scanner;
 
 public class ProjectRemoveCommand extends AbstractCommand {
 
-    private final Scanner in = getServiceLocator().getScanner();
+    private Scanner in;
 
-    public ProjectRemoveCommand(ServiceLocator serviceLocator) {
-        super(serviceLocator);
-
+    public ProjectRemoveCommand() {
     }
 
     @Override
@@ -26,6 +24,7 @@ public class ProjectRemoveCommand extends AbstractCommand {
 
     @Override
     public void execute() {
+        in = getServiceLocator().getScanner();
         System.out.println("project name");
         String projectName = in.nextLine();
         getServiceLocator().getProjectService().remove(getServiceLocator().getCurrentUser().getId(), projectName);

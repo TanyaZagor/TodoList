@@ -2,7 +2,6 @@ package ru.zagorodnikova.tm.command.task;
 
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.entity.AbstractEntity;
-import ru.zagorodnikova.tm.entity.Task;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 
 import java.util.List;
@@ -10,10 +9,9 @@ import java.util.Scanner;
 
 public class TaskListCommand extends AbstractCommand {
 
-    private final Scanner in = getServiceLocator().getScanner();
+    private Scanner in;
 
-    public TaskListCommand(ServiceLocator serviceLocator) {
-        super(serviceLocator);
+    public TaskListCommand() {
     }
 
     @Override
@@ -28,10 +26,11 @@ public class TaskListCommand extends AbstractCommand {
 
     @Override
     public void execute() {
+        in = getServiceLocator().getScanner();
         System.out.println("project name");
         String projectName = in.nextLine();
         List<AbstractEntity> tasks = getServiceLocator().getTaskService().findAll(getServiceLocator().getCurrentUser().getId(), projectName);
-        if (tasks.size() > 0) {
+        if (tasks!= null) {
             tasks.forEach(System.out::println);
         }
 

@@ -1,14 +1,26 @@
 package ru.zagorodnikova.tm.api.service;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.entity.AbstractEntity;
 import java.util.List;
 
 public interface ITaskService<T extends AbstractEntity> {
-    T persist(String userId, String projectName, String taskName, String description, String dateStart, String dateFinish);
-    void remove(String userId, String projectName, String taskName);
-    void removeAllInProject(String userId, String projectName);
-    void removeAll(String userId);
-    void merge(String userId, String projectName, String oldTaskName, String taskName, String description, String dateStart, String dateFinish);
-    List<T> findAll(String userId, String projectName);
-    T findOne(String userId, String projectName, String taskName);
+
+    @Nullable
+    T persist(@NotNull String userId, @Nullable String projectName, @Nullable String taskName, @Nullable String description, @Nullable String dateStart, @Nullable String dateFinish);
+
+    void remove(@NotNull String userId, @Nullable String projectName, @Nullable String taskName);
+
+    void removeAllInProject(@NotNull String userId, @Nullable String projectName);
+
+    void removeAll(@NotNull String userId);
+
+    void merge(@NotNull String userId, @Nullable String projectName, @Nullable String oldTaskName, @Nullable String taskName, @Nullable String description, @Nullable String dateStart, @Nullable String dateFinish);
+
+    @Nullable
+    List<T> findAll(@NotNull String userId, @Nullable String projectName);
+
+    @Nullable
+    T findOne(@NotNull String userId, @Nullable String projectName, @Nullable String taskName);
 }

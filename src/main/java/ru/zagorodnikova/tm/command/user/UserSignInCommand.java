@@ -7,11 +7,9 @@ import ru.zagorodnikova.tm.entity.User;
 import java.util.Scanner;
 
 public class UserSignInCommand extends AbstractCommand {
+    private Scanner in;
 
-    private final Scanner in = getServiceLocator().getScanner();
-
-    public UserSignInCommand(ServiceLocator serviceLocator) {
-        super(serviceLocator);
+    public UserSignInCommand() {
     }
 
     @Override
@@ -26,6 +24,7 @@ public class UserSignInCommand extends AbstractCommand {
 
     @Override
     public void execute() {
+        in = getServiceLocator().getScanner();
         System.out.println("Login");
         String login = in.nextLine();
         System.out.println("Password");

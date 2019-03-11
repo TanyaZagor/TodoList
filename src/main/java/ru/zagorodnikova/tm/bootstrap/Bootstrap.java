@@ -1,5 +1,7 @@
 package ru.zagorodnikova.tm.bootstrap;
 
+import lombok.Getter;
+import lombok.Setter;
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.api.repository.IProjectRepository;
 import ru.zagorodnikova.tm.api.repository.ITaskRepository;
@@ -26,6 +28,8 @@ import ru.zagorodnikova.tm.service.UserService;
 
 import java.util.*;
 
+@Setter
+@Getter
 public class Bootstrap implements ServiceLocator {
 
     private final Scanner scanner = new Scanner(System.in);
@@ -39,9 +43,9 @@ public class Bootstrap implements ServiceLocator {
     private User currentUser;
 
 
-    public void init(Bootstrap bootstrap) {
+    public void init(Bootstrap bootstrap, Class[] commandClasses) {
 
-        bootstrap.initCommands(bootstrap);
+        bootstrap.initCommands(bootstrap, commandClasses);
         bootstrap.initProjectsAndUsers();
 
         bootstrap.start();
@@ -88,70 +92,34 @@ public class Bootstrap implements ServiceLocator {
 
     }
 
-    private void initCommands(Bootstrap bootstrap) {
+    private void initCommands(Bootstrap bootstrap, Class[] commandClasses) {
 
-        addCommand(new ProjectCreateCommand(bootstrap));
-        addCommand(new ProjectClearCommand(bootstrap));
-        addCommand(new ProjectFindOneCommand(bootstrap));
-        addCommand(new ProjectListCommand(bootstrap));
-        addCommand(new ProjectRemoveCommand(bootstrap));
-        addCommand(new ProjectUpdateCommand(bootstrap));
-
-        addCommand(new TaskCreateCommand(bootstrap));
-        addCommand(new TaskClearCommand(bootstrap));
-        addCommand(new TaskFindOneCommand(bootstrap));
-        addCommand(new TaskListCommand(bootstrap));
-        addCommand(new TaskRemoveCommand(bootstrap));
-        addCommand(new TaskUpdateCommand(bootstrap));
-
-        addCommand(new UserSignUpCommand(bootstrap));
-        addCommand(new UserSignInCommand(bootstrap));
-        addCommand(new UserSignOutCommand(bootstrap));
-        addCommand(new UserChangePasswordCommand(bootstrap));
-        addCommand(new UserShowCommand(bootstrap));
-        addCommand(new UserUpdateCommand(bootstrap));
-        addCommand(new UserClearCommand(bootstrap));
-        addCommand(new UserRemoveCommand(bootstrap));
-        addCommand(new UserListCommand(bootstrap));
-
-        addCommand(new HelpCommand(bootstrap));
-        addCommand(new AboutCommand(bootstrap));
+        addCommand(commandClasses, bootstrap);
 
     }
 
-    private void addCommand(AbstractCommand command) {
-        commands.put(command.command(), command);
+    private void addCommand(Class[] commandClasses, ServiceLocator bootstrap){
+        for (Class commandClass : commandClasses) {
+
+            if (commandClass.getSuperclass().equals(AbstractCommand.class)) {
+                AbstractCommand abstractCommand = null;
+                try {
+                    abstractCommand = (AbstractCommand) commandClass.newInstance();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+                if (abstractCommand != null) {
+                    abstractCommand.setServiceLocator(bootstrap);
+                    commands.put(abstractCommand.command(), abstractCommand);
+                }
+            }
+        }
     }
 
     private boolean isAuth() {
         return currentUser != null;
     }
 
-    public Scanner getScanner() {
-        return scanner;
-    }
-
-    public IProjectService getProjectService() {
-        return projectService;
-    }
-
-    public ITaskService getTaskService() {
-        return taskService;
-    }
-
-    public Map<String, AbstractCommand> getCommands() {
-        return commands;
-    }
-
-    public IUserService getUserService() {
-        return userService;
-    }
-
-    public User getCurrentUser() {
-        return currentUser;
-    }
-
-    public void setCurrentUser(User currentUser) {
-        this.currentUser = currentUser;
-    }
 }

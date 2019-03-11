@@ -1,17 +1,27 @@
 package ru.zagorodnikova.tm.api.repository;
 
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.entity.AbstractEntity;
-import ru.zagorodnikova.tm.entity.Project;
 
 import java.util.List;
 
 public interface IProjectRepository<T extends AbstractEntity> {
 
-    T persist(T t);
-    void remove(T t);
-    void removeAll(T t);
-    T findOne(T t);
-    void merge(T t);
-    List<T> findAll(T t);
+    @Nullable
+    T persist(@NotNull T t);
+
+    void remove(@NotNull T t);
+
+    void removeAll(@NotNull T t);
+
+    @Nullable
+    T findOne(@NotNull T t);
+
+    void merge(@NotNull T t);
+
+    @Nullable
+    List<T> findAll(@NotNull T t);
 
 }

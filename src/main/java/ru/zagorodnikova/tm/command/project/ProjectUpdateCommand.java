@@ -6,10 +6,9 @@ import java.util.Scanner;
 
 public class ProjectUpdateCommand extends AbstractCommand {
 
-    private final Scanner in = getServiceLocator().getScanner();
+    private Scanner in;
 
-    public ProjectUpdateCommand(ServiceLocator serviceLocator) {
-        super(serviceLocator);
+    public ProjectUpdateCommand() {
     }
 
     @Override
@@ -24,6 +23,7 @@ public class ProjectUpdateCommand extends AbstractCommand {
 
     @Override
     public void execute() {
+        in = getServiceLocator().getScanner();
         System.out.println("project name");
         String oldProjectName = in.nextLine();
         System.out.println("New project name");

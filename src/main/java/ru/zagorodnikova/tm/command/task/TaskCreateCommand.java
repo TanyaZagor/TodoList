@@ -5,10 +5,9 @@ import java.util.Scanner;
 
 public class TaskCreateCommand extends AbstractCommand {
 
-    private final Scanner in = getServiceLocator().getScanner();
+    private Scanner in;
 
-    public TaskCreateCommand(ServiceLocator serviceLocator) {
-        super(serviceLocator);
+    public TaskCreateCommand() {
     }
 
     @Override
@@ -23,6 +22,7 @@ public class TaskCreateCommand extends AbstractCommand {
 
     @Override
     public void execute() {
+        in = getServiceLocator().getScanner();
         System.out.println("project name");
         String projectName = in.nextLine();
         System.out.println("task name");

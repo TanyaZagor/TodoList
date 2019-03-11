@@ -8,10 +8,9 @@ import java.util.Scanner;
 
 public class ProjectFindOneCommand extends AbstractCommand {
 
-    private final Scanner in = getServiceLocator().getScanner();
+    private Scanner in;
 
-    public ProjectFindOneCommand(ServiceLocator serviceLocator) {
-        super(serviceLocator);
+    public ProjectFindOneCommand() {
     }
 
     @Override
@@ -26,6 +25,7 @@ public class ProjectFindOneCommand extends AbstractCommand {
 
     @Override
     public void execute() {
+        in = getServiceLocator().getScanner();
         System.out.println("project name");
         String projectName = in.nextLine();
         Project project = (Project) getServiceLocator().getProjectService().findOne(getServiceLocator().getCurrentUser().getId(), projectName);

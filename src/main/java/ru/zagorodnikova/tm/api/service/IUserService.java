@@ -1,16 +1,28 @@
 package ru.zagorodnikova.tm.api.service;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.entity.AbstractEntity;
 import ru.zagorodnikova.tm.entity.RoleType;
 
 import java.util.List;
 
 public interface IUserService<T extends AbstractEntity> {
-    T signIn(String login, String password);
-    T signUp(String login, String password, String fistName, String lastName, String email, RoleType roleType);
-    void changePassword(String userId, String login, String oldPassword, String newPassword);
-    void update(String userId, String firstName, String lastName, String email);
-    void removeAll(String userId);
-    void remove(String userId);
-    List<T> findAll(RoleType roleType);
+
+    @Nullable
+    T signIn( @Nullable String login, @Nullable String password);
+
+    @Nullable
+    T signUp(@NotNull String login, @Nullable String password, @Nullable String fistName, @Nullable String lastName, @Nullable String email,@NotNull  RoleType roleType);
+
+    void changePassword(@NotNull String userId, @Nullable String login, @Nullable String oldPassword, @Nullable String newPassword);
+
+    void update(@NotNull String userId, @Nullable String firstName, @Nullable String lastName, @Nullable String email);
+
+    void removeAll(@NotNull String userId);
+
+    void remove(@NotNull String userId);
+
+    @Nullable
+    List<T> findAll(@NotNull RoleType roleType);
 }

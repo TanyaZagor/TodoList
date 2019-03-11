@@ -6,8 +6,7 @@ import ru.zagorodnikova.tm.command.AbstractCommand;
 
 public class ProjectClearCommand extends AbstractCommand {
 
-    public ProjectClearCommand(ServiceLocator serviceLocator) {
-        super(serviceLocator);
+    public ProjectClearCommand() {
     }
 
     @Override

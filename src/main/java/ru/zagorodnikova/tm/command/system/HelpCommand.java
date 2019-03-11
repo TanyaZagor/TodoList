@@ -5,8 +5,7 @@ import ru.zagorodnikova.tm.command.AbstractCommand;
 
 public class HelpCommand extends AbstractCommand {
 
-    public HelpCommand(ServiceLocator serviceLocator) {
-        super(serviceLocator);
+    public HelpCommand() {
     }
 
     @Override

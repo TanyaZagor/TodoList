@@ -1,5 +1,7 @@
 package ru.zagorodnikova.tm.service;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.repository.IUserRepository;
 import ru.zagorodnikova.tm.api.service.IUserService;
 import ru.zagorodnikova.tm.entity.AbstractEntity;
@@ -12,11 +14,12 @@ public class UserService extends AbstractService implements IUserService {
 
     private final IUserRepository<AbstractEntity> userRepository;
 
-    public UserService(IUserRepository<AbstractEntity> userRepository) {
+    public UserService(@NotNull IUserRepository<AbstractEntity> userRepository) {
         this.userRepository = userRepository;
     }
 
-    public AbstractEntity signIn(String login, String password) {
+    @Nullable
+    public AbstractEntity signIn(@Nullable String login, @Nullable String password) {
         if (login == null || login.isEmpty()) return null;
         if (password == null || password.isEmpty()) return null;
         User user = new User();
@@ -25,7 +28,8 @@ public class UserService extends AbstractService implements IUserService {
         return userRepository.signIn(user);
     }
 
-    public AbstractEntity signUp(String login, String password, String fistName, String lastName, String email, RoleType roleType) {
+    @Nullable
+    public AbstractEntity signUp(@Nullable String login, @Nullable String password, @Nullable String fistName, @Nullable String lastName, @Nullable String email, RoleType roleType) {
         if (login == null || login.isEmpty()) return null;
         if (password == null || password.isEmpty()) return null;
         if (fistName == null || fistName.isEmpty()) return null;
@@ -35,7 +39,7 @@ public class UserService extends AbstractService implements IUserService {
         return userRepository.persist(user);
     }
 
-    public void changePassword(String userId, String login, String oldPassword, String newPassword) {
+    public void changePassword(@NotNull String userId, @Nullable String login, @Nullable String oldPassword, @Nullable String newPassword) {
         if (login == null || login.isEmpty()) return;
         if (oldPassword == null || oldPassword.isEmpty()) return;
         if (newPassword == null || newPassword.isEmpty()) return;
@@ -50,7 +54,7 @@ public class UserService extends AbstractService implements IUserService {
 
     }
 
-    public void update(String userId, String firstName, String lastName, String email) {
+    public void update(@NotNull String userId, @Nullable String firstName, @Nullable String lastName, @Nullable String email) {
         if (firstName == null || firstName.isEmpty()) return;
         if (lastName == null || lastName.isEmpty()) return;
         if (email == null || email.isEmpty()) return;
@@ -74,6 +78,7 @@ public class UserService extends AbstractService implements IUserService {
         userRepository.removeAll(user);
     }
 
+    @Nullable
     public List<AbstractEntity> findAll(RoleType roleType) {
         User user = new User();
         user.setRoleType(roleType);

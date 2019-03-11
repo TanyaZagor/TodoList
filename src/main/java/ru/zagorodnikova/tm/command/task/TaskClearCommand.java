@@ -7,10 +7,9 @@ import java.util.Scanner;
 
 public class TaskClearCommand extends AbstractCommand {
 
-    private final Scanner in = getServiceLocator().getScanner();
+    private Scanner in;
 
-    public TaskClearCommand(ServiceLocator serviceLocator) {
-        super(serviceLocator);
+    public TaskClearCommand() {
     }
 
     @Override
@@ -25,6 +24,7 @@ public class TaskClearCommand extends AbstractCommand {
 
     @Override
     public void execute() {
+        in = getServiceLocator().getScanner();
         System.out.println("project name");
         String projectName = in.nextLine();
         getServiceLocator().getTaskService().removeAllInProject(getServiceLocator().getCurrentUser().getId(), projectName);

@@ -7,8 +7,7 @@ import ru.zagorodnikova.tm.entity.AbstractEntity;
 import java.util.List;
 
 public class UserListCommand extends AbstractCommand {
-    public UserListCommand(ServiceLocator serviceLocator) {
-        super(serviceLocator);
+    public UserListCommand() {
     }
 
     @Override

@@ -1,5 +1,7 @@
 package ru.zagorodnikova.tm.repository;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.entity.AbstractEntity;
 import ru.zagorodnikova.tm.entity.Task;
 import ru.zagorodnikova.tm.api.repository.ITaskRepository;
@@ -13,7 +15,8 @@ public class TaskRepository extends AbstractRepository<AbstractEntity> implement
 
     private final Map<String, Task> tasks = new LinkedHashMap<>();
 
-    public AbstractEntity persist(AbstractEntity abstractEntity) {
+    @Nullable
+    public AbstractEntity persist(@NotNull AbstractEntity abstractEntity) {
         Task task = (Task) abstractEntity;
         if (!tasks.containsValue(task)) {
             tasks.put(task.getId(), task);
@@ -22,12 +25,12 @@ public class TaskRepository extends AbstractRepository<AbstractEntity> implement
         return null;
     }
 
-    public void remove(AbstractEntity abstractEntity) {
+    public void remove(@NotNull AbstractEntity abstractEntity) {
         Task task = (Task) abstractEntity;
         tasks.entrySet().removeIf((v) -> (v.getValue().getProjectId().equals(task.getProjectId()) && v.getValue().getName().equals(task.getName())));
     }
 
-    public void merge(AbstractEntity abstractEntity) {
+    public void merge(@NotNull AbstractEntity abstractEntity) {
         Task task = (Task) abstractEntity;
         tasks.get(task.getId()).setName(task.getName());
         tasks.get(task.getId()).setDescription(task.getDescription());
@@ -37,17 +40,18 @@ public class TaskRepository extends AbstractRepository<AbstractEntity> implement
     }
 
 
-    public void removeAll(AbstractEntity abstractEntity) {
+    public void removeAll(@NotNull AbstractEntity abstractEntity) {
         Task task = (Task) abstractEntity;
         tasks.entrySet().removeIf((v) -> v.getValue().getUserId().equals(task.getUserId()));
     }
 
-    public void removeAllInProject(AbstractEntity abstractEntity) {
+    public void removeAllInProject(@NotNull AbstractEntity abstractEntity) {
         Task task = (Task) abstractEntity;
         tasks.entrySet().removeIf((v) -> v.getValue().getProjectId().equals(task.getProjectId()));
     }
 
-    public List<AbstractEntity> findAll(AbstractEntity abstractEntity) {
+    @Nullable
+    public List<AbstractEntity> findAll(@NotNull AbstractEntity abstractEntity) {
         Task task = (Task) abstractEntity;
         final List<AbstractEntity> list = new ArrayList<>();
         tasks.forEach((k, v) -> {
@@ -60,7 +64,8 @@ public class TaskRepository extends AbstractRepository<AbstractEntity> implement
 
     }
 
-    public AbstractEntity findOne(AbstractEntity abstractEntity) {
+    @Nullable
+    public AbstractEntity findOne(@NotNull AbstractEntity abstractEntity) {
         Task task = (Task) abstractEntity;
         final List<Task> list = new ArrayList<>();
         tasks.forEach((k, v) -> {

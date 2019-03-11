@@ -8,10 +8,9 @@ import java.util.Scanner;
 
 public class UserChangePasswordCommand extends AbstractCommand {
 
-    private final Scanner in = getServiceLocator().getScanner();
+    private Scanner in;
 
-    public UserChangePasswordCommand(ServiceLocator serviceLocator) {
-        super(serviceLocator);
+    public UserChangePasswordCommand() {
     }
 
     @Override
@@ -26,6 +25,7 @@ public class UserChangePasswordCommand extends AbstractCommand {
 
     @Override
     public void execute() {
+        in = getServiceLocator().getScanner();
         System.out.println("Login");
         String login = in.nextLine();
         System.out.println("Password");

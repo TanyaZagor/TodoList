@@ -1,9 +1,16 @@
 package ru.zagorodnikova.tm.entity;
 
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.util.Objects;
 import java.util.UUID;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class Task extends AbstractEntity {
 
     private String id = UUID.randomUUID().toString();
@@ -14,8 +21,6 @@ public class Task extends AbstractEntity {
     private String dateStart;
     private String dateFinish;
 
-    public Task(){
-    }
 
     public Task(String userId, String projectId, String name, String  description, String dateStart, String dateFinish) {
         this.userId = userId;
@@ -24,64 +29,6 @@ public class Task extends AbstractEntity {
         this.description = description;
         this.dateStart = dateStart;
         this.dateFinish = dateFinish;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-
-    public String getDateFinish() {
-        return dateFinish;
-    }
-
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setDateFinish(String dateFinish) {
-        this.dateFinish = dateFinish;
-    }
-
-    public String getDateStart() {
-        return dateStart;
-    }
-
-    public void setDateStart(String dateStart) {
-        this.dateStart = dateStart;
-    }
-
-    public String getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(String projectId) {
-        this.projectId = projectId;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     @Override

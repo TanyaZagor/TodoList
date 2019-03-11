@@ -1,5 +1,7 @@
 package ru.zagorodnikova.tm.api.service;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.entity.AbstractEntity;
 import ru.zagorodnikova.tm.entity.Project;
 
@@ -7,10 +9,18 @@ import java.util.List;
 
 public interface IProjectService<T extends AbstractEntity> {
 
-    T persist(String userId, String projectName, String description, String dateStart, String dateFinish);
-    void remove(String userId, String projectName);
-    void removeAll(String userId);
-    List<T> findAll(String userId);
-    T findOne(String userId, String projectName);
-    void merge(String userId, String oldProjectName, String projectName, String description, String dateStart, String dateFinish);
+    @Nullable
+    T persist(@NotNull String userId, @Nullable String projectName, @Nullable String description, @Nullable String dateStart, @Nullable String dateFinish);
+
+    void remove(@NotNull String userId, @Nullable String projectName);
+
+    void removeAll(@NotNull String userId);
+
+    @Nullable
+    List<T> findAll(@NotNull String userId);
+
+    @Nullable
+    T findOne(@NotNull String userId, @Nullable String projectName);
+
+    void merge(@NotNull String userId, @Nullable String oldProjectName, @Nullable String projectName, @Nullable String description, @Nullable String dateStart, @Nullable String dateFinish);
 }
