@@ -5,12 +5,12 @@ import ru.zagorodnikova.tm.entity.Project;
 
 import java.util.List;
 
-public interface IProjectService {
+public interface IProjectService<T extends AbstractEntity> {
 
-    AbstractEntity persist(String userId, String projectName, String description, String dateStart, String dateFinish);
+    T persist(String userId, String projectName, String description, String dateStart, String dateFinish);
     void remove(String userId, String projectName);
     void removeAll(String userId);
-    List<AbstractEntity> findAll(String userId);
-    AbstractEntity findOne(String userId, String projectName);
+    List<T> findAll(String userId);
+    T findOne(String userId, String projectName);
     void merge(String userId, String oldProjectName, String projectName, String description, String dateStart, String dateFinish);
 }

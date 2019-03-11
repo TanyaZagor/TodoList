@@ -9,7 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ProjectRepository extends AbstractRepository  implements IProjectRepository {
+public class ProjectRepository extends AbstractRepository<AbstractEntity> implements IProjectRepository<AbstractEntity> {
 
     private final Map<String, Project> projects = new LinkedHashMap<>();
 

@@ -12,10 +12,10 @@ import java.util.List;
 
 public class TaskService extends AbstractService implements ITaskService {
 
-    private final ITaskRepository taskRepository;
-    private final IProjectRepository projectRepository;
+    private final ITaskRepository<AbstractEntity> taskRepository;
+    private final IProjectRepository<AbstractEntity> projectRepository;
 
-    public TaskService(ITaskRepository taskRepository, IProjectRepository projectRepository) {
+    public TaskService(ITaskRepository<AbstractEntity> taskRepository, IProjectRepository<AbstractEntity> projectRepository) {
         this.taskRepository = taskRepository;
         this.projectRepository = projectRepository;
 

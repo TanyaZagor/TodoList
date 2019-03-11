@@ -10,10 +10,10 @@ import java.util.List;
 
 public class ProjectService extends AbstractService implements IProjectService {
 
-    private final IProjectRepository projectRepository;
-    private final ITaskRepository taskRepository;
+    private final IProjectRepository<AbstractEntity> projectRepository;
+    private final ITaskRepository<AbstractEntity> taskRepository;
 
-    public ProjectService(IProjectRepository projectRepository, ITaskRepository taskRepository) {
+    public ProjectService(IProjectRepository<AbstractEntity> projectRepository, ITaskRepository<AbstractEntity> taskRepository) {
         this.projectRepository = projectRepository;
         this.taskRepository = taskRepository;
     }

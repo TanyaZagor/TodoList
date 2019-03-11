@@ -1,16 +1,17 @@
 package ru.zagorodnikova.tm.api.repository;
 
 import ru.zagorodnikova.tm.entity.AbstractEntity;
+import ru.zagorodnikova.tm.entity.Project;
 
 import java.util.List;
 
-public interface IProjectRepository {
+public interface IProjectRepository<T extends AbstractEntity> {
 
-    AbstractEntity persist(AbstractEntity project);
-    void remove(AbstractEntity abstractEntity);
-    void removeAll(AbstractEntity abstractEntity);
-    AbstractEntity findOne(AbstractEntity abstractEntity);
-    void merge(AbstractEntity abstractEntity);
-    List<AbstractEntity> findAll(AbstractEntity abstractEntity);
+    T persist(T t);
+    void remove(T t);
+    void removeAll(T t);
+    T findOne(T t);
+    void merge(T t);
+    List<T> findAll(T t);
 
 }

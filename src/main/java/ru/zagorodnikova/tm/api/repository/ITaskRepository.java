@@ -6,14 +6,14 @@ import ru.zagorodnikova.tm.entity.AbstractEntity;
 import java.util.List;
 
 
-public interface ITaskRepository {
+public interface ITaskRepository<T extends AbstractEntity> {
 
-    AbstractEntity persist(AbstractEntity abstractEntity);
-    void remove(AbstractEntity abstractEntity);
-    void removeAllInProject(AbstractEntity abstractEntity);
-    void removeAll(AbstractEntity abstractEntity);
-    void merge(AbstractEntity abstractEntity);
-    List<AbstractEntity> findAll(AbstractEntity abstractEntity);
-    AbstractEntity findOne(AbstractEntity abstractEntity);
+    T persist(T t);
+    void remove(T t);
+    void removeAll(T t);
+    void removeAllInProject(T t);
+    T findOne(T t);
+    void merge(T t);
+    List<T> findAll(T t);
 
 }

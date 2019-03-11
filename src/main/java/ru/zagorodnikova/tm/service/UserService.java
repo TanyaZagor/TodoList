@@ -10,9 +10,9 @@ import java.util.List;
 
 public class UserService extends AbstractService implements IUserService {
 
-    private final IUserRepository userRepository;
+    private final IUserRepository<AbstractEntity> userRepository;
 
-    public UserService(IUserRepository userRepository) {
+    public UserService(IUserRepository<AbstractEntity> userRepository) {
         this.userRepository = userRepository;
     }
 

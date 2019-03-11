@@ -4,15 +4,15 @@ import ru.zagorodnikova.tm.entity.AbstractEntity;
 
 import java.util.List;
 
-public abstract class AbstractRepository {
+public abstract class AbstractRepository<T extends AbstractEntity> {
 
-    abstract public AbstractEntity persist(AbstractEntity abstractEntity);
+    abstract public T persist(T t);
 
-    abstract public void remove(AbstractEntity abstractEntity);
+    abstract public void remove(T t);
 
-    abstract public void removeAll(AbstractEntity abstractEntity);
+    abstract public void removeAll(T t);
 
-    abstract public AbstractEntity findOne(AbstractEntity abstractEntity);
-    abstract public void merge(AbstractEntity abstractEntity);
-    abstract public List<AbstractEntity> findAll(AbstractEntity abstractEntity);
+    abstract public T findOne(T t);
+    abstract public void merge(T t);
+    abstract public List<T> findAll(T t);
 }
