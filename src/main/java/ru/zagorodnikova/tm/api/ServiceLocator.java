@@ -34,4 +34,5 @@ public interface ServiceLocator {
 
     void setCurrentUser(User user);
 
+    void execute(String command);
 }

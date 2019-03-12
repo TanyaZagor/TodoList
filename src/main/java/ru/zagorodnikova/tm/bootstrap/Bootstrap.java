@@ -2,6 +2,7 @@ package ru.zagorodnikova.tm.bootstrap;
 
 import lombok.Getter;
 import lombok.Setter;
+import ru.zagorodnikova.tm.TerminalService;
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.api.repository.IProjectRepository;
 import ru.zagorodnikova.tm.api.repository.ITaskRepository;
@@ -9,15 +10,10 @@ import ru.zagorodnikova.tm.api.repository.IUserRepository;
 import ru.zagorodnikova.tm.api.service.IProjectService;
 import ru.zagorodnikova.tm.api.service.ITaskService;
 import ru.zagorodnikova.tm.api.service.IUserService;
-import ru.zagorodnikova.tm.command.system.AboutCommand;
-import ru.zagorodnikova.tm.command.user.*;
 import ru.zagorodnikova.tm.entity.AbstractEntity;
 import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.entity.RoleType;
 import ru.zagorodnikova.tm.command.AbstractCommand;
-import ru.zagorodnikova.tm.command.project.*;
-import ru.zagorodnikova.tm.command.system.HelpCommand;
-import ru.zagorodnikova.tm.command.task.*;
 import ru.zagorodnikova.tm.entity.User;
 import ru.zagorodnikova.tm.repository.ProjectRepository;
 import ru.zagorodnikova.tm.repository.TaskRepository;
@@ -40,28 +36,23 @@ public class Bootstrap implements ServiceLocator {
     private final IProjectService projectService = new ProjectService(projectRepository, taskRepository);
     private final ITaskService taskService = new TaskService(taskRepository, projectRepository);
     private final IUserService userService = new UserService(userRepository);
+    private final TerminalService terminalService = new TerminalService(this);
     private User currentUser;
 
 
-    public void init(Bootstrap bootstrap, Class[] commandClasses) {
+    public void init(Class[] commandClasses) {
 
-        bootstrap.initCommands(bootstrap, commandClasses);
-        bootstrap.initProjectsAndUsers();
+        this.initCommands(this, commandClasses);
+        this.initProjectsAndUsers();
 
-        bootstrap.start();
+        this.start();
     }
 
     private void start() {
-        System.out.println("Welcome");
-        String command = "";
-        while (!"exit".equals(command)) {
-            System.out.println("Command: ");
-            command = scanner.nextLine();
-            execute(command);
-        }
+        terminalService.start();
     }
 
-    private void execute(String command) {
+    public void execute(String command) {
         if (command == null || command.isEmpty()) return;
         final AbstractCommand abstractCommand = commands.get(command);
         if (abstractCommand == null) return;
