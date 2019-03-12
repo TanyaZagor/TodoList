@@ -6,10 +6,7 @@ import ru.zagorodnikova.tm.entity.AbstractEntity;
 import ru.zagorodnikova.tm.entity.Task;
 import ru.zagorodnikova.tm.api.repository.ITaskRepository;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TaskRepository extends AbstractRepository<AbstractEntity> implements ITaskRepository<AbstractEntity> {
 
@@ -79,4 +76,23 @@ public class TaskRepository extends AbstractRepository<AbstractEntity> implement
         return null;
     }
 
+    @Nullable
+    public List<AbstractEntity> sortByDateCreated(List<AbstractEntity> list) {
+        list.sort(((o1, o2) -> ((Task)o2).getDateCreate().compareTo(((Task)o1).getDateCreate())));
+        Collections.reverse(list);
+        return list;
+    }
+
+    @Nullable
+    public List<AbstractEntity> sortByDateStart(List<AbstractEntity> list) {
+        list.sort(((o1, o2) -> ((Task)o2).getDateStart().compareTo(((Task)o1).getDateStart())));
+        Collections.reverse(list);
+        return list;
+    }
+    @Nullable
+    public List<AbstractEntity> sortByDateFinish(List<AbstractEntity> list) {
+        list.sort(((o1, o2) -> ((Task)o2).getDateFinish().compareTo(((Task)o1).getDateFinish())));
+        Collections.reverse(list);
+        return list;
+    }
 }

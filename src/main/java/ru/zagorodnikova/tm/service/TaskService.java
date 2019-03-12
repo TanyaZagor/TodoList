@@ -130,6 +130,19 @@ public class TaskService extends AbstractService implements ITaskService {
         }
         return null;
     }
+    @Nullable
+    public List<AbstractEntity> sortByDateCreated(@NotNull String userId, @Nullable String projectName) {
+        return taskRepository.sortByDateCreated(findAll(userId, projectName));
+    }
+
+    @Nullable
+    public List<AbstractEntity> sortByDateStart(@NotNull String userId, @Nullable String projectName) {
+        return taskRepository.sortByDateStart(findAll(userId, projectName));
+    }
+    @Nullable
+    public List<AbstractEntity> sortByDateFinish(@NotNull String userId, @Nullable String projectName) {
+        return taskRepository.sortByDateFinish(findAll(userId, projectName));
+    }
 
 
 }

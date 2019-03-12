@@ -25,6 +25,7 @@ public class App {
             TaskListCommand.class,
             TaskRemoveCommand.class,
             TaskUpdateCommand.class,
+            TaskSortByStartCommand.class,
             UserUpdateCommand.class,
             UserShowCommand.class,
             UserSignOutCommand.class,

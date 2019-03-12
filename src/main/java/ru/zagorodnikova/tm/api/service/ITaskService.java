@@ -23,4 +23,13 @@ public interface ITaskService<T extends AbstractEntity> {
 
     @Nullable
     T findOne(@NotNull String userId, @Nullable String projectName, @Nullable String taskName);
+
+    @Nullable
+    List<T> sortByDateCreated(@NotNull String userId, @Nullable String projectName);
+
+    @Nullable
+    List<T> sortByDateStart(@NotNull String userId, @Nullable String projectName);
+
+    @Nullable
+    List<T> sortByDateFinish(@NotNull String userId, @Nullable String projectName);
 }
