@@ -31,29 +31,24 @@ public class ProjectService extends AbstractService implements IProjectService{
         newProject.setName(projectName);
         newProject.setUserId(userId);
         Project project = (Project) projectRepository.findOne(newProject);
-        if (project == null) {
-            if (description == null || description.isEmpty()) return null;
-            if (dateStart == null || dateStart.isEmpty()) return null;
-            if (dateFinish == null || dateFinish.isEmpty()) return null;
-            newProject.setDescription(description);
-            newProject.setUserId(userId);
-            newProject.setDateStart(UtilDateFormatter.dateFormatter(dateStart));
-            newProject.setDateFinish(UtilDateFormatter.dateFormatter(dateFinish));
-            return projectRepository.persist(newProject);
-        }
-        return null;
+        if (description == null || description.isEmpty()) return null;
+        if (dateStart == null || dateStart.isEmpty()) return null;
+        if (dateFinish == null || dateFinish.isEmpty()) return null;
+        newProject.setDescription(description);
+        newProject.setUserId(userId);
+        newProject.setDateStart(UtilDateFormatter.dateFormatter(dateStart));
+        newProject.setDateFinish(UtilDateFormatter.dateFormatter(dateFinish));
+        return projectRepository.persist(newProject);
     }
 
-    public void remove(@NotNull String userId, @Nullable String projectName) throws NullPointerException {
+    public void remove(@NotNull String userId, @Nullable String projectName){
         if (projectName == null || projectName.isEmpty()) return;
         Project newProject= new Project();
         newProject.setName(projectName);
         newProject.setUserId(userId);
         final Project project = (Project) projectRepository.findOne(newProject);
-        if (project != null) {
-            projectRepository.remove(project);
-            taskRepository.removeAllInProject(project);
-        }
+        projectRepository.remove(project);
+        taskRepository.removeAllInProject(project);
     }
 
     public void removeAll(@NotNull String userId) {
@@ -85,24 +80,22 @@ public class ProjectService extends AbstractService implements IProjectService{
         return projectRepository.findOne(newProject);
     }
 
-    public void merge(@NotNull String userId, @Nullable String oldProjectName, @Nullable String projectName, @Nullable String description, @Nullable String dateStart, @Nullable String dateFinish) throws NullPointerException {
+    public void merge(@NotNull String userId, @Nullable String oldProjectName, @Nullable String projectName, @Nullable String description, @Nullable String dateStart, @Nullable String dateFinish){
         if (oldProjectName == null || oldProjectName.isEmpty()) return;
         Project newProject = new Project();
         newProject.setName(oldProjectName);
         newProject.setUserId(userId);
         Project project = (Project) projectRepository.findOne(newProject);
-        if (project != null) {
-            if (projectName == null || projectName.isEmpty()) return;
-            if (description == null || description.isEmpty()) return;
-            if (dateStart == null || dateStart.isEmpty()) return;
-            if (dateFinish == null || dateFinish.isEmpty()) return;
-            newProject.setId(project.getId());
-            newProject.setName(projectName);
-            newProject.setDescription(description);
-            newProject.setDateStart(UtilDateFormatter.dateFormatter(dateStart));
-            newProject.setDateFinish(UtilDateFormatter.dateFormatter(dateFinish));
-            projectRepository.merge(newProject);
-        }
+        if (projectName == null || projectName.isEmpty()) return;
+        if (description == null || description.isEmpty()) return;
+        if (dateStart == null || dateStart.isEmpty()) return;
+        if (dateFinish == null || dateFinish.isEmpty()) return;
+        newProject.setId(project.getId());
+        newProject.setName(projectName);
+        newProject.setDescription(description);
+        newProject.setDateStart(UtilDateFormatter.dateFormatter(dateStart));
+        newProject.setDateFinish(UtilDateFormatter.dateFormatter(dateFinish));
+        projectRepository.merge(newProject);
     }
 
     @Nullable

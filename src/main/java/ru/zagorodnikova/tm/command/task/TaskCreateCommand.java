@@ -21,7 +21,7 @@ public class TaskCreateCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() throws IllegalArgumentException {
+    public void execute() {
         in = getServiceLocator().getScanner();
         System.out.println("project name");
         String projectName = in.nextLine();

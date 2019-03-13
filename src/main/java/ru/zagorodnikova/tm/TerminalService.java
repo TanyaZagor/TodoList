@@ -24,7 +24,9 @@ public class TerminalService {
             try {
                 serviceLocator.execute(command);
             } catch (IllegalArgumentException e) {
-                System.out.println(e);
+                System.out.println(e.getMessage());
+            } catch (NullPointerException e) {
+                System.out.println("wrong data");
             }
         }
     }
