@@ -31,14 +31,19 @@ public class ProjectService extends AbstractService implements IProjectService{
         newProject.setName(projectName);
         newProject.setUserId(userId);
         Project project = (Project) projectRepository.findOne(newProject);
-        if (description == null || description.isEmpty()) return null;
-        if (dateStart == null || dateStart.isEmpty()) return null;
-        if (dateFinish == null || dateFinish.isEmpty()) return null;
-        newProject.setDescription(description);
-        newProject.setUserId(userId);
-        newProject.setDateStart(UtilDateFormatter.dateFormatter(dateStart));
-        newProject.setDateFinish(UtilDateFormatter.dateFormatter(dateFinish));
-        return projectRepository.persist(newProject);
+        if (project == null) {
+            if (description == null || description.isEmpty()) return null;
+            if (dateStart == null || dateStart.isEmpty()) return null;
+            if (dateFinish == null || dateFinish.isEmpty()) return null;
+            Date start = UtilDateFormatter.dateFormatter(dateStart);
+            Date finish = UtilDateFormatter.dateFormatter(dateFinish);
+            newProject.setDescription(description);
+            newProject.setUserId(userId);
+            newProject.setDateStart(start);
+            newProject.setDateFinish(finish);
+            return projectRepository.persist(newProject);
+        }
+        return null;
     }
 
     public void remove(@NotNull String userId, @Nullable String projectName){
@@ -90,11 +95,13 @@ public class ProjectService extends AbstractService implements IProjectService{
         if (description == null || description.isEmpty()) return;
         if (dateStart == null || dateStart.isEmpty()) return;
         if (dateFinish == null || dateFinish.isEmpty()) return;
+        Date start = UtilDateFormatter.dateFormatter(dateStart);
+        Date finish = UtilDateFormatter.dateFormatter(dateFinish);
         newProject.setId(project.getId());
         newProject.setName(projectName);
         newProject.setDescription(description);
-        newProject.setDateStart(UtilDateFormatter.dateFormatter(dateStart));
-        newProject.setDateFinish(UtilDateFormatter.dateFormatter(dateFinish));
+        newProject.setDateStart(start);
+        newProject.setDateFinish(finish);
         projectRepository.merge(newProject);
     }
 

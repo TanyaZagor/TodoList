@@ -79,10 +79,12 @@ public class TaskService extends AbstractService implements ITaskService {
         if (dateStart == null || dateStart.isEmpty()) return;
         if (dateFinish == null || dateFinish.isEmpty()) return;
         Task task = (Task) findOne(userId, projectName, oldTaskName, null);
+        Date start = UtilDateFormatter.dateFormatter(dateStart);
+        Date finish = UtilDateFormatter.dateFormatter(dateFinish);
         task.setName(taskName);
         task.setDescription(description);
-        task.setDateStart(UtilDateFormatter.dateFormatter(dateStart));
-        task.setDateFinish(UtilDateFormatter.dateFormatter(dateFinish));
+        task.setDateStart(start);
+        task.setDateFinish(finish);
         taskRepository.merge(task);
     }
 
