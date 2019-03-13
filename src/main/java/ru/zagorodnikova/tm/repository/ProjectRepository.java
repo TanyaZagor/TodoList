@@ -46,11 +46,20 @@ public class ProjectRepository extends AbstractRepository<AbstractEntity> implem
     public AbstractEntity findOne(@NotNull AbstractEntity abstractEntity){
         Project project = (Project) abstractEntity;
         final List<Project> list = new ArrayList<>();
-        projects.forEach((k, v) -> {
-            if (v.getName().equals(project.getName()) && v.getUserId().equals(project.getUserId())) {
-                list.add(v);
-            }
-        });
+        if (project.getDescription() != null && !project.getDescription().isEmpty()) {
+            projects.forEach((k, v) -> {
+                if (v.getDescription().contains(project.getDescription()) && v.getUserId().equals(project.getUserId())) {
+                    list.add(v);
+                }
+            });
+        }
+        if (project.getName() != null && !project.getName().isEmpty()) {
+            projects.forEach((k, v) -> {
+                if (v.getName().contains(project.getName()) && v.getUserId().equals(project.getUserId())) {
+                    list.add(v);
+                }
+            });
+        }
         if (list.size() > 0) {
             return list.get(0);
         }

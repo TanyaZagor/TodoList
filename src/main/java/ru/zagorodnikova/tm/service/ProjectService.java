@@ -67,8 +67,14 @@ public class ProjectService extends AbstractService implements IProjectService {
     }
 
     @Nullable
-    public AbstractEntity findOne(@NotNull String userId, @Nullable String projectName) {
-        if (projectName == null || projectName.isEmpty()) return null;
+    public AbstractEntity findOne(@NotNull String userId, @Nullable String projectName, @Nullable String projectDescription) {
+        if (projectName == null || projectName.isEmpty()) {
+            if (projectDescription == null || projectDescription.isEmpty()) return null;
+            Project newProject = new Project();
+            newProject.setDescription(projectDescription);
+            newProject.setUserId(userId);
+            return projectRepository.findOne(newProject);
+        }
         Project newProject = new Project();
         newProject.setName(projectName);
         newProject.setUserId(userId);

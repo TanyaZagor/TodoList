@@ -1,6 +1,5 @@
 package ru.zagorodnikova.tm.command.task;
 
-import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.entity.Task;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 
@@ -30,7 +29,9 @@ public class TaskFindOneCommand extends AbstractCommand {
         String projectName = in.nextLine();
         System.out.println("task name");
         String taskName = in.nextLine();
-        Task task = (Task) getServiceLocator().getTaskService().findOne(getServiceLocator().getCurrentUser().getId(), projectName, taskName);
+        System.out.println("task description");
+        String taskDescription = in.nextLine();
+        Task task = (Task) getServiceLocator().getTaskService().findOne(getServiceLocator().getCurrentUser().getId(), projectName, taskName, taskDescription);
         if (task != null) {
             System.out.println(task);
         }

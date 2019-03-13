@@ -65,16 +65,26 @@ public class TaskRepository extends AbstractRepository<AbstractEntity> implement
     public AbstractEntity findOne(@NotNull AbstractEntity abstractEntity) {
         Task task = (Task) abstractEntity;
         final List<Task> list = new ArrayList<>();
-        tasks.forEach((k, v) -> {
-            if(v.getProjectId().equals(task.getProjectId()) && v.getName().equals(task.getName())) {
-                list.add(v);
-            }
-        });
+        if (task.getDescription() != null && !task.getDescription().isEmpty()) {
+            tasks.forEach((k, v) -> {
+                if (v.getProjectId().equals(task.getProjectId()) && v.getDescription().contains(task.getDescription())) {
+                    list.add(v);
+                }
+            });
+        }
+        if (task.getName() != null && !task.getName().isEmpty()) {
+            tasks.forEach((k, v) -> {
+                if (v.getProjectId().equals(task.getProjectId()) && v.getName().contains(task.getName())) {
+                    list.add(v);
+                }
+            });
+        }
         if (list.size() > 0) {
             return list.get(0);
         }
         return null;
     }
+
 
     @Nullable
     public List<AbstractEntity> sortByDateCreated(List<AbstractEntity> list) {

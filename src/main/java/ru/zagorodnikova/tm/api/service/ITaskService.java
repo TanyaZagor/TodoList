@@ -22,7 +22,7 @@ public interface ITaskService<T extends AbstractEntity> {
     List<T> findAll(@NotNull String userId, @Nullable String projectName);
 
     @Nullable
-    T findOne(@NotNull String userId, @Nullable String projectName, @Nullable String taskName);
+    T findOne(@NotNull String userId, @Nullable String projectName, @Nullable String taskName, @Nullable String taskDescription);
 
     @Nullable
     List<T> sortByDateCreated(@NotNull String userId, @Nullable String projectName);

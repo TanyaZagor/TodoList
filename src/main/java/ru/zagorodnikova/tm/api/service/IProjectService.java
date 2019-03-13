@@ -20,7 +20,7 @@ public interface IProjectService<T extends AbstractEntity> {
     List<T> findAll(@NotNull String userId);
 
     @Nullable
-    T findOne(@NotNull String userId, @Nullable String projectName);
+    T findOne(@NotNull String userId, @Nullable String projectName, @Nullable String projectDescription);
 
     void merge(@NotNull String userId, @Nullable String oldProjectName, @Nullable String projectName, @Nullable String description, @Nullable String dateStart, @Nullable String dateFinish);
 
