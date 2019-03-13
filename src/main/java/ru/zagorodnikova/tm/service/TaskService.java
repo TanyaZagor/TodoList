@@ -8,7 +8,9 @@ import ru.zagorodnikova.tm.api.service.ITaskService;
 import ru.zagorodnikova.tm.entity.AbstractEntity;
 import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.entity.Task;
+import ru.zagorodnikova.tm.util.UtilDateFormatter;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -24,7 +26,7 @@ public class TaskService extends AbstractService implements ITaskService {
     }
 
     @Nullable
-    public AbstractEntity persist(@NotNull String userId, @Nullable String projectName, @Nullable String taskName, @Nullable String description, @Nullable String dateStart, @Nullable String dateFinish) {
+    public AbstractEntity persist(@NotNull String userId, @Nullable String projectName, @Nullable String taskName, @Nullable String description, @Nullable String dateStart, @Nullable String dateFinish) throws IllegalArgumentException, NullPointerException {
         if (projectName == null || projectName.isEmpty()) return null;
         Project newProject = new Project();
         newProject.setName(projectName);
@@ -35,13 +37,15 @@ public class TaskService extends AbstractService implements ITaskService {
             if (description == null || description.isEmpty()) return null;
             if (dateStart == null || dateStart.isEmpty()) return null;
             if (dateFinish == null || dateFinish.isEmpty()) return null;
-            Task task = new Task(userId, project.getId(), taskName, description, dateStart, dateFinish);
+            Date start = UtilDateFormatter.dateFormatter(dateStart);
+            Date finish = UtilDateFormatter.dateFormatter(dateFinish);
+            Task task = new Task(userId, project.getId(), taskName, description, start, finish);
             return taskRepository.persist(task);
         }
         return null;
     }
 
-    public void remove(@NotNull String userId, @Nullable String projectName, @Nullable String taskName){
+    public void remove(@NotNull String userId, @Nullable String projectName, @Nullable String taskName) throws NullPointerException{
         if (projectName == null || projectName.isEmpty()) return;
         Project newProject = new Project();
         newProject.setName(projectName);
@@ -63,7 +67,7 @@ public class TaskService extends AbstractService implements ITaskService {
         taskRepository.removeAll(task);
     }
 
-    public void removeAllInProject(@NotNull String userId, @Nullable String projectName) {
+    public void removeAllInProject(@NotNull String userId, @Nullable String projectName) throws NullPointerException{
         if (projectName == null || projectName.isEmpty()) return;
         Project newProject = new Project();
         newProject.setName(projectName);
@@ -76,7 +80,7 @@ public class TaskService extends AbstractService implements ITaskService {
         }
     }
 
-    public void merge(@NotNull String userId, @Nullable String projectName, @Nullable String oldTaskName, @Nullable String taskName, @Nullable String description, @Nullable String dateStart, @Nullable String dateFinish) {
+    public void merge(@NotNull String userId, @Nullable String projectName, @Nullable String oldTaskName, @Nullable String taskName, @Nullable String description, @Nullable String dateStart, @Nullable String dateFinish) throws IllegalArgumentException, NullPointerException {
         if (projectName == null || projectName.isEmpty()) return;
         Project newProject = new Project();
         newProject.setName(projectName);
@@ -90,15 +94,15 @@ public class TaskService extends AbstractService implements ITaskService {
             Task task = (Task) findOne(userId, projectName, oldTaskName, null);
             task.setName(taskName);
             task.setDescription(description);
-            task.setDateStart(dateStart);
-            task.setDateFinish(dateFinish);
+            task.setDateStart(UtilDateFormatter.dateFormatter(dateStart));
+            task.setDateFinish(UtilDateFormatter.dateFormatter(dateFinish));
             taskRepository.merge(task);
         }
 
     }
 
     @Nullable
-    public List<AbstractEntity> findAll(@NotNull String userId, @Nullable String projectName) {
+    public List<AbstractEntity> findAll(@NotNull String userId, @Nullable String projectName) throws NullPointerException {
         if (projectName == null || projectName.isEmpty()) return null;
         Project newProject = new Project();
         newProject.setName(projectName);
@@ -113,7 +117,7 @@ public class TaskService extends AbstractService implements ITaskService {
     }
 
     @Nullable
-    public AbstractEntity findOne(@NotNull String userId, @Nullable String projectName,@Nullable String taskName, @Nullable String taskDescription) {
+    public AbstractEntity findOne(@NotNull String userId, @Nullable String projectName,@Nullable String taskName, @Nullable String taskDescription) throws NullPointerException {
         if (projectName == null || projectName.isEmpty()) return null;
         Project newProject = new Project();
         newProject.setName(projectName);
@@ -135,21 +139,21 @@ public class TaskService extends AbstractService implements ITaskService {
         return null;
     }
     @Nullable
-    public List<AbstractEntity> sortByDateCreated(@NotNull String userId, @Nullable String projectName) {
+    public List<AbstractEntity> sortByDateCreated(@NotNull String userId, @Nullable String projectName) throws NullPointerException  {
         return taskRepository.sortByDateCreated(findAll(userId, projectName));
     }
 
     @Nullable
-    public List<AbstractEntity> sortByDateStart(@NotNull String userId, @Nullable String projectName) {
+    public List<AbstractEntity> sortByDateStart(@NotNull String userId, @Nullable String projectName) throws NullPointerException  {
         return taskRepository.sortByDateStart(findAll(userId, projectName));
     }
     @Nullable
-    public List<AbstractEntity> sortByDateFinish(@NotNull String userId, @Nullable String projectName) {
+    public List<AbstractEntity> sortByDateFinish(@NotNull String userId, @Nullable String projectName) throws NullPointerException  {
         return taskRepository.sortByDateFinish(findAll(userId, projectName));
     }
 
     @Nullable
-    public List<AbstractEntity> sortByStatus(@NotNull String userId, @Nullable String projectName) {
+    public List<AbstractEntity> sortByStatus(@NotNull String userId, @Nullable String projectName) throws NullPointerException  {
         return taskRepository.sortByStatus(findAll(userId, projectName));
     }
 

@@ -21,7 +21,11 @@ public class TerminalService {
         while (!"exit".equals(command)) {
             System.out.println("Command: ");
             command = scanner.nextLine();
-            serviceLocator.execute(command);
+            try {
+                serviceLocator.execute(command);
+            } catch (IllegalArgumentException e) {
+                System.out.println(e);
+            }
         }
     }
 }

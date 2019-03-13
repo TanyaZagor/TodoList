@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.zagorodnikova.tm.util.UtilDateFormatter;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -44,33 +45,15 @@ public class Task extends AbstractEntity {
     @NotNull
     private Status status = Status.SCHEDULED;
 
-    public Task(String userId, @Nullable String projectId, @Nullable String name, @Nullable String  description, @Nullable String dateStart, @Nullable String dateFinish) {
+    public Task(String userId, @Nullable String projectId, @Nullable String name, @Nullable String  description, @Nullable Date dateStart, @Nullable Date dateFinish) {
         this.userId = userId;
         this.name = name;
         this.projectId = projectId;
         this.description = description;
-        this.dateStart = dateFormatter(dateStart);
-        this.dateFinish = dateFormatter(dateFinish);
+        this.dateStart = dateStart;
+        this.dateFinish = dateFinish;
     }
 
-    public Date dateFormatter(String date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-        Date newDate = new Date();
-        try {
-            newDate = dateFormat.parse(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return newDate;
-    }
-
-    public void setDateStart(@Nullable String dateStart) {
-        this.dateStart = dateFormatter(dateStart);
-    }
-
-    public void setDateFinish(@Nullable String dateFinish) {
-        this.dateFinish = dateFormatter(dateFinish);
-    }
 
     public void setDateStart(@Nullable Date dateStart) {
         this.dateStart = dateStart;

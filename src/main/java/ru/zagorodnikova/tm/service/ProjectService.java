@@ -7,10 +7,14 @@ import ru.zagorodnikova.tm.api.repository.ITaskRepository;
 import ru.zagorodnikova.tm.api.service.IProjectService;
 import ru.zagorodnikova.tm.entity.AbstractEntity;
 import ru.zagorodnikova.tm.entity.Project;
+import ru.zagorodnikova.tm.util.UtilDateFormatter;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
-public class ProjectService extends AbstractService implements IProjectService {
+public class ProjectService extends AbstractService implements IProjectService{
 
     private final IProjectRepository<AbstractEntity> projectRepository;
     private final ITaskRepository<AbstractEntity> taskRepository;
@@ -21,7 +25,7 @@ public class ProjectService extends AbstractService implements IProjectService {
     }
 
     @Nullable
-    public AbstractEntity persist(@NotNull String userId, @Nullable String projectName, @Nullable String description, @Nullable String dateStart, @Nullable String dateFinish) {
+    public AbstractEntity persist(@NotNull String userId, @Nullable String projectName, @Nullable String description, @Nullable String dateStart, @Nullable String dateFinish){
         if (projectName == null || projectName.isEmpty()) return null;
         Project newProject = new Project();
         newProject.setName(projectName);
@@ -33,14 +37,14 @@ public class ProjectService extends AbstractService implements IProjectService {
             if (dateFinish == null || dateFinish.isEmpty()) return null;
             newProject.setDescription(description);
             newProject.setUserId(userId);
-            newProject.setDateStart(dateStart);
-            newProject.setDateFinish(dateFinish);
+            newProject.setDateStart(UtilDateFormatter.dateFormatter(dateStart));
+            newProject.setDateFinish(UtilDateFormatter.dateFormatter(dateFinish));
             return projectRepository.persist(newProject);
         }
         return null;
     }
 
-    public void remove(@NotNull String userId, @Nullable String projectName) {
+    public void remove(@NotNull String userId, @Nullable String projectName) throws NullPointerException {
         if (projectName == null || projectName.isEmpty()) return;
         Project newProject= new Project();
         newProject.setName(projectName);
@@ -81,7 +85,7 @@ public class ProjectService extends AbstractService implements IProjectService {
         return projectRepository.findOne(newProject);
     }
 
-    public void merge(@NotNull String userId, @Nullable String oldProjectName, @Nullable String projectName, @Nullable String description, @Nullable String dateStart, @Nullable String dateFinish) {
+    public void merge(@NotNull String userId, @Nullable String oldProjectName, @Nullable String projectName, @Nullable String description, @Nullable String dateStart, @Nullable String dateFinish) throws NullPointerException {
         if (oldProjectName == null || oldProjectName.isEmpty()) return;
         Project newProject = new Project();
         newProject.setName(oldProjectName);
@@ -95,8 +99,8 @@ public class ProjectService extends AbstractService implements IProjectService {
             newProject.setId(project.getId());
             newProject.setName(projectName);
             newProject.setDescription(description);
-            newProject.setDateStart(dateStart);
-            newProject.setDateFinish(dateFinish);
+            newProject.setDateStart(UtilDateFormatter.dateFormatter(dateStart));
+            newProject.setDateFinish(UtilDateFormatter.dateFormatter(dateFinish));
             projectRepository.merge(newProject);
         }
     }
@@ -119,4 +123,5 @@ public class ProjectService extends AbstractService implements IProjectService {
     public List<AbstractEntity> sortByStatus(@NotNull String userId) {
         return projectRepository.sortByStatus(findAll(userId));
     }
+
 }

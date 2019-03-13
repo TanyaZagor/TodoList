@@ -5,7 +5,6 @@ import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.entity.AbstractEntity;
 import ru.zagorodnikova.tm.api.repository.IProjectRepository;
 import ru.zagorodnikova.tm.entity.Project;
-import ru.zagorodnikova.tm.entity.Task;
 
 import java.util.*;
 

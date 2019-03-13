@@ -43,32 +43,14 @@ public class Project extends AbstractEntity {
     private Status status = Status.SCHEDULED;
 
 
-    public Project(@Nullable String userId, @Nullable String name, @Nullable String description, @Nullable String dateStart, @Nullable String dateFinish) {
+    public Project(@Nullable String userId, @Nullable String name, @Nullable String description, @Nullable Date dateStart, @Nullable Date dateFinish) {
         this.userId = userId;
         this.name = name;
         this.description = description;
-        this.dateStart = dateFormatter(dateStart);
-        this.dateFinish = dateFormatter(dateFinish);
+        this.dateStart = dateStart;
+        this.dateFinish = dateFinish;
     }
 
-    public Date dateFormatter(String date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-        Date newDate = new Date();
-        try {
-            newDate = dateFormat.parse(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return newDate;
-    }
-
-    public void setDateStart(@Nullable String dateStart) {
-        this.dateStart = dateFormatter(dateStart);
-    }
-
-    public void setDateFinish(@Nullable String dateFinish) {
-        this.dateFinish = dateFormatter(dateFinish);
-    }
 
     public void setDateStart(@Nullable Date dateStart) {
         this.dateStart = dateStart;
