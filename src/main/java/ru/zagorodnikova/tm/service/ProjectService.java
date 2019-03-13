@@ -94,4 +94,18 @@ public class ProjectService extends AbstractService implements IProjectService {
             projectRepository.merge(newProject);
         }
     }
+
+    @Nullable
+    public List<AbstractEntity> sortByDateCreated(@NotNull String userId) {
+        return projectRepository.sortByDateCreated(findAll(userId));
+    }
+
+    @Nullable
+    public List<AbstractEntity> sortByDateStart(@NotNull String userId) {
+        return projectRepository.sortByDateStart(findAll(userId));
+    }
+    @Nullable
+    public List<AbstractEntity> sortByDateFinish(@NotNull String userId) {
+        return projectRepository.sortByDateFinish(findAll(userId));
+    }
 }

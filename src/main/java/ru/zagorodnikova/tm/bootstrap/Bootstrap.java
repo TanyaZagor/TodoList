@@ -72,7 +72,7 @@ public class Bootstrap implements ServiceLocator {
 
         Project project1 = (Project) projectService.persist(user1.getId(), "Project1", "Description1", "20.02.2019", "20.05.2019");
         Project project2 = (Project) projectService.persist(user2.getId(), "Project2", "Description2", "20.05.2019", "20.06.2019");
-        Project project3 = (Project) projectService.persist(user2.getId(), "Project1", "Description1", "20.02.2016", "20.05.2016");
+        Project project3 = (Project) projectService.persist(user2.getId(), "Project1", "Description1", "20.02.2016", "20.05.2020");
 
         taskService.persist(project1.getUserId(), project1.getName(), "task1", "des1", "20.02.2012", "20.02.2013");
         taskService.persist(project1.getUserId(), project1.getName(), "task2", "des2", "20.02.2010", "20.02.2011");
@@ -96,9 +96,7 @@ public class Bootstrap implements ServiceLocator {
                 AbstractCommand abstractCommand = null;
                 try {
                     abstractCommand = (AbstractCommand) commandClass.newInstance();
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
+                } catch (InstantiationException | IllegalAccessException e) {
                     e.printStackTrace();
                 }
                 if (abstractCommand != null) {

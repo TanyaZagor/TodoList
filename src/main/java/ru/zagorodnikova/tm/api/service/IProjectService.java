@@ -23,4 +23,13 @@ public interface IProjectService<T extends AbstractEntity> {
     T findOne(@NotNull String userId, @Nullable String projectName);
 
     void merge(@NotNull String userId, @Nullable String oldProjectName, @Nullable String projectName, @Nullable String description, @Nullable String dateStart, @Nullable String dateFinish);
+
+    @Nullable
+    List<T> sortByDateCreated(@NotNull String userId);
+
+    @Nullable
+    List<T> sortByDateStart(@NotNull String userId);
+
+    @Nullable
+    List<T> sortByDateFinish(@NotNull String userId);
 }

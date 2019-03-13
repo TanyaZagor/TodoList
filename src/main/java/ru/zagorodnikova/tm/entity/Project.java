@@ -51,15 +51,15 @@ public class Project extends AbstractEntity {
         this.dateFinish = dateFormatter(dateFinish);
     }
 
-    public Date dateFormatter(String dateFinish) {
-        DateFormat dateFormat = new SimpleDateFormat("DD.MM.YYYY");
-        Date date = new Date();
+    public Date dateFormatter(String date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        Date newDate = new Date();
         try {
-            date = dateFormat.parse(dateFinish);
+            newDate = dateFormat.parse(date);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return date;
+        return newDate;
     }
 
     public void setDateStart(@Nullable String dateStart) {

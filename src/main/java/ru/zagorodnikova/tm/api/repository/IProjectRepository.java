@@ -24,4 +24,12 @@ public interface IProjectRepository<T extends AbstractEntity> {
     @Nullable
     List<T> findAll(@NotNull T t);
 
+    @Nullable
+    List<T> sortByDateCreated(List<T> list);
+
+    @Nullable
+    List<T> sortByDateStart(List<T> list);
+    @Nullable
+    List<T> sortByDateFinish(List<T> list);
+
 }
