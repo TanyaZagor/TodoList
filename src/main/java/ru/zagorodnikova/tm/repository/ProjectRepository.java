@@ -85,4 +85,11 @@ public class ProjectRepository extends AbstractRepository<AbstractEntity> implem
         return list;
     }
 
+    @Nullable
+    public List<AbstractEntity> sortByStatus(List<AbstractEntity> list) {
+        list.sort(((o1, o2) -> ((Project)o2).getStatus().compareTo(((Project)o1).getStatus())));
+        Collections.reverse(list);
+        return list;
+    }
+
 }

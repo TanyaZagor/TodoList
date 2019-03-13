@@ -95,4 +95,11 @@ public class TaskRepository extends AbstractRepository<AbstractEntity> implement
         Collections.reverse(list);
         return list;
     }
+
+    @Nullable
+    public List<AbstractEntity> sortByStatus(List<AbstractEntity> list) {
+        list.sort(((o1, o2) -> ((Task)o2).getStatus().compareTo(((Task)o1).getStatus())));
+        Collections.reverse(list);
+        return list;
+    }
 }

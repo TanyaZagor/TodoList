@@ -144,5 +144,9 @@ public class TaskService extends AbstractService implements ITaskService {
         return taskRepository.sortByDateFinish(findAll(userId, projectName));
     }
 
+    @Nullable
+    public List<AbstractEntity> sortByStatus(@NotNull String userId, @Nullable String projectName) {
+        return taskRepository.sortByDateFinish(findAll(userId, projectName));
+    }
 
 }

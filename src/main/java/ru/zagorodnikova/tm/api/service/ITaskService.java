@@ -32,4 +32,7 @@ public interface ITaskService<T extends AbstractEntity> {
 
     @Nullable
     List<T> sortByDateFinish(@NotNull String userId, @Nullable String projectName);
+
+    @Nullable
+    List<T> sortByStatus(@NotNull String userId, @Nullable String projectName);
 }

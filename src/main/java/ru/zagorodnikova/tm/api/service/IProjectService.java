@@ -32,4 +32,7 @@ public interface IProjectService<T extends AbstractEntity> {
 
     @Nullable
     List<T> sortByDateFinish(@NotNull String userId);
+
+    @Nullable
+    List<T> sortByStatus(@NotNull String userId);
 }

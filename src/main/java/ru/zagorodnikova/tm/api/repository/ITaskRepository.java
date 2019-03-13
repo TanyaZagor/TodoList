@@ -35,4 +35,6 @@ public interface ITaskRepository<T extends AbstractEntity> {
     @Nullable
     List<T> sortByDateFinish(List<T> list);
 
+    @Nullable
+    List<T> sortByStatus(List<T> list);
 }

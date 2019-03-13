@@ -108,4 +108,9 @@ public class ProjectService extends AbstractService implements IProjectService {
     public List<AbstractEntity> sortByDateFinish(@NotNull String userId) {
         return projectRepository.sortByDateFinish(findAll(userId));
     }
+
+    @Nullable
+    public List<AbstractEntity> sortByStatus(@NotNull String userId) {
+        return projectRepository.sortByStatus(findAll(userId));
+    }
 }

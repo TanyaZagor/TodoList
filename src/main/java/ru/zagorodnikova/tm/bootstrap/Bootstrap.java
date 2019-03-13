@@ -10,11 +10,8 @@ import ru.zagorodnikova.tm.api.repository.IUserRepository;
 import ru.zagorodnikova.tm.api.service.IProjectService;
 import ru.zagorodnikova.tm.api.service.ITaskService;
 import ru.zagorodnikova.tm.api.service.IUserService;
-import ru.zagorodnikova.tm.entity.AbstractEntity;
-import ru.zagorodnikova.tm.entity.Project;
-import ru.zagorodnikova.tm.entity.RoleType;
+import ru.zagorodnikova.tm.entity.*;
 import ru.zagorodnikova.tm.command.AbstractCommand;
-import ru.zagorodnikova.tm.entity.User;
 import ru.zagorodnikova.tm.repository.ProjectRepository;
 import ru.zagorodnikova.tm.repository.TaskRepository;
 import ru.zagorodnikova.tm.repository.UserRepository;
@@ -73,6 +70,7 @@ public class Bootstrap implements ServiceLocator {
         Project project1 = (Project) projectService.persist(user1.getId(), "Project1", "Description1", "20.02.2019", "20.05.2019");
         Project project2 = (Project) projectService.persist(user2.getId(), "Project2", "Description2", "20.05.2019", "20.06.2019");
         Project project3 = (Project) projectService.persist(user2.getId(), "Project1", "Description1", "20.02.2016", "20.05.2020");
+        project3.setStatus(Status.DONE);
 
         taskService.persist(project1.getUserId(), project1.getName(), "task1", "des1", "20.02.2012", "20.02.2013");
         taskService.persist(project1.getUserId(), project1.getName(), "task2", "des2", "20.02.2010", "20.02.2011");
