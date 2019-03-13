@@ -1,5 +1,7 @@
 package ru.zagorodnikova.tm.command.project;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.command.AbstractCommand;
@@ -8,16 +10,16 @@ import java.util.Scanner;
 
 public class ProjectFindOneCommand extends AbstractCommand {
 
-    private Scanner in;
-
     public ProjectFindOneCommand() {
     }
 
+    @NotNull
     @Override
     public String command() {
         return "print one project";
     }
 
+    @NotNull
     @Override
     public String description() {
         return "Command to print one project";
@@ -25,12 +27,11 @@ public class ProjectFindOneCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        in = getServiceLocator().getScanner();
         System.out.println("project name");
-        String projectName = in.nextLine();
+        @NotNull final String projectName = getServiceLocator().getTerminalService().nextLine();
         System.out.println("project description");
-        String projectDescription = in.nextLine();
-        Project project = (Project) getServiceLocator().getProjectService().findOne(getServiceLocator().getCurrentUser().getId(), projectName, projectDescription);
+        @NotNull final String projectDescription = getServiceLocator().getTerminalService().nextLine();
+        @Nullable final Project project = (Project) getServiceLocator().getProjectService().findOne(getServiceLocator().getCurrentUser().getId(), projectName, projectDescription);
         if (project != null) {
             System.out.println(project);
         }

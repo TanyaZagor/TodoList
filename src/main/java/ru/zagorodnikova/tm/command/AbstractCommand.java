@@ -7,11 +7,6 @@ public abstract class AbstractCommand {
 
     private ServiceLocator serviceLocator;
 
-    public AbstractCommand() {
-
-    }
-
-
     @NotNull
     abstract public String command();
 
@@ -20,7 +15,6 @@ public abstract class AbstractCommand {
 
     abstract public void execute();
 
-    @NotNull
     abstract public boolean isSecure();
 
     public void setServiceLocator(ServiceLocator serviceLocator) {

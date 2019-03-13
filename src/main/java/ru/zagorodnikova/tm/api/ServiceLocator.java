@@ -8,9 +8,9 @@ import ru.zagorodnikova.tm.api.service.IUserService;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.entity.AbstractEntity;
 import ru.zagorodnikova.tm.entity.User;
+import ru.zagorodnikova.tm.service.TerminalService;
 
 import java.util.Map;
-import java.util.Scanner;
 
 public interface ServiceLocator {
 
@@ -24,9 +24,9 @@ public interface ServiceLocator {
     ITaskService<AbstractEntity> getTaskService();
 
     @NotNull
-    Scanner getScanner();
+    TerminalService getTerminalService();
 
-    @Nullable
+    @NotNull
     User getCurrentUser();
 
     @NotNull

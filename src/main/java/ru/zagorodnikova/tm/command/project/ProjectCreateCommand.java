@@ -1,23 +1,23 @@
 package ru.zagorodnikova.tm.command.project;
 
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.entity.Project;
 
-import java.util.Scanner;
-
 public class ProjectCreateCommand extends AbstractCommand {
-
-    private Scanner in;
 
     public ProjectCreateCommand() {
     }
 
+    @NotNull
     @Override
     public String command() {
         return "create project";
     }
 
+    @NotNull
     @Override
     public String description() {
         return "command to create project";
@@ -25,17 +25,19 @@ public class ProjectCreateCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        in = getServiceLocator().getScanner();
         System.out.println("project name");
-        String projectName = in.nextLine();
+        @NotNull final String projectName = getServiceLocator().getTerminalService().nextLine();
         System.out.println("project description");
-        String description = in.nextLine();
+        @NotNull final String description = getServiceLocator().getTerminalService().nextLine();
         System.out.println("project date start");
-        String dateStart = in.nextLine();
+        @NotNull final String dateStart = getServiceLocator().getTerminalService().nextLine();
         System.out.println("project date finish");
-        String dateFinish = in.nextLine();
-        Project project = (Project) getServiceLocator().getProjectService().persist(getServiceLocator().getCurrentUser().getId(), projectName, description, dateStart, dateFinish);
-        System.out.println(project);
+        @NotNull final String dateFinish = getServiceLocator().getTerminalService().nextLine();
+        @Nullable final Project project = (Project) getServiceLocator().getProjectService().persist(getServiceLocator().getCurrentUser().getId(), projectName, description, dateStart, dateFinish);
+        if (project != null) {
+            System.out.println(project);
+        }
+
     }
 
     @Override

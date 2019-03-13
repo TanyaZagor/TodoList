@@ -27,14 +27,15 @@ public interface ITaskRepository<T extends AbstractEntity> {
     @Nullable
     List<T> findAll(@NotNull T t);
 
-    @Nullable
-    List<T> sortByDateCreated(List<T> list);
+    @NotNull
+    List<T> sortByDateCreated(@NotNull List<T> list);
 
-    @Nullable
-    List<T> sortByDateStart(List<T> list);
-    @Nullable
-    List<T> sortByDateFinish(List<T> list);
+    @NotNull
+    List<T> sortByDateStart(@NotNull List<T> list);
 
-    @Nullable
-    List<T> sortByStatus(List<T> list);
+    @NotNull
+    List<T> sortByDateFinish(@NotNull List<T> list);
+
+    @NotNull
+    List<T> sortByStatus(@NotNull List<T> list);
 }

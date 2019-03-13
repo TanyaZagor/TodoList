@@ -1,17 +1,20 @@
 package ru.zagorodnikova.tm.command.user;
 
-import ru.zagorodnikova.tm.api.ServiceLocator;
+import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.command.AbstractCommand;
+
 
 public class UserShowCommand extends AbstractCommand {
     public UserShowCommand() {
     }
 
+    @NotNull
     @Override
     public String command() {
         return "show user";
     }
 
+    @NotNull
     @Override
     public String description() {
         return "command to show user data";

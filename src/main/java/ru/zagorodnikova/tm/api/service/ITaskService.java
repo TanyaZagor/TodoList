@@ -8,31 +8,31 @@ import java.util.List;
 public interface ITaskService<T extends AbstractEntity> {
 
     @Nullable
-    T persist(@NotNull String userId, @Nullable String projectName, @Nullable String taskName, @Nullable String description, @Nullable String dateStart, @Nullable String dateFinish);
+    T persist(@NotNull String userId, @NotNull String projectName, @NotNull String taskName, @NotNull String description, @NotNull String dateStart, @NotNull String dateFinish);
 
-    void remove(@NotNull String userId, @Nullable String projectName, @Nullable String taskName);
+    void remove(@NotNull String userId, @NotNull String projectName, @NotNull String taskName);
 
-    void removeAllInProject(@NotNull String userId, @Nullable String projectName);
+    void removeAllInProject(@NotNull String userId, @NotNull String projectName);
 
     void removeAll(@NotNull String userId);
 
-    void merge(@NotNull String userId, @Nullable String projectName, @Nullable String oldTaskName, @Nullable String taskName, @Nullable String description, @Nullable String dateStart, @Nullable String dateFinish);
+    void merge(@NotNull String userId, @NotNull String projectName, @NotNull String oldTaskName, @NotNull String taskName, @NotNull String description, @NotNull String dateStart, @NotNull String dateFinish);
 
     @Nullable
-    List<T> findAll(@NotNull String userId, @Nullable String projectName);
+    List<T> findAll(@NotNull String userId, @NotNull String projectName);
 
     @Nullable
-    T findOne(@NotNull String userId, @Nullable String projectName, @Nullable String taskName, @Nullable String taskDescription);
+    T findOne(@NotNull String userId, @NotNull String projectName, @NotNull String taskName, @NotNull String taskDescription);
 
     @Nullable
-    List<T> sortByDateCreated(@NotNull String userId, @Nullable String projectName);
+    List<T> sortByDateCreated(@NotNull String userId, @NotNull String projectName);
 
     @Nullable
-    List<T> sortByDateStart(@NotNull String userId, @Nullable String projectName);
+    List<T> sortByDateStart(@NotNull String userId, @NotNull String projectName);
 
     @Nullable
-    List<T> sortByDateFinish(@NotNull String userId, @Nullable String projectName);
+    List<T> sortByDateFinish(@NotNull String userId, @NotNull String projectName);
 
     @Nullable
-    List<T> sortByStatus(@NotNull String userId, @Nullable String projectName);
+    List<T> sortByStatus(@NotNull String userId, @NotNull String projectName);
 }

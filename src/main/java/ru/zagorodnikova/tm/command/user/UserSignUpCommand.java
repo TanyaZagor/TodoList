@@ -1,5 +1,7 @@
 package ru.zagorodnikova.tm.command.user;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.entity.RoleType;
@@ -9,16 +11,16 @@ import java.util.Scanner;
 
 public class UserSignUpCommand extends AbstractCommand {
 
-    private Scanner in;
-
     public UserSignUpCommand() {
     }
 
+    @NotNull
     @Override
     public String command() {
         return "sign up";
     }
 
+    @NotNull
     @Override
     public String description() {
         return "command to sign up";
@@ -26,18 +28,17 @@ public class UserSignUpCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        in = getServiceLocator().getScanner();
         System.out.println("Login");
-        String login = in.nextLine();
+        @NotNull final String login = getServiceLocator().getTerminalService().nextLine();
         System.out.println("Password");
-        String password = in.nextLine();
+        @NotNull final String password = getServiceLocator().getTerminalService().nextLine();
         System.out.println("New first name");
-        String firstName = in.nextLine();
+        @NotNull final String firstName = getServiceLocator().getTerminalService().nextLine();
         System.out.println("New last name");
-        String lastName = in.nextLine();
+        @NotNull final String lastName = getServiceLocator().getTerminalService().nextLine();
         System.out.println("New email");
-        String email = in.nextLine();
-        User user = (User) getServiceLocator().getUserService().signUp(login, password, firstName, lastName, email, RoleType.USER);
+        @NotNull final String email = getServiceLocator().getTerminalService().nextLine();
+        @Nullable final User user = (User) getServiceLocator().getUserService().signUp(login, password, firstName, lastName, email);
         if (user != null) {
             getServiceLocator().setCurrentUser(user);
             System.out.println(user);

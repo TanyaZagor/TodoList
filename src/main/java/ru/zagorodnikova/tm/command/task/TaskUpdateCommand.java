@@ -1,21 +1,23 @@
 package ru.zagorodnikova.tm.command.task;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import java.util.Scanner;
 
 public class TaskUpdateCommand extends AbstractCommand {
 
-    private Scanner in;
-
     public TaskUpdateCommand() {
     }
 
+    @NotNull
     @Override
     public String command() {
         return "update task";
     }
 
+    @NotNull
     @Override
     public String description() {
         return "command to update task";
@@ -23,19 +25,18 @@ public class TaskUpdateCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        in = getServiceLocator().getScanner();
         System.out.println("project name");
-        String projectName = in.nextLine();
+        @NotNull final String projectName = getServiceLocator().getTerminalService().nextLine();
         System.out.println("task name");
-        String oldTaskName = in.nextLine();
+        @NotNull final String oldTaskName = getServiceLocator().getTerminalService().nextLine();
         System.out.println("New task name");
-        String taskName = in.nextLine();
+        @NotNull final String taskName = getServiceLocator().getTerminalService().nextLine();
         System.out.println("New description");
-        String description = in.nextLine();
+        @NotNull final String description = getServiceLocator().getTerminalService().nextLine();
         System.out.println("New date start");
-        String dateStart = in.nextLine();
+        @NotNull final String dateStart = getServiceLocator().getTerminalService().nextLine();
         System.out.println("New date finish");
-        String dateFinish = in.nextLine();
+        @NotNull final String dateFinish = getServiceLocator().getTerminalService().nextLine();
         getServiceLocator().getTaskService().merge(getServiceLocator().getCurrentUser().getId(), projectName, oldTaskName, taskName, description, dateStart, dateFinish);
 
     }

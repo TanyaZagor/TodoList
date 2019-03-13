@@ -1,5 +1,7 @@
 package ru.zagorodnikova.tm.command.task;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.entity.AbstractEntity;
 import ru.zagorodnikova.tm.command.AbstractCommand;
@@ -9,16 +11,16 @@ import java.util.Scanner;
 
 public class TaskListCommand extends AbstractCommand {
 
-    private Scanner in;
-
     public TaskListCommand() {
     }
 
+    @NotNull
     @Override
     public String command() {
         return "task list";
     }
 
+    @NotNull
     @Override
     public String description() {
         return "command to print out task list";
@@ -26,10 +28,9 @@ public class TaskListCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        in = getServiceLocator().getScanner();
         System.out.println("project name");
-        String projectName = in.nextLine();
-        List<AbstractEntity> tasks = getServiceLocator().getTaskService().findAll(getServiceLocator().getCurrentUser().getId(), projectName);
+        @NotNull final String projectName = getServiceLocator().getTerminalService().nextLine();
+        @Nullable final List<AbstractEntity> tasks = getServiceLocator().getTaskService().findAll(getServiceLocator().getCurrentUser().getId(), projectName);
         if (tasks!= null) {
             tasks.forEach(System.out::println);
         }

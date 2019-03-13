@@ -1,20 +1,22 @@
 package ru.zagorodnikova.tm.command.task;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import java.util.Scanner;
 
 public class TaskCreateCommand extends AbstractCommand {
 
-    private Scanner in;
-
     public TaskCreateCommand() {
     }
 
+    @NotNull
     @Override
     public String command() {
         return "create task";
     }
 
+    @NotNull
     @Override
     public String description() {
         return "command to create task";
@@ -22,17 +24,16 @@ public class TaskCreateCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        in = getServiceLocator().getScanner();
         System.out.println("project name");
-        String projectName = in.nextLine();
+        @NotNull final String projectName = getServiceLocator().getTerminalService().nextLine();
         System.out.println("task name");
-        String taskName = in.nextLine();
+        @NotNull final String taskName = getServiceLocator().getTerminalService().nextLine();
         System.out.println("task description");
-        String description = in.nextLine();
+        @NotNull final String description = getServiceLocator().getTerminalService().nextLine();
         System.out.println("task data start");
-        String dateStart = in.nextLine();
+        @NotNull final String dateStart = getServiceLocator().getTerminalService().nextLine();
         System.out.println("task data finish");
-        String dateFinish = in.nextLine();
+        @NotNull final String dateFinish = getServiceLocator().getTerminalService().nextLine();
         getServiceLocator().getTaskService().persist(getServiceLocator().getCurrentUser().getId(), projectName, taskName, description, dateStart, dateFinish);
 
     }

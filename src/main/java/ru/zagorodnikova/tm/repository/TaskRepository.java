@@ -10,11 +10,11 @@ import java.util.*;
 
 public class TaskRepository extends AbstractRepository<AbstractEntity> implements ITaskRepository<AbstractEntity> {
 
-    private final Map<String, Task> tasks = new LinkedHashMap<>();
+    @NotNull private final Map<String, Task> tasks = new LinkedHashMap<>();
 
     @Nullable
-    public AbstractEntity persist(@NotNull AbstractEntity abstractEntity) {
-        Task task = (Task) abstractEntity;
+    public AbstractEntity persist(@NotNull final AbstractEntity abstractEntity) {
+        @NotNull final Task task = (Task) abstractEntity;
         if (!tasks.containsValue(task)) {
             tasks.put(task.getId(), task);
             return task;
@@ -22,13 +22,13 @@ public class TaskRepository extends AbstractRepository<AbstractEntity> implement
         return null;
     }
 
-    public void remove(@NotNull AbstractEntity abstractEntity) {
-        Task task = (Task) abstractEntity;
-        tasks.entrySet().removeIf((v) -> (v.getValue().getProjectId().equals(task.getProjectId()) && v.getValue().getName().equals(task.getName())));
+    public void remove(@NotNull final AbstractEntity abstractEntity) {
+        @NotNull final Task task = (Task) abstractEntity;
+        tasks.entrySet().removeIf((v) -> (Objects.equals(v.getValue().getProjectId(), task.getProjectId()) && Objects.equals(v.getValue().getName(), task.getName())));
     }
 
-    public void merge(@NotNull AbstractEntity abstractEntity) {
-        Task task = (Task) abstractEntity;
+    public void merge(@NotNull final AbstractEntity abstractEntity) {
+        @NotNull final Task task = (Task) abstractEntity;
         tasks.get(task.getId()).setName(task.getName());
         tasks.get(task.getId()).setDescription(task.getDescription());
         tasks.get(task.getId()).setDateStart(task.getDateStart());
@@ -37,44 +37,45 @@ public class TaskRepository extends AbstractRepository<AbstractEntity> implement
     }
 
 
-    public void removeAll(@NotNull AbstractEntity abstractEntity) {
-        Task task = (Task) abstractEntity;
-        tasks.entrySet().removeIf((v) -> v.getValue().getUserId().equals(task.getUserId()));
+    public void removeAll(@NotNull final AbstractEntity abstractEntity) {
+        @NotNull final Task task = (Task) abstractEntity;
+        tasks.entrySet().removeIf((v) -> Objects.equals(v.getValue().getUserId(), task.getUserId()));
     }
 
-    public void removeAllInProject(@NotNull AbstractEntity abstractEntity) {
-        Task task = (Task) abstractEntity;
-        tasks.entrySet().removeIf((v) -> v.getValue().getProjectId().equals(task.getProjectId()));
+    public void removeAllInProject(@NotNull final AbstractEntity abstractEntity) {
+        @NotNull final Task task = (Task) abstractEntity;
+        tasks.entrySet().removeIf((v) -> Objects.equals(v.getValue().getProjectId(), task.getProjectId()));
     }
 
     @Nullable
-    public List<AbstractEntity> findAll(@NotNull AbstractEntity abstractEntity) {
-        Task task = (Task) abstractEntity;
+    public List<AbstractEntity> findAll(@NotNull final AbstractEntity abstractEntity) {
+        @NotNull final Task task = (Task) abstractEntity;
         final List<AbstractEntity> list = new ArrayList<>();
         tasks.forEach((k, v) -> {
-            if(v.getProjectId().equals(task.getProjectId())) {
+            if(Objects.equals(v.getProjectId(), task.getProjectId())) {
                 list.add(v);
             }
         });
-
-        return list;
-
+        if (list.size() > 0) {
+            return list;
+        }
+        return null;
     }
 
     @Nullable
-    public AbstractEntity findOne(@NotNull AbstractEntity abstractEntity) {
-        Task task = (Task) abstractEntity;
+    public AbstractEntity findOne(@NotNull final AbstractEntity abstractEntity) {
+        @NotNull final Task task = (Task) abstractEntity;
         final List<Task> list = new ArrayList<>();
         if (task.getDescription() != null && !task.getDescription().isEmpty()) {
             tasks.forEach((k, v) -> {
-                if (v.getProjectId().equals(task.getProjectId()) && v.getDescription().contains(task.getDescription())) {
+                if (Objects.equals(v.getProjectId(), task.getProjectId()) && Objects.requireNonNull(v.getDescription()).contains(task.getDescription())) {
                     list.add(v);
                 }
             });
         }
         if (task.getName() != null && !task.getName().isEmpty()) {
             tasks.forEach((k, v) -> {
-                if (v.getProjectId().equals(task.getProjectId()) && v.getName().contains(task.getName())) {
+                if (Objects.equals(v.getProjectId(), task.getProjectId()) && Objects.requireNonNull(v.getName()).contains(task.getName())) {
                     list.add(v);
                 }
             });
@@ -86,28 +87,28 @@ public class TaskRepository extends AbstractRepository<AbstractEntity> implement
     }
 
 
-    @Nullable
-    public List<AbstractEntity> sortByDateCreated(List<AbstractEntity> list) {
+    @NotNull
+    public List<AbstractEntity> sortByDateCreated(@NotNull final List<AbstractEntity> list) {
         list.sort(((o1, o2) -> ((Task)o2).getDateCreate().compareTo(((Task)o1).getDateCreate())));
         Collections.reverse(list);
         return list;
     }
 
-    @Nullable
-    public List<AbstractEntity> sortByDateStart(List<AbstractEntity> list) {
-        list.sort(((o1, o2) -> ((Task)o2).getDateStart().compareTo(((Task)o1).getDateStart())));
+    @NotNull
+    public List<AbstractEntity> sortByDateStart(@NotNull final List<AbstractEntity> list) {
+        list.sort(((o1, o2) -> Objects.requireNonNull(((Task) o2).getDateStart()).compareTo(Objects.requireNonNull(((Task) o1).getDateStart()))));
         Collections.reverse(list);
         return list;
     }
-    @Nullable
-    public List<AbstractEntity> sortByDateFinish(List<AbstractEntity> list) {
-        list.sort(((o1, o2) -> ((Task)o2).getDateFinish().compareTo(((Task)o1).getDateFinish())));
+    @NotNull
+    public List<AbstractEntity> sortByDateFinish(@NotNull final List<AbstractEntity> list) {
+        list.sort(((o1, o2) -> Objects.requireNonNull(((Task) o2).getDateFinish()).compareTo(Objects.requireNonNull(((Task) o1).getDateFinish()))));
         Collections.reverse(list);
         return list;
     }
 
-    @Nullable
-    public List<AbstractEntity> sortByStatus(List<AbstractEntity> list) {
+    @NotNull
+    public List<AbstractEntity> sortByStatus(@NotNull final List<AbstractEntity> list) {
         list.sort(((o1, o2) -> ((Task)o2).getStatus().compareTo(((Task)o1).getStatus())));
         Collections.reverse(list);
         return list;

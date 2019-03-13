@@ -10,9 +10,9 @@ import java.util.List;
 public interface IProjectService<T extends AbstractEntity> {
 
     @Nullable
-    T persist(@NotNull String userId, @Nullable String projectName, @Nullable String description, @Nullable String dateStart, @Nullable String dateFinish);
+    T persist(@NotNull String userId, @NotNull String projectName, @NotNull String description, @NotNull String dateStart, @NotNull String dateFinish);
 
-    void remove(@NotNull String userId, @Nullable String projectName);
+    void remove(@NotNull String userId, @NotNull String projectName);
 
     void removeAll(@NotNull String userId);
 
@@ -20,9 +20,9 @@ public interface IProjectService<T extends AbstractEntity> {
     List<T> findAll(@NotNull String userId);
 
     @Nullable
-    T findOne(@NotNull String userId, @Nullable String projectName, @Nullable String projectDescription);
+    T findOne(@NotNull String userId, @NotNull String projectName, @NotNull String projectDescription);
 
-    void merge(@NotNull String userId, @Nullable String oldProjectName, @Nullable String projectName, @Nullable String description, @Nullable String dateStart, @Nullable String dateFinish);
+    void merge(@NotNull String userId, @NotNull String oldProjectName, @NotNull String projectName, @NotNull String description, @NotNull String dateStart, @NotNull String dateFinish);
 
     @Nullable
     List<T> sortByDateCreated(@NotNull String userId);

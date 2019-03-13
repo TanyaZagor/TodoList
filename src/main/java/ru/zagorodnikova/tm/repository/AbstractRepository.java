@@ -1,18 +1,25 @@
 package ru.zagorodnikova.tm.repository;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.entity.AbstractEntity;
 
 import java.util.List;
 
 public abstract class AbstractRepository<T extends AbstractEntity> {
 
-    abstract public T persist(T t);
+    @Nullable
+    abstract public T persist(@NotNull T t);
 
-    abstract public void remove(T t);
+    abstract public void remove(@NotNull T t);
 
-    abstract public void removeAll(T t);
+    abstract public void removeAll(@NotNull T t);
 
-    abstract public T findOne(T t);
-    abstract public void merge(T t);
-    abstract public List<T> findAll(T t);
+    @Nullable
+    abstract public T findOne(@NotNull T t);
+
+    abstract public void merge(@NotNull T t);
+
+    @Nullable
+    abstract public List<T> findAll(@NotNull T t);
 }

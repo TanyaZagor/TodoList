@@ -1,22 +1,20 @@
 package ru.zagorodnikova.tm.command.user;
 
-import ru.zagorodnikova.tm.api.ServiceLocator;
+import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 
-import java.util.Scanner;
-
 public class UserUpdateCommand extends AbstractCommand {
-
-    private Scanner in;
 
     public UserUpdateCommand() {
     }
 
+    @NotNull
     @Override
     public String command() {
         return "update user";
     }
 
+    @NotNull
     @Override
     public String description() {
         return "command to update user";
@@ -24,13 +22,12 @@ public class UserUpdateCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        in = getServiceLocator().getScanner();
         System.out.println("New first name");
-        String firstName = in.nextLine();
+        @NotNull final String firstName = getServiceLocator().getTerminalService().nextLine();
         System.out.println("New last name");
-        String lastName = in.nextLine();
+        @NotNull final String lastName = getServiceLocator().getTerminalService().nextLine();
         System.out.println("New email");
-        String email = in.nextLine();
+        @NotNull final String email = getServiceLocator().getTerminalService().nextLine();
         getServiceLocator().getUserService().update(getServiceLocator().getCurrentUser().getId(), firstName, lastName, email);
     }
 

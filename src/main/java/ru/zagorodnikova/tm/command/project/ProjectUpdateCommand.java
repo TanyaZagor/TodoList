@@ -1,21 +1,23 @@
 package ru.zagorodnikova.tm.command.project;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import java.util.Scanner;
 
 public class ProjectUpdateCommand extends AbstractCommand {
 
-    private Scanner in;
-
     public ProjectUpdateCommand() {
     }
 
+    @NotNull
     @Override
     public String command() {
         return "update project";
     }
 
+    @NotNull
     @Override
     public String description() {
         return "command to update project";
@@ -23,17 +25,16 @@ public class ProjectUpdateCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        in = getServiceLocator().getScanner();
         System.out.println("project name");
-        String oldProjectName = in.nextLine();
+        @NotNull final String oldProjectName = getServiceLocator().getTerminalService().nextLine();
         System.out.println("New project name");
-        String projectName = in.nextLine();
+        @NotNull final String projectName = getServiceLocator().getTerminalService().nextLine();
         System.out.println("New description");
-        String description = in.nextLine();
+        @NotNull final String description = getServiceLocator().getTerminalService().nextLine();
         System.out.println("New date start");
-        String dateStart = in.nextLine();
+        @NotNull final String dateStart = getServiceLocator().getTerminalService().nextLine();
         System.out.println("New date finish");
-        String dateFinish = in.nextLine();
+        @NotNull final String dateFinish = getServiceLocator().getTerminalService().nextLine();
         getServiceLocator().getProjectService().merge(getServiceLocator().getCurrentUser().getId(), oldProjectName, projectName, description, dateStart, dateFinish);
 
     }

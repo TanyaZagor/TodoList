@@ -3,6 +3,7 @@ package ru.zagorodnikova.tm.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.util.UtilPassword;
 
@@ -14,7 +15,8 @@ import java.util.UUID;
 @NoArgsConstructor
 public class User extends AbstractEntity {
 
-    private String id = UUID.randomUUID().toString();
+    @NotNull
+    private String id = super.getId();
 
     @Nullable
     private String login;
@@ -31,10 +33,11 @@ public class User extends AbstractEntity {
     @Nullable
     private String email;
 
-    private RoleType roleType;
+    @NotNull
+    private RoleType roleType = RoleType.USER;
 
 
-    public User(@Nullable String login, @Nullable String password, @Nullable String firstName, @Nullable String lastName, @Nullable String email, RoleType roleType) {
+    public User(@Nullable String login, @Nullable String password, @Nullable String firstName, @Nullable String lastName, @Nullable String email) {
         this.login = login;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -42,14 +45,14 @@ public class User extends AbstractEntity {
         if (password != null) {
             this.password = UtilPassword.hashPassword(password);
         }
-        this.roleType = roleType;
     }
 
 
-    public void setPassword(String password) {
+    public void setPassword(@NotNull String password) {
         this.password = UtilPassword.hashPassword(password);
     }
 
+    @NotNull
     @Override
     public String toString() {
         return "User{" +
@@ -62,10 +65,10 @@ public class User extends AbstractEntity {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
+        final User user = (User) o;
         return Objects.equals(login, user.login);
     }
 

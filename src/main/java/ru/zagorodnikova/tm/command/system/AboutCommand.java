@@ -11,11 +11,13 @@ public class AboutCommand extends AbstractCommand {
     public AboutCommand() {
     }
 
+    @NotNull
     @Override
     public String command() {
         return "about";
     }
 
+    @NotNull
     @Override
     public String description() {
         return "about program";

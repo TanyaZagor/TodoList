@@ -1,5 +1,7 @@
 package ru.zagorodnikova.tm.command.task;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.entity.Task;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 
@@ -7,16 +9,16 @@ import java.util.Scanner;
 
 public class TaskFindOneCommand extends AbstractCommand {
 
-    private Scanner in;
-
     public TaskFindOneCommand(){
     }
 
+    @NotNull
     @Override
     public String command() {
         return "print one task";
     }
 
+    @NotNull
     @Override
     public String description() {
         return "Command to find one task";
@@ -24,14 +26,13 @@ public class TaskFindOneCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        in = getServiceLocator().getScanner();
         System.out.println("project name");
-        String projectName = in.nextLine();
+        @NotNull final String projectName = getServiceLocator().getTerminalService().nextLine();
         System.out.println("task name");
-        String taskName = in.nextLine();
+        @NotNull final String taskName = getServiceLocator().getTerminalService().nextLine();
         System.out.println("task description");
-        String taskDescription = in.nextLine();
-        Task task = (Task) getServiceLocator().getTaskService().findOne(getServiceLocator().getCurrentUser().getId(), projectName, taskName, taskDescription);
+        @NotNull final String taskDescription = getServiceLocator().getTerminalService().nextLine();
+        @Nullable final Task task = (Task) getServiceLocator().getTaskService().findOne(getServiceLocator().getCurrentUser().getId(), projectName, taskName, taskDescription);
         if (task != null) {
             System.out.println(task);
         }

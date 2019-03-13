@@ -1,5 +1,6 @@
 package ru.zagorodnikova.tm.command.system;
 
+import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 
@@ -8,11 +9,13 @@ public class HelpCommand extends AbstractCommand {
     public HelpCommand() {
     }
 
+    @NotNull
     @Override
     public String command() {
         return "help";
     }
 
+    @NotNull
     @Override
     public String description() {
         return "commands help";

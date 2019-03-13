@@ -1,5 +1,7 @@
 package ru.zagorodnikova.tm.command.user;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.entity.User;
@@ -7,16 +9,17 @@ import ru.zagorodnikova.tm.entity.User;
 import java.util.Scanner;
 
 public class UserSignInCommand extends AbstractCommand {
-    private Scanner in;
 
     public UserSignInCommand() {
     }
 
+    @NotNull
     @Override
     public String command() {
         return "sign in";
     }
 
+    @NotNull
     @Override
     public String description() {
         return "command to sign in";
@@ -24,12 +27,11 @@ public class UserSignInCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        in = getServiceLocator().getScanner();
         System.out.println("Login");
-        String login = in.nextLine();
+        @NotNull final String login = getServiceLocator().getTerminalService().nextLine();
         System.out.println("Password");
-        String password = in.nextLine();
-        User user = (User) getServiceLocator().getUserService().signIn(login, password);
+        @NotNull final String password = getServiceLocator().getTerminalService().nextLine();
+        @Nullable final User user = (User) getServiceLocator().getUserService().signIn(login, password);
         if (user!= null) {
             getServiceLocator().setCurrentUser(user);
             System.out.println(user);

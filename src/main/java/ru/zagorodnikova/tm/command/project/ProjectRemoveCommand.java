@@ -1,5 +1,7 @@
 package ru.zagorodnikova.tm.command.project;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 
@@ -7,16 +9,16 @@ import java.util.Scanner;
 
 public class ProjectRemoveCommand extends AbstractCommand {
 
-    private Scanner in;
-
     public ProjectRemoveCommand() {
     }
 
+    @NotNull
     @Override
     public String command() {
         return "remove project";
     }
 
+    @NotNull
     @Override
     public String description() {
         return "command to remove project by id";
@@ -24,9 +26,8 @@ public class ProjectRemoveCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        in = getServiceLocator().getScanner();
         System.out.println("project name");
-        String projectName = in.nextLine();
+        @NotNull final String projectName = getServiceLocator().getTerminalService().nextLine();
         getServiceLocator().getProjectService().remove(getServiceLocator().getCurrentUser().getId(), projectName);
     }
 

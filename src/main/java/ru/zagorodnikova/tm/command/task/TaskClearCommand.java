@@ -1,5 +1,7 @@
 package ru.zagorodnikova.tm.command.task;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 
@@ -7,16 +9,16 @@ import java.util.Scanner;
 
 public class TaskClearCommand extends AbstractCommand {
 
-    private Scanner in;
-
     public TaskClearCommand() {
     }
 
+    @NotNull
     @Override
     public String command() {
         return "clear task";
     }
 
+    @NotNull
     @Override
     public String description() {
         return "command to clear tasks by project id";
@@ -24,9 +26,8 @@ public class TaskClearCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        in = getServiceLocator().getScanner();
         System.out.println("project name");
-        String projectName = in.nextLine();
+        @NotNull final String projectName = getServiceLocator().getTerminalService().nextLine();
         getServiceLocator().getTaskService().removeAllInProject(getServiceLocator().getCurrentUser().getId(), projectName);
 
     }

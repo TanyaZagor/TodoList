@@ -19,7 +19,8 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Project extends AbstractEntity {
 
-    private String id = UUID.randomUUID().toString();
+    @NotNull
+    private String id = super.getId();
 
     @Nullable
     private String userId;
@@ -43,7 +44,7 @@ public class Project extends AbstractEntity {
     private Status status = Status.SCHEDULED;
 
 
-    public Project(@Nullable String userId, @Nullable String name, @Nullable String description, @Nullable Date dateStart, @Nullable Date dateFinish) {
+    public Project(@NotNull String userId, @NotNull String name, @NotNull String description, @NotNull Date dateStart, @NotNull Date dateFinish) {
         this.userId = userId;
         this.name = name;
         this.description = description;
@@ -51,25 +52,17 @@ public class Project extends AbstractEntity {
         this.dateFinish = dateFinish;
     }
 
-
-    public void setDateStart(@Nullable Date dateStart) {
-        this.dateStart = dateStart;
-    }
-
-    public void setDateFinish(@Nullable Date dateFinish) {
-        this.dateFinish = dateFinish;
-    }
-
+    @NotNull
     @Override
     public String toString() {
         return "Name: " + name + ", Description: " + description+ ", Date start: " + dateStart + ", Date finish: " + dateFinish + ", Date create: " + dateCreate + ", Status: " + status;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Project project = (Project) o;
+        final Project project = (Project) o;
         return Objects.equals(userId, project.userId) &&
                 Objects.equals(name, project.name);
     }

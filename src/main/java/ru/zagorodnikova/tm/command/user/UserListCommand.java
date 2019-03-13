@@ -1,5 +1,7 @@
 package ru.zagorodnikova.tm.command.user;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.entity.AbstractEntity;
@@ -10,11 +12,13 @@ public class UserListCommand extends AbstractCommand {
     public UserListCommand() {
     }
 
+    @NotNull
     @Override
     public String command() {
         return "user list";
     }
 
+    @NotNull
     @Override
     public String description() {
         return "command to show all users";
@@ -22,7 +26,7 @@ public class UserListCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        List<AbstractEntity> list = getServiceLocator().getUserService().findAll(getServiceLocator().getCurrentUser().getRoleType());
+        @Nullable final List<AbstractEntity> list = getServiceLocator().getUserService().findAll(getServiceLocator().getCurrentUser().getRoleType());
         if (!(list == null || list.isEmpty())) {
             list.forEach(System.out::println);
         }

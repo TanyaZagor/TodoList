@@ -1,6 +1,7 @@
 package ru.zagorodnikova.tm.command.project;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.entity.AbstractEntity;
 
@@ -22,13 +23,12 @@ public class ProjectSortByFinishCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        List<AbstractEntity> list = getServiceLocator().getProjectService().sortByDateFinish(getServiceLocator().getCurrentUser().getId());
+        @Nullable final List<AbstractEntity> list = getServiceLocator().getProjectService().sortByDateFinish(getServiceLocator().getCurrentUser().getId());
         if (list!= null) {
             list.forEach(System.out::println);
         }
     }
 
-    @NotNull
     @Override
     public boolean isSecure() {
         return true;

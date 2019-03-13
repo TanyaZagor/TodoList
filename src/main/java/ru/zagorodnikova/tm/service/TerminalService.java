@@ -1,4 +1,4 @@
-package ru.zagorodnikova.tm;
+package ru.zagorodnikova.tm.service;
 
 import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.api.ServiceLocator;
@@ -8,6 +8,9 @@ import java.util.Scanner;
 public class TerminalService {
 
     @NotNull
+    private final Scanner scanner = new Scanner(System.in);
+
+    @NotNull
     private ServiceLocator serviceLocator;
 
     public TerminalService(@NotNull ServiceLocator serviceLocator) {
@@ -15,7 +18,6 @@ public class TerminalService {
     }
 
     public void start() {
-        Scanner scanner = serviceLocator.getScanner();
         System.out.println("Welcome");
         String command = "";
         while (!"exit".equals(command)) {
@@ -29,5 +31,15 @@ public class TerminalService {
                 System.out.println("wrong data");
             }
         }
+    }
+
+    @NotNull
+    public Scanner getScanner() {
+        return scanner;
+    }
+
+    @NotNull
+    public String nextLine() {
+        return scanner.nextLine();
     }
 }

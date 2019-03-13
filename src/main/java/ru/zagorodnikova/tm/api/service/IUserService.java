@@ -10,14 +10,14 @@ import java.util.List;
 public interface IUserService<T extends AbstractEntity> {
 
     @Nullable
-    T signIn( @Nullable String login, @Nullable String password);
+    T signIn( @NotNull String login, @NotNull String password);
 
     @Nullable
-    T signUp(@NotNull String login, @Nullable String password, @Nullable String fistName, @Nullable String lastName, @Nullable String email,@NotNull  RoleType roleType);
+    T signUp(@NotNull String login, @NotNull String password, @NotNull String fistName, @NotNull String lastName, @NotNull String email);
 
-    void changePassword(@NotNull String userId, @Nullable String login, @Nullable String oldPassword, @Nullable String newPassword);
+    void changePassword(@NotNull String userId, @NotNull String login, @NotNull String oldPassword, @NotNull String newPassword);
 
-    void update(@NotNull String userId, @Nullable String firstName, @Nullable String lastName, @Nullable String email);
+    void update(@NotNull String userId, @NotNull String firstName, @NotNull String lastName, @NotNull String email);
 
     void removeAll(@NotNull String userId);
 

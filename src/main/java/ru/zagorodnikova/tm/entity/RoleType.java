@@ -1,16 +1,19 @@
 package ru.zagorodnikova.tm.entity;
 
+import org.jetbrains.annotations.NotNull;
+
 public enum RoleType {
     ADMIN("admin"),
     USER("user");
 
-    private final String displayName;
+    @NotNull private final String displayName;
 
-    RoleType(final String display) {
+    RoleType(@NotNull final String display) {
         this.displayName = display;
     }
 
 
+    @NotNull
     @Override
     public String toString() {
         return this.displayName;

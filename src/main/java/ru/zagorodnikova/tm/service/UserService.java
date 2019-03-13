@@ -12,38 +12,38 @@ import java.util.List;
 
 public class UserService extends AbstractService implements IUserService {
 
-    private final IUserRepository<AbstractEntity> userRepository;
+    @NotNull private final IUserRepository<AbstractEntity> userRepository;
 
     public UserService(@NotNull IUserRepository<AbstractEntity> userRepository) {
         this.userRepository = userRepository;
     }
 
     @Nullable
-    public AbstractEntity signIn(@Nullable String login, @Nullable String password) {
-        if (login == null || login.isEmpty()) return null;
-        if (password == null || password.isEmpty()) return null;
-        User user = new User();
+    public AbstractEntity signIn(@NotNull String login, @NotNull String password) {
+        if (login.isEmpty()) return null;
+        if (password.isEmpty()) return null;
+        @NotNull final User user = new User();
         user.setLogin(login);
         user.setPassword(password);
         return userRepository.signIn(user);
     }
 
     @Nullable
-    public AbstractEntity signUp(@Nullable String login, @Nullable String password, @Nullable String fistName, @Nullable String lastName, @Nullable String email, RoleType roleType) {
-        if (login == null || login.isEmpty()) return null;
-        if (password == null || password.isEmpty()) return null;
-        if (fistName == null || fistName.isEmpty()) return null;
-        if (lastName == null || lastName.isEmpty()) return null;
-        if (email == null || email.isEmpty()) return null;
-        User user = new User(login, password, fistName, lastName, email, roleType);
+    public AbstractEntity signUp(@NotNull String login, @NotNull String password, @NotNull String fistName, @NotNull String lastName, @NotNull String email) {
+        if (login.isEmpty()) return null;
+        if (password.isEmpty()) return null;
+        if (fistName.isEmpty()) return null;
+        if (lastName.isEmpty()) return null;
+        if (email.isEmpty()) return null;
+        @NotNull final User user = new User(login, password, fistName, lastName, email);
         return userRepository.persist(user);
     }
 
-    public void changePassword(@NotNull String userId, @Nullable String login, @Nullable String oldPassword, @Nullable String newPassword) {
-        if (login == null || login.isEmpty()) return;
-        if (oldPassword == null || oldPassword.isEmpty()) return;
-        if (newPassword == null || newPassword.isEmpty()) return;
-        User user = new User();
+    public void changePassword(@NotNull String userId, @NotNull String login, @NotNull String oldPassword, @NotNull String newPassword) {
+        if (login.isEmpty()) return;
+        if (oldPassword.isEmpty()) return;
+        if (newPassword.isEmpty()) return;
+        @NotNull final User user = new User();
         user.setId(userId);
         user.setPassword(oldPassword);
         user.setLogin(login);
@@ -54,11 +54,11 @@ public class UserService extends AbstractService implements IUserService {
 
     }
 
-    public void update(@NotNull String userId, @Nullable String firstName, @Nullable String lastName, @Nullable String email) {
-        if (firstName == null || firstName.isEmpty()) return;
-        if (lastName == null || lastName.isEmpty()) return;
-        if (email == null || email.isEmpty()) return;
-        User user = new User();
+    public void update(@NotNull String userId, @NotNull String firstName, @NotNull String lastName, @NotNull String email) {
+        if (firstName.isEmpty()) return;
+        if (lastName.isEmpty()) return;
+        if (email.isEmpty()) return;
+        @NotNull final User user = new User();
         user.setId(userId);
         user.setFirstName(firstName);
         user.setLastName(lastName);
@@ -66,21 +66,21 @@ public class UserService extends AbstractService implements IUserService {
         userRepository.merge(user);
     }
 
-    public void remove(String userId) {
-        User user = new User();
+    public void remove(@NotNull String userId) {
+        @NotNull final User user = new User();
         user.setId(userId);
         userRepository.removeAll(user);
     }
 
-    public void removeAll(String userId) {
-        User user = new User();
+    public void removeAll(@NotNull String userId) {
+        @NotNull final User user = new User();
         user.setId(userId);
         userRepository.removeAll(user);
     }
 
     @Nullable
-    public List<AbstractEntity> findAll(RoleType roleType) {
-        User user = new User();
+    public List<AbstractEntity> findAll(@NotNull RoleType roleType) {
+        @NotNull final User user = new User();
         user.setRoleType(roleType);
         return userRepository.findAll(user);
     }

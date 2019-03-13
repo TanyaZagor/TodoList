@@ -2,7 +2,9 @@ package ru.zagorodnikova.tm.bootstrap;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.zagorodnikova.tm.TerminalService;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import ru.zagorodnikova.tm.service.TerminalService;
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.api.repository.IProjectRepository;
 import ru.zagorodnikova.tm.api.repository.ITaskRepository;
@@ -25,20 +27,18 @@ import java.util.*;
 @Getter
 public class Bootstrap implements ServiceLocator {
 
-    private final Scanner scanner = new Scanner(System.in);
-    private final Map<String, AbstractCommand> commands = new HashMap<>();
-    private final IProjectRepository<AbstractEntity> projectRepository = new ProjectRepository();
-    private final ITaskRepository<AbstractEntity> taskRepository = new TaskRepository();
-    private final IUserRepository<AbstractEntity> userRepository = new UserRepository();
-    private final IProjectService projectService = new ProjectService(projectRepository, taskRepository);
-    private final ITaskService taskService = new TaskService(taskRepository, projectRepository);
-    private final IUserService userService = new UserService(userRepository);
-    private final TerminalService terminalService = new TerminalService(this);
-    private User currentUser;
+    @NotNull private final Map<String, AbstractCommand> commands = new HashMap<>();
+    @NotNull private final IProjectRepository<AbstractEntity> projectRepository = new ProjectRepository();
+    @NotNull private final ITaskRepository<AbstractEntity> taskRepository = new TaskRepository();
+    @NotNull private final IUserRepository<AbstractEntity> userRepository = new UserRepository();
+    @NotNull private final IProjectService projectService = new ProjectService(projectRepository, taskRepository);
+    @NotNull private final ITaskService taskService = new TaskService(taskRepository, projectRepository);
+    @NotNull private final IUserService userService = new UserService(userRepository);
+    @NotNull private final TerminalService terminalService = new TerminalService(this);
+    @Nullable private User currentUser;
 
 
-    public void init(Class[] commandClasses) {
-
+    public void init(@NotNull Class[] commandClasses) {
         this.initCommands(this, commandClasses);
         this.initProjectsAndUsers();
 
@@ -49,7 +49,7 @@ public class Bootstrap implements ServiceLocator {
         terminalService.start();
     }
 
-    public void execute(String command) {
+    public void execute(@Nullable String command) {
         if (command == null || command.isEmpty()) return;
         final AbstractCommand abstractCommand = commands.get(command);
         if (abstractCommand == null) return;
@@ -64,12 +64,13 @@ public class Bootstrap implements ServiceLocator {
     }
 
     private void initProjectsAndUsers() {
-        User user1 = (User) userService.signUp("login", "password", "first name", "last name", "email@email.ru", RoleType.USER);
-        User user2 = (User) userService.signUp("login2", "password2", "first name", "last name", "email@email.ru", RoleType.ADMIN);
+        final User user1 = (User) userService.signUp("login", "password", "first name", "last name", "email@email.ru");
+        final User user2 = (User) userService.signUp("login2", "password2", "first name", "last name", "email@email.ru");
+        user2.setRoleType(RoleType.ADMIN);
 
-        Project project1 = (Project) projectService.persist(user1.getId(), "Project1", "Description1", "20.02.2019", "20.05.2019");
-        Project project2 = (Project) projectService.persist(user2.getId(), "Project2", "Description2", "20.05.2019", "20.06.2019");
-        Project project3 = (Project) projectService.persist(user2.getId(), "Project1", "Description1", "20.02.2016", "20.05.2020");
+        final Project project1 = (Project) projectService.persist(user1.getId(), "Project1", "Description1", "20.02.2019", "20.05.2019");
+        final Project project2 = (Project) projectService.persist(user2.getId(), "Project2", "Description2", "20.05.2019", "20.06.2019");
+        final Project project3 = (Project) projectService.persist(user2.getId(), "Project1", "Description1", "20.02.2016", "20.05.2020");
         project3.setStatus(Status.DONE);
 
         taskService.persist(project1.getUserId(), project1.getName(), "task1", "des1", "20.02.2012", "20.02.2013");
@@ -81,15 +82,14 @@ public class Bootstrap implements ServiceLocator {
 
     }
 
-    private void initCommands(Bootstrap bootstrap, Class[] commandClasses) {
+    private void initCommands(@NotNull Bootstrap bootstrap,@NotNull Class[] commandClasses) {
 
         addCommand(commandClasses, bootstrap);
 
     }
 
-    private void addCommand(Class[] commandClasses, ServiceLocator bootstrap){
+    private void addCommand(@NotNull Class[] commandClasses, @NotNull ServiceLocator bootstrap){
         for (Class commandClass : commandClasses) {
-
             if (commandClass.getSuperclass().equals(AbstractCommand.class)) {
                 AbstractCommand abstractCommand = null;
                 try {
