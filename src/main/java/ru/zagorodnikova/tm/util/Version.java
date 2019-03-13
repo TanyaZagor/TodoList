@@ -1,5 +1,7 @@
 package ru.zagorodnikova.tm.util;
 
+import com.jcabi.manifests.Manifests;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -38,5 +40,6 @@ public class Version {
             // Silently ignore wrong manifests on classpath?
         }
         return null;
+//        String version = Manifests.read("Main-Class");
     }
 }
