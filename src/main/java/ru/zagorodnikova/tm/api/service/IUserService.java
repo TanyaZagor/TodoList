@@ -25,4 +25,5 @@ public interface IUserService<T extends AbstractEntity> {
 
     @Nullable
     List<T> findAll(@NotNull RoleType roleType);
+
 }

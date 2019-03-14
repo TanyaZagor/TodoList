@@ -10,6 +10,8 @@ import ru.zagorodnikova.tm.entity.AbstractEntity;
 import ru.zagorodnikova.tm.entity.User;
 import ru.zagorodnikova.tm.service.TerminalService;
 
+import javax.xml.bind.JAXBException;
+import java.io.IOException;
 import java.util.Map;
 
 public interface ServiceLocator {
@@ -34,5 +36,5 @@ public interface ServiceLocator {
 
     void setCurrentUser(User user);
 
-    void execute(String command);
+    void execute(String command) throws IOException, JAXBException;
 }

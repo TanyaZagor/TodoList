@@ -7,12 +7,16 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.util.UtilPassword;
 
+import javax.xml.bind.annotation.*;
 import java.util.Objects;
 import java.util.UUID;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@XmlRootElement
+@XmlType(name = "user")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class User extends AbstractEntity {
 
     @NotNull

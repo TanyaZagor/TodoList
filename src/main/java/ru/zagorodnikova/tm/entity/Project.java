@@ -1,23 +1,23 @@
 package ru.zagorodnikova.tm.entity;
 
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import javax.xml.bind.annotation.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
-import java.util.UUID;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@XmlRootElement(name = "project")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Project extends AbstractEntity {
+
 
     @NotNull
     private String id = super.getId();

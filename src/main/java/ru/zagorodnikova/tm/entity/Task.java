@@ -7,12 +7,15 @@ import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.xml.bind.annotation.*;
 import java.util.Date;
 import java.util.Objects;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@XmlRootElement(name = "task")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Task extends AbstractEntity {
 
     @NotNull

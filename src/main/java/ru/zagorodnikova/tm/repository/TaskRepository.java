@@ -63,6 +63,21 @@ public class TaskRepository extends AbstractRepository<AbstractEntity> implement
     }
 
     @Nullable
+    public List<AbstractEntity> findAllTasks(@NotNull final AbstractEntity abstractEntity) {
+        @NotNull final Task task = (Task) abstractEntity;
+        final List<AbstractEntity> list = new ArrayList<>();
+        tasks.forEach((k, v) -> {
+            if(Objects.equals(v.getUserId(), task.getUserId())) {
+                list.add(v);
+            }
+        });
+        if (list.size() > 0) {
+            return list;
+        }
+        return null;
+    }
+
+    @Nullable
     public AbstractEntity findOne(@NotNull final AbstractEntity abstractEntity) {
         @NotNull final Task task = (Task) abstractEntity;
         final List<Task> list = new ArrayList<>();
@@ -113,4 +128,5 @@ public class TaskRepository extends AbstractRepository<AbstractEntity> implement
         Collections.reverse(list);
         return list;
     }
+
 }

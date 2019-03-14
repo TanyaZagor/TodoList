@@ -3,6 +3,8 @@ package ru.zagorodnikova.tm.service;
 import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.api.ServiceLocator;
 
+import javax.xml.bind.JAXBException;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class TerminalService {
@@ -29,6 +31,10 @@ public class TerminalService {
                 System.out.println(e.getMessage());
             } catch (NullPointerException e) {
                 System.out.println("wrong data");
+            } catch (IOException e) {
+                System.out.println("IOException");
+            } catch (JAXBException e) {
+                e.printStackTrace();
             }
         }
     }

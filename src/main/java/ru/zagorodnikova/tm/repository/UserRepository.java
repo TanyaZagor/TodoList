@@ -93,4 +93,5 @@ public class UserRepository extends AbstractRepository<AbstractEntity> implement
         @NotNull final User user = (User) abstractEntity;
         return Objects.equals(users.get(user.getId()).getPassword(), user.getPassword()) && Objects.equals(users.get(user.getId()).getLogin(), user.getLogin());
     }
+
 }

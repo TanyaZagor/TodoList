@@ -21,6 +21,8 @@ import ru.zagorodnikova.tm.service.ProjectService;
 import ru.zagorodnikova.tm.service.TaskService;
 import ru.zagorodnikova.tm.service.UserService;
 
+import javax.xml.bind.JAXBException;
+import java.io.IOException;
 import java.util.*;
 
 @Setter
@@ -49,7 +51,7 @@ public class Bootstrap implements ServiceLocator {
         terminalService.start();
     }
 
-    public void execute(@Nullable String command) {
+    public void execute(@Nullable String command) throws IOException, JAXBException {
         if (command == null || command.isEmpty()) return;
         final AbstractCommand abstractCommand = commands.get(command);
         if (abstractCommand == null) return;

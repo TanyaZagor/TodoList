@@ -112,6 +112,14 @@ public class TaskService extends AbstractService implements ITaskService {
         return null;
     }
 
+
+    @Nullable
+    public List<AbstractEntity> findAllTasks(@NotNull String userId) {
+        @NotNull final Task task = new Task();
+        task.setUserId(userId);
+        return  taskRepository.findAllTasks(task);
+    }
+
     @Nullable
     public AbstractEntity findOne(@NotNull String userId, @NotNull String projectName,@NotNull String taskName, @NotNull String taskDescription) {
         if (projectName.isEmpty()) return null;

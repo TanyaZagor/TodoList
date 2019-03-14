@@ -27,6 +27,9 @@ public interface ITaskRepository<T extends AbstractEntity> {
     @Nullable
     List<T> findAll(@NotNull T t);
 
+    @Nullable
+    List<T> findAllTasks(@NotNull T t);
+
     @NotNull
     List<T> sortByDateCreated(@NotNull List<T> list);
 
@@ -38,4 +41,5 @@ public interface ITaskRepository<T extends AbstractEntity> {
 
     @NotNull
     List<T> sortByStatus(@NotNull List<T> list);
+
 }

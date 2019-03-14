@@ -3,9 +3,12 @@ package ru.zagorodnikova.tm;
 
 import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.bootstrap.Bootstrap;
+import ru.zagorodnikova.tm.command.data.SaveToJsonJaxbCommand;
+import ru.zagorodnikova.tm.command.data.SaveToXmlJaxbCommand;
 import ru.zagorodnikova.tm.command.project.*;
 import ru.zagorodnikova.tm.command.system.AboutCommand;
 import ru.zagorodnikova.tm.command.system.HelpCommand;
+import ru.zagorodnikova.tm.command.data.SaveCommand;
 import ru.zagorodnikova.tm.command.task.*;
 import ru.zagorodnikova.tm.command.user.*;
 
@@ -23,6 +26,9 @@ public class App {
             ProjectSortByStatusCommand.class,
             AboutCommand.class,
             HelpCommand.class,
+            SaveCommand.class,
+            SaveToXmlJaxbCommand.class,
+            SaveToJsonJaxbCommand.class,
             TaskClearCommand.class,
             TaskCreateCommand.class,
             TaskFindOneCommand.class,
@@ -47,6 +53,7 @@ public class App {
 
     public static void main(String[] args) {
         System.setProperty("org.apache.logging.log4j.simplelog.StatusLogger.level","INFO");
+        System.setProperty("javax.xml.bind.context.factory","org.eclipse.persistence.jaxb.JAXBContextFactory");
         @NotNull final Bootstrap bootstrap = new Bootstrap();
         bootstrap.init(commandClasses);
 

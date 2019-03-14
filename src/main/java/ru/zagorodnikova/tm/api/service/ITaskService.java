@@ -22,6 +22,9 @@ public interface ITaskService<T extends AbstractEntity> {
     List<T> findAll(@NotNull String userId, @NotNull String projectName);
 
     @Nullable
+    List<T> findAllTasks(@NotNull String userId);
+
+    @Nullable
     T findOne(@NotNull String userId, @NotNull String projectName, @NotNull String taskName, @NotNull String taskDescription);
 
     @Nullable
@@ -35,4 +38,5 @@ public interface ITaskService<T extends AbstractEntity> {
 
     @Nullable
     List<T> sortByStatus(@NotNull String userId, @NotNull String projectName);
+
 }

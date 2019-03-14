@@ -29,4 +29,5 @@ public interface IUserRepository<T extends AbstractEntity> {
     List<T> findAll(@NotNull T t);
 
     boolean checkPassword(@NotNull T t);
+
 }
