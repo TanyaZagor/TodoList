@@ -26,7 +26,7 @@ public class SaveToJsonCommand extends AbstractCommand{
     }
 
     @Override
-    public void execute() throws IOException, JAXBException {
+    public void execute() throws IOException {
         final Domain domain = new Domain();
         domain.setUser(getServiceLocator().getCurrentUser());
 
@@ -44,6 +44,6 @@ public class SaveToJsonCommand extends AbstractCommand{
 
     @Override
     public boolean isSecure() {
-        return false;
+        return true;
     }
 }

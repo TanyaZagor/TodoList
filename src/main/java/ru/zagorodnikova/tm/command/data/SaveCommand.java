@@ -2,7 +2,10 @@ package ru.zagorodnikova.tm.command.data;
 
 import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.command.AbstractCommand;
+import ru.zagorodnikova.tm.entity.AbstractEntity;
 import ru.zagorodnikova.tm.entity.Domain;
+import ru.zagorodnikova.tm.entity.Project;
+import ru.zagorodnikova.tm.entity.Task;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -24,11 +27,18 @@ public class SaveCommand extends AbstractCommand {
 
     @Override
     public void execute() throws IOException {
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("data.txt"));
+
         final Domain domain = new Domain();
-        //domain.setProjects(getServiceLocator().getProjectService().findAll(getServiceLocator().getCurrentUser().getId()));
-        //domain.setTasks(getServiceLocator().getTaskService().findAllTasks(getServiceLocator().getCurrentUser().getId()));
+        for (AbstractEntity project : getServiceLocator().getProjectService().findAll(getServiceLocator().getCurrentUser().getId())) {
+            domain.getProjects().add((Project) project);
+        }
+
+        for (AbstractEntity task : getServiceLocator().getTaskService().findAllTasks(getServiceLocator().getCurrentUser().getId())) {
+            domain.getTasks().add((Task) task);
+        }
+        File file = new File("C:\\Users\\zagorodnikova\\IdeaProjects\\TodoList\\file.txt");
         domain.setUser(getServiceLocator().getCurrentUser());
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file));
         objectOutputStream.writeObject(domain);
         objectOutputStream.close();
     }

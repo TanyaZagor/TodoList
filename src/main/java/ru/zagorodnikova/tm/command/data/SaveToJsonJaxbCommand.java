@@ -53,6 +53,6 @@ public class SaveToJsonJaxbCommand extends AbstractCommand {
 
     @Override
     public boolean isSecure() {
-        return false;
+        return true;
     }
 }

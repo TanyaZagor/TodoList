@@ -36,5 +36,5 @@ public interface ServiceLocator {
 
     void setCurrentUser(User user);
 
-    void execute(String command) throws IOException, JAXBException;
+    void execute(String command) throws IOException, JAXBException, ClassNotFoundException;
 }

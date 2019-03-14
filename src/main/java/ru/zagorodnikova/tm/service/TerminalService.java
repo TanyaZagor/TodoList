@@ -32,8 +32,11 @@ public class TerminalService {
             } catch (NullPointerException e) {
                 System.out.println("wrong data");
             } catch (IOException e) {
+                e.printStackTrace();
                 System.out.println("IOException");
             } catch (JAXBException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
         }

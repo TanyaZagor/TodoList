@@ -44,6 +44,6 @@ public class SaveToXmlCommand extends AbstractCommand {
 
     @Override
     public boolean isSecure() {
-        return false;
+        return true;
     }
 }

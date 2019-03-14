@@ -51,7 +51,7 @@ public class Bootstrap implements ServiceLocator {
         terminalService.start();
     }
 
-    public void execute(@Nullable String command) throws IOException, JAXBException {
+    public void execute(@Nullable String command) throws IOException, JAXBException, ClassNotFoundException {
         if (command == null || command.isEmpty()) return;
         final AbstractCommand abstractCommand = commands.get(command);
         if (abstractCommand == null) return;

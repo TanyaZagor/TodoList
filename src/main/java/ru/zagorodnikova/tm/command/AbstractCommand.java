@@ -16,7 +16,7 @@ public abstract class AbstractCommand {
     @NotNull
     abstract public String description();
 
-    abstract public void execute() throws IOException, JAXBException;
+    abstract public void execute() throws IOException, JAXBException, ClassNotFoundException;
 
     abstract public boolean isSecure();
 
