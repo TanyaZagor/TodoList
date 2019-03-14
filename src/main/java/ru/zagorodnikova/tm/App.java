@@ -3,12 +3,10 @@ package ru.zagorodnikova.tm;
 
 import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.bootstrap.Bootstrap;
-import ru.zagorodnikova.tm.command.data.SaveToJsonJaxbCommand;
-import ru.zagorodnikova.tm.command.data.SaveToXmlJaxbCommand;
+import ru.zagorodnikova.tm.command.data.*;
 import ru.zagorodnikova.tm.command.project.*;
 import ru.zagorodnikova.tm.command.system.AboutCommand;
 import ru.zagorodnikova.tm.command.system.HelpCommand;
-import ru.zagorodnikova.tm.command.data.SaveCommand;
 import ru.zagorodnikova.tm.command.task.*;
 import ru.zagorodnikova.tm.command.user.*;
 
@@ -29,6 +27,8 @@ public class App {
             SaveCommand.class,
             SaveToXmlJaxbCommand.class,
             SaveToJsonJaxbCommand.class,
+            SaveToXmlCommand.class,
+            SaveToJsonCommand.class,
             TaskClearCommand.class,
             TaskCreateCommand.class,
             TaskFindOneCommand.class,
