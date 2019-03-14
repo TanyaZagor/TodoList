@@ -24,7 +24,7 @@ public class LoadFromJsonCommand extends AbstractCommand {
 
     @Override
     public void execute() throws IOException{
-        File file = new File("C:\\Users\\zagorodnikova\\IdeaProjects\\TodoList\\fileFasterXml.json");
+        File file = new File("fileFasterXml.json");
         ObjectMapper mapper = new ObjectMapper();
         mapper.readValue(file, Domain.class);
         Domain domain = mapper.readValue(file, Domain.class);

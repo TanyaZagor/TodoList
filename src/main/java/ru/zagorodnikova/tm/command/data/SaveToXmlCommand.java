@@ -37,7 +37,7 @@ public class SaveToXmlCommand extends AbstractCommand {
         for (AbstractEntity task : getServiceLocator().getTaskService().findAllTasks(getServiceLocator().getCurrentUser().getId())) {
             domain.getTasks().add((Task) task);
         }
-        File file = new File("C:\\Users\\zagorodnikova\\IdeaProjects\\TodoList\\fileFasterXml.xml");
+        File file = new File("fileFasterXml.xml");
         XmlMapper xmlMapper = new XmlMapper();
         xmlMapper.writerWithDefaultPrettyPrinter().writeValue(file, domain);
     }

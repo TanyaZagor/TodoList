@@ -38,7 +38,7 @@ public class SaveToXmlJaxbCommand extends AbstractCommand {
         for (AbstractEntity task : getServiceLocator().getTaskService().findAllTasks(getServiceLocator().getCurrentUser().getId())) {
             domain.getTasks().add((Task) task);
         }
-        File file = new File("C:\\Users\\zagorodnikova\\IdeaProjects\\TodoList\\fileJaxb.xml");
+        File file = new File("fileJaxb.xml");
         JAXBContext jaxbContext = JAXBContext.newInstance(Domain.class);
         Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 

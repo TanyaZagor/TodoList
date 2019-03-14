@@ -28,7 +28,7 @@ public class LoadFromXmlJaxbCommand extends AbstractCommand {
         Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 
         //We had written this file in marshalling example
-        Domain domain = (Domain) jaxbUnmarshaller.unmarshal(new File("C:\\Users\\zagorodnikova\\IdeaProjects\\TodoList\\fileJaxb.xml"));
+        Domain domain = (Domain) jaxbUnmarshaller.unmarshal(new File("fileJaxb.xml"));
 
         System.out.println(domain.getUser());
     }

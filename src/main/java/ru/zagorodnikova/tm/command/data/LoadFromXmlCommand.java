@@ -23,7 +23,7 @@ public class LoadFromXmlCommand extends AbstractCommand {
 
     @Override
     public void execute() throws IOException{
-        File file = new File("C:\\Users\\zagorodnikova\\IdeaProjects\\TodoList\\fileFasterXml.xml");
+        File file = new File("fileFasterXml.xml");
         XmlMapper xmlMapper = new XmlMapper();
         Domain domain = xmlMapper.readValue(file, Domain.class);
         System.out.println(domain.getUser());

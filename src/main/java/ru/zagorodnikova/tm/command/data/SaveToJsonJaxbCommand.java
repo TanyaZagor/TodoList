@@ -39,7 +39,7 @@ public class SaveToJsonJaxbCommand extends AbstractCommand {
         for (AbstractEntity task : getServiceLocator().getTaskService().findAllTasks(getServiceLocator().getCurrentUser().getId())) {
             domain.getTasks().add((Task) task);
         }
-        File file = new File("C:\\Users\\zagorodnikova\\IdeaProjects\\TodoList\\fileJaxb.json");
+        File file = new File("fileJaxb.json");
         JAXBContext jaxbContext = JAXBContext.newInstance(Domain.class);
         Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
         jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);

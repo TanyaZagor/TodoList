@@ -24,7 +24,7 @@ public class LoadCommand extends AbstractCommand {
 
     @Override
     public void execute() throws IOException, ClassNotFoundException {
-        ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("C:\\Users\\zagorodnikova\\IdeaProjects\\TodoList\\file.txt"));
+        ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("file.txt"));
         Domain domain = (Domain) inputStream.readObject();
         inputStream.close();
         System.out.println(domain.getProjects());

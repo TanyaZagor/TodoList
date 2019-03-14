@@ -34,7 +34,7 @@ public class LoadFromJsonJaxbCommand extends AbstractCommand {
         jaxbUnmarshaller.setProperty(UnmarshallerProperties.MEDIA_TYPE, "application/json");
         jaxbUnmarshaller.setProperty(UnmarshallerProperties.JSON_INCLUDE_ROOT, true);
 
-        Domain domain = (Domain) jaxbUnmarshaller.unmarshal(new File("C:\\Users\\zagorodnikova\\IdeaProjects\\TodoList\\fileJaxb.json"));
+        Domain domain = (Domain) jaxbUnmarshaller.unmarshal(new File("fileJaxb.json"));
 
         System.out.println(domain.getUser());
     }

@@ -37,7 +37,7 @@ public class SaveToJsonCommand extends AbstractCommand{
         for (AbstractEntity task : getServiceLocator().getTaskService().findAllTasks(getServiceLocator().getCurrentUser().getId())) {
             domain.getTasks().add((Task) task);
         }
-        File file = new File("C:\\Users\\zagorodnikova\\IdeaProjects\\TodoList\\fileFasterXml.json");
+        File file = new File("fileFasterXml.json");
         ObjectMapper mapper = new ObjectMapper();
         mapper.writerWithDefaultPrettyPrinter().writeValue(file, domain);
     }

@@ -36,7 +36,7 @@ public class SaveCommand extends AbstractCommand {
         for (AbstractEntity task : getServiceLocator().getTaskService().findAllTasks(getServiceLocator().getCurrentUser().getId())) {
             domain.getTasks().add((Task) task);
         }
-        File file = new File("C:\\Users\\zagorodnikova\\IdeaProjects\\TodoList\\file.txt");
+        File file = new File("file.txt");
         domain.setUser(getServiceLocator().getCurrentUser());
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file));
         objectOutputStream.writeObject(domain);
