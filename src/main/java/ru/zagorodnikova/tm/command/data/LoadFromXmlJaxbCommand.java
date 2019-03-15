@@ -27,7 +27,6 @@ public class LoadFromXmlJaxbCommand extends AbstractCommand {
         JAXBContext jaxbContext = JAXBContext.newInstance(Domain.class);
         Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 
-        //We had written this file in marshalling example
         Domain domain = (Domain) jaxbUnmarshaller.unmarshal(new File("fileJaxb.xml"));
 
         System.out.println(domain.getUser());

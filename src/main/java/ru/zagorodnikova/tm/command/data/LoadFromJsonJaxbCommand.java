@@ -1,5 +1,4 @@
 package ru.zagorodnikova.tm.command.data;
-
 import org.eclipse.persistence.jaxb.UnmarshallerProperties;
 import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.command.AbstractCommand;
@@ -8,10 +7,7 @@ import ru.zagorodnikova.tm.entity.Domain;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.transform.stream.StreamSource;
 import java.io.File;
-import java.io.IOException;
-import java.io.StringReader;
 
 public class LoadFromJsonJaxbCommand extends AbstractCommand {
     @NotNull
@@ -27,7 +23,7 @@ public class LoadFromJsonJaxbCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() throws IOException, JAXBException, ClassNotFoundException {
+    public void execute() throws JAXBException{
         JAXBContext jaxbContext = JAXBContext.newInstance(Domain.class);
         Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 

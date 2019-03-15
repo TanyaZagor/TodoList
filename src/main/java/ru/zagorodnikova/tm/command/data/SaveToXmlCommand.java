@@ -8,7 +8,6 @@ import ru.zagorodnikova.tm.entity.Domain;
 import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.entity.Task;
 
-import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.IOException;
 
