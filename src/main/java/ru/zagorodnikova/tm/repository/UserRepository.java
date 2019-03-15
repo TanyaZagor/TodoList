@@ -9,13 +9,12 @@ import ru.zagorodnikova.tm.entity.User;
 
 import java.util.*;
 
-public class UserRepository extends AbstractRepository<AbstractEntity> implements IUserRepository<AbstractEntity> {
+public class UserRepository extends AbstractRepository<User> implements IUserRepository<User> {
 
     @NotNull private final Map<String, User> users = new LinkedHashMap<>();
 
     @Nullable
-    public User signIn(@NotNull AbstractEntity abstractEntity) {
-        @NotNull final User user = (User) abstractEntity;
+    public User signIn(@NotNull User user) {
         final Map<String, User> map = new LinkedHashMap<>();
         users.forEach((k, v) -> {
             if (Objects.equals(v.getLogin(), user.getLogin()) && Objects.equals(v.getPassword(), user.getPassword())) {
@@ -28,8 +27,7 @@ public class UserRepository extends AbstractRepository<AbstractEntity> implement
         return null;
     }
 
-    public void changePassword(@NotNull AbstractEntity abstractEntity) {
-        @NotNull final User user = (User) abstractEntity;
+    public void changePassword(@NotNull User user) {
         if (user.getPassword() != null) {
             users.get(user.getId()).setPassword(user.getPassword());
         }
@@ -37,8 +35,7 @@ public class UserRepository extends AbstractRepository<AbstractEntity> implement
 
     @Nullable
     @Override
-    public AbstractEntity persist(@NotNull AbstractEntity abstractEntity) {
-        @NotNull final User user = (User) abstractEntity;
+    public User persist(@NotNull User user) {
         if (!users.containsValue(user)) {
             users.put(user.getId(), user);
             return user;
@@ -47,20 +44,18 @@ public class UserRepository extends AbstractRepository<AbstractEntity> implement
     }
 
     @Override
-    public void remove(@NotNull AbstractEntity abstractEntity) {
-        @NotNull final User user = (User) abstractEntity;
+    public void remove(@NotNull User user) {
         users.remove(user.getId());
     }
 
     @Override
-    public void removeAll(@NotNull AbstractEntity abstractEntity) {
+    public void removeAll(@NotNull User abstractEntity) {
         users.entrySet().removeIf((v) -> !v.getValue().getRoleType().equals(RoleType.ADMIN));
     }
 
     @Nullable
     @Override
-    public AbstractEntity findOne(@NotNull AbstractEntity abstractEntity) {
-        @NotNull final User user = (User) abstractEntity;
+    public User findOne(@NotNull User user) {
         final List<User> list = new ArrayList<>();
         users.forEach((k, v) -> {
             if (Objects.equals(v.getLogin(), user.getLogin())) {
@@ -74,8 +69,7 @@ public class UserRepository extends AbstractRepository<AbstractEntity> implement
     }
 
     @Override
-    public void merge(@NotNull AbstractEntity abstractEntity) {
-        @NotNull final User user = (User) abstractEntity;
+    public void merge(@NotNull User user) {
         users.get(user.getId()).setFirstName(user.getFirstName());
         users.get(user.getId()).setLastName(user.getLastName());
         users.get(user.getId()).setEmail(user.getEmail());
@@ -83,14 +77,13 @@ public class UserRepository extends AbstractRepository<AbstractEntity> implement
 
     @Nullable
     @Override
-    public List<AbstractEntity> findAll(@NotNull AbstractEntity abstractEntity) {
-        @NotNull final List<AbstractEntity> usersList = new ArrayList<>();
+    public List<User> findAll(@NotNull User user) {
+        @NotNull final List<User> usersList = new ArrayList<>();
         users.forEach((k, v) -> usersList.add(v));
         return usersList;
     }
 
-    public boolean checkPassword(@NotNull AbstractEntity abstractEntity) {
-        @NotNull final User user = (User) abstractEntity;
+    public boolean checkPassword(@NotNull User user) {
         return Objects.equals(users.get(user.getId()).getPassword(), user.getPassword()) && Objects.equals(users.get(user.getId()).getLogin(), user.getLogin());
     }
 

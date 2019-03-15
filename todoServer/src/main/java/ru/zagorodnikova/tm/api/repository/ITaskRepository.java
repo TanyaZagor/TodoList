@@ -3,12 +3,12 @@ package ru.zagorodnikova.tm.api.repository;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.zagorodnikova.tm.entity.AbstractEntity;
+import ru.zagorodnikova.tm.entity.Task;
 
 import java.util.List;
 
 
-public interface ITaskRepository<T extends AbstractEntity> {
+public interface ITaskRepository<T extends Task> {
 
     @Nullable
     T persist(@NotNull T t);
@@ -34,7 +34,7 @@ public interface ITaskRepository<T extends AbstractEntity> {
     List<T> sortByDateCreated(@NotNull List<T> list);
 
     @NotNull
-    List<T> sortByDateStart(@NotNull List<T> list);
+    List<Task> sortByDateStart(@NotNull List<T> list);
 
     @NotNull
     List<T> sortByDateFinish(@NotNull List<T> list);

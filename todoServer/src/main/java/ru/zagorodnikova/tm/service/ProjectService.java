@@ -7,6 +7,7 @@ import ru.zagorodnikova.tm.api.repository.ITaskRepository;
 import ru.zagorodnikova.tm.api.service.IProjectService;
 import ru.zagorodnikova.tm.entity.AbstractEntity;
 import ru.zagorodnikova.tm.entity.Project;
+import ru.zagorodnikova.tm.entity.Task;
 import ru.zagorodnikova.tm.util.UtilDateFormatter;
 
 import javax.jws.WebService;
@@ -15,21 +16,21 @@ import java.util.List;
 
 public class ProjectService extends AbstractService implements IProjectService{
 
-    @NotNull private final IProjectRepository<AbstractEntity> projectRepository;
-    @NotNull private final ITaskRepository<AbstractEntity> taskRepository;
+    @NotNull private final IProjectRepository<Project> projectRepository;
+    @NotNull private final ITaskRepository<Task> taskRepository;
 
-    public ProjectService(@NotNull IProjectRepository<AbstractEntity> projectRepository, @NotNull ITaskRepository<AbstractEntity> taskRepository) {
+    public ProjectService(@NotNull IProjectRepository<Project> projectRepository, @NotNull ITaskRepository<Task> taskRepository) {
         this.projectRepository = projectRepository;
         this.taskRepository = taskRepository;
     }
 
     @Nullable
-    public AbstractEntity persistProject(@NotNull String userId, @NotNull String projectName, @NotNull String description, @NotNull String dateStart, @NotNull String dateFinish){
+    public Project persistProject(@NotNull String userId, @NotNull String projectName, @NotNull String description, @NotNull String dateStart, @NotNull String dateFinish){
         if (projectName.isEmpty()) return null;
         @NotNull final Project newProject = new Project();
         newProject.setName(projectName);
         newProject.setUserId(userId);
-        @Nullable final Project project = (Project) projectRepository.findOne(newProject);
+        @Nullable final Project project = projectRepository.findOne(newProject);
         if (project == null) {
             if (description.isEmpty()) return null;
             if (dateStart.isEmpty()) return null;
@@ -50,10 +51,12 @@ public class ProjectService extends AbstractService implements IProjectService{
         @NotNull final Project newProject= new Project();
         newProject.setName(projectName);
         newProject.setUserId(userId);
-        @Nullable final Project project = (Project) projectRepository.findOne(newProject);
+        @Nullable final Project project = projectRepository.findOne(newProject);
         if (project != null) {
             projectRepository.remove(project);
-            taskRepository.removeAllInProject(project);
+            Task task = new Task();
+            task.setProjectId(project.getId());
+            taskRepository.removeAllInProject(task);
         }
     }
 
@@ -61,18 +64,20 @@ public class ProjectService extends AbstractService implements IProjectService{
         @NotNull final Project project = new Project();
         project.setUserId(userId);
         projectRepository.removeAll(project);
-        taskRepository.removeAll(project);
+        Task task = new Task();
+        task.setProjectId(project.getId());
+        taskRepository.removeAll(task);
     }
 
     @Nullable
-    public List<AbstractEntity> findAllProjects(@NotNull String userId) {
+    public List<Project> findAllProjects(@NotNull String userId) {
         @NotNull final Project project = new Project();
         project.setUserId(userId);
         return projectRepository.findAll(project);
     }
 
     @Nullable
-    public AbstractEntity findOneProject(@NotNull String userId, @NotNull String projectName, @NotNull String projectDescription) {
+    public Project findOneProject(@NotNull String userId, @NotNull String projectName, @NotNull String projectDescription) {
         if (projectName.isEmpty()) {
             if (projectDescription.isEmpty()) return null;
             @NotNull final Project newProject = new Project();
@@ -91,7 +96,7 @@ public class ProjectService extends AbstractService implements IProjectService{
         @NotNull final Project newProject = new Project();
         newProject.setName(oldProjectName);
         newProject.setUserId(userId);
-        @Nullable final Project project = (Project) projectRepository.findOne(newProject);
+        @Nullable final Project project = projectRepository.findOne(newProject);
         if (project != null) {
             if (projectName.isEmpty()) return;
             if (description.isEmpty()) return;
@@ -109,8 +114,8 @@ public class ProjectService extends AbstractService implements IProjectService{
     }
 
     @Nullable
-    public List<AbstractEntity> sortProjectsByDateCreated(@NotNull String userId) {
-        @Nullable final List<AbstractEntity> list = findAllProjects(userId);
+    public List<Project> sortProjectsByDateCreated(@NotNull String userId) {
+        @Nullable final List<Project> list = findAllProjects(userId);
         if (list != null) {
             return projectRepository.sortByDateCreated(list);
         }
@@ -118,16 +123,16 @@ public class ProjectService extends AbstractService implements IProjectService{
     }
 
     @Nullable
-    public List<AbstractEntity> sortProjectsByDateStart(@NotNull String userId) {
-        @Nullable final List<AbstractEntity> list = findAllProjects(userId);
+    public List<Project> sortProjectsByDateStart(@NotNull String userId) {
+        @Nullable final List<Project> list = findAllProjects(userId);
         if (list != null) {
             return projectRepository.sortByDateStart(list);
         }
         return null;
     }
     @Nullable
-    public List<AbstractEntity> sortProjectsByDateFinish(@NotNull String userId) {
-        @Nullable final List<AbstractEntity> list = findAllProjects(userId);
+    public List<Project> sortProjectsByDateFinish(@NotNull String userId) {
+        @Nullable final List<Project> list = findAllProjects(userId);
         if (list != null) {
             return projectRepository.sortByDateFinish(list);
         }
@@ -136,8 +141,8 @@ public class ProjectService extends AbstractService implements IProjectService{
     }
 
     @Nullable
-    public List<AbstractEntity> sortProjectsByStatus(@NotNull String userId) {
-        @Nullable final List<AbstractEntity> list = findAllProjects(userId);
+    public List<Project> sortProjectsByStatus(@NotNull String userId) {
+        @Nullable final List<Project> list = findAllProjects(userId);
         if (list != null) {
             return projectRepository.sortByStatus(list);
         }

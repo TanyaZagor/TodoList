@@ -33,7 +33,7 @@ public class ProjectCreateCommand extends AbstractCommand {
         @NotNull final String dateStart = getServiceLocator().getTerminalService().nextLine();
         System.out.println("project date finish");
         @NotNull final String dateFinish = getServiceLocator().getTerminalService().nextLine();
-        @Nullable final Project project = (Project) getServiceLocator().getProjectService().persist(getServiceLocator().getCurrentUser().getId(), projectName, description, dateStart, dateFinish);
+        @Nullable final Project project = getServiceLocator().getProjectService().persist(getServiceLocator().getCurrentUser().getId(), projectName, description, dateStart, dateFinish);
         if (project != null) {
             System.out.println(project);
         }

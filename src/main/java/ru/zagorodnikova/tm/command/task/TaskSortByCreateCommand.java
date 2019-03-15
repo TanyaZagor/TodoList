@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.entity.AbstractEntity;
+import ru.zagorodnikova.tm.entity.Task;
 
 import java.util.List;
 import java.util.Scanner;
@@ -26,7 +27,7 @@ public class TaskSortByCreateCommand extends AbstractCommand {
     public void execute() {
         System.out.println("project name");
         @NotNull final String projectName = getServiceLocator().getTerminalService().nextLine();
-        @Nullable final List<AbstractEntity> tasks = getServiceLocator().getTaskService().sortByDateCreated(getServiceLocator().getCurrentUser().getId(), projectName);
+        @Nullable final List<Task> tasks = getServiceLocator().getTaskService().sortByDateCreated(getServiceLocator().getCurrentUser().getId(), projectName);
         if (tasks!= null) {
             tasks.forEach(System.out::println);
         }

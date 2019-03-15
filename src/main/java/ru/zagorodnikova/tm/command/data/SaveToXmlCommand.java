@@ -28,14 +28,8 @@ public class SaveToXmlCommand extends AbstractCommand {
     public void execute() throws IOException {
         final Domain domain = new Domain();
         domain.setUser(getServiceLocator().getCurrentUser());
-
-        for (AbstractEntity project : getServiceLocator().getProjectService().findAll(getServiceLocator().getCurrentUser().getId())) {
-            domain.getProjects().add((Project) project);
-        }
-
-        for (AbstractEntity task : getServiceLocator().getTaskService().findAllTasks(getServiceLocator().getCurrentUser().getId())) {
-            domain.getTasks().add((Task) task);
-        }
+        domain.setProjects(getServiceLocator().getProjectService().findAll(getServiceLocator().getCurrentUser().getId()));
+        domain.setTasks(getServiceLocator().getTaskService().findAllTasks(getServiceLocator().getCurrentUser().getId()));
         File file = new File("fileFasterXml.xml");
         XmlMapper xmlMapper = new XmlMapper();
         xmlMapper.writerWithDefaultPrettyPrinter().writeValue(file, domain);

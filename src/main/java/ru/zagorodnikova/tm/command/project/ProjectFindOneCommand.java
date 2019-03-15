@@ -31,7 +31,7 @@ public class ProjectFindOneCommand extends AbstractCommand {
         @NotNull final String projectName = getServiceLocator().getTerminalService().nextLine();
         System.out.println("project description");
         @NotNull final String projectDescription = getServiceLocator().getTerminalService().nextLine();
-        @Nullable final Project project = (Project) getServiceLocator().getProjectService().findOne(getServiceLocator().getCurrentUser().getId(), projectName, projectDescription);
+        @Nullable final Project project = getServiceLocator().getProjectService().findOne(getServiceLocator().getCurrentUser().getId(), projectName, projectDescription);
         if (project != null) {
             System.out.println(project);
         }

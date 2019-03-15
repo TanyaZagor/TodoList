@@ -1,15 +1,21 @@
 package ru.zagorodnikova.tm.endpoint;
 
+import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.entity.AbstractEntity;
 import ru.zagorodnikova.tm.entity.RoleType;
+import ru.zagorodnikova.tm.entity.User;
 
 import javax.jws.WebService;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
+@XmlRootElement
 @WebService(endpointInterface = "ru.zagorodnikova.tm.api.service.IUserService")
+@NoArgsConstructor
 public class UserEndpoint{
 
     @NotNull
@@ -20,12 +26,12 @@ public class UserEndpoint{
     }
 
     @Nullable
-    public AbstractEntity signIn(@NotNull String login, @NotNull String password) {
+    public User signIn(@NotNull String login, @NotNull String password) {
         return serviceLocator.getUserService().signIn(login, password);
     }
 
     @Nullable
-    public AbstractEntity signUp(@NotNull String login, @NotNull String password, @NotNull String fistName, @NotNull String lastName, @NotNull String email) {
+    public User signUp(@NotNull String login, @NotNull String password, @NotNull String fistName, @NotNull String lastName, @NotNull String email) {
         return serviceLocator.getUserService().signUp(login, password, fistName, lastName, email);
     }
 
@@ -46,7 +52,8 @@ public class UserEndpoint{
     }
 
     @Nullable
-    public List findAllUsers(@NotNull RoleType roleType) {
+    @XmlElement
+    public List<User> findAllUsers(@NotNull RoleType roleType) {
         return serviceLocator.getUserService().findAllUsers(roleType);
     }
 }

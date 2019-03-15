@@ -8,31 +8,27 @@ import ru.zagorodnikova.tm.entity.Project;
 
 import java.util.*;
 
-public class ProjectRepository extends AbstractRepository<AbstractEntity> implements IProjectRepository<AbstractEntity> {
+public class ProjectRepository extends AbstractRepository<Project> implements IProjectRepository<Project> {
 
     @NotNull private final Map<String, Project> projects = new LinkedHashMap<>();
 
     @Nullable
-    public AbstractEntity persist(@NotNull AbstractEntity abstractEntity) {
-        @NotNull final Project project = (Project) abstractEntity;
+    public Project persist(@NotNull Project project) {
         projects.put(project.getId(), project);
         return project;
     }
 
-    public void remove(@NotNull AbstractEntity abstractEntity) {
-        @NotNull final Project project = (Project) abstractEntity;
+    public void remove(@NotNull Project project) {
         projects.remove(project.getId());
     }
 
-    public void removeAll(@NotNull AbstractEntity abstractEntity) {
-        @NotNull final Project project = (Project) abstractEntity;
+    public void removeAll(@NotNull Project project) {
         projects.entrySet().removeIf((v) -> Objects.equals(v.getValue().getUserId(), project.getUserId()));
     }
 
     @Nullable
-    public List<AbstractEntity> findAll(@NotNull AbstractEntity abstractEntity) {
-        @NotNull final Project project = (Project) abstractEntity;
-        final List<AbstractEntity> list = new ArrayList<>();
+    public List<Project> findAll(@NotNull Project project) {
+        final List<Project> list = new ArrayList<>();
         projects.forEach((k, v) -> {
             if (Objects.equals(v.getUserId(), project.getUserId())) {
                 list.add(v);
@@ -45,8 +41,7 @@ public class ProjectRepository extends AbstractRepository<AbstractEntity> implem
     }
 
     @Nullable
-    public AbstractEntity findOne(@NotNull AbstractEntity abstractEntity){
-        @NotNull final Project project = (Project) abstractEntity;
+    public Project findOne(@NotNull Project project){
         final List<Project> list = new ArrayList<>();
         if (project.getDescription() != null && !project.getDescription().isEmpty()) {
             projects.forEach((k, v) -> {
@@ -68,8 +63,7 @@ public class ProjectRepository extends AbstractRepository<AbstractEntity> implem
         return null;
     }
 
-    public void merge(@NotNull AbstractEntity abstractEntity) {
-        @NotNull final Project project = (Project) abstractEntity;
+    public void merge(@NotNull Project project) {
         projects.get(project.getId()).setName(project.getName());
         projects.get(project.getId()).setDescription(project.getDescription());
         projects.get(project.getId()).setDateStart(project.getDateStart());
@@ -77,28 +71,28 @@ public class ProjectRepository extends AbstractRepository<AbstractEntity> implem
     }
 
     @NotNull
-    public List<AbstractEntity> sortByDateCreated(@NotNull List<AbstractEntity> list) {
-        list.sort(((o1, o2) -> ((Project)o2).getDateCreate().compareTo(((Project)o1).getDateCreate())));
+    public List<Project> sortByDateCreated(@NotNull List<Project> list) {
+        list.sort(((o1, o2) -> (o2).getDateCreate().compareTo((o1).getDateCreate())));
         Collections.reverse(list);
         return list;
     }
 
     @NotNull
-    public List<AbstractEntity> sortByDateStart(@NotNull List<AbstractEntity> list) {
-        list.sort(((o1, o2) -> Objects.requireNonNull(((Project) o2).getDateStart()).compareTo(Objects.requireNonNull(((Project) o1).getDateStart()))));
+    public List<Project> sortByDateStart(@NotNull List<Project> list) {
+        list.sort(((o1, o2) -> Objects.requireNonNull((o2).getDateStart()).compareTo(Objects.requireNonNull((o1).getDateStart()))));
         Collections.reverse(list);
         return list;
     }
     @NotNull
-    public List<AbstractEntity> sortByDateFinish(@NotNull List<AbstractEntity> list) {
-        list.sort(((o1, o2) -> Objects.requireNonNull(((Project) o2).getDateFinish()).compareTo(Objects.requireNonNull(((Project) o1).getDateFinish()))));
+    public List<Project> sortByDateFinish(@NotNull List<Project> list) {
+        list.sort(((o1, o2) -> Objects.requireNonNull((o2).getDateFinish()).compareTo(Objects.requireNonNull((o1).getDateFinish()))));
         Collections.reverse(list);
         return list;
     }
 
     @NotNull
-    public List<AbstractEntity> sortByStatus(@NotNull List<AbstractEntity> list) {
-        list.sort(((o1, o2) -> ((Project)o2).getStatus().compareTo(((Project)o1).getStatus())));
+    public List<Project> sortByStatus(@NotNull List<Project> list) {
+        list.sort(((o1, o2) -> (o2).getStatus().compareTo((o1).getStatus())));
         Collections.reverse(list);
         return list;
     }

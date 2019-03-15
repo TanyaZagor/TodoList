@@ -4,10 +4,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.entity.AbstractEntity;
 import ru.zagorodnikova.tm.entity.RoleType;
+import ru.zagorodnikova.tm.entity.User;
 
 import java.util.List;
 
-public interface IUserService<T extends AbstractEntity> {
+public interface IUserService<T extends User> {
 
     @Nullable
     T signIn( @NotNull String login, @NotNull String password);

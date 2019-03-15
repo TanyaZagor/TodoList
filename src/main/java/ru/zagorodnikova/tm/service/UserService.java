@@ -12,14 +12,14 @@ import java.util.List;
 
 public class UserService extends AbstractService implements IUserService {
 
-    @NotNull private final IUserRepository<AbstractEntity> userRepository;
+    @NotNull private final IUserRepository<User> userRepository;
 
-    public UserService(@NotNull IUserRepository<AbstractEntity> userRepository) {
+    public UserService(@NotNull IUserRepository<User> userRepository) {
         this.userRepository = userRepository;
     }
 
     @Nullable
-    public AbstractEntity signIn(@NotNull String login, @NotNull String password) {
+    public User signIn(@NotNull String login, @NotNull String password) {
         if (login.isEmpty()) return null;
         if (password.isEmpty()) return null;
         @NotNull final User user = new User();
@@ -29,7 +29,7 @@ public class UserService extends AbstractService implements IUserService {
     }
 
     @Nullable
-    public AbstractEntity signUp(@NotNull String login, @NotNull String password, @NotNull String fistName, @NotNull String lastName, @NotNull String email) {
+    public User signUp(@NotNull String login, @NotNull String password, @NotNull String fistName, @NotNull String lastName, @NotNull String email) {
         if (login.isEmpty()) return null;
         if (password.isEmpty()) return null;
         if (fistName.isEmpty()) return null;
@@ -79,7 +79,7 @@ public class UserService extends AbstractService implements IUserService {
     }
 
     @Nullable
-    public List<AbstractEntity> findAll(@NotNull RoleType roleType) {
+    public List<User> findAll(@NotNull RoleType roleType) {
         @NotNull final User user = new User();
         user.setRoleType(roleType);
         return userRepository.findAll(user);

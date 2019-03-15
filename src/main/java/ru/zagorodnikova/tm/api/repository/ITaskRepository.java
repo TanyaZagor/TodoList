@@ -4,11 +4,12 @@ package ru.zagorodnikova.tm.api.repository;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.entity.AbstractEntity;
+import ru.zagorodnikova.tm.entity.Task;
 
 import java.util.List;
 
 
-public interface ITaskRepository<T extends AbstractEntity> {
+public interface ITaskRepository<T extends Task> {
 
     @Nullable
     T persist(@NotNull T t);

@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.entity.AbstractEntity;
 import ru.zagorodnikova.tm.command.AbstractCommand;
+import ru.zagorodnikova.tm.entity.Project;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class ProjectListCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        @Nullable final List<AbstractEntity> projects = getServiceLocator().getProjectService().findAll(getServiceLocator().getCurrentUser().getId());
+        @Nullable final List<Project> projects = getServiceLocator().getProjectService().findAll(getServiceLocator().getCurrentUser().getId());
         if (!(projects == null || projects.isEmpty())) {
             projects.forEach(System.out::println);
         }

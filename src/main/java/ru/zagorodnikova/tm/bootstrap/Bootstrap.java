@@ -30,9 +30,9 @@ import java.util.*;
 public class Bootstrap implements ServiceLocator {
 
     @NotNull private final Map<String, AbstractCommand> commands = new HashMap<>();
-    @NotNull private final IProjectRepository<AbstractEntity> projectRepository = new ProjectRepository();
-    @NotNull private final ITaskRepository<AbstractEntity> taskRepository = new TaskRepository();
-    @NotNull private final IUserRepository<AbstractEntity> userRepository = new UserRepository();
+    @NotNull private final IProjectRepository<Project> projectRepository = new ProjectRepository();
+    @NotNull private final ITaskRepository<Task> taskRepository = new TaskRepository();
+    @NotNull private final IUserRepository<User> userRepository = new UserRepository();
     @NotNull private final IProjectService projectService = new ProjectService(projectRepository, taskRepository);
     @NotNull private final ITaskService taskService = new TaskService(taskRepository, projectRepository);
     @NotNull private final IUserService userService = new UserService(userRepository);
@@ -66,13 +66,13 @@ public class Bootstrap implements ServiceLocator {
     }
 
     private void initProjectsAndUsers() {
-        final User user1 = (User) userService.signUp("login", "password", "first name", "last name", "email@email.ru");
-        final User user2 = (User) userService.signUp("login2", "password2", "first name", "last name", "email@email.ru");
+        final User user1 = userService.signUp("login", "password", "first name", "last name", "email@email.ru");
+        final User user2 = userService.signUp("login2", "password2", "first name", "last name", "email@email.ru");
         user2.setRoleType(RoleType.ADMIN);
 
-        final Project project1 = (Project) projectService.persist(user1.getId(), "Project1", "Description1", "20.02.2019", "20.05.2019");
-        final Project project2 = (Project) projectService.persist(user2.getId(), "Project2", "Description2", "20.05.2019", "20.06.2019");
-        final Project project3 = (Project) projectService.persist(user2.getId(), "Project1", "Description1", "20.02.2016", "20.05.2020");
+        final Project project1 = projectService.persist(user1.getId(), "Project1", "Description1", "20.02.2019", "20.05.2019");
+        final Project project2 = projectService.persist(user2.getId(), "Project2", "Description2", "20.05.2019", "20.06.2019");
+        final Project project3 = projectService.persist(user2.getId(), "Project1", "Description1", "20.02.2016", "20.05.2020");
         project3.setStatus(Status.DONE);
 
         taskService.persist(project1.getUserId(), project1.getName(), "task1", "des1", "20.02.2012", "20.02.2013");

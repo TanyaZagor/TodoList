@@ -1,14 +1,18 @@
 package ru.zagorodnikova.tm.endpoint;
 
+import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
-import ru.zagorodnikova.tm.entity.AbstractEntity;
+import ru.zagorodnikova.tm.entity.Task;
 
 import javax.jws.WebService;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
+@XmlRootElement
 @WebService(endpointInterface = "ru.zagorodnikova.tm.api.service.ITaskService")
+@NoArgsConstructor
 public class TaskEndpoint {
 
     @NotNull
@@ -19,7 +23,7 @@ public class TaskEndpoint {
     }
 
     @Nullable
-    public AbstractEntity persistTask(@NotNull String userId, @NotNull String projectName, @NotNull String taskName, @NotNull String description, @NotNull String dateStart, @NotNull String dateFinish) {
+    public Task persistTask(@NotNull String userId, @NotNull String projectName, @NotNull String taskName, @NotNull String description, @NotNull String dateStart, @NotNull String dateFinish) {
         return serviceLocator.getTaskService().persistTask(userId, projectName, taskName, description, dateStart, dateFinish);
     }
 
@@ -40,37 +44,37 @@ public class TaskEndpoint {
     }
 
     @Nullable
-    public List findAllTasksInProject(@NotNull String userId, @NotNull String projectName) {
+    public List<Task> findAllTasksInProject(@NotNull String userId, @NotNull String projectName) {
         return serviceLocator.getTaskService().findAllTasksInProject(userId, projectName);
     }
 
     @Nullable
-    public List findAllTasks(@NotNull String userId) {
+    public List<Task> findAllTasks(@NotNull String userId) {
         return serviceLocator.getTaskService().findAllTasks(userId);
     }
 
     @Nullable
-    public AbstractEntity findOneTask(@NotNull String userId, @NotNull String projectName, @NotNull String taskName, @NotNull String taskDescription) {
+    public Task findOneTask(@NotNull String userId, @NotNull String projectName, @NotNull String taskName, @NotNull String taskDescription) {
         return serviceLocator.getTaskService().findOneTask(userId, projectName, taskName, taskDescription);
     }
 
     @Nullable
-    public List sortTasksByDateCreated(@NotNull String userId, @NotNull String projectName) {
+    public List<Task> sortTasksByDateCreated(@NotNull String userId, @NotNull String projectName) {
         return serviceLocator.getTaskService().sortTasksByDateCreated(userId, projectName);
     }
 
     @Nullable
-    public List sortTasksByDateStart(@NotNull String userId, @NotNull String projectName) {
+    public List<Task> sortTasksByDateStart(@NotNull String userId, @NotNull String projectName) {
         return serviceLocator.getTaskService().sortTasksByDateStart(userId, projectName);
     }
 
     @Nullable
-    public List sortTasksByDateFinish(@NotNull String userId, @NotNull String projectName) {
+    public List<Task> sortTasksByDateFinish(@NotNull String userId, @NotNull String projectName) {
         return serviceLocator.getTaskService().sortTasksByDateFinish(userId, projectName);
     }
 
     @Nullable
-    public List sortTasksByStatus(@NotNull String userId, @NotNull String projectName) {
+    public List<Task> sortTasksByStatus(@NotNull String userId, @NotNull String projectName) {
         return serviceLocator.getTaskService().sortTasksByStatus(userId, projectName);
     }
 }

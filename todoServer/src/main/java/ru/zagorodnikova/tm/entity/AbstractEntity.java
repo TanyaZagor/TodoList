@@ -2,6 +2,7 @@ package ru.zagorodnikova.tm.entity;
 
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,6 +14,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @XmlRootElement(name = "data")
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class AbstractEntity implements Serializable {
