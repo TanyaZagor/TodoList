@@ -3,8 +3,6 @@ package ru.zagorodnikova.tm.api.service;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.entity.AbstractEntity;
-import ru.zagorodnikova.tm.entity.Project;
-
 import java.util.List;
 
 public interface IProjectService<T extends AbstractEntity> {
