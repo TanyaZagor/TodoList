@@ -3,24 +3,13 @@ package ru.zagorodnikova.tm.repository;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.repository.IProjectRepository;
-import ru.zagorodnikova.tm.entity.AbstractEntity;
 import ru.zagorodnikova.tm.entity.Project;
 
 import java.util.*;
 
 public class ProjectRepository extends AbstractRepository<Project> implements IProjectRepository<Project> {
 
-    @NotNull private final Map<String, Project> projects = new LinkedHashMap<>();
-
-    @Nullable
-    public Project persist(@NotNull Project project) {
-        projects.put(project.getId(), project);
-        return project;
-    }
-
-    public void remove(@NotNull Project project) {
-        projects.remove(project.getId());
-    }
+    @NotNull private final Map<String, Project> projects = super.getMap();
 
     public void removeAll(@NotNull Project project) {
         projects.entrySet().removeIf((v) -> Objects.equals(v.getValue().getUserId(), project.getUserId()));

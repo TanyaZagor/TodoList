@@ -2,7 +2,6 @@ package ru.zagorodnikova.tm.api.repository;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.zagorodnikova.tm.entity.AbstractEntity;
 import ru.zagorodnikova.tm.entity.User;
 
 import java.util.List;

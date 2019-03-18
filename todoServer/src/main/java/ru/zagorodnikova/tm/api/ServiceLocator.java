@@ -4,21 +4,18 @@ import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.api.service.IProjectService;
 import ru.zagorodnikova.tm.api.service.ITaskService;
 import ru.zagorodnikova.tm.api.service.IUserService;
-import ru.zagorodnikova.tm.entity.AbstractEntity;
-import ru.zagorodnikova.tm.entity.Project;
-import ru.zagorodnikova.tm.entity.Task;
 import ru.zagorodnikova.tm.entity.User;
 
 public interface ServiceLocator {
 
     @NotNull
-    IUserService<User> getUserService();
+    IUserService getUserService();
 
     @NotNull
-    IProjectService<Project> getProjectService();
+    IProjectService getProjectService();
 
     @NotNull
-    ITaskService<Task> getTaskService();
+    ITaskService getTaskService();
 
 
     @NotNull

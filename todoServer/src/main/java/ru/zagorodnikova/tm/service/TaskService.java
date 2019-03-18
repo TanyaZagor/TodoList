@@ -5,7 +5,6 @@ import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.repository.IProjectRepository;
 import ru.zagorodnikova.tm.api.repository.ITaskRepository;
 import ru.zagorodnikova.tm.api.service.ITaskService;
-import ru.zagorodnikova.tm.entity.AbstractEntity;
 import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.entity.Task;
 import ru.zagorodnikova.tm.util.UtilDateFormatter;
@@ -14,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 
-public class TaskService extends AbstractService implements ITaskService {
+public class TaskService implements ITaskService {
 
     @NotNull private final ITaskRepository<Task> taskRepository;
     @NotNull private final IProjectRepository<Project> projectRepository;
@@ -47,17 +46,12 @@ public class TaskService extends AbstractService implements ITaskService {
 
     public void removeTask(@NotNull String userId, @NotNull String projectName, @NotNull String taskName){
         if (projectName.isEmpty()) return;
-        @NotNull final Project newProject = new Project();
-        newProject.setName(projectName);
-        newProject.setUserId(userId);
-        @Nullable final Project project = projectRepository.findOne(newProject);
-        if (project != null) {
-            @NotNull final Task task = new Task();
-            task.setUserId(userId);
-            task.setProjectId(project.getId());
-            task.setName(taskName);
+        if (taskName.isEmpty()) return;
+        @Nullable Task task = findOneTask(userId, projectName, taskName, "");
+        if (task != null) {
             taskRepository.remove(task);
         }
+
     }
 
     public void removeAllTasks(@NotNull String userId) {

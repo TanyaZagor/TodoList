@@ -2,28 +2,12 @@ package ru.zagorodnikova.tm.repository;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.zagorodnikova.tm.entity.AbstractEntity;
-import ru.zagorodnikova.tm.entity.Task;
-import ru.zagorodnikova.tm.api.repository.ITaskRepository;
 
 import java.util.*;
 
 public class TaskRepository extends AbstractRepository<Task> implements ITaskRepository<Task> {
 
-    @NotNull private final Map<String, Task> tasks = new LinkedHashMap<>();
-
-    @Nullable
-    public Task persist(@NotNull final Task task) {
-        if (!tasks.containsValue(task)) {
-            tasks.put(task.getId(), task);
-            return task;
-        }
-        return null;
-    }
-
-    public void remove(@NotNull final Task task) {
-        tasks.entrySet().removeIf((v) -> (Objects.equals(v.getValue().getProjectId(), task.getProjectId()) && Objects.equals(v.getValue().getName(), task.getName())));
-    }
+    @NotNull private final Map<String, Task> tasks = super.getMap();
 
     public void merge(@NotNull final Task task) {
         tasks.get(task.getId()).setName(task.getName());

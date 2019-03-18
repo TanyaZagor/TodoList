@@ -4,9 +4,7 @@ import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
-import ru.zagorodnikova.tm.entity.AbstractEntity;
 import ru.zagorodnikova.tm.entity.Project;
-import ru.zagorodnikova.tm.entity.Task;
 
 import javax.jws.WebService;
 import javax.xml.bind.annotation.XmlElement;

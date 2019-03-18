@@ -1,17 +1,31 @@
 package ru.zagorodnikova.tm.repository;
 
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.entity.AbstractEntity;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
+@Getter
 public abstract class AbstractRepository<T extends AbstractEntity> {
 
-    @Nullable
-    abstract public T persist(@NotNull T t);
+    @NotNull private final Map<String, T> map = new LinkedHashMap<>();
 
-    abstract public void remove(@NotNull T t);
+    @Nullable
+    public T persist(@NotNull T t) {
+        if (!map.containsValue(t)) {
+            map.put(t.getId(), t);
+            return t;
+        }
+        return null;
+    }
+
+    public void remove(@NotNull T t) {
+        map.remove(t.getId());
+    }
 
     abstract public void removeAll(@NotNull T t);
 

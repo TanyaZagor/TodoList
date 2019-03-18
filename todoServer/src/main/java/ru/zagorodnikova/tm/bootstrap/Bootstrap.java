@@ -12,7 +12,6 @@ import ru.zagorodnikova.tm.api.service.IProjectService;
 import ru.zagorodnikova.tm.api.service.ITaskService;
 import ru.zagorodnikova.tm.api.service.IUserService;
 import ru.zagorodnikova.tm.endpoint.ProjectEndpoint;
-import ru.zagorodnikova.tm.endpoint.SessionEndpoint;
 import ru.zagorodnikova.tm.endpoint.TaskEndpoint;
 import ru.zagorodnikova.tm.endpoint.UserEndpoint;
 import ru.zagorodnikova.tm.entity.*;
@@ -29,13 +28,15 @@ import javax.xml.ws.Endpoint;
 @Getter
 public class Bootstrap implements ServiceLocator {
 
-    @NotNull private final IProjectRepository<Project> projectRepository = new ProjectRepository();
+    @NotNull
+    private final IProjectRepository<Project> projectRepository = new ProjectRepository();
     @NotNull private final ITaskRepository<Task> taskRepository = new TaskRepository();
     @NotNull private final IUserRepository<User> userRepository = new UserRepository();
     @NotNull private final IProjectService projectService = new ProjectService(projectRepository, taskRepository);
     @NotNull private final ITaskService taskService = new TaskService(taskRepository, projectRepository);
     @NotNull private final IUserService userService = new UserService(userRepository);
-    @Nullable private User currentUser;
+    @Nullable
+    private User currentUser;
 
 
     public void init() {
@@ -68,9 +69,9 @@ public class Bootstrap implements ServiceLocator {
         TaskEndpoint taskEndpoint = new TaskEndpoint(this);
         ProjectEndpoint projectEndpoint = new ProjectEndpoint(this);
 //        SessionEndpoint sessionEndpoint = new SessionEndpoint(this);
-//        Endpoint.publish("http://localhost:8080/ProjectEndpoint", projectEndpoint);
+        Endpoint.publish("http://localhost:8080/ProjectEndpoint", projectEndpoint);
         Endpoint.publish("http://localhost:8080/TaskEndpoint", taskEndpoint);
-//        Endpoint.publish("http://localhost:8080/UserEndpoint", userEndpoint);
+        Endpoint.publish("http://localhost:8080/UserEndpoint", userEndpoint);
 //        Endpoint.publish("http://localhost:8080/SessionEndpoint", sessionEndpoint);
     }
 

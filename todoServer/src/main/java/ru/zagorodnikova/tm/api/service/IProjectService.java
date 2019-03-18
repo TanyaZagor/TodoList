@@ -2,26 +2,22 @@ package ru.zagorodnikova.tm.api.service;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.zagorodnikova.tm.entity.AbstractEntity;
 import ru.zagorodnikova.tm.entity.Project;
 
 import javax.jws.WebMethod;
-import javax.jws.WebParam;
 import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
-import javax.xml.bind.annotation.XmlElement;
 import java.util.List;
 
 @WebService
-public interface IProjectService<T extends Project> {
+public interface IProjectService {
 
     @WebMethod
     @Nullable
-    T persistProject(@NotNull String userId,
-                     @NotNull String projectName,
-                     @NotNull String description,
-                     @NotNull String dateStart,
-                     @NotNull String dateFinish);
+    Project persistProject(@NotNull String userId,
+                           @NotNull String projectName,
+                           @NotNull String description,
+                           @NotNull String dateStart,
+                           @NotNull String dateFinish);
 
     @WebMethod
     void removeProject(@NotNull String userId,
@@ -32,11 +28,11 @@ public interface IProjectService<T extends Project> {
 
     @WebMethod
     @Nullable
-    List<T> findAllProjects(@NotNull String userId);
+    List<Project> findAllProjects(@NotNull String userId);
 
     @WebMethod
     @Nullable
-    T findOneProject(@NotNull String userId,
+    Project findOneProject(@NotNull String userId,
                      @NotNull String projectName,
                      @NotNull String projectDescription);
 
@@ -50,17 +46,17 @@ public interface IProjectService<T extends Project> {
 
     @WebMethod
     @Nullable
-    List<T> sortProjectsByDateCreated(@NotNull String userId);
+    List<Project> sortProjectsByDateCreated(@NotNull String userId);
 
     @WebMethod
     @Nullable
-    List<T> sortProjectsByDateStart(@NotNull String userId);
+    List<Project> sortProjectsByDateStart(@NotNull String userId);
 
     @WebMethod
     @Nullable
-    List<T> sortProjectsByDateFinish(@NotNull String userId);
+    List<Project> sortProjectsByDateFinish(@NotNull String userId);
 
     @WebMethod
     @Nullable
-    List<T> sortProjectsByStatus(@NotNull String userId);
+    List<Project> sortProjectsByStatus(@NotNull String userId);
 }

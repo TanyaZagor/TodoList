@@ -3,7 +3,6 @@ package ru.zagorodnikova.tm.repository;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.repository.IUserRepository;
-import ru.zagorodnikova.tm.entity.AbstractEntity;
 import ru.zagorodnikova.tm.entity.RoleType;
 import ru.zagorodnikova.tm.entity.User;
 
@@ -11,7 +10,7 @@ import java.util.*;
 
 public class UserRepository extends AbstractRepository<User> implements IUserRepository<User> {
 
-    @NotNull private final Map<String, User> users = new LinkedHashMap<>();
+    @NotNull private final Map<String, User> users = super.getMap();
 
     @Nullable
     public User signIn(@NotNull User user) {
@@ -31,21 +30,6 @@ public class UserRepository extends AbstractRepository<User> implements IUserRep
         if (user.getPassword() != null) {
             users.get(user.getId()).setPassword(user.getPassword());
         }
-    }
-
-    @Nullable
-    @Override
-    public User persist(@NotNull User user) {
-        if (!users.containsValue(user)) {
-            users.put(user.getId(), user);
-            return user;
-        }
-        return null;
-    }
-
-    @Override
-    public void remove(@NotNull User user) {
-        users.remove(user.getId());
     }
 
     @Override

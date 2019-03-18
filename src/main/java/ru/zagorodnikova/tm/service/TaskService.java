@@ -47,17 +47,12 @@ public class TaskService extends AbstractService implements ITaskService {
 
     public void remove(@NotNull String userId, @NotNull String projectName, @NotNull String taskName){
         if (projectName.isEmpty()) return;
-        @NotNull final Project newProject = new Project();
-        newProject.setName(projectName);
-        newProject.setUserId(userId);
-        @Nullable final Project project = projectRepository.findOne(newProject);
-        if (project != null) {
-            @NotNull final Task task = new Task();
-            task.setUserId(userId);
-            task.setProjectId(project.getId());
-            task.setName(taskName);
+        if (taskName.isEmpty()) return;
+        @Nullable Task task = findOne(userId, projectName, taskName, "");
+        if (task != null) {
             taskRepository.remove(task);
         }
+
     }
 
     public void removeAll(@NotNull String userId) {

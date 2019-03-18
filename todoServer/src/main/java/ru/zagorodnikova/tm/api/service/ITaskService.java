@@ -1,5 +1,4 @@
 package ru.zagorodnikova.tm.api.service;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.entity.Task;
@@ -11,16 +10,16 @@ import javax.jws.soap.SOAPBinding;
 import java.util.List;
 
 @WebService
-public interface ITaskService<T extends Task> {
+public interface ITaskService {
 
     @WebMethod
     @Nullable
-    T persistTask(@NotNull String userId,
-                  @NotNull String projectName,
-                  @NotNull String taskName,
-                  @NotNull String description,
-                  @NotNull String dateStart,
-                  @NotNull String dateFinish);
+    Task persistTask(@NotNull String userId,
+                     @NotNull String projectName,
+                     @NotNull String taskName,
+                     @NotNull String description,
+                     @NotNull String dateStart,
+                     @NotNull String dateFinish);
 
     @WebMethod
     void removeTask(@NotNull String userId,
@@ -45,38 +44,38 @@ public interface ITaskService<T extends Task> {
 
     @WebMethod
     @Nullable
-    List<T> findAllTasksInProject(@NotNull String userId,
+    List<Task> findAllTasksInProject(@NotNull String userId,
                                        @NotNull String projectName);
 
     @WebMethod
     @Nullable
-    List<T> findAllTasks(@NotNull String userId);
+    List<Task> findAllTasks(@NotNull String userId);
 
     @WebMethod
     @Nullable
-    T findOneTask(@NotNull String userId,
+    Task findOneTask(@NotNull String userId,
                   @NotNull String projectName,
                   @NotNull String taskName,
                   @NotNull String description);
 
     @WebMethod
     @Nullable
-    List<T> sortTasksByDateCreated(@NotNull String userId,
+    List<Task> sortTasksByDateCreated(@NotNull String userId,
                                    @NotNull String projectName);
 
     @WebMethod
     @Nullable
-    List<T> sortTasksByDateStart(@NotNull String userId,
+    List<Task> sortTasksByDateStart(@NotNull String userId,
                                  @NotNull String projectName);
 
     @WebMethod
     @Nullable
-    List<T> sortTasksByDateFinish(@NotNull String userId,
+    List<Task> sortTasksByDateFinish(@NotNull String userId,
                                   @NotNull String projectName);
 
     @WebMethod
     @Nullable
-    List<T> sortTasksByStatus(@NotNull String userId,
+    List<Task> sortTasksByStatus(@NotNull String userId,
                               @NotNull String projectName);
 
 }

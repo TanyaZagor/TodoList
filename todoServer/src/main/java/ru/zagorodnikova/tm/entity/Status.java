@@ -1,5 +1,4 @@
 package ru.zagorodnikova.tm.entity;
-
 import org.jetbrains.annotations.NotNull;
 
 public enum Status {
