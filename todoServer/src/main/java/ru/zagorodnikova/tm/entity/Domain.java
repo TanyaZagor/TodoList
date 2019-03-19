@@ -13,19 +13,15 @@ import java.util.List;
 
 @Setter
 @Getter
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
 public class Domain implements Serializable {
 
     @Nullable
     private User user;
 
     @NotNull
-    @XmlElement(name = "project")
     private List<Project> projects = new ArrayList<>();
 
     @NotNull
-    @XmlElement(name = "task")
     private List<Task> tasks = new ArrayList<>();
 
 }

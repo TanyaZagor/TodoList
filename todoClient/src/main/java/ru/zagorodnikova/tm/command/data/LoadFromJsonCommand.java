@@ -29,7 +29,6 @@ public class LoadFromJsonCommand extends AbstractCommand {
         mapper.readValue(file, Domain.class);
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         Domain domain = mapper.readValue(file, Domain.class);
-        System.out.println(domain.getUser());
     }
 
     @Override

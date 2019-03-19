@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.repository.IProjectRepository;
 import ru.zagorodnikova.tm.api.repository.ITaskRepository;
+import ru.zagorodnikova.tm.api.endpoint.IProjectEndpoint;
 import ru.zagorodnikova.tm.api.service.IProjectService;
 import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.entity.Task;
@@ -12,7 +13,7 @@ import ru.zagorodnikova.tm.util.UtilDateFormatter;
 import java.util.Date;
 import java.util.List;
 
-public class ProjectService implements IProjectService{
+public class ProjectService implements IProjectService {
 
     @NotNull private final IProjectRepository<Project> projectRepository;
     @NotNull private final ITaskRepository<Task> taskRepository;

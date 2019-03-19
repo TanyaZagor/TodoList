@@ -16,9 +16,6 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-@XmlRootElement
-@XmlType(name = "user")
-@XmlAccessorType(XmlAccessType.FIELD)
 public class User extends AbstractEntity {
 
     @NotNull

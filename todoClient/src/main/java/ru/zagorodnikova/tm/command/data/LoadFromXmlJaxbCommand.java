@@ -28,8 +28,6 @@ public class LoadFromXmlJaxbCommand extends AbstractCommand {
         Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 
         Domain domain = (Domain) jaxbUnmarshaller.unmarshal(new File("fileJaxb.xml"));
-
-        System.out.println(domain.getUser());
     }
 
     @Override

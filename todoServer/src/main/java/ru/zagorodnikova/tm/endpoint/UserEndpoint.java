@@ -4,18 +4,16 @@ import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
+import ru.zagorodnikova.tm.api.endpoint.IUserEndpoint;
 import ru.zagorodnikova.tm.entity.RoleType;
 import ru.zagorodnikova.tm.entity.User;
 
 import javax.jws.WebService;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
-@XmlRootElement
-@WebService(endpointInterface = "ru.zagorodnikova.tm.api.service.IUserService")
+@WebService
 @NoArgsConstructor
-public class UserEndpoint{
+public class UserEndpoint implements IUserEndpoint {
 
     @NotNull
     private ServiceLocator serviceLocator;
@@ -51,7 +49,6 @@ public class UserEndpoint{
     }
 
     @Nullable
-    @XmlElement
     public List<User> findAllUsers(@NotNull RoleType roleType) {
         return serviceLocator.getUserService().findAllUsers(roleType);
     }

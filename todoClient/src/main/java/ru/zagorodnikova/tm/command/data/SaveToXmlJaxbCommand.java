@@ -25,9 +25,8 @@ public class SaveToXmlJaxbCommand extends AbstractCommand {
     @Override
     public void execute() throws JAXBException {
         final Domain domain = new Domain();
-        domain.setUser(getServiceLocator().getCurrentUser());
-        domain.setProjects(getServiceLocator().getProjectService().findAllProjects(getServiceLocator().getCurrentUser().getId()));
-        domain.setTasks(getServiceLocator().getTaskService().findAllTasks(getServiceLocator().getCurrentUser().getId()));
+        domain.setProjects(getServiceLocator().getProjectService().findAllProjects(getServiceLocator().getSession().getUserId()));
+        domain.setTasks(getServiceLocator().getTaskService().findAllTasks(getServiceLocator().getSession().getUserId()));
         File file = new File("fileJaxb.xml");
         JAXBContext jaxbContext = JAXBContext.newInstance(Domain.class);
         Marshaller jaxbMarshaller = jaxbContext.createMarshaller();

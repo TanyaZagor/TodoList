@@ -4,16 +4,15 @@ import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
+import ru.zagorodnikova.tm.api.endpoint.ITaskEndpoint;
 import ru.zagorodnikova.tm.entity.Task;
 
 import javax.jws.WebService;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
-@XmlRootElement
-@WebService(endpointInterface = "ru.zagorodnikova.tm.api.service.ITaskService")
+@WebService
 @NoArgsConstructor
-public class TaskEndpoint {
+public class TaskEndpoint implements ITaskEndpoint {
 
     @NotNull
     private ServiceLocator serviceLocator;

@@ -4,14 +4,16 @@ import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.zagorodnikova.tm.AbstractCommand;
 import ru.zagorodnikova.tm.ServiceLocator;
 import ru.zagorodnikova.tm.TerminalService;
-import ru.zagorodnikova.tm.api.service.*;
+import ru.zagorodnikova.tm.command.AbstractCommand;
+import ru.zagorodnikova.tm.endpoint.*;
+import ru.zagorodnikova.tm.endpoint.ProjectEndpointService;
+import ru.zagorodnikova.tm.endpoint.TaskEndpointService;
+import ru.zagorodnikova.tm.endpoint.UserEndpointService;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,22 +22,33 @@ import java.util.Map;
 public class Bootstrap implements ServiceLocator {
 
     @NotNull private final Map<String, AbstractCommand> commands = new HashMap<>();
-    @NotNull private IProjectService projectService;
-    @NotNull private ITaskService taskService;
-    @NotNull private IUserService userService;
+    @NotNull private final ProjectEndpointService  projectEndpointService = new ProjectEndpointService();
+    @NotNull private final TaskEndpointService taskEndpointService = new TaskEndpointService();
+    @NotNull private final UserEndpointService userEndpointService= new UserEndpointService();
+    @NotNull private final SessionEndpointService sessionEndpointService = new SessionEndpointService();
+    @NotNull private final ProjectEndpoint projectService = projectEndpointService.getProjectEndpointPort();
+    @NotNull private final TaskEndpoint taskService = taskEndpointService.getTaskEndpointPort();
+    @NotNull private final UserEndpoint userService = userEndpointService.getUserEndpointPort();
+    @NotNull private final SessionEndpoint sessionEndpoint = sessionEndpointService.getSessionEndpointPort();
+
     @NotNull private final TerminalService terminalService = new TerminalService(this);
-    @Nullable private User currentUser;
+    @Nullable private Session session;
 
 
     public void init(@NotNull Class[] commandClasses) {
         this.initCommands(this, commandClasses);
         //this.initProjectsAndUsers();
-        //initServices();
         this.start();
     }
 
     private void start() {
         terminalService.start();
+    }
+
+    @NotNull
+    @Override
+    public SessionEndpoint getSessionService() {
+        return sessionEndpoint;
     }
 
     public void execute(@Nullable String command) throws IOException, JAXBException, ClassNotFoundException {
@@ -52,23 +65,6 @@ public class Bootstrap implements ServiceLocator {
 
     }
 
-    private void initServices() throws MalformedURLException {
-//        URL url1 = new URL("http://localhost:8080/UserEndpoint?wsdl");
-//        QName qname1 = new QName("http://endpoint.tm.zagorodnikova.ru/", "UserEndpointService");
-//        Service service = Service.create(url1, qname1);
-//        userService = service.getPort(IUserService.class);
-//
-//        URL url2 = new URL("http://localhost:8080/TaskEndpoint?wsdl");
-//        QName qname2 = new QName("http://endpoint.tm.zagorodnikova.ru/", "TaskEndpointService");
-//        Service service2 = Service.create(url2, qname2);
-//        taskService = service2.getPort(ITaskService.class);
-//
-//        URL url3 = new URL("http://localhost:8080/ProjectEndpoint?wsdl");
-//        QName qname3 = new QName("http://endpoint.tm.zagorodnikova.ru/", "ProjectEndpointService");
-//        Service service3 = Service.create(url3, qname3);
-//        projectService = service3.getPort(IProjectService.class);
-
-    }
 
     private void initProjectsAndUsers() {
 //        final User user1 = userService.signUp("login", "password", "first name", "last name", "email@email.ru");
@@ -110,7 +106,8 @@ public class Bootstrap implements ServiceLocator {
     }
 
     private boolean isAuth() {
-        return currentUser != null;
+
+        return session != null;
     }
 
 }

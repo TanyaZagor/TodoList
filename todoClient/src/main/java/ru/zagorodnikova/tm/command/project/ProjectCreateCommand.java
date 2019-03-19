@@ -3,8 +3,8 @@ package ru.zagorodnikova.tm.command.project;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.zagorodnikova.tm.api.service.Project;
 import ru.zagorodnikova.tm.command.AbstractCommand;
+import ru.zagorodnikova.tm.endpoint.Project;
 
 public class ProjectCreateCommand extends AbstractCommand {
 
@@ -33,7 +33,7 @@ public class ProjectCreateCommand extends AbstractCommand {
         @NotNull final String dateStart = getServiceLocator().getTerminalService().nextLine();
         System.out.println("project date finish");
         @NotNull final String dateFinish = getServiceLocator().getTerminalService().nextLine();
-        @Nullable final Project project = getServiceLocator().getProjectService().persistProject(getServiceLocator().getCurrentUser().getId(), projectName, description, dateStart, dateFinish);
+        @Nullable final Project project = getServiceLocator().getProjectService().persistProject(getServiceLocator().getSession().getUserId(), projectName, description, dateStart, dateFinish);
         if (project != null) {
             System.out.println(project);
         }

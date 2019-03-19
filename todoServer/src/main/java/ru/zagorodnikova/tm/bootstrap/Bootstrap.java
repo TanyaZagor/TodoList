@@ -8,17 +8,24 @@ import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.api.repository.IProjectRepository;
 import ru.zagorodnikova.tm.api.repository.ITaskRepository;
 import ru.zagorodnikova.tm.api.repository.IUserRepository;
+import ru.zagorodnikova.tm.api.endpoint.IProjectEndpoint;
+import ru.zagorodnikova.tm.api.endpoint.ITaskEndpoint;
+import ru.zagorodnikova.tm.api.endpoint.IUserEndpoint;
 import ru.zagorodnikova.tm.api.service.IProjectService;
+import ru.zagorodnikova.tm.api.service.ISessionService;
 import ru.zagorodnikova.tm.api.service.ITaskService;
 import ru.zagorodnikova.tm.api.service.IUserService;
 import ru.zagorodnikova.tm.endpoint.ProjectEndpoint;
+import ru.zagorodnikova.tm.endpoint.SessionEndpoint;
 import ru.zagorodnikova.tm.endpoint.TaskEndpoint;
 import ru.zagorodnikova.tm.endpoint.UserEndpoint;
 import ru.zagorodnikova.tm.entity.*;
 import ru.zagorodnikova.tm.repository.ProjectRepository;
+import ru.zagorodnikova.tm.repository.SessionRepository;
 import ru.zagorodnikova.tm.repository.TaskRepository;
 import ru.zagorodnikova.tm.repository.UserRepository;
 import ru.zagorodnikova.tm.service.ProjectService;
+import ru.zagorodnikova.tm.service.SessionService;
 import ru.zagorodnikova.tm.service.TaskService;
 import ru.zagorodnikova.tm.service.UserService;
 
@@ -28,15 +35,14 @@ import javax.xml.ws.Endpoint;
 @Getter
 public class Bootstrap implements ServiceLocator {
 
-    @NotNull
-    private final IProjectRepository<Project> projectRepository = new ProjectRepository();
+    @NotNull private final IProjectRepository<Project> projectRepository = new ProjectRepository();
     @NotNull private final ITaskRepository<Task> taskRepository = new TaskRepository();
     @NotNull private final IUserRepository<User> userRepository = new UserRepository();
+    @NotNull private final SessionRepository sessionRepository = new SessionRepository();
     @NotNull private final IProjectService projectService = new ProjectService(projectRepository, taskRepository);
     @NotNull private final ITaskService taskService = new TaskService(taskRepository, projectRepository);
     @NotNull private final IUserService userService = new UserService(userRepository);
-    @Nullable
-    private User currentUser;
+    @NotNull private final ISessionService sessionService = new SessionService(sessionRepository, userRepository);
 
 
     public void init() {
@@ -68,15 +74,11 @@ public class Bootstrap implements ServiceLocator {
         UserEndpoint userEndpoint = new UserEndpoint(this);
         TaskEndpoint taskEndpoint = new TaskEndpoint(this);
         ProjectEndpoint projectEndpoint = new ProjectEndpoint(this);
-//        SessionEndpoint sessionEndpoint = new SessionEndpoint(this);
+        SessionEndpoint sessionEndpoint = new SessionEndpoint(this);
         Endpoint.publish("http://localhost:8080/ProjectEndpoint", projectEndpoint);
         Endpoint.publish("http://localhost:8080/TaskEndpoint", taskEndpoint);
         Endpoint.publish("http://localhost:8080/UserEndpoint", userEndpoint);
-//        Endpoint.publish("http://localhost:8080/SessionEndpoint", sessionEndpoint);
-    }
-
-    private boolean isAuth() {
-        return currentUser != null;
+        Endpoint.publish("http://localhost:8080/SessionEndpoint", sessionEndpoint);
     }
 
 }

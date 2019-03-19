@@ -28,7 +28,7 @@ public class UserUpdateCommand extends AbstractCommand {
         @NotNull final String lastName = getServiceLocator().getTerminalService().nextLine();
         System.out.println("New email");
         @NotNull final String email = getServiceLocator().getTerminalService().nextLine();
-        getServiceLocator().getUserService().updateUser(getServiceLocator().getCurrentUser().getId(), firstName, lastName, email);
+        getServiceLocator().getUserService().updateUser(getServiceLocator().getSession().getUserId(), firstName, lastName, email);
     }
 
     @Override

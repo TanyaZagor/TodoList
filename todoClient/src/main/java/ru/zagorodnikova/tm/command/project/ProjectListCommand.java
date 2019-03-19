@@ -2,8 +2,8 @@ package ru.zagorodnikova.tm.command.project;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.zagorodnikova.tm.api.service.Project;
 import ru.zagorodnikova.tm.command.AbstractCommand;
+import ru.zagorodnikova.tm.endpoint.Project;
 
 import java.util.List;
 
@@ -26,9 +26,9 @@ public class ProjectListCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        @Nullable final List<Project> projects = getServiceLocator().getProjectService().findAllProjects(getServiceLocator().getCurrentUser().getId());
+        @Nullable final List<Project> projects = getServiceLocator().getProjectService().findAllProjects(getServiceLocator().getSession().getUserId());
         if (!(projects == null || projects.isEmpty())) {
-            projects.forEach(System.out::println);
+            projects.forEach((v) -> System.out.println("Name: " + v.getName() + ", Description: " + v.getDescription()+ ", Date start: " + v.getDateStart() + ", Date finish: " + v.getDateFinish() + ", Date create: " + v.getDateCreate() + ", Status: " + v.getStatus()));
         }
     }
 

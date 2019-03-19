@@ -4,6 +4,7 @@ import org.eclipse.persistence.jaxb.MarshallerProperties;
 import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.Domain;
 import ru.zagorodnikova.tm.command.AbstractCommand;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -25,9 +26,8 @@ public class SaveToJsonJaxbCommand extends AbstractCommand {
     @Override
     public void execute() throws JAXBException {
         final Domain domain = new Domain();
-        domain.setUser(getServiceLocator().getCurrentUser());
-        domain.setProjects(getServiceLocator().getProjectService().findAllProjects(getServiceLocator().getCurrentUser().getId()));
-        domain.setTasks(getServiceLocator().getTaskService().findAllTasks(getServiceLocator().getCurrentUser().getId()));
+        domain.setProjects(getServiceLocator().getProjectService().findAllProjects(getServiceLocator().getSession().getUserId()));
+        domain.setTasks(getServiceLocator().getTaskService().findAllTasks(getServiceLocator().getSession().getUserId()));
         File file = new File("fileJaxb.json");
         JAXBContext jaxbContext = JAXBContext.newInstance(Domain.class);
         Marshaller jaxbMarshaller = jaxbContext.createMarshaller();

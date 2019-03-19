@@ -4,17 +4,15 @@ import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
+import ru.zagorodnikova.tm.api.endpoint.IProjectEndpoint;
 import ru.zagorodnikova.tm.entity.Project;
 
 import javax.jws.WebService;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
-@XmlRootElement
-@WebService(endpointInterface = "ru.zagorodnikova.tm.api.service.IProjectService")
+@WebService
 @NoArgsConstructor
-public class ProjectEndpoint {
+public class ProjectEndpoint implements IProjectEndpoint {
 
     @NotNull
     private ServiceLocator serviceLocator;
@@ -37,7 +35,6 @@ public class ProjectEndpoint {
     }
 
     @Nullable
-    @XmlElement
     public List<Project> findAllProjects(@NotNull String userId) {
         return serviceLocator.getProjectService().findAllProjects(userId);
     }
@@ -52,25 +49,21 @@ public class ProjectEndpoint {
     }
 
     @Nullable
-    @XmlElement
     public List<Project> sortProjectsByDateCreated(@NotNull String userId) {
         return serviceLocator.getProjectService().sortProjectsByDateCreated(userId);
     }
 
     @Nullable
-    @XmlElement
     public List<Project> sortProjectsByDateStart(@NotNull String userId) {
         return serviceLocator.getProjectService().sortProjectsByDateStart(userId);
     }
 
     @Nullable
-    @XmlElement
     public List<Project> sortProjectsByDateFinish(@NotNull String userId) {
         return serviceLocator.getProjectService().sortProjectsByDateFinish(userId);
     }
 
     @Nullable
-    @XmlElement
     public List<Project> sortProjectsByStatus(@NotNull String userId) {
         return serviceLocator.getProjectService().sortProjectsByStatus(userId);
     }

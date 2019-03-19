@@ -22,7 +22,7 @@ public class UserShowCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        System.out.println(getServiceLocator().getCurrentUser());
+        System.out.println(getServiceLocator().getSession());
     }
 
     @Override

@@ -2,8 +2,9 @@ package ru.zagorodnikova.tm.command.user;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.zagorodnikova.tm.api.service.User;
 import ru.zagorodnikova.tm.command.AbstractCommand;
+import ru.zagorodnikova.tm.endpoint.Session;
+import ru.zagorodnikova.tm.endpoint.User;
 
 public class UserSignInCommand extends AbstractCommand {
 
@@ -30,8 +31,9 @@ public class UserSignInCommand extends AbstractCommand {
         @NotNull final String password = getServiceLocator().getTerminalService().nextLine();
         @Nullable final User user = getServiceLocator().getUserService().signIn(login, password);
         if (user!= null) {
-            getServiceLocator().setCurrentUser(user);
-            System.out.println(user);
+            @Nullable final Session session = getServiceLocator().getSessionService().persist(user);
+            getServiceLocator().setSession(session);
+            System.out.println(session);
         }
     }
 

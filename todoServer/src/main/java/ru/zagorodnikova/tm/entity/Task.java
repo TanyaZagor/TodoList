@@ -16,8 +16,6 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-@XmlRootElement(name = "task")
-@XmlAccessorType(XmlAccessType.FIELD)
 public class Task extends AbstractEntity {
 
     @NotNull

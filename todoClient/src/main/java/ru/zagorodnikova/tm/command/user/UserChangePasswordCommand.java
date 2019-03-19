@@ -28,7 +28,7 @@ public class UserChangePasswordCommand extends AbstractCommand {
         @NotNull final String password = getServiceLocator().getTerminalService().nextLine();
         System.out.println("New password");
         @NotNull final String newPassword = getServiceLocator().getTerminalService().nextLine();
-        getServiceLocator().getUserService().changePassword(getServiceLocator().getCurrentUser().getId(), login, password, newPassword);
+        getServiceLocator().getUserService().changePassword(getServiceLocator().getSession().getUserId(), login, password, newPassword);
     }
 
     @Override

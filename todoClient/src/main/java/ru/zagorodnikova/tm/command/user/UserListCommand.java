@@ -2,9 +2,9 @@ package ru.zagorodnikova.tm.command.user;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.zagorodnikova.tm.api.service.RoleType;
-import ru.zagorodnikova.tm.api.service.User;
 import ru.zagorodnikova.tm.command.AbstractCommand;
+import ru.zagorodnikova.tm.endpoint.RoleType;
+import ru.zagorodnikova.tm.endpoint.User;
 
 import java.util.List;
 

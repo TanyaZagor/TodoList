@@ -34,7 +34,7 @@ public class TaskUpdateCommand extends AbstractCommand {
         @NotNull final String dateStart = getServiceLocator().getTerminalService().nextLine();
         System.out.println("New date finish");
         @NotNull final String dateFinish = getServiceLocator().getTerminalService().nextLine();
-        getServiceLocator().getTaskService().mergeTask(getServiceLocator().getCurrentUser().getId(), projectName, oldTaskName, taskName, description, dateStart, dateFinish);
+        getServiceLocator().getTaskService().mergeTask(getServiceLocator().getSession().getUserId(), projectName, oldTaskName, taskName, description, dateStart, dateFinish);
 
     }
 

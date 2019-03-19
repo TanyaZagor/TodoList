@@ -24,7 +24,7 @@ public class TaskClearCommand extends AbstractCommand {
     public void execute() {
         System.out.println("project name");
         @NotNull final String projectName = getServiceLocator().getTerminalService().nextLine();
-        getServiceLocator().getTaskService().removeAllTasksInProject(getServiceLocator().getCurrentUser().getId(), projectName);
+        getServiceLocator().getTaskService().removeAllTasksInProject(getServiceLocator().getSession().getUserId(), projectName);
 
     }
 

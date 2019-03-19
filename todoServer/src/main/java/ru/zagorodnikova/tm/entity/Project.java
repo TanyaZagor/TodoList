@@ -15,8 +15,6 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-@XmlRootElement(name = "project")
-@XmlAccessorType(XmlAccessType.FIELD)
 public class Project extends AbstractEntity {
 
 

@@ -2,8 +2,8 @@ package ru.zagorodnikova.tm.command.project;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.zagorodnikova.tm.api.service.Project;
 import ru.zagorodnikova.tm.command.AbstractCommand;
+import ru.zagorodnikova.tm.endpoint.Project;
 
 public class ProjectFindOneCommand extends AbstractCommand {
 
@@ -28,7 +28,7 @@ public class ProjectFindOneCommand extends AbstractCommand {
         @NotNull final String projectName = getServiceLocator().getTerminalService().nextLine();
         System.out.println("project description");
         @NotNull final String projectDescription = getServiceLocator().getTerminalService().nextLine();
-        @Nullable final Project project = getServiceLocator().getProjectService().findOneProject(getServiceLocator().getCurrentUser().getId(), projectName, projectDescription);
+        @Nullable final Project project = getServiceLocator().getProjectService().findOneProject(getServiceLocator().getSession().getUserId(), projectName, projectDescription);
         if (project != null) {
             System.out.println(project);
         }

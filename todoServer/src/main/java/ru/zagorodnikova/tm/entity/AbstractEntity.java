@@ -13,9 +13,6 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@XmlRootElement(name = "data")
-@XmlAccessorType(XmlAccessType.FIELD)
 public abstract class AbstractEntity implements Serializable {
 
     @NotNull

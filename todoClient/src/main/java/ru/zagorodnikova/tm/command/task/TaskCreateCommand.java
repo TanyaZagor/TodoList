@@ -32,7 +32,7 @@ public class TaskCreateCommand extends AbstractCommand {
         @NotNull final String dateStart = getServiceLocator().getTerminalService().nextLine();
         System.out.println("task data finish");
         @NotNull final String dateFinish = getServiceLocator().getTerminalService().nextLine();
-        getServiceLocator().getTaskService().persistTask(getServiceLocator().getCurrentUser().getId(), projectName, taskName, description, dateStart, dateFinish);
+        getServiceLocator().getTaskService().persistTask(getServiceLocator().getSession().getUserId(), projectName, taskName, description, dateStart, dateFinish);
 
     }
 

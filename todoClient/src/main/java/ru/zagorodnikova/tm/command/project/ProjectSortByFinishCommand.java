@@ -2,8 +2,8 @@ package ru.zagorodnikova.tm.command.project;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.zagorodnikova.tm.api.service.Project;
 import ru.zagorodnikova.tm.command.AbstractCommand;
+import ru.zagorodnikova.tm.endpoint.Project;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class ProjectSortByFinishCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        @Nullable final List<Project> list = getServiceLocator().getProjectService().sortProjectsByDateFinish(getServiceLocator().getCurrentUser().getId());
+        @Nullable final List<Project> list = getServiceLocator().getProjectService().sortProjectsByDateFinish(getServiceLocator().getSession().getUserId());
         if (list!= null) {
             list.forEach(System.out::println);
         }

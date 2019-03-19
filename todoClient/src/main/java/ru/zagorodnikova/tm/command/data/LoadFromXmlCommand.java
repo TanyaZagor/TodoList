@@ -28,7 +28,6 @@ public class LoadFromXmlCommand extends AbstractCommand {
         XmlMapper xmlMapper = new XmlMapper();
         xmlMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         Domain domain = xmlMapper.readValue(file, Domain.class);
-        System.out.println(domain.getUser());
     }
 
     @Override

@@ -8,7 +8,7 @@ import ru.zagorodnikova.tm.command.AbstractCommand;
 import java.io.File;
 import java.io.IOException;
 
-public class SaveToJsonCommand extends AbstractCommand{
+public class SaveToJsonCommand extends AbstractCommand {
     @NotNull
     @Override
     public String command() {
@@ -24,9 +24,8 @@ public class SaveToJsonCommand extends AbstractCommand{
     @Override
     public void execute() throws IOException {
         final Domain domain = new Domain();
-        domain.setUser(getServiceLocator().getCurrentUser());
-        domain.setProjects(getServiceLocator().getProjectService().findAllProjects(getServiceLocator().getCurrentUser().getId()));
-        domain.setTasks(getServiceLocator().getTaskService().findAllTasks(getServiceLocator().getCurrentUser().getId()));
+        domain.setProjects(getServiceLocator().getProjectService().findAllProjects(getServiceLocator().getSession().getUserId()));
+        domain.setTasks(getServiceLocator().getTaskService().findAllTasks(getServiceLocator().getSession().getUserId()));
         File file = new File("fileFasterXml.json");
         ObjectMapper mapper = new ObjectMapper();
         mapper.writerWithDefaultPrettyPrinter().writeValue(file, domain);

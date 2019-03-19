@@ -26,10 +26,9 @@ public class SaveCommand extends AbstractCommand {
     public void execute() throws IOException {
 
         final Domain domain = new Domain();
-        domain.setProjects(getServiceLocator().getProjectService().findAllProjects(getServiceLocator().getCurrentUser().getId()));
-        domain.setTasks(getServiceLocator().getTaskService().findAllTasks(getServiceLocator().getCurrentUser().getId()));
+        domain.setProjects(getServiceLocator().getProjectService().findAllProjects(getServiceLocator().getSession().getUserId()));
+        domain.setTasks(getServiceLocator().getTaskService().findAllTasks(getServiceLocator().getSession().getUserId()));
         File file = new File("file.txt");
-        domain.setUser(getServiceLocator().getCurrentUser());
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file));
         objectOutputStream.writeObject(domain);
         objectOutputStream.close();
