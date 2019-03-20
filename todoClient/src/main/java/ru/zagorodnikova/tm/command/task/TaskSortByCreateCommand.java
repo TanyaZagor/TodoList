@@ -25,7 +25,7 @@ public class TaskSortByCreateCommand extends AbstractCommand {
     public void execute() {
         System.out.println("project name");
         @NotNull final String projectName = getServiceLocator().getTerminalService().nextLine();
-        @Nullable final List<Task> tasks = getServiceLocator().getTaskService().sortTasksByDateCreated(getServiceLocator().getSession().getUserId(), projectName);
+        @Nullable final List<Task> tasks = getServiceLocator().getTaskService().sortTasksByDateCreated(getServiceLocator().getSession(), projectName);
         if (tasks!= null) {
             tasks.forEach(System.out::println);
         }

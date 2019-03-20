@@ -35,11 +35,10 @@ public class UserSignUpCommand extends AbstractCommand {
         @NotNull final String lastName = getServiceLocator().getTerminalService().nextLine();
         System.out.println("New email");
         @NotNull final String email = getServiceLocator().getTerminalService().nextLine();
-        @Nullable final User user = getServiceLocator().getUserService().signUp(login, password, firstName, lastName, email);
-        if (user != null) {
-            @Nullable final Session session = getServiceLocator().getSessionService().persist(user);
+        @Nullable final Session session = getServiceLocator().getSessionService().signUp(login, password, firstName, lastName, email);
+        if (session != null) {
             getServiceLocator().setSession(session);
-            System.out.println(session);
+            System.out.println("ok");
         }
     }
 

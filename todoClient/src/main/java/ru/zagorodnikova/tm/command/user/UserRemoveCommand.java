@@ -21,7 +21,7 @@ public class UserRemoveCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        getServiceLocator().getUserService().removeUser(getServiceLocator().getSession().getUserId());
+        getServiceLocator().getUserService().removeUser(getServiceLocator().getSession());
         getServiceLocator().setSession(null);
     }
 

@@ -20,7 +20,7 @@ public interface IUserRepository<T extends User> {
 
     void removeAll(@NotNull T t);
 
-    @Nullable
+    @NotNull
     T findOne(@NotNull T t);
 
     void merge(@NotNull T t);

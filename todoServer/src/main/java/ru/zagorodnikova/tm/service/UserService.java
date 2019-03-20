@@ -78,9 +78,19 @@ public class UserService extends AbstractService implements IUserService {
     }
 
     @Nullable
-    public List<User> findAllUsers(@NotNull RoleType roleType) {
+    public List<User> findAllUsers(@NotNull String userId) {
         @NotNull final User user = new User();
-        user.setRoleType(roleType);
+        user.setId(userId);
         return userRepository.findAll(user);
     }
+
+    @NotNull
+    @Override
+    public User findOne(@NotNull String userId) {
+        @NotNull final User user = new User();
+        user.setId(userId);
+        return userRepository.findOne(user);
+    }
+
+
 }

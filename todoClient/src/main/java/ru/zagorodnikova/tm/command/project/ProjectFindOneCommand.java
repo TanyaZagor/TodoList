@@ -28,9 +28,9 @@ public class ProjectFindOneCommand extends AbstractCommand {
         @NotNull final String projectName = getServiceLocator().getTerminalService().nextLine();
         System.out.println("project description");
         @NotNull final String projectDescription = getServiceLocator().getTerminalService().nextLine();
-        @Nullable final Project project = getServiceLocator().getProjectService().findOneProject(getServiceLocator().getSession().getUserId(), projectName, projectDescription);
+        @Nullable final Project project = getServiceLocator().getProjectService().findOneProject(getServiceLocator().getSession(), projectName, projectDescription);
         if (project != null) {
-            System.out.println(project);
+            System.out.println("Name: " + project.getName() + ", Description: " + project.getDescription()+ ", Date start: " + project.getDateStart() + ", Date finish: " + project.getDateFinish() + ", Date create: " + project.getDateCreate() + ", Status: " + project.getStatus());
         }
     }
 

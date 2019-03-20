@@ -1,10 +1,7 @@
 package ru.zagorodnikova.tm.api;
 
 import org.jetbrains.annotations.NotNull;
-import ru.zagorodnikova.tm.api.service.IProjectService;
-import ru.zagorodnikova.tm.api.service.ISessionService;
-import ru.zagorodnikova.tm.api.service.ITaskService;
-import ru.zagorodnikova.tm.api.service.IUserService;
+import ru.zagorodnikova.tm.api.service.*;
 
 public interface ServiceLocator {
 
@@ -19,5 +16,8 @@ public interface ServiceLocator {
 
     @NotNull
     ISessionService getSessionService();
+
+    @NotNull
+    IDomainService getDomainService();
 
 }

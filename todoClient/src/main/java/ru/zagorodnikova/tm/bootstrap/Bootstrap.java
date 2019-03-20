@@ -4,8 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.zagorodnikova.tm.ServiceLocator;
-import ru.zagorodnikova.tm.TerminalService;
+import ru.zagorodnikova.tm.api.ServiceLocator;
+import ru.zagorodnikova.tm.service.TerminalService;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.endpoint.*;
 import ru.zagorodnikova.tm.endpoint.ProjectEndpointService;
@@ -26,10 +26,12 @@ public class Bootstrap implements ServiceLocator {
     @NotNull private final TaskEndpointService taskEndpointService = new TaskEndpointService();
     @NotNull private final UserEndpointService userEndpointService= new UserEndpointService();
     @NotNull private final SessionEndpointService sessionEndpointService = new SessionEndpointService();
+    @NotNull private final AdminEndpointService adminEndpointService = new AdminEndpointService();
     @NotNull private final ProjectEndpoint projectService = projectEndpointService.getProjectEndpointPort();
     @NotNull private final TaskEndpoint taskService = taskEndpointService.getTaskEndpointPort();
     @NotNull private final UserEndpoint userService = userEndpointService.getUserEndpointPort();
-    @NotNull private final SessionEndpoint sessionEndpoint = sessionEndpointService.getSessionEndpointPort();
+    @NotNull private final SessionEndpoint sessionService = sessionEndpointService.getSessionEndpointPort();
+    @NotNull private final AdminEndpoint adminService = adminEndpointService.getAdminEndpointPort();
 
     @NotNull private final TerminalService terminalService = new TerminalService(this);
     @Nullable private Session session;
@@ -45,13 +47,7 @@ public class Bootstrap implements ServiceLocator {
         terminalService.start();
     }
 
-    @NotNull
-    @Override
-    public SessionEndpoint getSessionService() {
-        return sessionEndpoint;
-    }
-
-    public void execute(@Nullable String command) throws IOException, JAXBException, ClassNotFoundException {
+    public void execute(@Nullable String command) {
         if (command == null || command.isEmpty()) return;
         final AbstractCommand abstractCommand = commands.get(command);
         if (abstractCommand == null) return;

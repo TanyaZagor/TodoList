@@ -9,4 +9,8 @@ public interface ISessionService {
 
     @Nullable
     Session persist(@NotNull User user);
+
+    void remove(@NotNull Session session);
+
+    boolean validate(Session session);
 }

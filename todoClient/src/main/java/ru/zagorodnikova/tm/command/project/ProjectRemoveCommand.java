@@ -24,7 +24,7 @@ public class ProjectRemoveCommand extends AbstractCommand {
     public void execute() {
         System.out.println("project name");
         @NotNull final String projectName = getServiceLocator().getTerminalService().nextLine();
-        getServiceLocator().getProjectService().removeProject(getServiceLocator().getSession().getUserId(), projectName);
+        getServiceLocator().getProjectService().removeProject(getServiceLocator().getSession(), projectName);
     }
 
     @Override

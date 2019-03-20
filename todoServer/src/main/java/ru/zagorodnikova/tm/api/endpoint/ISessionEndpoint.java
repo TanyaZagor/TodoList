@@ -14,5 +14,12 @@ public interface ISessionEndpoint {
 
     @WebMethod
     @Nullable
-    Session persist(@NotNull User user);
+    Session signIn(@NotNull String login, @NotNull String password);
+
+    @WebMethod
+    @Nullable
+    Session signUp(@NotNull String login, @NotNull String password, @NotNull String fistName, @NotNull String lastName, @NotNull String email);
+
+    @WebMethod
+    void remove(@NotNull Session session);
 }

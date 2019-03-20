@@ -1,7 +1,10 @@
 package ru.zagorodnikova.tm.util;
 
+import org.jetbrains.annotations.NotNull;
+
 public class UtilPassword {
 
+    @NotNull
     public static String hashPassword(String password) {
         try {
             final java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
@@ -13,6 +16,6 @@ public class UtilPassword {
             return sb.toString();
         } catch (java.security.NoSuchAlgorithmException e) {
         }
-        return null;
+        return "";
     }
 }

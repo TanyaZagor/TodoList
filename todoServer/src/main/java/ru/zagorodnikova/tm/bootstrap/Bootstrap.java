@@ -11,23 +11,14 @@ import ru.zagorodnikova.tm.api.repository.IUserRepository;
 import ru.zagorodnikova.tm.api.endpoint.IProjectEndpoint;
 import ru.zagorodnikova.tm.api.endpoint.ITaskEndpoint;
 import ru.zagorodnikova.tm.api.endpoint.IUserEndpoint;
-import ru.zagorodnikova.tm.api.service.IProjectService;
-import ru.zagorodnikova.tm.api.service.ISessionService;
-import ru.zagorodnikova.tm.api.service.ITaskService;
-import ru.zagorodnikova.tm.api.service.IUserService;
-import ru.zagorodnikova.tm.endpoint.ProjectEndpoint;
-import ru.zagorodnikova.tm.endpoint.SessionEndpoint;
-import ru.zagorodnikova.tm.endpoint.TaskEndpoint;
-import ru.zagorodnikova.tm.endpoint.UserEndpoint;
+import ru.zagorodnikova.tm.api.service.*;
+import ru.zagorodnikova.tm.endpoint.*;
 import ru.zagorodnikova.tm.entity.*;
 import ru.zagorodnikova.tm.repository.ProjectRepository;
 import ru.zagorodnikova.tm.repository.SessionRepository;
 import ru.zagorodnikova.tm.repository.TaskRepository;
 import ru.zagorodnikova.tm.repository.UserRepository;
-import ru.zagorodnikova.tm.service.ProjectService;
-import ru.zagorodnikova.tm.service.SessionService;
-import ru.zagorodnikova.tm.service.TaskService;
-import ru.zagorodnikova.tm.service.UserService;
+import ru.zagorodnikova.tm.service.*;
 
 import javax.xml.ws.Endpoint;
 
@@ -42,7 +33,8 @@ public class Bootstrap implements ServiceLocator {
     @NotNull private final IProjectService projectService = new ProjectService(projectRepository, taskRepository);
     @NotNull private final ITaskService taskService = new TaskService(taskRepository, projectRepository);
     @NotNull private final IUserService userService = new UserService(userRepository);
-    @NotNull private final ISessionService sessionService = new SessionService(sessionRepository, userRepository);
+    @NotNull private final ISessionService sessionService = new SessionService(sessionRepository);
+    @NotNull private final IDomainService domainService = new DomainService(projectRepository, taskRepository);
 
 
     public void init() {
@@ -75,10 +67,12 @@ public class Bootstrap implements ServiceLocator {
         TaskEndpoint taskEndpoint = new TaskEndpoint(this);
         ProjectEndpoint projectEndpoint = new ProjectEndpoint(this);
         SessionEndpoint sessionEndpoint = new SessionEndpoint(this);
+        AdminEndpoint adminEndpoint = new AdminEndpoint(this);
         Endpoint.publish("http://localhost:8080/ProjectEndpoint", projectEndpoint);
         Endpoint.publish("http://localhost:8080/TaskEndpoint", taskEndpoint);
         Endpoint.publish("http://localhost:8080/UserEndpoint", userEndpoint);
         Endpoint.publish("http://localhost:8080/SessionEndpoint", sessionEndpoint);
+        Endpoint.publish("http://localhost:8080/AdminEndpoint", adminEndpoint);
     }
 
 }

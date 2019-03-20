@@ -3,6 +3,7 @@ package ru.zagorodnikova.tm.api.endpoint;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.entity.Project;
+import ru.zagorodnikova.tm.entity.Session;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -13,31 +14,31 @@ public interface IProjectEndpoint {
 
     @WebMethod
     @Nullable
-    Project persistProject(@NotNull String userId,
+    Project persistProject(@NotNull Session session,
                            @NotNull String projectName,
                            @NotNull String description,
                            @NotNull String dateStart,
                            @NotNull String dateFinish);
 
     @WebMethod
-    void removeProject(@NotNull String userId,
+    void removeProject(@NotNull Session session,
                        @NotNull String projectName);
 
     @WebMethod
-    void removeAllProjects(@NotNull String userId);
+    void removeAllProjects(@NotNull Session session);
 
     @WebMethod
     @Nullable
-    List<Project> findAllProjects(@NotNull String userId);
+    List<Project> findAllProjects(@NotNull Session session);
 
     @WebMethod
     @Nullable
-    Project findOneProject(@NotNull String userId,
+    Project findOneProject(@NotNull Session session,
                      @NotNull String projectName,
                      @NotNull String projectDescription);
 
     @WebMethod
-    void mergeProject(@NotNull String userId,
+    void mergeProject(@NotNull Session session,
                       @NotNull String oldProjectName,
                       @NotNull String projectName,
                       @NotNull String description,
@@ -46,17 +47,17 @@ public interface IProjectEndpoint {
 
     @WebMethod
     @Nullable
-    List<Project> sortProjectsByDateCreated(@NotNull String userId);
+    List<Project> sortProjectsByDateCreated(@NotNull Session session);
 
     @WebMethod
     @Nullable
-    List<Project> sortProjectsByDateStart(@NotNull String userId);
+    List<Project> sortProjectsByDateStart(@NotNull Session session);
 
     @WebMethod
     @Nullable
-    List<Project> sortProjectsByDateFinish(@NotNull String userId);
+    List<Project> sortProjectsByDateFinish(@NotNull Session session);
 
     @WebMethod
     @Nullable
-    List<Project> sortProjectsByStatus(@NotNull String userId);
+    List<Project> sortProjectsByStatus(@NotNull Session session);
 }

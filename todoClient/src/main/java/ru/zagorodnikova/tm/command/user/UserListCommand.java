@@ -26,7 +26,7 @@ public class UserListCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        @Nullable final List<User> list = getServiceLocator().getUserService().findAllUsers(RoleType.ADMIN);
+        @Nullable final List<User> list = getServiceLocator().getUserService().findAllUsers(getServiceLocator().getSession());
         if (!(list == null || list.isEmpty())) {
             list.forEach(System.out::println);
         }

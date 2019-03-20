@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.api.endpoint.IProjectEndpoint;
 import ru.zagorodnikova.tm.entity.Project;
+import ru.zagorodnikova.tm.entity.Session;
 
 import javax.jws.WebService;
 import java.util.List;
@@ -22,49 +23,59 @@ public class ProjectEndpoint implements IProjectEndpoint {
     }
 
     @Nullable
-    public Project persistProject(@NotNull String userId, @NotNull String projectName, @NotNull String description, @NotNull String dateStart, @NotNull String dateFinish) {
-        return serviceLocator.getProjectService().persistProject(userId, projectName, description, dateStart, dateFinish);
+    public Project persistProject(@NotNull Session session, @NotNull String projectName, @NotNull String description, @NotNull String dateStart, @NotNull String dateFinish) {
+        if (!serviceLocator.getSessionService().validate(session)) return null;
+        return serviceLocator.getProjectService().persistProject(session.getUserId(), projectName, description, dateStart, dateFinish);
     }
 
-    public void removeProject(@NotNull String userId, @NotNull String projectName) {
-        serviceLocator.getProjectService().removeProject(userId, projectName);
+    public void removeProject(@NotNull Session session, @NotNull String projectName) {
+        if (!serviceLocator.getSessionService().validate(session)) return;
+        serviceLocator.getProjectService().removeProject(session.getUserId(), projectName);
     }
 
-    public void removeAllProjects(@NotNull String userId) {
-        serviceLocator.getProjectService().removeAllProjects(userId);
-    }
-
-    @Nullable
-    public List<Project> findAllProjects(@NotNull String userId) {
-        return serviceLocator.getProjectService().findAllProjects(userId);
-    }
-
-    @Nullable
-    public Project findOneProject(@NotNull String userId, @NotNull String projectName, @NotNull String projectDescription) {
-        return serviceLocator.getProjectService().findOneProject(userId, projectName, projectDescription);
-    }
-
-    public void mergeProject(@NotNull String userId, @NotNull String oldProjectName, @NotNull String projectName, @NotNull String description, @NotNull String dateStart, @NotNull String dateFinish) {
-        serviceLocator.getProjectService().mergeProject(userId, oldProjectName, projectName, description, dateStart, dateFinish);
+    public void removeAllProjects(@NotNull Session session) {
+        if (!serviceLocator.getSessionService().validate(session)) return;
+        serviceLocator.getProjectService().removeAllProjects(session.getUserId());
     }
 
     @Nullable
-    public List<Project> sortProjectsByDateCreated(@NotNull String userId) {
-        return serviceLocator.getProjectService().sortProjectsByDateCreated(userId);
+    public List<Project> findAllProjects(@NotNull Session session) {
+        if (!serviceLocator.getSessionService().validate(session)) return null;
+        return serviceLocator.getProjectService().findAllProjects(session.getUserId());
     }
 
     @Nullable
-    public List<Project> sortProjectsByDateStart(@NotNull String userId) {
-        return serviceLocator.getProjectService().sortProjectsByDateStart(userId);
+    public Project findOneProject(@NotNull Session session, @NotNull String projectName, @NotNull String projectDescription) {
+        if (!serviceLocator.getSessionService().validate(session)) return null;
+        return serviceLocator.getProjectService().findOneProject(session.getUserId(), projectName, projectDescription);
+    }
+
+    public void mergeProject(@NotNull Session session, @NotNull String oldProjectName, @NotNull String projectName, @NotNull String description, @NotNull String dateStart, @NotNull String dateFinish) {
+        if (!serviceLocator.getSessionService().validate(session)) return;
+        serviceLocator.getProjectService().mergeProject(session.getUserId(), oldProjectName, projectName, description, dateStart, dateFinish);
     }
 
     @Nullable
-    public List<Project> sortProjectsByDateFinish(@NotNull String userId) {
-        return serviceLocator.getProjectService().sortProjectsByDateFinish(userId);
+    public List<Project> sortProjectsByDateCreated(@NotNull Session session) {
+        if (!serviceLocator.getSessionService().validate(session)) return null;
+        return serviceLocator.getProjectService().sortProjectsByDateCreated(session.getUserId());
     }
 
     @Nullable
-    public List<Project> sortProjectsByStatus(@NotNull String userId) {
-        return serviceLocator.getProjectService().sortProjectsByStatus(userId);
+    public List<Project> sortProjectsByDateStart(@NotNull Session session) {
+        if (!serviceLocator.getSessionService().validate(session)) return null;
+        return serviceLocator.getProjectService().sortProjectsByDateStart(session.getUserId());
+    }
+
+    @Nullable
+    public List<Project> sortProjectsByDateFinish(@NotNull Session session) {
+        if (!serviceLocator.getSessionService().validate(session)) return null;
+        return serviceLocator.getProjectService().sortProjectsByDateFinish(session.getUserId());
+    }
+
+    @Nullable
+    public List<Project> sortProjectsByStatus(@NotNull Session session) {
+        if (!serviceLocator.getSessionService().validate(session)) return null;
+        return serviceLocator.getProjectService().sortProjectsByStatus(session.getUserId());
     }
 }

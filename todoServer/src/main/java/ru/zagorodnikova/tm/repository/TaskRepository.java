@@ -107,4 +107,16 @@ public class TaskRepository extends AbstractRepository<Task> implements ITaskRep
         return list;
     }
 
+    @NotNull
+    public List<Task> getTasks() {
+        final List<Task> list = new ArrayList<>();
+        tasks.forEach((k, v) -> list.add(v));
+        return list;
+    }
+
+    public void setTasks(@NotNull List<Task> list) {
+        tasks.clear();
+        list.forEach((v) -> tasks.put(v.getId(), v));
+    }
+
 }

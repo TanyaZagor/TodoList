@@ -1,12 +1,7 @@
 package ru.zagorodnikova.tm.command.data;
 
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.jetbrains.annotations.NotNull;
-import ru.zagorodnikova.tm.Domain;
 import ru.zagorodnikova.tm.command.AbstractCommand;
-
-import java.io.File;
-import java.io.IOException;
 
 public class SaveToXmlCommand extends AbstractCommand {
     @NotNull
@@ -22,13 +17,8 @@ public class SaveToXmlCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() throws IOException {
-        final Domain domain = new Domain();
-        domain.setProjects(getServiceLocator().getProjectService().findAllProjects(getServiceLocator().getSession().getUserId()));
-        domain.setTasks(getServiceLocator().getTaskService().findAllTasks(getServiceLocator().getSession().getUserId()));
-        File file = new File("fileFasterXml.xml");
-        XmlMapper xmlMapper = new XmlMapper();
-        xmlMapper.writerWithDefaultPrettyPrinter().writeValue(file, domain);
+    public void execute() {
+        getServiceLocator().getAdminService().saveToXml(getServiceLocator().getSession());
     }
 
     @Override

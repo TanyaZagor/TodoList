@@ -42,4 +42,9 @@ public interface ITaskRepository<T extends Task> {
     @NotNull
     List<T> sortByStatus(@NotNull List<T> list);
 
+    @NotNull
+    List<T> getTasks();
+
+    void setTasks(List<T> list);
+
 }

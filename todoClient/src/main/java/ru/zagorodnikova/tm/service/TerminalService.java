@@ -1,6 +1,7 @@
-package ru.zagorodnikova.tm;
+package ru.zagorodnikova.tm.service;
 
 import org.jetbrains.annotations.NotNull;
+import ru.zagorodnikova.tm.api.ServiceLocator;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
@@ -30,15 +31,13 @@ public class TerminalService {
                 System.out.println(e.getMessage());
             } catch (NullPointerException e) {
                 System.out.println("wrong data");
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.out.println("IOException");
-            } catch (JAXBException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
             }
         }
+        if (serviceLocator.getSession() != null) {
+            serviceLocator.getSessionService().remove(serviceLocator.getSession());
+            serviceLocator.setSession(null);
+        }
+
     }
 
     @NotNull

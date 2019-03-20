@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.api.endpoint.IUserEndpoint;
 import ru.zagorodnikova.tm.entity.RoleType;
+import ru.zagorodnikova.tm.entity.Session;
 import ru.zagorodnikova.tm.entity.User;
 
 import javax.jws.WebService;
@@ -22,34 +23,43 @@ public class UserEndpoint implements IUserEndpoint {
         this.serviceLocator = serviceLocator;
     }
 
-    @Nullable
-    public User signIn(@NotNull String login, @NotNull String password) {
-        return serviceLocator.getUserService().signIn(login, password);
+    public void changePassword(@NotNull Session session, @NotNull String login, @NotNull String oldPassword, @NotNull String newPassword) {
+        if (!serviceLocator.getSessionService().validate(session)) return;
+        serviceLocator.getUserService().changePassword(session.getUserId(), login, oldPassword, newPassword);
+    }
+
+    public void updateUser(@NotNull Session session, @NotNull String firstName, @NotNull String lastName, @NotNull String email) {
+        if (!serviceLocator.getSessionService().validate(session)) return;
+        serviceLocator.getUserService().updateUser(session.getUserId(), firstName, lastName, email);
+    }
+
+    public void removeAllUsers(@NotNull Session session) {
+        if (!serviceLocator.getSessionService().validate(session)) return;
+        serviceLocator.getUserService().removeAllUsers(session.getUserId());
+    }
+
+    public void removeUser(@NotNull Session session) {
+        if (!serviceLocator.getSessionService().validate(session)) return;
+        serviceLocator.getUserService().removeUser(session.getUserId());
     }
 
     @Nullable
-    public User signUp(@NotNull String login, @NotNull String password, @NotNull String fistName, @NotNull String lastName, @NotNull String email) {
-        return serviceLocator.getUserService().signUp(login, password, fistName, lastName, email);
+    public List<User> findAllUsers(@NotNull Session session) {
+        if (!serviceLocator.getSessionService().validate(session)) return null;
+        return serviceLocator.getUserService().findAllUsers(session.getUserId());
     }
 
-    public void changePassword(@NotNull String userId, @NotNull String login, @NotNull String oldPassword, @NotNull String newPassword) {
-        serviceLocator.getUserService().changePassword(userId, login, oldPassword, newPassword);
-    }
-
-    public void updateUser(@NotNull String userId, @NotNull String firstName, @NotNull String lastName, @NotNull String email) {
-        serviceLocator.getUserService().updateUser(userId, firstName, lastName, email);
-    }
-
-    public void removeAllUsers(@NotNull String userId) {
-        serviceLocator.getUserService().removeAllUsers(userId);
-    }
-
-    public void removeUser(@NotNull String userId) {
-        serviceLocator.getUserService().removeUser(userId);
+    @Override
+    public boolean checkRole(@NotNull Session session) {
+        if (!serviceLocator.getSessionService().validate(session)) return false;
+        return findUser(session).getRoleType() == RoleType.ADMIN;
     }
 
     @Nullable
-    public List<User> findAllUsers(@NotNull RoleType roleType) {
-        return serviceLocator.getUserService().findAllUsers(roleType);
+    @Override
+    public User findUser(@NotNull Session session) {
+        if (!serviceLocator.getSessionService().validate(session)) return null;
+        return serviceLocator.getUserService().findOne(session.getUserId());
     }
+
 }

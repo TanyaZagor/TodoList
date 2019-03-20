@@ -1,13 +1,7 @@
 package ru.zagorodnikova.tm.command.data;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jetbrains.annotations.NotNull;
-import ru.zagorodnikova.tm.Domain;
 import ru.zagorodnikova.tm.command.AbstractCommand;
-
-import java.io.File;
-import java.io.IOException;
 
 public class LoadFromJsonCommand extends AbstractCommand {
     @NotNull
@@ -23,12 +17,9 @@ public class LoadFromJsonCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() throws IOException{
-        File file = new File("fileFasterXml.json");
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.readValue(file, Domain.class);
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        Domain domain = mapper.readValue(file, Domain.class);
+    public void execute(){
+        getServiceLocator().getAdminService().loadFromJson(getServiceLocator().getSession());
+
     }
 
     @Override

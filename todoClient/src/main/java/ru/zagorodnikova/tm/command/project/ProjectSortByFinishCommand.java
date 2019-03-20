@@ -23,9 +23,9 @@ public class ProjectSortByFinishCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        @Nullable final List<Project> list = getServiceLocator().getProjectService().sortProjectsByDateFinish(getServiceLocator().getSession().getUserId());
+        @Nullable final List<Project> list = getServiceLocator().getProjectService().sortProjectsByDateFinish(getServiceLocator().getSession());
         if (list!= null) {
-            list.forEach(System.out::println);
+            list.forEach((project) -> System.out.println("Name: " + project.getName() + ", Description: " + project.getDescription()+ ", Date start: " + project.getDateStart() + ", Date finish: " + project.getDateFinish() + ", Date create: " + project.getDateCreate() + ", Status: " + project.getStatus()));
         }
     }
 

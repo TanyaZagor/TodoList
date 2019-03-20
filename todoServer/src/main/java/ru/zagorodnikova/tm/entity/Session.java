@@ -3,6 +3,7 @@ package ru.zagorodnikova.tm.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
@@ -12,15 +13,29 @@ import java.util.Date;
 @NoArgsConstructor
 public class Session extends AbstractEntity {
 
-    @Nullable
-    private String id;
+    @NotNull
+    private String id = super.getId();
 
-    @Nullable
+    @NotNull
     private String userId;
 
     @Nullable
     private String signature;
 
-    @Nullable
+    @NotNull
     private Date date = new Date();
+
+    public Session(@NotNull String userId) {
+        this.userId = userId;
+    }
+
+    @Nullable
+    public Session clone() {
+        try {
+            return (Session) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

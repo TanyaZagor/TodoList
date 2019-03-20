@@ -1,13 +1,7 @@
 package ru.zagorodnikova.tm.command.data;
 
 import org.jetbrains.annotations.NotNull;
-import ru.zagorodnikova.tm.Domain;
 import ru.zagorodnikova.tm.command.AbstractCommand;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 
 public class SaveCommand extends AbstractCommand {
     @NotNull
@@ -23,15 +17,8 @@ public class SaveCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() throws IOException {
-
-        final Domain domain = new Domain();
-        domain.setProjects(getServiceLocator().getProjectService().findAllProjects(getServiceLocator().getSession().getUserId()));
-        domain.setTasks(getServiceLocator().getTaskService().findAllTasks(getServiceLocator().getSession().getUserId()));
-        File file = new File("file.txt");
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file));
-        objectOutputStream.writeObject(domain);
-        objectOutputStream.close();
+    public void execute() {
+        getServiceLocator().getAdminService().save(getServiceLocator().getSession());
     }
 
     @Override

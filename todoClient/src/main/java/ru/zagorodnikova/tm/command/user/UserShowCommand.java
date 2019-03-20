@@ -2,6 +2,7 @@ package ru.zagorodnikova.tm.command.user;
 
 import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.command.AbstractCommand;
+import ru.zagorodnikova.tm.endpoint.User;
 
 
 public class UserShowCommand extends AbstractCommand {
@@ -22,7 +23,8 @@ public class UserShowCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        System.out.println(getServiceLocator().getSession());
+        @NotNull User user = getServiceLocator().getUserService().findUser(getServiceLocator().getSession());
+        System.out.println(user.getFirstName());
     }
 
     @Override

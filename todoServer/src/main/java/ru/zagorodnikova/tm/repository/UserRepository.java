@@ -37,19 +37,10 @@ public class UserRepository extends AbstractRepository<User> implements IUserRep
         users.entrySet().removeIf((v) -> !v.getValue().getRoleType().equals(RoleType.ADMIN));
     }
 
-    @Nullable
+    @NotNull
     @Override
     public User findOne(@NotNull User user) {
-        final List<User> list = new ArrayList<>();
-        users.forEach((k, v) -> {
-            if (Objects.equals(v.getLogin(), user.getLogin())) {
-                list.add(v);
-            }
-        });
-        if (list.size() > 0) {
-            return list.get(0);
-        }
-        return null;
+        return users.get(user.getId());
     }
 
     @Override

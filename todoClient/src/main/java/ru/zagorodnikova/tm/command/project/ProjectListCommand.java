@@ -26,9 +26,9 @@ public class ProjectListCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        @Nullable final List<Project> projects = getServiceLocator().getProjectService().findAllProjects(getServiceLocator().getSession().getUserId());
+        @Nullable final List<Project> projects = getServiceLocator().getProjectService().findAllProjects(getServiceLocator().getSession());
         if (!(projects == null || projects.isEmpty())) {
-            projects.forEach((v) -> System.out.println("Name: " + v.getName() + ", Description: " + v.getDescription()+ ", Date start: " + v.getDateStart() + ", Date finish: " + v.getDateFinish() + ", Date create: " + v.getDateCreate() + ", Status: " + v.getStatus()));
+            projects.forEach((v) -> System.out.println(v.getName()));
         }
     }
 

@@ -26,7 +26,7 @@ public class TaskRemoveCommand extends AbstractCommand {
         @NotNull final String projectName = getServiceLocator().getTerminalService().nextLine();
         System.out.println("task name");
         @NotNull final String taskName = getServiceLocator().getTerminalService().nextLine();
-        getServiceLocator().getTaskService().removeTask(getServiceLocator().getSession().getUserId(), projectName, taskName);
+        getServiceLocator().getTaskService().removeTask(getServiceLocator().getSession(), projectName, taskName);
     }
 
     @Override

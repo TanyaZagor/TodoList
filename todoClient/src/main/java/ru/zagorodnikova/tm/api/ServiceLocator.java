@@ -1,6 +1,8 @@
-package ru.zagorodnikova.tm;
+package ru.zagorodnikova.tm.api;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import ru.zagorodnikova.tm.service.TerminalService;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.endpoint.*;
 
@@ -23,9 +25,12 @@ public interface ServiceLocator{
     SessionEndpoint getSessionService();
 
     @NotNull
-    TerminalService getTerminalService();
+    AdminEndpoint getAdminService();
 
     @NotNull
+    TerminalService getTerminalService();
+
+    @Nullable
     Session getSession();
 
     @NotNull
@@ -33,5 +38,5 @@ public interface ServiceLocator{
 
     void setSession(Session session);
 
-    void execute(String command) throws IOException, JAXBException, ClassNotFoundException;
+    void execute(String command);
 }

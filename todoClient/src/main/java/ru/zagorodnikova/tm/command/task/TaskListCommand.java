@@ -28,9 +28,9 @@ public class TaskListCommand extends AbstractCommand {
     public void execute() {
         System.out.println("project name");
         @NotNull final String projectName = getServiceLocator().getTerminalService().nextLine();
-        @Nullable final List<Task> tasks = getServiceLocator().getTaskService().findAllTasksInProject(getServiceLocator().getSession().getUserId(), projectName);
+        @Nullable final List<Task> tasks = getServiceLocator().getTaskService().findAllTasksInProject(getServiceLocator().getSession(), projectName);
         if (tasks!= null) {
-            tasks.forEach(System.out::println);
+            tasks.forEach((v) -> System.out.println(v.getName()));
         }
 
     }

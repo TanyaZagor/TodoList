@@ -1,6 +1,7 @@
 package ru.zagorodnikova.tm.api.endpoint;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.zagorodnikova.tm.entity.Session;
 import ru.zagorodnikova.tm.entity.Task;
 
 import javax.jws.WebMethod;
@@ -14,7 +15,7 @@ public interface ITaskEndpoint {
 
     @WebMethod
     @Nullable
-    Task persistTask(@NotNull String userId,
+    Task persistTask(@NotNull Session session,
                      @NotNull String projectName,
                      @NotNull String taskName,
                      @NotNull String description,
@@ -22,19 +23,19 @@ public interface ITaskEndpoint {
                      @NotNull String dateFinish);
 
     @WebMethod
-    void removeTask(@NotNull String userId,
+    void removeTask(@NotNull Session session,
                     @NotNull String projectName,
                     @NotNull String taskName);
 
     @WebMethod
-    void removeAllTasksInProject(@NotNull String userId,
+    void removeAllTasksInProject(@NotNull Session session,
                                  @NotNull String projectName);
 
     @WebMethod
-    void removeAllTasks(@NotNull String userId);
+    void removeAllTasks(@NotNull Session session);
 
     @WebMethod
-    void mergeTask(@NotNull String userId,
+    void mergeTask(@NotNull Session session,
                    @NotNull String projectName,
                    @NotNull String oldTaskName,
                    @NotNull String taskName,
@@ -44,38 +45,38 @@ public interface ITaskEndpoint {
 
     @WebMethod
     @Nullable
-    List<Task> findAllTasksInProject(@NotNull String userId,
+    List<Task> findAllTasksInProject(@NotNull Session session,
                                        @NotNull String projectName);
 
     @WebMethod
     @Nullable
-    List<Task> findAllTasks(@NotNull String userId);
+    List<Task> findAllTasks(@NotNull Session session);
 
     @WebMethod
     @Nullable
-    Task findOneTask(@NotNull String userId,
+    Task findOneTask(@NotNull Session session,
                   @NotNull String projectName,
                   @NotNull String taskName,
                   @NotNull String description);
 
     @WebMethod
     @Nullable
-    List<Task> sortTasksByDateCreated(@NotNull String userId,
+    List<Task> sortTasksByDateCreated(@NotNull Session session,
                                    @NotNull String projectName);
 
     @WebMethod
     @Nullable
-    List<Task> sortTasksByDateStart(@NotNull String userId,
+    List<Task> sortTasksByDateStart(@NotNull Session session,
                                  @NotNull String projectName);
 
     @WebMethod
     @Nullable
-    List<Task> sortTasksByDateFinish(@NotNull String userId,
+    List<Task> sortTasksByDateFinish(@NotNull Session session,
                                   @NotNull String projectName);
 
     @WebMethod
     @Nullable
-    List<Task> sortTasksByStatus(@NotNull String userId,
+    List<Task> sortTasksByStatus(@NotNull Session session,
                               @NotNull String projectName);
 
 }

@@ -1,13 +1,7 @@
 package ru.zagorodnikova.tm.command.data;
 
 import org.jetbrains.annotations.NotNull;
-import ru.zagorodnikova.tm.Domain;
 import ru.zagorodnikova.tm.command.AbstractCommand;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import java.io.File;
 
 public class LoadFromXmlJaxbCommand extends AbstractCommand {
     @NotNull
@@ -23,11 +17,8 @@ public class LoadFromXmlJaxbCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() throws JAXBException {
-        JAXBContext jaxbContext = JAXBContext.newInstance(Domain.class);
-        Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-
-        Domain domain = (Domain) jaxbUnmarshaller.unmarshal(new File("fileJaxb.xml"));
+    public void execute(){
+        getServiceLocator().getAdminService().loadFromXmlJaxb(getServiceLocator().getSession());
     }
 
     @Override

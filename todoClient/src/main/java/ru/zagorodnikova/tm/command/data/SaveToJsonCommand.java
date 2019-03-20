@@ -1,12 +1,7 @@
 package ru.zagorodnikova.tm.command.data;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jetbrains.annotations.NotNull;
-import ru.zagorodnikova.tm.Domain;
 import ru.zagorodnikova.tm.command.AbstractCommand;
-
-import java.io.File;
-import java.io.IOException;
 
 public class SaveToJsonCommand extends AbstractCommand {
     @NotNull
@@ -22,13 +17,9 @@ public class SaveToJsonCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() throws IOException {
-        final Domain domain = new Domain();
-        domain.setProjects(getServiceLocator().getProjectService().findAllProjects(getServiceLocator().getSession().getUserId()));
-        domain.setTasks(getServiceLocator().getTaskService().findAllTasks(getServiceLocator().getSession().getUserId()));
-        File file = new File("fileFasterXml.json");
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.writerWithDefaultPrettyPrinter().writeValue(file, domain);
+    public void execute() {
+        getServiceLocator().getAdminService().saveToJson(getServiceLocator().getSession());
+
     }
 
     @Override

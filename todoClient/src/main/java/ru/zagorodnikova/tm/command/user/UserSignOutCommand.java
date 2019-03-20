@@ -21,6 +21,7 @@ public class UserSignOutCommand extends AbstractCommand {
 
     @Override
     public void execute() {
+        getServiceLocator().getSessionService().remove(getServiceLocator().getSession());
         getServiceLocator().setSession(null);
     }
 

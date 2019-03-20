@@ -36,4 +36,9 @@ public interface IProjectRepository<T extends Project> {
     @NotNull
     List<T> sortByStatus(@NotNull List<T> list);
 
+    @NotNull
+    List<T> getProjects();
+
+    void setProjects(@NotNull List<T> list);
+
 }

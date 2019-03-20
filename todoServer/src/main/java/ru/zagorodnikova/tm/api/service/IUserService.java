@@ -24,6 +24,9 @@ public interface IUserService {
     void removeUser(@NotNull String userId);
 
     @Nullable
-    List<User> findAllUsers(@NotNull RoleType roleType);
+    List<User> findAllUsers(@NotNull String userId);
+
+    @NotNull
+    User findOne(@NotNull String userId);
 
 }

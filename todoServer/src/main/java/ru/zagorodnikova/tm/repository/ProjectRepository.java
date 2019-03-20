@@ -29,6 +29,18 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
         return null;
     }
 
+    @NotNull
+    public List<Project> getProjects() {
+        final List<Project> list = new ArrayList<>();
+        projects.forEach((k, v) -> list.add(v));
+        return list;
+    }
+
+    public void setProjects(@NotNull List<Project> list) {
+        projects.clear();
+        list.forEach((v) -> projects.put(v.getId(), v));
+    }
+
     @Nullable
     public Project findOne(@NotNull Project project){
         final List<Project> list = new ArrayList<>();

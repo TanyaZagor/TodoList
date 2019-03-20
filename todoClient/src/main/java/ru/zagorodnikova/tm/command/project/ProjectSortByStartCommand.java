@@ -23,10 +23,10 @@ public class ProjectSortByStartCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        @Nullable final List<Project> list = getServiceLocator().getProjectService().sortProjectsByDateStart(getServiceLocator().getSession().getUserId());
+        @Nullable final List<Project> list = getServiceLocator().getProjectService().sortProjectsByDateStart(getServiceLocator().getSession());
         if (list!= null) {
-            list.forEach(System.out::println);
-        }
+            list.forEach((project) -> System.out.println("Name: " + project.getName() + ", Description: " + project.getDescription()+ ", Date start: " + project.getDateStart() + ", Date finish: " + project.getDateFinish() + ", Date create: " + project.getDateCreate() + ", Status: " + project.getStatus()));
+    }
     }
 
     @Override

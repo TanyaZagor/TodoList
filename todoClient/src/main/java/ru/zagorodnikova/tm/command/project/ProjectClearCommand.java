@@ -23,7 +23,7 @@ public class ProjectClearCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        getServiceLocator().getProjectService().removeAllProjects(getServiceLocator().getSession().getUserId());
+        getServiceLocator().getProjectService().removeAllProjects(getServiceLocator().getSession());
     }
 
     @Override

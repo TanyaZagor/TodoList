@@ -3,6 +3,7 @@ package ru.zagorodnikova.tm.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,6 +15,7 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 public class Project extends AbstractEntity {
 
@@ -51,11 +53,11 @@ public class Project extends AbstractEntity {
         this.dateFinish = dateFinish;
     }
 
-    @NotNull
-    @Override
-    public String toString() {
-        return "Name: " + name + ", Description: " + description+ ", Date start: " + dateStart + ", Date finish: " + dateFinish + ", Date create: " + dateCreate + ", Status: " + status;
-    }
+//    @NotNull
+//    @Override
+//    public String toString() {
+//        return "Name: " + name + ", Description: " + description+ ", Date start: " + dateStart + ", Date finish: " + dateFinish + ", Date create: " + dateCreate + ", Status: " + status;
+//    }
 
     @Override
     public boolean equals(@Nullable Object o) {

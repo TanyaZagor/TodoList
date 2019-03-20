@@ -3,6 +3,7 @@ package ru.zagorodnikova.tm.api.endpoint;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.entity.RoleType;
+import ru.zagorodnikova.tm.entity.Session;
 import ru.zagorodnikova.tm.entity.User;
 
 import javax.jws.WebMethod;
@@ -13,38 +14,32 @@ import java.util.List;
 public interface IUserEndpoint {
 
     @WebMethod
-    @Nullable
-    User signIn(@NotNull String login,
-                @NotNull String password);
-
-    @WebMethod
-    @Nullable
-    User signUp(@NotNull String login,
-                @NotNull String password,
-                @NotNull String fistName,
-                @NotNull String lastName,
-                @NotNull String email);
-
-    @WebMethod
-    void changePassword(@NotNull String userId,
+    void changePassword(@NotNull Session session,
                         @NotNull String login,
                         @NotNull String oldPassword,
                         @NotNull String newPassword);
 
     @WebMethod
-    void updateUser(@NotNull String userId,
+    void updateUser(@NotNull Session session,
                     @NotNull String firstName,
                     @NotNull String lastName,
                     @NotNull String email);
 
     @WebMethod
-    void removeAllUsers(@NotNull String userId);
+    void removeAllUsers(@NotNull Session session);
 
     @WebMethod
-    void removeUser(@NotNull String userId);
+    void removeUser(@NotNull Session session);
 
     @WebMethod
     @Nullable
-    List<User> findAllUsers(@NotNull RoleType roleType);
+    List<User> findAllUsers(@NotNull Session session);
 
+    @WebMethod
+    @NotNull
+    boolean checkRole(@NotNull Session session);
+
+    @WebMethod
+    @NotNull
+    User findUser(@NotNull Session session);
 }

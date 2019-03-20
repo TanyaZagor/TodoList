@@ -29,11 +29,10 @@ public class UserSignInCommand extends AbstractCommand {
         @NotNull final String login = getServiceLocator().getTerminalService().nextLine();
         System.out.println("Password");
         @NotNull final String password = getServiceLocator().getTerminalService().nextLine();
-        @Nullable final User user = getServiceLocator().getUserService().signIn(login, password);
-        if (user!= null) {
-            @Nullable final Session session = getServiceLocator().getSessionService().persist(user);
+        @Nullable final Session session = getServiceLocator().getSessionService().signIn(login, password);
+        if (session != null) {
             getServiceLocator().setSession(session);
-            System.out.println(session);
+            System.out.println("ok");
         }
     }
 
