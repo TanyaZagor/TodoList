@@ -25,7 +25,10 @@ public class ProjectSortByStatusCommand extends AbstractCommand {
     public void execute() {
         @Nullable final List<Project> list = getServiceLocator().getProjectService().sortProjectsByStatus(getServiceLocator().getSession());
         if (list!= null) {
-            list.forEach((project) -> System.out.println("Name: " + project.getName() + ", Description: " + project.getDescription()+ ", Date start: " + project.getDateStart() + ", Date finish: " + project.getDateFinish() + ", Date create: " + project.getDateCreate() + ", Status: " + project.getStatus()));
+            list.forEach((project) -> System.out.println("Name: " + project.getName() +
+                    ", Description: " + project.getDescription()+ ", Date start: " + project.getDateStart() +
+                    ", Date finish: " + project.getDateFinish() + ", Date create: " + project.getDateCreate() +
+                    ", Status: " + project.getStatus()));
         }
     }
 

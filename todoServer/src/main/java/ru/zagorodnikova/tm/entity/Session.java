@@ -11,7 +11,7 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Session extends AbstractEntity {
+public class Session extends AbstractEntity implements Cloneable {
 
     @NotNull
     private String id = super.getId();

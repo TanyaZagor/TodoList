@@ -32,7 +32,9 @@ public class TaskFindOneCommand extends AbstractCommand {
         @NotNull final String taskDescription = getServiceLocator().getTerminalService().nextLine();
         @Nullable final Task task = getServiceLocator().getTaskService().findOneTask(getServiceLocator().getSession(), projectName, taskName, taskDescription);
         if (task != null) {
-            System.out.println(task);
+            System.out.println("Name: " + task.getName() + ", Description: " + task.getDescription() +
+                    ", Date start: " + task.getDateStart() + ", Date finish: " + task.getDateFinish() +
+                    ", Date create: " + task.getDateCreate() + ", Status: " + task.getStatus());
         }
     }
 
