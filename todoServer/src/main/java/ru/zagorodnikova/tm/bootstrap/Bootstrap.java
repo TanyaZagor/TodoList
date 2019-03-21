@@ -66,11 +66,11 @@ public class Bootstrap implements ServiceLocator {
         property.load(this.getClass().getClassLoader().getResourceAsStream("app.properties"));
         @NotNull final String host = property.getProperty("host");
         @NotNull final String port = property.getProperty("port");
-        Endpoint.publish("http://"+ host+":"+ port+"/ProjectEndpoint", new ProjectEndpoint(this));
-        Endpoint.publish("http://"+ host+":"+ port+"/TaskEndpoint", new TaskEndpoint(this));
-        Endpoint.publish("http://"+ host+":"+ port+"/UserEndpoint", new UserEndpoint(this));
-        Endpoint.publish("http://"+ host+":"+ port+"/SessionEndpoint", new SessionEndpoint(this));
-        Endpoint.publish("http://"+ host+":"+ port+"/AdminEndpoint", new AdminEndpoint(this));
+        Endpoint.publish("http://" + host + ":" + port + "/ProjectEndpoint", new ProjectEndpoint(this));
+        Endpoint.publish("http://" + host + ":" + port + "/TaskEndpoint", new TaskEndpoint(this));
+        Endpoint.publish("http://" + host + ":" + port + "/UserEndpoint", new UserEndpoint(this));
+        Endpoint.publish("http://" + host + ":" + port + "/SessionEndpoint", new SessionEndpoint(this));
+        Endpoint.publish("http://" + host + ":" + port + "/AdminEndpoint", new AdminEndpoint(this));
     }
 
 
