@@ -135,7 +135,7 @@
                         <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <classpathPrefix>../lib/</classpathPrefix>
+                            <classpathPrefix>../bin/</classpathPrefix>
                             <mainClass>ru.zagorodnikova.tm.App</mainClass>
                         </manifest>
                         <manifestEntries>

@@ -19,8 +19,6 @@ public interface IUserService {
 
     void updateUser(@NotNull String userId, @NotNull String firstName, @NotNull String lastName, @NotNull String email);
 
-    void removeAllUsers(@NotNull String userId);
-
     void removeUser(@NotNull String userId);
 
     @Nullable

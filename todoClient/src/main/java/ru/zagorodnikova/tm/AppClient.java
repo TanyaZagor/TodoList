@@ -3,6 +3,7 @@ package ru.zagorodnikova.tm;
 
 import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.bootstrap.Bootstrap;
+import ru.zagorodnikova.tm.command.admin.AdminRemoveUsersCommand;
 import ru.zagorodnikova.tm.command.data.*;
 import ru.zagorodnikova.tm.command.project.*;
 import ru.zagorodnikova.tm.command.system.AboutCommand;
@@ -50,9 +51,9 @@ public class AppClient {
             UserSignUpCommand.class,
             UserSignInCommand.class,
             UserChangePasswordCommand.class,
-            UserClearCommand.class,
             UserListCommand.class,
-            UserRemoveCommand.class
+            UserRemoveCommand.class,
+            AdminRemoveUsersCommand.class
 
     };
 

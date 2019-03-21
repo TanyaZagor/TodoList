@@ -25,8 +25,8 @@ public interface IUserEndpoint {
                     @NotNull String lastName,
                     @NotNull String email);
 
-    @WebMethod
-    void removeAllUsers(@NotNull Session session);
+//    @WebMethod
+//    void removeAllUsers(@NotNull Session session);
 
     @WebMethod
     void removeUser(@NotNull Session session);
@@ -35,9 +35,6 @@ public interface IUserEndpoint {
     @Nullable
     List<User> findAllUsers(@NotNull Session session);
 
-    @WebMethod
-    @NotNull
-    boolean checkRole(@NotNull Session session);
 
     @WebMethod
     @NotNull

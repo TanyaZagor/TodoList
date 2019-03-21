@@ -1,27 +1,24 @@
-package ru.zagorodnikova.tm.command.user;
+package ru.zagorodnikova.tm.command.admin;
 
 import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 
-public class UserClearCommand extends AbstractCommand {
-    public UserClearCommand() {
-    }
-
+public class AdminRemoveUsersCommand extends AbstractCommand {
     @NotNull
     @Override
     public String command() {
-        return "clear users";
+        return "remove all users";
     }
 
     @NotNull
     @Override
     public String description() {
-        return "command to clear all users";
+        return "command to remove all users";
     }
 
     @Override
     public void execute() {
-        getServiceLocator().getUserService().removeAllUsers(getServiceLocator().getSession());
+        getServiceLocator().getAdminService().removeAllUsers(getServiceLocator().getSession());
     }
 
     @Override

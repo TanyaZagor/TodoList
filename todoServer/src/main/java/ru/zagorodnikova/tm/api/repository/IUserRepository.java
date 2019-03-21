@@ -18,7 +18,7 @@ public interface IUserRepository<T extends User> {
 
     void remove(@NotNull T t);
 
-    void removeAll(@NotNull T t);
+    void removeAll();
 
     @NotNull
     T findOne(@NotNull T t);

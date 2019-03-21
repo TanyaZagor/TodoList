@@ -18,6 +18,15 @@ public class AdminEndpoint implements IAdminEndpoint {
         this.serviceLocator = serviceLocator;
     }
 
+
+    @Override
+    public void removeAllUsers(@NotNull Session session) {
+        if (checkRole(session)) {
+            serviceLocator.getAdminService().removeAllUsers();
+        }
+
+    }
+
     @Override
     public void save(@NotNull Session session) {
         if (checkRole(session)) {
@@ -91,6 +100,7 @@ public class AdminEndpoint implements IAdminEndpoint {
     }
 
     private boolean checkRole(@NotNull Session session) {
+        serviceLocator.getSessionService().validate(session);
         return serviceLocator.getUserService().findOne(session.getUserId()).getRoleType() == RoleType.ADMIN;
     }
 }

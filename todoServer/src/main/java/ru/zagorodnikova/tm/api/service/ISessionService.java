@@ -5,6 +5,8 @@ import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.entity.Session;
 import ru.zagorodnikova.tm.entity.User;
 
+import java.rmi.AccessException;
+
 public interface ISessionService {
 
     @Nullable
@@ -12,5 +14,5 @@ public interface ISessionService {
 
     void remove(@NotNull Session session);
 
-    boolean validate(Session session);
+    void validate(Session session);
 }

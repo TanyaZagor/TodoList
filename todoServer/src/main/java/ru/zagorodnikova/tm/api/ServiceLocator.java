@@ -20,4 +20,7 @@ public interface ServiceLocator {
     @NotNull
     IDomainService getDomainService();
 
+    @NotNull
+    IAdminService getAdminService();
+
 }

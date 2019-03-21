@@ -34,7 +34,7 @@ public class UserRepository extends AbstractRepository<User> implements IUserRep
     }
 
     @Override
-    public void removeAll(@NotNull User user) {
+    public void removeAll() {
         users.entrySet().removeIf((v) -> !v.getValue().getRoleType().equals(RoleType.ADMIN));
     }
 

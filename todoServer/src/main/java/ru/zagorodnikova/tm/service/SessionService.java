@@ -10,6 +10,8 @@ import ru.zagorodnikova.tm.entity.User;
 import ru.zagorodnikova.tm.repository.SessionRepository;
 import ru.zagorodnikova.tm.repository.UserRepository;
 
+import java.rmi.AccessException;
+
 public class SessionService implements ISessionService {
 
     @NotNull private final SessionRepository sessionRepository;
@@ -29,7 +31,7 @@ public class SessionService implements ISessionService {
         sessionRepository.remove(session);
     }
 
-    public boolean validate(@NotNull Session session) {
-        return sessionRepository.validate(session);
+    public void validate(@NotNull Session session) {
+        sessionRepository.validate(session);
     }
 }

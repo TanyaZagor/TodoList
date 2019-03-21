@@ -27,8 +27,6 @@ public abstract class AbstractRepository<T extends AbstractEntity> {
         map.remove(t.getId());
     }
 
-    abstract public void removeAll(@NotNull T t);
-
     @Nullable
     abstract public T findOne(@NotNull T t);
 

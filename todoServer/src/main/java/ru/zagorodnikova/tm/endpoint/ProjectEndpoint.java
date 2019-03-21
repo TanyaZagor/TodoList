@@ -24,58 +24,58 @@ public class ProjectEndpoint implements IProjectEndpoint {
 
     @Nullable
     public Project persistProject(@NotNull Session session, @NotNull String projectName, @NotNull String description, @NotNull String dateStart, @NotNull String dateFinish) {
-        if (!serviceLocator.getSessionService().validate(session)) return null;
+        serviceLocator.getSessionService().validate(session);
         return serviceLocator.getProjectService().persistProject(session.getUserId(), projectName, description, dateStart, dateFinish);
     }
 
     public void removeProject(@NotNull Session session, @NotNull String projectName) {
-        if (!serviceLocator.getSessionService().validate(session)) return;
+        serviceLocator.getSessionService().validate(session);
         serviceLocator.getProjectService().removeProject(session.getUserId(), projectName);
     }
 
     public void removeAllProjects(@NotNull Session session) {
-        if (!serviceLocator.getSessionService().validate(session)) return;
+        serviceLocator.getSessionService().validate(session);
         serviceLocator.getProjectService().removeAllProjects(session.getUserId());
     }
 
     @Nullable
     public List<Project> findAllProjects(@NotNull Session session) {
-        if (!serviceLocator.getSessionService().validate(session)) return null;
+        serviceLocator.getSessionService().validate(session);
         return serviceLocator.getProjectService().findAllProjects(session.getUserId());
     }
 
     @Nullable
     public Project findOneProject(@NotNull Session session, @NotNull String projectName, @NotNull String projectDescription) {
-        if (!serviceLocator.getSessionService().validate(session)) return null;
+        serviceLocator.getSessionService().validate(session);
         return serviceLocator.getProjectService().findOneProject(session.getUserId(), projectName, projectDescription);
     }
 
     public void mergeProject(@NotNull Session session, @NotNull String oldProjectName, @NotNull String projectName, @NotNull String description, @NotNull String dateStart, @NotNull String dateFinish) {
-        if (!serviceLocator.getSessionService().validate(session)) return;
+        serviceLocator.getSessionService().validate(session);
         serviceLocator.getProjectService().mergeProject(session.getUserId(), oldProjectName, projectName, description, dateStart, dateFinish);
     }
 
     @Nullable
     public List<Project> sortProjectsByDateCreated(@NotNull Session session) {
-        if (!serviceLocator.getSessionService().validate(session)) return null;
+        serviceLocator.getSessionService().validate(session);
         return serviceLocator.getProjectService().sortProjectsByDateCreated(session.getUserId());
     }
 
     @Nullable
     public List<Project> sortProjectsByDateStart(@NotNull Session session) {
-        if (!serviceLocator.getSessionService().validate(session)) return null;
+        serviceLocator.getSessionService().validate(session);
         return serviceLocator.getProjectService().sortProjectsByDateStart(session.getUserId());
     }
 
     @Nullable
     public List<Project> sortProjectsByDateFinish(@NotNull Session session) {
-        if (!serviceLocator.getSessionService().validate(session)) return null;
+        serviceLocator.getSessionService().validate(session);
         return serviceLocator.getProjectService().sortProjectsByDateFinish(session.getUserId());
     }
 
     @Nullable
     public List<Project> sortProjectsByStatus(@NotNull Session session) {
-        if (!serviceLocator.getSessionService().validate(session)) return null;
+        serviceLocator.getSessionService().validate(session);
         return serviceLocator.getProjectService().sortProjectsByStatus(session.getUserId());
     }
 }

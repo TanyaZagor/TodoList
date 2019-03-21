@@ -24,41 +24,35 @@ public class UserEndpoint implements IUserEndpoint {
     }
 
     public void changePassword(@NotNull Session session, @NotNull String login, @NotNull String oldPassword, @NotNull String newPassword) {
-        if (!serviceLocator.getSessionService().validate(session)) return;
+        serviceLocator.getSessionService().validate(session);
         serviceLocator.getUserService().changePassword(session.getUserId(), login, oldPassword, newPassword);
     }
 
     public void updateUser(@NotNull Session session, @NotNull String firstName, @NotNull String lastName, @NotNull String email) {
-        if (!serviceLocator.getSessionService().validate(session)) return;
+        serviceLocator.getSessionService().validate(session);
         serviceLocator.getUserService().updateUser(session.getUserId(), firstName, lastName, email);
     }
 
-    public void removeAllUsers(@NotNull Session session) {
-        if (!serviceLocator.getSessionService().validate(session)) return;
-        serviceLocator.getUserService().removeAllUsers(session.getUserId());
-    }
+//    public void removeAllUsers(@NotNull Session session) {
+//        serviceLocator.getSessionService().validate(session);
+//        serviceLocator.getUserService().removeAllUsers(session.getUserId());
+//    }
 
     public void removeUser(@NotNull Session session) {
-        if (!serviceLocator.getSessionService().validate(session)) return;
+        serviceLocator.getSessionService().validate(session);
         serviceLocator.getUserService().removeUser(session.getUserId());
     }
 
     @Nullable
     public List<User> findAllUsers(@NotNull Session session) {
-        if (!serviceLocator.getSessionService().validate(session)) return null;
+        serviceLocator.getSessionService().validate(session);
         return serviceLocator.getUserService().findAllUsers(session.getUserId());
-    }
-
-    @Override
-    public boolean checkRole(@NotNull Session session) {
-        if (!serviceLocator.getSessionService().validate(session)) return false;
-        return findUser(session).getRoleType() == RoleType.ADMIN;
     }
 
     @Nullable
     @Override
     public User findUser(@NotNull Session session) {
-        if (!serviceLocator.getSessionService().validate(session)) return null;
+        serviceLocator.getSessionService().validate(session);
         return serviceLocator.getUserService().findOne(session.getUserId());
     }
 

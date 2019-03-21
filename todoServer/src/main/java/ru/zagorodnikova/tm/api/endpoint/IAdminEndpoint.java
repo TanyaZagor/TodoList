@@ -10,6 +10,9 @@ import javax.jws.WebService;
 public interface IAdminEndpoint {
 
     @WebMethod
+    void removeAllUsers(@NotNull Session session);
+
+    @WebMethod
     void save(@NotNull Session session);
 
     @WebMethod

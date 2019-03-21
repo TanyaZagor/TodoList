@@ -68,13 +68,7 @@ public class UserService extends AbstractService implements IUserService {
     public void removeUser(@NotNull String userId) {
         @NotNull final User user = new User();
         user.setId(userId);
-        userRepository.removeAll(user);
-    }
-
-    public void removeAllUsers(@NotNull String userId) {
-        @NotNull final User user = new User();
-        user.setId(userId);
-        userRepository.removeAll(user);
+        userRepository.remove(user);
     }
 
     @Nullable

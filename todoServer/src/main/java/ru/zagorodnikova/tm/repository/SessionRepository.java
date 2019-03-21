@@ -7,6 +7,7 @@ import ru.zagorodnikova.tm.util.UtilPassword;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.rmi.AccessException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -22,9 +23,8 @@ public class SessionRepository {
     }
 
     public void remove(@NotNull Session session) {
-        if (validate(session)) {
-            sessions.remove(session.getId());
-        }
+        validate(session);
+        sessions.remove(session.getId());
     }
 
 
@@ -48,17 +48,17 @@ public class SessionRepository {
         return signature;
     }
 
-    public boolean validate(Session session) {
-        if(session == null) return false;
-        else if(session.getSignature() == null) return false;
-        else if(session.getUserId() == null) return false;
-        else if (session.getDate() == null) return false;
+    public void validate(Session session){
+        if(session == null) throw new RuntimeException("not valid session");
+        else if(session.getSignature() == null) throw new RuntimeException("not valid session");
+        else if(session.getUserId() == null) throw new RuntimeException("not valid session");
+        else if (session.getDate() == null) throw new RuntimeException("not valid session");
         final Session temp = session.clone();
-        if(temp == null) return false;
+        if(temp == null) throw new RuntimeException("not valid session");
         String sourceSignature = signSession(session);
         String targetSignature = signSession(session);
         boolean check = sourceSignature.equals(targetSignature);
-        if(!check) return false;
-        return sessions.containsKey(session.getId());
+        if(!check) throw new RuntimeException("not valid session");
+        if (!sessions.containsKey(session.getId())) throw new RuntimeException("not valid session");
     }
 }
