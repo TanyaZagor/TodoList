@@ -2,10 +2,7 @@ package ru.zagorodnikova.tm.service;
 
 import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.api.ServiceLocator;
-import ru.zagorodnikova.tm.endpoint.Exception_Exception;
 
-import javax.xml.bind.JAXBException;
-import java.io.IOException;
 import java.util.Scanner;
 
 public class TerminalService {

@@ -2,15 +2,10 @@ package ru.zagorodnikova.tm.service;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.zagorodnikova.tm.api.repository.IUserRepository;
 import ru.zagorodnikova.tm.api.service.ISessionService;
-import ru.zagorodnikova.tm.api.service.IUserService;
 import ru.zagorodnikova.tm.entity.Session;
 import ru.zagorodnikova.tm.entity.User;
 import ru.zagorodnikova.tm.repository.SessionRepository;
-import ru.zagorodnikova.tm.repository.UserRepository;
-
-import java.rmi.AccessException;
 
 public class SessionService implements ISessionService {
 

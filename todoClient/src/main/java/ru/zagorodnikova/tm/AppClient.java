@@ -59,7 +59,6 @@ public class AppClient {
 
     public static void main(String[] args) {
         System.setProperty("org.apache.logging.log4j.simplelog.StatusLogger.level","INFO");
-        System.setProperty("javax.xml.bind.context.factory","org.eclipse.persistence.jaxb.JAXBContextFactory");
         @NotNull final Bootstrap bootstrap = new Bootstrap();
         bootstrap.init(commandClasses);
 

@@ -5,15 +5,10 @@ import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
-import ru.zagorodnikova.tm.service.TerminalService;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.endpoint.*;
-import ru.zagorodnikova.tm.endpoint.ProjectEndpointService;
-import ru.zagorodnikova.tm.endpoint.TaskEndpointService;
-import ru.zagorodnikova.tm.endpoint.UserEndpointService;
+import ru.zagorodnikova.tm.service.TerminalService;
 
-import javax.xml.bind.JAXBException;
-import java.io.IOException;
 import java.lang.Exception;
 import java.util.HashMap;
 import java.util.Map;

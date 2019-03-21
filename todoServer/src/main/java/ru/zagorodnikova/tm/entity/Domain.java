@@ -13,6 +13,7 @@ import java.util.List;
 
 @Setter
 @Getter
+@XmlRootElement
 public class Domain implements Serializable {
 
     @NotNull

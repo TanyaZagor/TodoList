@@ -39,14 +39,14 @@ public class DomainService implements IDomainService {
         domain.setProjects(projectRepository.getProjects());
         domain.setTasks(taskRepository.getTasks());
 
-        @NotNull final File file = new File("todoServer\\file.txt");
+        @NotNull final File file = new File("todoServer\\data\\file.txt");
         @NotNull final ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file));
         objectOutputStream.writeObject(domain);
         objectOutputStream.close();
     }
 
     public void load() throws Exception {
-        @NotNull final ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("todoServer\\file.txt"));
+        @NotNull final ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("todoServer\\data\\file.txt"));
         @NotNull final Domain domain = (Domain) inputStream.readObject();
         inputStream.close();
         projectRepository.setProjects(domain.getProjects());
@@ -60,13 +60,13 @@ public class DomainService implements IDomainService {
         domain.setProjects(projectRepository.getProjects());
         domain.setTasks(taskRepository.getTasks());
 
-        @NotNull final File file = new File("todoServer\\fileFasterXml.json");
+        @NotNull final File file = new File("todoServer\\data\\fileFasterXml.json");
         @NotNull final ObjectMapper mapper = new ObjectMapper();
         mapper.writerWithDefaultPrettyPrinter().writeValue(file, domain);
     }
 
     public void loadFromJson() throws Exception {
-        @NotNull final File file = new File("todoServer\\fileFasterXml.json");
+        @NotNull final File file = new File("todoServer\\data\\fileFasterXml.json");
         @NotNull final ObjectMapper mapper = new ObjectMapper();
         mapper.readValue(file, Domain.class);
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -83,13 +83,13 @@ public class DomainService implements IDomainService {
         domain.setProjects(projectRepository.getProjects());
         domain.setTasks(taskRepository.getTasks());
 
-        @NotNull final File file = new File("todoServer\\fileFasterXml.xml");
+        @NotNull final File file = new File("todoServer\\data\\fileFasterXml.xml");
         @NotNull final XmlMapper xmlMapper = new XmlMapper();
         xmlMapper.writerWithDefaultPrettyPrinter().writeValue(file, domain);
     }
 
     public void loadFromXml() throws Exception {
-        @NotNull final File file = new File("todoServer\\fileFasterXml.xml");
+        @NotNull final File file = new File("todoServer\\data\\fileFasterXml.xml");
         @NotNull final XmlMapper xmlMapper = new XmlMapper();
         xmlMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
@@ -105,7 +105,7 @@ public class DomainService implements IDomainService {
         domain.setProjects(projectRepository.getProjects());
         domain.setTasks(taskRepository.getTasks());
 
-        @NotNull final File file = new File("todoServer\\fileJaxb.json");
+        @NotNull final File file = new File("todoServer\\data\\fileJaxb.json");
         @NotNull final JAXBContext jaxbContext = JAXBContext.newInstance(Domain.class);
         @NotNull final Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
         jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
@@ -123,7 +123,7 @@ public class DomainService implements IDomainService {
         jaxbUnmarshaller.setProperty(UnmarshallerProperties.MEDIA_TYPE, "application/json");
         jaxbUnmarshaller.setProperty(UnmarshallerProperties.JSON_INCLUDE_ROOT, true);
 
-        @NotNull final Domain domain = (Domain) jaxbUnmarshaller.unmarshal(new File("todoServer\\fileJaxb.json"));
+        @NotNull final Domain domain = (Domain) jaxbUnmarshaller.unmarshal(new File("todoServer\\data\\fileJaxb.json"));
         projectRepository.setProjects(domain.getProjects());
         taskRepository.setTasks(domain.getTasks());
         userRepository.setUsers(domain.getUsers());
@@ -135,7 +135,7 @@ public class DomainService implements IDomainService {
         domain.setProjects(projectRepository.getProjects());
         domain.setTasks(taskRepository.getTasks());
 
-        @NotNull final File file = new File("todoServer\\fileJaxb.xml");
+        @NotNull final File file = new File("todoServer\\data\\fileJaxb.xml");
         @NotNull final JAXBContext jaxbContext = JAXBContext.newInstance(Domain.class);
         @NotNull final Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
@@ -148,7 +148,7 @@ public class DomainService implements IDomainService {
         @NotNull final JAXBContext jaxbContext = JAXBContext.newInstance(Domain.class);
         @NotNull final Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 
-        @NotNull final Domain domain = (Domain) jaxbUnmarshaller.unmarshal(new File("todoServer\\fileJaxb.xml"));
+        @NotNull final Domain domain = (Domain) jaxbUnmarshaller.unmarshal(new File("todoServer\\data\\fileJaxb.xml"));
         projectRepository.setProjects(domain.getProjects());
         taskRepository.setTasks(domain.getTasks());
         userRepository.setUsers(domain.getUsers());

@@ -2,12 +2,10 @@ package ru.zagorodnikova.tm.api;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.zagorodnikova.tm.service.TerminalService;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.endpoint.*;
+import ru.zagorodnikova.tm.service.TerminalService;
 
-import javax.xml.bind.JAXBException;
-import java.io.IOException;
 import java.lang.Exception;
 import java.util.Map;
 

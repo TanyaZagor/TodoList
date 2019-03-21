@@ -2,7 +2,6 @@ package ru.zagorodnikova.tm.bootstrap;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.eclipse.persistence.internal.expressions.FieldExpression;
 import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.api.repository.IProjectRepository;
