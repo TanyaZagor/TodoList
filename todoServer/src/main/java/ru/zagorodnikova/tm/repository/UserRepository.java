@@ -8,6 +8,7 @@ import ru.zagorodnikova.tm.entity.User;
 
 import java.util.*;
 
+
 public class UserRepository extends AbstractRepository<User> implements IUserRepository<User> {
 
     @NotNull private final Map<String, User> users = super.getMap();
@@ -60,6 +61,18 @@ public class UserRepository extends AbstractRepository<User> implements IUserRep
 
     public boolean checkPassword(@NotNull User user) {
         return Objects.equals(users.get(user.getId()).getPassword(), user.getPassword()) && Objects.equals(users.get(user.getId()).getLogin(), user.getLogin());
+    }
+
+    @NotNull
+    public List<User> getUsers() {
+        final List<User> list = new ArrayList<>();
+        users.forEach((k, v) -> list.add(v));
+        return list;
+    }
+
+    public void setUsers(@NotNull List<User> list) {
+        users.clear();
+        list.forEach((v) -> users.put(v.getId(), v));
     }
 
 }

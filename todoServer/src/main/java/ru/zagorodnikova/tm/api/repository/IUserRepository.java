@@ -29,5 +29,9 @@ public interface IUserRepository<T extends User> {
     List<T> findAll(@NotNull T t);
 
     boolean checkPassword(@NotNull T t);
+    @NotNull
+    List<T> getUsers();
+
+    void setUsers(@NotNull List<T> list);
 
 }

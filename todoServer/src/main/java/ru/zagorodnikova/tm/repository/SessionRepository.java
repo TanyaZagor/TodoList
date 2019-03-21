@@ -5,8 +5,11 @@ import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.entity.Session;
 import ru.zagorodnikova.tm.util.UtilPassword;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Properties;
 
 public class SessionRepository {
 
@@ -26,10 +29,21 @@ public class SessionRepository {
 
 
     @NotNull
-    public String signSession(@NotNull Session session) {
+    public String signSession(@NotNull Session session){
+        InputStream inputStream;
+        Properties property = new Properties();
+
+        inputStream = this.getClass().getClassLoader().getResourceAsStream("app.properties");
+        try {
+            property.load(inputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        int cycle = Integer.valueOf( property.getProperty("cycle"));
+        String salt = property.getProperty("salt");
         String signature = "";
-        for (int i = 0; i < 250; i++) {
-            signature = UtilPassword.hashPassword("asd" + session.getUserId() + "asd");
+        for (int i = 0; i < cycle; i++) {
+            signature = UtilPassword.hashPassword(salt + session.getUserId() + salt);
         }
         return signature;
     }

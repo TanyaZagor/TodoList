@@ -15,8 +15,8 @@ import java.util.List;
 @Getter
 public class Domain implements Serializable {
 
-    @Nullable
-    private User user;
+    @NotNull
+    private List<User> users =new ArrayList<>();
 
     @NotNull
     private List<Project> projects = new ArrayList<>();

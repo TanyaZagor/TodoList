@@ -8,10 +8,12 @@ import org.eclipse.persistence.jaxb.UnmarshallerProperties;
 import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.api.repository.IProjectRepository;
 import ru.zagorodnikova.tm.api.repository.ITaskRepository;
+import ru.zagorodnikova.tm.api.repository.IUserRepository;
 import ru.zagorodnikova.tm.api.service.IDomainService;
 import ru.zagorodnikova.tm.entity.Domain;
 import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.entity.Task;
+import ru.zagorodnikova.tm.entity.User;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -23,14 +25,17 @@ public class DomainService implements IDomainService {
 
     @NotNull private final IProjectRepository<Project> projectRepository;
     @NotNull private final ITaskRepository<Task> taskRepository;
+    @NotNull private final IUserRepository<User> userRepository;
 
-    public DomainService(@NotNull IProjectRepository<Project> projectRepository, @NotNull ITaskRepository<Task> taskRepository) {
+    public DomainService(@NotNull IProjectRepository<Project> projectRepository, @NotNull ITaskRepository<Task> taskRepository, @NotNull IUserRepository<User> userRepository) {
         this.projectRepository = projectRepository;
         this.taskRepository = taskRepository;
+        this.userRepository = userRepository;
     }
 
     public void save(){
         final Domain domain = new Domain();
+        domain.setUsers(userRepository.getUsers());
         domain.setProjects(projectRepository.getProjects());
         domain.setTasks(taskRepository.getTasks());
         File file = new File("file.txt");
@@ -51,6 +56,7 @@ public class DomainService implements IDomainService {
             inputStream.close();
             projectRepository.setProjects(domain.getProjects());
             taskRepository.setTasks(domain.getTasks());
+            userRepository.setUsers(domain.getUsers());
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -60,6 +66,7 @@ public class DomainService implements IDomainService {
 
     public void saveToJson(){
         final Domain domain = new Domain();
+        domain.setUsers(userRepository.getUsers());
         domain.setProjects(projectRepository.getProjects());
         domain.setTasks(taskRepository.getTasks());
         File file = new File("fileFasterXml.json");
@@ -80,6 +87,7 @@ public class DomainService implements IDomainService {
             Domain domain = mapper.readValue(file, Domain.class);
             projectRepository.setProjects(domain.getProjects());
             taskRepository.setTasks(domain.getTasks());
+            userRepository.setUsers(domain.getUsers());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -88,6 +96,7 @@ public class DomainService implements IDomainService {
 
     public void saveToXml() {
         final Domain domain = new Domain();
+        domain.setUsers(userRepository.getUsers());
         domain.setProjects(projectRepository.getProjects());
         domain.setTasks(taskRepository.getTasks());
         File file = new File("fileFasterXml.xml");
@@ -107,6 +116,7 @@ public class DomainService implements IDomainService {
             Domain domain = xmlMapper.readValue(file, Domain.class);
             projectRepository.setProjects(domain.getProjects());
             taskRepository.setTasks(domain.getTasks());
+            userRepository.setUsers(domain.getUsers());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -115,6 +125,7 @@ public class DomainService implements IDomainService {
 
     public void saveToJsonJaxb() {
         final Domain domain = new Domain();
+        domain.setUsers(userRepository.getUsers());
         domain.setProjects(projectRepository.getProjects());
         domain.setTasks(taskRepository.getTasks());
         File file = new File("fileJaxb.json");
@@ -142,8 +153,10 @@ public class DomainService implements IDomainService {
             jaxbUnmarshaller.setProperty(UnmarshallerProperties.JSON_INCLUDE_ROOT, true);
 
             Domain domain = (Domain) jaxbUnmarshaller.unmarshal(new File("fileJaxb.json"));
+
             projectRepository.setProjects(domain.getProjects());
             taskRepository.setTasks(domain.getTasks());
+            userRepository.setUsers(domain.getUsers());
         } catch (JAXBException e) {
             e.printStackTrace();
         }
@@ -152,6 +165,7 @@ public class DomainService implements IDomainService {
     public void saveToXmlJaxb() {
         try {
             final Domain domain = new Domain();
+            domain.setUsers(userRepository.getUsers());
             domain.setProjects(projectRepository.getProjects());
             domain.setTasks(taskRepository.getTasks());
             File file = new File("fileJaxb.xml");
@@ -174,6 +188,7 @@ public class DomainService implements IDomainService {
             Domain domain = (Domain) jaxbUnmarshaller.unmarshal(new File("fileJaxb.xml"));
             projectRepository.setProjects(domain.getProjects());
             taskRepository.setTasks(domain.getTasks());
+            userRepository.setUsers(domain.getUsers());
         } catch (JAXBException e) {
             e.printStackTrace();
         }
