@@ -9,29 +9,29 @@ import java.util.List;
 public interface IUserRepository<T extends User> {
 
     @Nullable
-    T signIn(@NotNull T t);
+    T signIn(@NotNull final T t);
 
-    void changePassword(@NotNull T t);
+    void changePassword(@NotNull final T t) throws Exception;
 
     @Nullable
-    T persist(@NotNull T t);
+    T persist(@NotNull final T t);
 
-    void remove(@NotNull T t);
+    void remove(@NotNull final T t);
 
     void removeAll();
 
     @NotNull
-    T findOne(@NotNull T t);
+    T findOne(@NotNull final T t);
 
-    void merge(@NotNull T t);
+    void merge(@NotNull final T t);
 
     @Nullable
-    List<T> findAll(@NotNull T t);
+    List<T> findAll(@NotNull final T t);
 
-    boolean checkPassword(@NotNull T t);
+    boolean checkPassword(@NotNull final T t);
     @NotNull
     List<T> getUsers();
 
-    void setUsers(@NotNull List<T> list);
+    void setUsers(@NotNull final List<T> list);
 
 }

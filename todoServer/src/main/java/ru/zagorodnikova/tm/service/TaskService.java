@@ -19,15 +19,15 @@ public class TaskService implements ITaskService {
     @NotNull private final ITaskRepository<Task> taskRepository;
     @NotNull private final IProjectRepository<Project> projectRepository;
 
-    public TaskService(@NotNull ITaskRepository<Task> taskRepository, @NotNull IProjectRepository<Project> projectRepository) {
+    public TaskService(@NotNull final ITaskRepository<Task> taskRepository, @NotNull final IProjectRepository<Project> projectRepository) {
         this.taskRepository = taskRepository;
         this.projectRepository = projectRepository;
 
     }
 
     @Nullable
-    public Task persistTask(@NotNull String userId, @NotNull String projectName, @NotNull String taskName,
-                            @NotNull String description, @NotNull String dateStart, @NotNull String dateFinish) {
+    public Task persistTask(@NotNull final String userId, @NotNull final String projectName, @NotNull final String taskName,
+                            @NotNull final String description, @NotNull final String dateStart, @NotNull final String dateFinish) throws Exception {
         if (projectName.isEmpty()) return null;
         @NotNull final Project newProject = new Project();
         newProject.setName(projectName);
@@ -46,7 +46,7 @@ public class TaskService implements ITaskService {
         return null;
     }
 
-    public void removeTask(@NotNull String userId, @NotNull String projectName, @NotNull String taskName){
+    public void removeTask(@NotNull final String userId, @NotNull final String projectName, @NotNull final String taskName){
         if (projectName.isEmpty()) return;
         if (taskName.isEmpty()) return;
         @Nullable Task task = findOneTask(userId, projectName, taskName, "");
@@ -56,13 +56,13 @@ public class TaskService implements ITaskService {
 
     }
 
-    public void removeAllTasks(@NotNull String userId) {
+    public void removeAllTasks(@NotNull final String userId) {
         @NotNull final Task task = new Task();
         task.setUserId(userId);
         taskRepository.removeAll(task);
     }
 
-    public void removeAllTasksInProject(@NotNull String userId, @NotNull String projectName){
+    public void removeAllTasksInProject(@NotNull final String userId, @NotNull final String projectName){
         if (projectName.isEmpty()) return;
         @NotNull final Project newProject = new Project();
         newProject.setName(projectName);
@@ -75,9 +75,9 @@ public class TaskService implements ITaskService {
         }
     }
 
-    public void mergeTask(@NotNull String userId, @NotNull String projectName, @NotNull String oldTaskName,
-                          @NotNull String taskName, @NotNull String description, @NotNull String dateStart,
-                          @NotNull String dateFinish) {
+    public void mergeTask(@NotNull final String userId, @NotNull final String projectName, @NotNull final String oldTaskName,
+                          @NotNull final String taskName, @NotNull final String description, @NotNull final String dateStart,
+                          @NotNull final String dateFinish) throws Exception {
         if (projectName.isEmpty()) return;
         if (taskName.isEmpty()) return;
         if (description.isEmpty()) return;
@@ -96,7 +96,7 @@ public class TaskService implements ITaskService {
     }
 
     @Nullable
-    public List<Task> findAllTasksInProject(@NotNull String userId, @NotNull String projectName) {
+    public List<Task> findAllTasksInProject(@NotNull final String userId, @NotNull final String projectName) {
         if (projectName.isEmpty()) return null;
         @NotNull final Project newProject = new Project();
         newProject.setName(projectName);
@@ -112,15 +112,15 @@ public class TaskService implements ITaskService {
 
 
     @Nullable
-    public List<Task> findAllTasks(@NotNull String userId) {
+    public List<Task> findAllTasks(@NotNull final String userId) {
         @NotNull final Task task = new Task();
         task.setUserId(userId);
         return  taskRepository.findAllTasks(task);
     }
 
     @Nullable
-    public Task findOneTask(@NotNull String userId, @NotNull String projectName,
-                            @NotNull String taskName, @NotNull String taskDescription) {
+    public Task findOneTask(@NotNull final String userId, @NotNull final String projectName,
+                            @NotNull final String taskName, @NotNull final String taskDescription) {
         if (projectName.isEmpty()) return null;
         @NotNull final Project newProject = new Project();
         newProject.setName(projectName);

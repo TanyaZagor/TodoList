@@ -49,7 +49,7 @@ public class Bootstrap implements ServiceLocator {
 
     public void execute(@Nullable String command) throws Exception {
         if (command == null || command.isEmpty()) return;
-        final AbstractCommand abstractCommand = commands.get(command);
+        @NotNull final AbstractCommand abstractCommand = commands.get(command);
         if (abstractCommand == null) return;
         if (abstractCommand.isSecure()) {
             if (isAuth()) {

@@ -15,7 +15,7 @@ public abstract class AbstractRepository<T extends AbstractEntity> {
     @NotNull private final Map<String, T> map = new LinkedHashMap<>();
 
     @Nullable
-    public T persist(@NotNull T t) {
+    public T persist(@NotNull final T t) {
         if (!map.containsValue(t)) {
             map.put(t.getId(), t);
             return t;
@@ -23,15 +23,15 @@ public abstract class AbstractRepository<T extends AbstractEntity> {
         return null;
     }
 
-    public void remove(@NotNull T t) {
+    public void remove(@NotNull final T t) {
         map.remove(t.getId());
     }
 
     @Nullable
-    abstract public T findOne(@NotNull T t);
+    abstract public T findOne(@NotNull final T t);
 
-    abstract public void merge(@NotNull T t);
+    abstract public void merge(@NotNull final T t);
 
     @Nullable
-    abstract public List<T> findAll(@NotNull T t);
+    abstract public List<T> findAll(@NotNull final T t);
 }

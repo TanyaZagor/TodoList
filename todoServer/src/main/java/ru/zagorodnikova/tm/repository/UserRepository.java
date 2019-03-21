@@ -14,8 +14,8 @@ public class UserRepository extends AbstractRepository<User> implements IUserRep
     @NotNull private final Map<String, User> users = super.getMap();
 
     @Nullable
-    public User signIn(@NotNull User user) {
-        final Map<String, User> map = new LinkedHashMap<>();
+    public User signIn(@NotNull final User user) {
+        @NotNull final Map<String, User> map = new LinkedHashMap<>();
         users.forEach((k, v) -> {
             if (Objects.equals(v.getLogin(), user.getLogin()) && Objects.equals(v.getPassword(), user.getPassword())) {
                 map.put(v.getLogin(), v);
@@ -27,7 +27,7 @@ public class UserRepository extends AbstractRepository<User> implements IUserRep
         return null;
     }
 
-    public void changePassword(@NotNull User user) {
+    public void changePassword(@NotNull final User user) throws Exception {
         if (user.getPassword() != null) {
             users.get(user.getId()).setPassword(user.getPassword());
         }
@@ -35,17 +35,17 @@ public class UserRepository extends AbstractRepository<User> implements IUserRep
 
     @Override
     public void removeAll() {
-        users.entrySet().removeIf((v) -> !v.getValue().getRoleType().equals(RoleType.ADMIN));
+        users.entrySet().removeIf((v) -> !(v.getValue().getRoleType().equals(RoleType.ADMIN)));
     }
 
     @NotNull
     @Override
-    public User findOne(@NotNull User user) {
+    public User findOne(@NotNull final User user) {
         return users.get(user.getId());
     }
 
     @Override
-    public void merge(@NotNull User user) {
+    public void merge(@NotNull final User user) {
         users.get(user.getId()).setFirstName(user.getFirstName());
         users.get(user.getId()).setLastName(user.getLastName());
         users.get(user.getId()).setEmail(user.getEmail());
@@ -53,24 +53,24 @@ public class UserRepository extends AbstractRepository<User> implements IUserRep
 
     @Nullable
     @Override
-    public List<User> findAll(@NotNull User user) {
+    public List<User> findAll(@NotNull final User user) {
         @NotNull final List<User> usersList = new ArrayList<>();
         users.forEach((k, v) -> usersList.add(v));
         return usersList;
     }
 
-    public boolean checkPassword(@NotNull User user) {
+    public boolean checkPassword(@NotNull final User user) {
         return Objects.equals(users.get(user.getId()).getPassword(), user.getPassword()) && Objects.equals(users.get(user.getId()).getLogin(), user.getLogin());
     }
 
     @NotNull
     public List<User> getUsers() {
-        final List<User> list = new ArrayList<>();
+        @NotNull final List<User> list = new ArrayList<>();
         users.forEach((k, v) -> list.add(v));
         return list;
     }
 
-    public void setUsers(@NotNull List<User> list) {
+    public void setUsers(@NotNull final List<User> list) {
         users.clear();
         list.forEach((v) -> users.put(v.getId(), v));
     }

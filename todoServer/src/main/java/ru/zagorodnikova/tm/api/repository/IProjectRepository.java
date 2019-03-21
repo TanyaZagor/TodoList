@@ -10,35 +10,35 @@ import java.util.List;
 public interface IProjectRepository<T extends Project> {
 
     @Nullable
-    T persist(@NotNull T t);
+    T persist(@NotNull final T t);
 
-    void remove(@NotNull T t);
+    void remove(@NotNull final T t);
 
-    void removeAll(@NotNull T t);
-
-    @Nullable
-    T findOne(@NotNull T t);
-
-    void merge(@NotNull T t);
+    void removeAll(@NotNull final T t);
 
     @Nullable
-    List<T> findAll(@NotNull T t);
+    T findOne(@NotNull final T t);
+
+    void merge(@NotNull final T t);
+
+    @Nullable
+    List<T> findAll(@NotNull final T t);
 
     @NotNull
-    List<T> sortByDateCreated(@NotNull List<T> list);
+    List<T> sortByDateCreated(@NotNull final List<T> list);
 
     @NotNull
-    List<T> sortByDateStart(@NotNull List<T> list);
+    List<T> sortByDateStart(@NotNull final List<T> list);
 
     @NotNull
-    List<T> sortByDateFinish(@NotNull List<T> list);
+    List<T> sortByDateFinish(@NotNull final List<T> list);
 
     @NotNull
-    List<T> sortByStatus(@NotNull List<T> list);
+    List<T> sortByStatus(@NotNull final List<T> list);
 
     @NotNull
     List<T> getProjects();
 
-    void setProjects(@NotNull List<T> list);
+    void setProjects(@NotNull final List<T> list);
 
 }

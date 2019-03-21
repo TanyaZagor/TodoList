@@ -16,22 +16,22 @@ public class SessionService implements ISessionService {
 
     @NotNull private final SessionRepository sessionRepository;
 
-    public SessionService(@NotNull SessionRepository sessionRepository) {
+    public SessionService(@NotNull final SessionRepository sessionRepository) {
         this.sessionRepository = sessionRepository;
     }
 
     @Nullable
-    public Session persist(@NotNull User user) throws Exception {
+    public Session persist(@NotNull final User user) throws Exception {
         @NotNull final Session session = new Session(user.getId());
         session.setSignature(sessionRepository.signSession(session));
         return sessionRepository.persist(session);
     }
 
-    public void remove(@NotNull Session session) throws Exception {
+    public void remove(@NotNull final Session session) throws Exception {
         sessionRepository.remove(session);
     }
 
-    public void validate(@NotNull Session session) throws Exception {
+    public void validate(@NotNull final Session session) throws Exception {
         sessionRepository.validate(session);
     }
 }

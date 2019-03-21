@@ -30,7 +30,7 @@ public class TaskRepository extends AbstractRepository<Task> implements ITaskRep
 
     @Nullable
     public List<Task> findAll(@NotNull final Task task) {
-        final ArrayList<Task> list = new ArrayList<>();
+        @NotNull final ArrayList<Task> list = new ArrayList<>();
         tasks.forEach((k, v) -> {
             if(Objects.equals(v.getProjectId(), task.getProjectId())) {
                 list.add(v);
@@ -44,7 +44,7 @@ public class TaskRepository extends AbstractRepository<Task> implements ITaskRep
 
     @Nullable
     public List<Task> findAllTasks(@NotNull final Task task) {
-        final List<Task> list = new ArrayList<>();
+        @NotNull final List<Task> list = new ArrayList<>();
         tasks.forEach((k, v) -> {
             if(Objects.equals(v.getUserId(), task.getUserId())) {
                 list.add(v);
@@ -58,17 +58,17 @@ public class TaskRepository extends AbstractRepository<Task> implements ITaskRep
 
     @Nullable
     public Task findOne(@NotNull final Task task) {
-        final List<Task> list = new ArrayList<>();
+        @NotNull final List<Task> list = new ArrayList<>();
         if (task.getDescription() != null && !task.getDescription().isEmpty()) {
             tasks.forEach((k, v) -> {
-                if (Objects.equals(v.getProjectId(), task.getProjectId()) && Objects.requireNonNull(v.getDescription()).contains(task.getDescription())) {
+                if (Objects.equals(v.getProjectId(), task.getProjectId()) && Objects.equals(v.getDescription(), task.getDescription())) {
                     list.add(v);
                 }
             });
         }
         if (task.getName() != null && !task.getName().isEmpty()) {
             tasks.forEach((k, v) -> {
-                if (Objects.equals(v.getProjectId(), task.getProjectId()) && Objects.requireNonNull(v.getName()).contains(task.getName())) {
+                if (Objects.equals(v.getProjectId(), task.getProjectId()) && Objects.equals(v.getName(), task.getName())){
                     list.add(v);
                 }
             });
@@ -82,39 +82,39 @@ public class TaskRepository extends AbstractRepository<Task> implements ITaskRep
 
     @NotNull
     public List<Task> sortByDateCreated(@NotNull final List<Task> list) {
-        list.sort(((o1, o2) -> ((Task)o2).getDateCreate().compareTo(((Task)o1).getDateCreate())));
+        list.sort(((o1, o2) -> o2.getDateCreate().compareTo(o1.getDateCreate())));
         Collections.reverse(list);
         return list;
     }
 
     @NotNull
     public List<Task> sortByDateStart(@NotNull final List<Task> list) {
-        list.sort(((o1, o2) -> Objects.requireNonNull(((Task) o2).getDateStart()).compareTo(Objects.requireNonNull(((Task) o1).getDateStart()))));
+        list.sort(((o1, o2) -> Objects.requireNonNull(o2.getDateStart()).compareTo(Objects.requireNonNull(o1.getDateStart()))));
         Collections.reverse(list);
         return list;
     }
     @NotNull
     public List<Task> sortByDateFinish(@NotNull final List<Task> list) {
-        list.sort(((o1, o2) -> Objects.requireNonNull(((Task) o2).getDateFinish()).compareTo(Objects.requireNonNull(((Task) o1).getDateFinish()))));
+        list.sort(((o1, o2) -> Objects.requireNonNull(o2.getDateFinish()).compareTo(Objects.requireNonNull(o1.getDateFinish()))));
         Collections.reverse(list);
         return list;
     }
 
     @NotNull
     public List<Task> sortByStatus(@NotNull final List<Task> list) {
-        list.sort(((o1, o2) -> ((Task)o2).getStatus().compareTo(((Task)o1).getStatus())));
+        list.sort(((o1, o2) -> o2.getStatus().compareTo(o1.getStatus())));
         Collections.reverse(list);
         return list;
     }
 
     @NotNull
     public List<Task> getTasks() {
-        final List<Task> list = new ArrayList<>();
+        @NotNull final List<Task> list = new ArrayList<>();
         tasks.forEach((k, v) -> list.add(v));
         return list;
     }
 
-    public void setTasks(@NotNull List<Task> list) {
+    public void setTasks(@NotNull final List<Task> list) {
         tasks.clear();
         list.forEach((v) -> tasks.put(v.getId(), v));
     }

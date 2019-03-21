@@ -9,57 +9,57 @@ import java.util.List;
 public interface ITaskService {
 
     @Nullable
-    Task persistTask(@NotNull String userId,
-                     @NotNull String projectName,
-                     @NotNull String taskName,
-                     @NotNull String description,
-                     @NotNull String dateStart,
-                     @NotNull String dateFinish);
+    Task persistTask(@NotNull final String userId,
+                     @NotNull final String projectName,
+                     @NotNull final String taskName,
+                     @NotNull final String description,
+                     @NotNull final String dateStart,
+                     @NotNull final String dateFinish) throws Exception;
 
-    void removeTask(@NotNull String userId,
-                    @NotNull String projectName,
-                    @NotNull String taskName);
+    void removeTask(@NotNull final String userId,
+                    @NotNull final String projectName,
+                    @NotNull final String taskName);
 
-    void removeAllTasksInProject(@NotNull String userId,
-                                 @NotNull String projectName);
+    void removeAllTasksInProject(@NotNull final String userId,
+                                 @NotNull final String projectName);
 
-    void removeAllTasks(@NotNull String userId);
+    void removeAllTasks(@NotNull final String userId);
 
-    void mergeTask(@NotNull String userId,
-                   @NotNull String projectName,
-                   @NotNull String oldTaskName,
-                   @NotNull String taskName,
-                   @NotNull String description,
-                   @NotNull String dateStart,
-                   @NotNull String dateFinish);
-
-    @Nullable
-    List<Task> findAllTasksInProject(@NotNull String userId,
-                                     @NotNull String projectName);
+    void mergeTask(@NotNull final String userId,
+                   @NotNull final String projectName,
+                   @NotNull final String oldTaskName,
+                   @NotNull final String taskName,
+                   @NotNull final String description,
+                   @NotNull final String dateStart,
+                   @NotNull final String dateFinish) throws Exception;
 
     @Nullable
-    List<Task> findAllTasks(@NotNull String userId);
+    List<Task> findAllTasksInProject(@NotNull final String userId,
+                                     @NotNull final String projectName);
 
     @Nullable
-    Task findOneTask(@NotNull String userId,
-                     @NotNull String projectName,
-                     @NotNull String taskName,
-                     @NotNull String taskDescription);
+    List<Task> findAllTasks(@NotNull final String userId);
 
     @Nullable
-    List<Task> sortTasksByDateCreated(@NotNull String userId,
-                                      @NotNull String projectName);
+    Task findOneTask(@NotNull final String userId,
+                     @NotNull final String projectName,
+                     @NotNull final String taskName,
+                     @NotNull final String taskDescription);
 
     @Nullable
-    List<Task> sortTasksByDateStart(@NotNull String userId,
-                                    @NotNull String projectName);
+    List<Task> sortTasksByDateCreated(@NotNull final String userId,
+                                      @NotNull final String projectName);
 
     @Nullable
-    List<Task> sortTasksByDateFinish(@NotNull String userId,
-                                     @NotNull String projectName);
+    List<Task> sortTasksByDateStart(@NotNull final String userId,
+                                    @NotNull final String projectName);
 
     @Nullable
-    List<Task> sortTasksByStatus(@NotNull String userId,
-                                 @NotNull String projectName);
+    List<Task> sortTasksByDateFinish(@NotNull final String userId,
+                                     @NotNull final String projectName);
+
+    @Nullable
+    List<Task> sortTasksByStatus(@NotNull final String userId,
+                                 @NotNull final String projectName);
 
 }

@@ -21,7 +21,7 @@ public abstract class AbstractCommand {
 
     abstract public boolean isSecure();
 
-    public void setServiceLocator(ServiceLocator serviceLocator) {
+    public void setServiceLocator(@NotNull final ServiceLocator serviceLocator) {
         this.serviceLocator = serviceLocator;
     }
 

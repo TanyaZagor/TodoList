@@ -18,14 +18,14 @@ public class ProjectService implements IProjectService {
     @NotNull private final IProjectRepository<Project> projectRepository;
     @NotNull private final ITaskRepository<Task> taskRepository;
 
-    public ProjectService(@NotNull IProjectRepository<Project> projectRepository, @NotNull ITaskRepository<Task> taskRepository) {
+    public ProjectService(@NotNull final IProjectRepository<Project> projectRepository, @NotNull final ITaskRepository<Task> taskRepository) {
         this.projectRepository = projectRepository;
         this.taskRepository = taskRepository;
     }
 
     @Nullable
-    public Project persistProject(@NotNull String userId, @NotNull String projectName,
-                                  @NotNull String description, @NotNull String dateStart, @NotNull String dateFinish){
+    public Project persistProject(@NotNull final String userId, @NotNull final String projectName,
+                                  @NotNull final String description, @NotNull final String dateStart, @NotNull final String dateFinish) throws Exception {
         if (projectName.isEmpty()) return null;
         @NotNull final Project newProject = new Project();
         newProject.setName(projectName);
@@ -46,7 +46,7 @@ public class ProjectService implements IProjectService {
         return null;
     }
 
-    public void removeProject(@NotNull String userId, @NotNull String projectName){
+    public void removeProject(@NotNull final String userId, @NotNull final String projectName){
         if (projectName.isEmpty()) return;
         @NotNull final Project newProject= new Project();
         newProject.setName(projectName);
@@ -60,7 +60,7 @@ public class ProjectService implements IProjectService {
         }
     }
 
-    public void removeAllProjects(@NotNull String userId) {
+    public void removeAllProjects(@NotNull final String userId) {
         @NotNull final Project project = new Project();
         project.setUserId(userId);
         projectRepository.removeAll(project);
@@ -70,15 +70,15 @@ public class ProjectService implements IProjectService {
     }
 
     @Nullable
-    public List<Project> findAllProjects(@NotNull String userId) {
+    public List<Project> findAllProjects(@NotNull final String userId) {
         @NotNull final Project project = new Project();
         project.setUserId(userId);
         return projectRepository.findAll(project);
     }
 
     @Nullable
-    public Project findOneProject(@NotNull String userId, @NotNull String projectName,
-                                  @NotNull String projectDescription) {
+    public Project findOneProject(@NotNull final String userId, @NotNull final String projectName,
+                                  @NotNull final String projectDescription) {
         if (projectName.isEmpty()) {
             if (projectDescription.isEmpty()) return null;
             @NotNull final Project newProject = new Project();
@@ -92,8 +92,8 @@ public class ProjectService implements IProjectService {
         return projectRepository.findOne(newProject);
     }
 
-    public void mergeProject(@NotNull String userId, @NotNull String oldProjectName, @NotNull String projectName,
-                             @NotNull String description, @NotNull String dateStart, @NotNull String dateFinish){
+    public void mergeProject(@NotNull final String userId, @NotNull final String oldProjectName, @NotNull final String projectName,
+                             @NotNull final String description, @NotNull final String dateStart, @NotNull final String dateFinish) throws Exception {
         if (oldProjectName.isEmpty()) return;
         @NotNull final Project newProject = new Project();
         newProject.setName(oldProjectName);
@@ -116,7 +116,7 @@ public class ProjectService implements IProjectService {
     }
 
     @Nullable
-    public List<Project> sortProjectsByDateCreated(@NotNull String userId) {
+    public List<Project> sortProjectsByDateCreated(@NotNull final String userId) {
         @Nullable final List<Project> list = findAllProjects(userId);
         if (list != null) {
             return projectRepository.sortByDateCreated(list);
@@ -125,7 +125,7 @@ public class ProjectService implements IProjectService {
     }
 
     @Nullable
-    public List<Project> sortProjectsByDateStart(@NotNull String userId) {
+    public List<Project> sortProjectsByDateStart(@NotNull final String userId) {
         @Nullable final List<Project> list = findAllProjects(userId);
         if (list != null) {
             return projectRepository.sortByDateStart(list);
@@ -133,7 +133,7 @@ public class ProjectService implements IProjectService {
         return null;
     }
     @Nullable
-    public List<Project> sortProjectsByDateFinish(@NotNull String userId) {
+    public List<Project> sortProjectsByDateFinish(@NotNull final String userId) {
         @Nullable final List<Project> list = findAllProjects(userId);
         if (list != null) {
             return projectRepository.sortByDateFinish(list);
@@ -143,7 +143,7 @@ public class ProjectService implements IProjectService {
     }
 
     @Nullable
-    public List<Project> sortProjectsByStatus(@NotNull String userId) {
+    public List<Project> sortProjectsByStatus(@NotNull final String userId) {
         @Nullable final List<Project> list = findAllProjects(userId);
         if (list != null) {
             return projectRepository.sortByStatus(list);

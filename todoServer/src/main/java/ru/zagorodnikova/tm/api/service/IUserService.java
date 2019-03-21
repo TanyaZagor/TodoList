@@ -10,32 +10,32 @@ import java.util.List;
 public interface IUserService {
 
     @Nullable
-    User signIn(@NotNull String login,
-                @NotNull String password);
+    User signIn(@NotNull final String login,
+                @NotNull final String password) throws Exception;
 
     @Nullable
-    User signUp(@NotNull String login,
-                @NotNull String password,
-                @NotNull String fistName,
-                @NotNull String lastName,
-                @NotNull String email);
+    User signUp(@NotNull final String login,
+                @NotNull final String password,
+                @NotNull final String fistName,
+                @NotNull final String lastName,
+                @NotNull final String email) throws Exception;
 
-    void changePassword(@NotNull String userId,
-                        @NotNull String login,
-                        @NotNull String oldPassword,
-                        @NotNull String newPassword);
+    void changePassword(@NotNull final String userId,
+                        @NotNull final String login,
+                        @NotNull final String oldPassword,
+                        @NotNull final String newPassword) throws Exception;
 
-    void updateUser(@NotNull String userId,
-                    @NotNull String firstName,
-                    @NotNull String lastName,
-                    @NotNull String email);
+    void updateUser(@NotNull final String userId,
+                    @NotNull final String firstName,
+                    @NotNull final String lastName,
+                    @NotNull final String email);
 
-    void removeUser(@NotNull String userId);
+    void removeUser(@NotNull final String userId);
 
     @Nullable
-    List<User> findAllUsers(@NotNull String userId);
+    List<User> findAllUsers(@NotNull final String userId);
 
     @NotNull
-    User findOne(@NotNull String userId);
+    User findOne(@NotNull final String userId);
 
 }

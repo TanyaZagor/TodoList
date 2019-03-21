@@ -11,35 +11,35 @@ import javax.jws.WebService;
 public interface IAdminEndpoint {
 
     @WebMethod
-    void removeAllUsers(@WebParam(name = "session") @NotNull Session session) throws Exception;
+    void removeAllUsers(@WebParam(name = "session") @NotNull final Session session) throws Exception;
 
     @WebMethod
-    void save(@WebParam(name = "session") @NotNull Session session) throws Exception;
+    void save(@WebParam(name = "session") @NotNull final Session session) throws Exception;
 
     @WebMethod
-    void load(@WebParam(name = "session") @NotNull Session session) throws Exception;
+    void load(@WebParam(name = "session") @NotNull final Session session) throws Exception;
 
     @WebMethod
-    void saveToJson(@WebParam(name = "session") @NotNull Session session) throws Exception;
+    void saveToJson(@WebParam(name = "session") @NotNull final Session session) throws Exception;
 
     @WebMethod
-    void loadFromJson(@WebParam(name = "session") @NotNull Session session) throws Exception;
+    void loadFromJson(@WebParam(name = "session") @NotNull final Session session) throws Exception;
 
     @WebMethod
-    void saveToXml(@WebParam(name = "session") @NotNull Session session) throws Exception;
+    void saveToXml(@WebParam(name = "session") @NotNull final Session session) throws Exception;
 
     @WebMethod
-    void loadFromXml(@WebParam(name = "session") @NotNull Session session) throws Exception;
+    void loadFromXml(@WebParam(name = "session") @NotNull final Session session) throws Exception;
 
     @WebMethod
-    void saveToJsonJaxb(@WebParam(name = "session") @NotNull Session session) throws Exception;
+    void saveToJsonJaxb(@WebParam(name = "session") @NotNull final Session session) throws Exception;
 
     @WebMethod
-    void loadFromJsonJaxb(@WebParam(name = "session") @NotNull Session session) throws Exception;
+    void loadFromJsonJaxb(@WebParam(name = "session") @NotNull final Session session) throws Exception;
 
     @WebMethod
-    void saveToXmlJaxb(@WebParam(name = "session") @NotNull Session session) throws Exception;
+    void saveToXmlJaxb(@WebParam(name = "session") @NotNull final Session session) throws Exception;
 
     @WebMethod
-    void loadFromXmlJaxb(@WebParam(name = "session") @NotNull Session session) throws Exception;
+    void loadFromXmlJaxb(@WebParam(name = "session") @NotNull final Session session) throws Exception;
 }

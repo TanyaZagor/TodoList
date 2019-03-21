@@ -41,7 +41,7 @@ public class User extends AbstractEntity {
 
 
     public User(@Nullable String login, @Nullable String password, @Nullable String firstName,
-                @Nullable String lastName, @Nullable String email) {
+                @Nullable String lastName, @Nullable String email) throws Exception {
         this.login = login;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -52,7 +52,7 @@ public class User extends AbstractEntity {
     }
 
 
-    public void setPassword(@NotNull String password) {
+    public void setPassword(@NotNull String password) throws Exception {
         this.password = UtilPassword.hashPassword(password);
     }
 

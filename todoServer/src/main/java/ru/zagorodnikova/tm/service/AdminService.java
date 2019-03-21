@@ -9,7 +9,7 @@ public class AdminService implements IAdminService {
 
     @NotNull private final IUserRepository<User> userRepository;
 
-    public AdminService(@NotNull IUserRepository<User> userRepository) {
+    public AdminService(@NotNull final IUserRepository<User> userRepository) {
         this.userRepository = userRepository;
     }
 

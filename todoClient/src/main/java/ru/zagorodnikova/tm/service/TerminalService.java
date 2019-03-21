@@ -16,13 +16,13 @@ public class TerminalService {
     @NotNull
     private ServiceLocator serviceLocator;
 
-    public TerminalService(@NotNull ServiceLocator serviceLocator) {
+    public TerminalService(@NotNull final ServiceLocator serviceLocator) {
         this.serviceLocator = serviceLocator;
     }
 
     public void start(){
         System.out.println("Welcome");
-        String command = "";
+        @NotNull String command = "";
         while (!"exit".equals(command)) {
             System.out.println("Command: ");
             command = scanner.nextLine();

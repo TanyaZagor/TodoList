@@ -18,7 +18,6 @@ import ru.zagorodnikova.tm.repository.UserRepository;
 import ru.zagorodnikova.tm.service.*;
 
 import javax.xml.ws.Endpoint;
-import java.io.IOException;
 import java.util.Properties;
 
 @Setter
@@ -43,9 +42,9 @@ public class Bootstrap implements ServiceLocator {
     }
 
 
-    private void initProjectsAndUsers() {
+    private void initProjectsAndUsers() throws Exception {
         final User user1 = userService.signUp("login", "password", "first name", "last name", "email@email.ru");
-        final User user2 = userService.signUp("login2", "password2", "first name", "last name", "email@email.ru");
+        final User user2 = userService.signUp("admin", "admin", "first name", "last name", "email@email.ru");
         user2.setRoleType(RoleType.ADMIN);
 
         final Project project1 = projectService.persistProject(user1.getId(), "Project1", "Description1", "20.02.2019", "20.05.2019");
@@ -63,10 +62,10 @@ public class Bootstrap implements ServiceLocator {
     }
 
     private void initEndpoints() throws Exception {
-        final Properties property = new Properties();
+        @NotNull final Properties property = new Properties();
         property.load(this.getClass().getClassLoader().getResourceAsStream("app.properties"));
-        final String host = property.getProperty("host");
-        final String port = property.getProperty("port");
+        @NotNull final String host = property.getProperty("host");
+        @NotNull final String port = property.getProperty("port");
         Endpoint.publish("http://"+ host+":"+ port+"/ProjectEndpoint", new ProjectEndpoint(this));
         Endpoint.publish("http://"+ host+":"+ port+"/TaskEndpoint", new TaskEndpoint(this));
         Endpoint.publish("http://"+ host+":"+ port+"/UserEndpoint", new UserEndpoint(this));

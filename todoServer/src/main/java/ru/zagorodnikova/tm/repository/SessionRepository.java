@@ -15,23 +15,23 @@ public class SessionRepository {
     @NotNull private final Map<String, Session> sessions = new LinkedHashMap<>();
 
     @Nullable
-    public Session persist(@NotNull Session session) {
+    public Session persist(@NotNull final Session session) {
         sessions.put(session.getId(), session);
         return session;
     }
 
-    public void remove(@NotNull Session session) throws Exception {
+    public void remove(@NotNull final Session session) throws Exception {
         validate(session);
         sessions.remove(session.getId());
     }
 
 
     @NotNull
-    public String signSession(@NotNull Session session) throws Exception {
-        final Properties property = new Properties();
+    public String signSession(@NotNull final Session session) throws Exception {
+        @NotNull final Properties property = new Properties();
         property.load(this.getClass().getClassLoader().getResourceAsStream("app.properties"));
-        final int cycle = Integer.valueOf( property.getProperty("cycle"));
-        final String salt = property.getProperty("salt");
+        @NotNull final int cycle = Integer.valueOf( property.getProperty("cycle"));
+        @NotNull final String salt = property.getProperty("salt");
         String signature = "";
         for (int i = 0; i < cycle; i++) {
             signature = UtilPassword.hashPassword(salt + session.getUserId() + salt);
@@ -39,15 +39,15 @@ public class SessionRepository {
         return signature;
     }
 
-    public void validate(Session session) throws Exception {
+    public void validate( final Session session) throws Exception {
         if(session == null) throw new AccessException("not valid session");
         if(session.getSignature() == null) throw new AccessException("not valid session");
         if(session.getUserId() == null) throw new AccessException("not valid session");
         if (session.getDate() == null) throw new AccessException("not valid session");
-        final Session temp = session.clone();
+        @Nullable final Session temp = session.clone();
         if(temp == null) throw new AccessException("not valid session");
-        final String sourceSignature = signSession(session);
-        final String targetSignature = signSession(session);
+        @NotNull final String sourceSignature = signSession(session);
+        @NotNull final String targetSignature = signSession(session);
         if(!sourceSignature.equals(targetSignature)) throw new AccessException("not valid session");
         if (!sessions.containsKey(session.getId())) throw new AccessException("not valid session");
     }

@@ -27,170 +27,130 @@ public class DomainService implements IDomainService {
     @NotNull private final ITaskRepository<Task> taskRepository;
     @NotNull private final IUserRepository<User> userRepository;
 
-    public DomainService(@NotNull IProjectRepository<Project> projectRepository, @NotNull ITaskRepository<Task> taskRepository, @NotNull IUserRepository<User> userRepository) {
+    public DomainService(@NotNull final IProjectRepository<Project> projectRepository, @NotNull final ITaskRepository<Task> taskRepository, @NotNull final IUserRepository<User> userRepository) {
         this.projectRepository = projectRepository;
         this.taskRepository = taskRepository;
         this.userRepository = userRepository;
     }
 
-    public void save(){
-        final Domain domain = new Domain();
+    public void save() throws Exception {
+        @NotNull final Domain domain = new Domain();
         domain.setUsers(userRepository.getUsers());
         domain.setProjects(projectRepository.getProjects());
         domain.setTasks(taskRepository.getTasks());
-        File file = new File("todoServer\\file.txt");
-        try {
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file));
-            objectOutputStream.writeObject(domain);
-            objectOutputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
+        @NotNull final File file = new File("todoServer\\file.txt");
+        @NotNull final ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file));
+        objectOutputStream.writeObject(domain);
+        objectOutputStream.close();
     }
 
-    public void load() {
-        try {
-            final ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("todoServer\\file.txt"));
-            final Domain domain = (Domain) inputStream.readObject();
-            inputStream.close();
-            projectRepository.setProjects(domain.getProjects());
-            taskRepository.setTasks(domain.getTasks());
-            userRepository.setUsers(domain.getUsers());
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-
+    public void load() throws Exception {
+        @NotNull final ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("todoServer\\file.txt"));
+        @NotNull final Domain domain = (Domain) inputStream.readObject();
+        inputStream.close();
+        projectRepository.setProjects(domain.getProjects());
+        taskRepository.setTasks(domain.getTasks());
+        userRepository.setUsers(domain.getUsers());
     }
 
-    public void saveToJson(){
-        final Domain domain = new Domain();
+    public void saveToJson() throws Exception {
+        @NotNull final Domain domain = new Domain();
         domain.setUsers(userRepository.getUsers());
         domain.setProjects(projectRepository.getProjects());
         domain.setTasks(taskRepository.getTasks());
-        final File file = new File("todoServer\\fileFasterXml.json");
-        final ObjectMapper mapper = new ObjectMapper();
-        try {
-            mapper.writerWithDefaultPrettyPrinter().writeValue(file, domain);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        @NotNull final File file = new File("todoServer\\fileFasterXml.json");
+        @NotNull final ObjectMapper mapper = new ObjectMapper();
+        mapper.writerWithDefaultPrettyPrinter().writeValue(file, domain);
     }
 
-    public void loadFromJson(){
-        final File file = new File("todoServer\\fileFasterXml.json");
-        final ObjectMapper mapper = new ObjectMapper();
-        try {
-            mapper.readValue(file, Domain.class);
-            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            final Domain domain = mapper.readValue(file, Domain.class);
-            projectRepository.setProjects(domain.getProjects());
-            taskRepository.setTasks(domain.getTasks());
-            userRepository.setUsers(domain.getUsers());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void loadFromJson() throws Exception {
+        @NotNull final File file = new File("todoServer\\fileFasterXml.json");
+        @NotNull final ObjectMapper mapper = new ObjectMapper();
+        mapper.readValue(file, Domain.class);
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
+        @NotNull final Domain domain = mapper.readValue(file, Domain.class);
+        projectRepository.setProjects(domain.getProjects());
+        taskRepository.setTasks(domain.getTasks());
+        userRepository.setUsers(domain.getUsers());
     }
 
-    public void saveToXml() {
-        final Domain domain = new Domain();
+    public void saveToXml() throws Exception {
+        @NotNull final Domain domain = new Domain();
         domain.setUsers(userRepository.getUsers());
         domain.setProjects(projectRepository.getProjects());
         domain.setTasks(taskRepository.getTasks());
-        final File file = new File("todoServer\\fileFasterXml.xml");
-        final XmlMapper xmlMapper = new XmlMapper();
-        try {
-            xmlMapper.writerWithDefaultPrettyPrinter().writeValue(file, domain);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        @NotNull final File file = new File("todoServer\\fileFasterXml.xml");
+        @NotNull final XmlMapper xmlMapper = new XmlMapper();
+        xmlMapper.writerWithDefaultPrettyPrinter().writeValue(file, domain);
     }
 
-    public void loadFromXml() {
-        final File file = new File("todoServer\\fileFasterXml.xml");
-        final XmlMapper xmlMapper = new XmlMapper();
+    public void loadFromXml() throws Exception {
+        @NotNull final File file = new File("todoServer\\fileFasterXml.xml");
+        @NotNull final XmlMapper xmlMapper = new XmlMapper();
         xmlMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        try {
-            final Domain domain = xmlMapper.readValue(file, Domain.class);
-            projectRepository.setProjects(domain.getProjects());
-            taskRepository.setTasks(domain.getTasks());
-            userRepository.setUsers(domain.getUsers());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
+        @NotNull final Domain domain = xmlMapper.readValue(file, Domain.class);
+        projectRepository.setProjects(domain.getProjects());
+        taskRepository.setTasks(domain.getTasks());
+        userRepository.setUsers(domain.getUsers());
     }
 
-    public void saveToJsonJaxb() {
-        final Domain domain = new Domain();
+    public void saveToJsonJaxb() throws Exception {
+        @NotNull final Domain domain = new Domain();
         domain.setUsers(userRepository.getUsers());
         domain.setProjects(projectRepository.getProjects());
         domain.setTasks(taskRepository.getTasks());
-        final File file = new File("todoServer\\fileJaxb.json");
-        try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(Domain.class);
-            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 
-            jaxbMarshaller.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
-            jaxbMarshaller.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, true);
+        @NotNull final File file = new File("todoServer\\fileJaxb.json");
+        @NotNull final JAXBContext jaxbContext = JAXBContext.newInstance(Domain.class);
+        @NotNull final Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+        jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 
-            jaxbMarshaller.marshal(domain, file);
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        }
+        jaxbMarshaller.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
+        jaxbMarshaller.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, true);
 
+        jaxbMarshaller.marshal(domain, file);
     }
 
-    public void loadFromJsonJaxb() {
-        try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(Domain.class);
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+    public void loadFromJsonJaxb() throws Exception {
+        @NotNull final JAXBContext jaxbContext = JAXBContext.newInstance(Domain.class);
+        @NotNull final Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 
-            jaxbUnmarshaller.setProperty(UnmarshallerProperties.MEDIA_TYPE, "application/json");
-            jaxbUnmarshaller.setProperty(UnmarshallerProperties.JSON_INCLUDE_ROOT, true);
+        jaxbUnmarshaller.setProperty(UnmarshallerProperties.MEDIA_TYPE, "application/json");
+        jaxbUnmarshaller.setProperty(UnmarshallerProperties.JSON_INCLUDE_ROOT, true);
 
-            final Domain domain = (Domain) jaxbUnmarshaller.unmarshal(new File("todoServer\\fileJaxb.json"));
-
-            projectRepository.setProjects(domain.getProjects());
-            taskRepository.setTasks(domain.getTasks());
-            userRepository.setUsers(domain.getUsers());
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        }
+        @NotNull final Domain domain = (Domain) jaxbUnmarshaller.unmarshal(new File("todoServer\\fileJaxb.json"));
+        projectRepository.setProjects(domain.getProjects());
+        taskRepository.setTasks(domain.getTasks());
+        userRepository.setUsers(domain.getUsers());
     }
 
-    public void saveToXmlJaxb() {
-        try {
-            final Domain domain = new Domain();
-            domain.setUsers(userRepository.getUsers());
-            domain.setProjects(projectRepository.getProjects());
-            domain.setTasks(taskRepository.getTasks());
-            final File file = new File("todoServer\\fileJaxb.xml");
-            final JAXBContext jaxbContext = JAXBContext.newInstance(Domain.class);
-            final Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+    public void saveToXmlJaxb() throws Exception {
+        @NotNull final Domain domain = new Domain();
+        domain.setUsers(userRepository.getUsers());
+        domain.setProjects(projectRepository.getProjects());
+        domain.setTasks(taskRepository.getTasks());
 
-            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        @NotNull final File file = new File("todoServer\\fileJaxb.xml");
+        @NotNull final JAXBContext jaxbContext = JAXBContext.newInstance(Domain.class);
+        @NotNull final Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
-            jaxbMarshaller.marshal(domain, file);
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        }
+        jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+        jaxbMarshaller.marshal(domain, file);
     }
 
-    public void loadFromXmlJaxb() {
-        try {
-            final JAXBContext jaxbContext = JAXBContext.newInstance(Domain.class);
-            final Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+    public void loadFromXmlJaxb() throws Exception {
+        @NotNull final JAXBContext jaxbContext = JAXBContext.newInstance(Domain.class);
+        @NotNull final Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 
-            final Domain domain = (Domain) jaxbUnmarshaller.unmarshal(new File("todoServer\\fileJaxb.xml"));
-            projectRepository.setProjects(domain.getProjects());
-            taskRepository.setTasks(domain.getTasks());
-            userRepository.setUsers(domain.getUsers());
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        }
+        @NotNull final Domain domain = (Domain) jaxbUnmarshaller.unmarshal(new File("todoServer\\fileJaxb.xml"));
+        projectRepository.setProjects(domain.getProjects());
+        taskRepository.setTasks(domain.getTasks());
+        userRepository.setUsers(domain.getUsers());
     }
 }

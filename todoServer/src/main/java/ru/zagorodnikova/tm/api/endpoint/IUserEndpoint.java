@@ -15,26 +15,26 @@ import java.util.List;
 public interface IUserEndpoint {
 
     @WebMethod
-    void changePassword(@WebParam(name = "session") @NotNull Session session,
-                        @WebParam(name = "login") @NotNull String login,
-                        @WebParam(name = "oldPassword") @NotNull String oldPassword,
-                        @WebParam(name = "newPassword") @NotNull String newPassword) throws Exception;
+    void changePassword(@WebParam(name = "session") @NotNull final Session session,
+                        @WebParam(name = "login") @NotNull final String login,
+                        @WebParam(name = "oldPassword") @NotNull final String oldPassword,
+                        @WebParam(name = "newPassword") @NotNull final String newPassword) throws Exception;
 
     @WebMethod
-    void updateUser(@WebParam(name = "session") @NotNull Session session,
-                    @WebParam(name = "firstName") @NotNull String firstName,
-                    @WebParam(name = "lastName") @NotNull String lastName,
-                    @WebParam(name = "email") @NotNull String email) throws Exception;
+    void updateUser(@WebParam(name = "session") @NotNull final Session session,
+                    @WebParam(name = "firstName") @NotNull final String firstName,
+                    @WebParam(name = "lastName") @NotNull final String lastName,
+                    @WebParam(name = "email") @NotNull final String email) throws Exception;
 
     @WebMethod
-    void removeUser(@WebParam(name = "session") @NotNull Session session) throws Exception;
+    void removeUser(@WebParam(name = "session") @NotNull final Session session) throws Exception;
 
     @WebMethod
     @Nullable
-    List<User> findAllUsers(@WebParam(name = "session") @NotNull Session session) throws Exception;
+    List<User> findAllUsers(@WebParam(name = "session") @NotNull final Session session) throws Exception;
 
 
     @WebMethod
     @NotNull
-    User findUser(@WebParam(name = "session") @NotNull Session session) throws Exception;
+    User findUser(@WebParam(name = "session") @NotNull final Session session) throws Exception;
 }

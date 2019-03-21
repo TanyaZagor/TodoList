@@ -2,23 +2,23 @@ package ru.zagorodnikova.tm.api.service;
 
 public interface IDomainService {
 
-    void save();
+    void save() throws Exception;
 
-    void load();
+    void load() throws Exception;
 
-    void saveToJson();
+    void saveToJson() throws Exception;
 
-    void loadFromJson();
+    void loadFromJson() throws Exception;
 
-    void saveToXml();
+    void saveToXml() throws Exception;
 
-    void loadFromXml();
+    void loadFromXml() throws Exception;
 
-    void saveToJsonJaxb();
+    void saveToJsonJaxb() throws Exception;
 
-    void loadFromJsonJaxb();
+    void loadFromJsonJaxb() throws Exception;
 
-    void saveToXmlJaxb();
+    void saveToXmlJaxb() throws Exception;
 
-    void loadFromXmlJaxb();
+    void loadFromXmlJaxb() throws Exception;
 }

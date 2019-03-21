@@ -13,12 +13,12 @@ public class UserService extends AbstractService implements IUserService {
 
     @NotNull private final IUserRepository<User> userRepository;
 
-    public UserService(@NotNull IUserRepository<User> userRepository) {
+    public UserService(@NotNull final IUserRepository<User> userRepository) {
         this.userRepository = userRepository;
     }
 
     @Nullable
-    public User signIn(@NotNull String login, @NotNull String password) {
+    public User signIn(@NotNull final String login, @NotNull final String password) throws Exception {
         if (login.isEmpty()) return null;
         if (password.isEmpty()) return null;
         @NotNull final User user = new User();
@@ -28,8 +28,8 @@ public class UserService extends AbstractService implements IUserService {
     }
 
     @Nullable
-    public User signUp(@NotNull String login, @NotNull String password, @NotNull String fistName,
-                       @NotNull String lastName, @NotNull String email) {
+    public User signUp(@NotNull final String login, @NotNull final String password, @NotNull final String fistName,
+                       @NotNull final String lastName, @NotNull final String email) throws Exception {
         if (login.isEmpty()) return null;
         if (password.isEmpty()) return null;
         if (fistName.isEmpty()) return null;
@@ -39,8 +39,8 @@ public class UserService extends AbstractService implements IUserService {
         return userRepository.persist(user);
     }
 
-    public void changePassword(@NotNull String userId, @NotNull String login, @NotNull String oldPassword,
-                               @NotNull String newPassword) {
+    public void changePassword(@NotNull final String userId, @NotNull final String login, @NotNull final String oldPassword,
+                               @NotNull final String newPassword) throws Exception {
         if (login.isEmpty()) return;
         if (oldPassword.isEmpty()) return;
         if (newPassword.isEmpty()) return;
@@ -55,7 +55,7 @@ public class UserService extends AbstractService implements IUserService {
 
     }
 
-    public void updateUser(@NotNull String userId, @NotNull String firstName, @NotNull String lastName,
+    public void updateUser(@NotNull final String userId, @NotNull final String firstName, @NotNull final String lastName,
                            @NotNull String email) {
         if (firstName.isEmpty()) return;
         if (lastName.isEmpty()) return;
@@ -68,14 +68,14 @@ public class UserService extends AbstractService implements IUserService {
         userRepository.merge(user);
     }
 
-    public void removeUser(@NotNull String userId) {
+    public void removeUser(@NotNull final String userId) {
         @NotNull final User user = new User();
         user.setId(userId);
         userRepository.remove(user);
     }
 
     @Nullable
-    public List<User> findAllUsers(@NotNull String userId) {
+    public List<User> findAllUsers(@NotNull final String userId) {
         @NotNull final User user = new User();
         user.setId(userId);
         return userRepository.findAll(user);
@@ -83,7 +83,7 @@ public class UserService extends AbstractService implements IUserService {
 
     @NotNull
     @Override
-    public User findOne(@NotNull String userId) {
+    public User findOne(@NotNull final String userId) {
         @NotNull final User user = new User();
         user.setId(userId);
         return userRepository.findOne(user);

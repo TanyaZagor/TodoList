@@ -15,17 +15,17 @@ public interface ISessionEndpoint {
 
     @WebMethod
     @Nullable
-    Session signIn(@WebParam(name = "login") @NotNull String login,
-                   @WebParam(name = "password") @NotNull String password) throws Exception;
+    Session signIn(@WebParam(name = "login") @NotNull final String login,
+                   @WebParam(name = "password") @NotNull final String password) throws Exception;
 
     @WebMethod
     @Nullable
-    Session signUp(@WebParam(name = "login") @NotNull String login,
-                   @WebParam(name = "password") @NotNull String password,
-                   @WebParam(name = "firstName") @NotNull String fistName,
-                   @WebParam(name = "lastName") @NotNull String lastName,
-                   @WebParam(name = "email") @NotNull String email) throws Exception;
+    Session signUp(@WebParam(name = "login") @NotNull final String login,
+                   @WebParam(name = "password") @NotNull final String password,
+                   @WebParam(name = "firstName") @NotNull final String fistName,
+                   @WebParam(name = "lastName") @NotNull final String lastName,
+                   @WebParam(name = "email") @NotNull final String email) throws Exception;
 
     @WebMethod
-    void remove(@WebParam(name = "session") @NotNull Session session) throws Exception;
+    void remove(@WebParam(name = "session") @NotNull final Session session) throws Exception;
 }

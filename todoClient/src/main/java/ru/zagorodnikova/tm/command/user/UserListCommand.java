@@ -29,7 +29,7 @@ public class UserListCommand extends AbstractCommand {
     public void execute() throws Exception_Exception {
         @Nullable final List<User> list = getServiceLocator().getUserService().findAllUsers(getServiceLocator().getSession());
         if (!(list == null || list.isEmpty())) {
-            list.forEach(user -> user.getLogin());
+            list.forEach(user -> System.out.println(user.getLogin()));
         }
     }
 

@@ -14,18 +14,17 @@ import javax.jws.WebService;
 @WebService
 public class SessionEndpoint implements ISessionEndpoint {
 
-    @NotNull
-    private ServiceLocator serviceLocator;
+    @NotNull private final ServiceLocator serviceLocator;
 
-    public SessionEndpoint(@NotNull ServiceLocator serviceLocator) {
+    public SessionEndpoint(@NotNull final ServiceLocator serviceLocator) {
         this.serviceLocator = serviceLocator;
     }
 
 
     @Nullable
     @Override
-    public Session signIn(@WebParam(name = "login") @NotNull String login,
-                          @WebParam(name = "password") @NotNull String password) throws Exception {
+    public Session signIn(@WebParam(name = "login") @NotNull final String login,
+                          @WebParam(name = "password") @NotNull final String password) throws Exception {
 
         final User user = serviceLocator.getUserService().signIn(login, password);
         if (user != null) {
@@ -36,11 +35,11 @@ public class SessionEndpoint implements ISessionEndpoint {
 
     @Nullable
     @Override
-    public Session signUp(@WebParam(name = "login") @NotNull String login,
-                          @WebParam(name = "password") @NotNull String password,
-                          @WebParam(name = "firstName") @NotNull String fistName,
-                          @WebParam(name = "lastName") @NotNull String lastName,
-                          @WebParam(name = "email") @NotNull String email) throws Exception {
+    public Session signUp(@WebParam(name = "login") @NotNull final String login,
+                          @WebParam(name = "password") @NotNull final String password,
+                          @WebParam(name = "firstName") @NotNull final String fistName,
+                          @WebParam(name = "lastName") @NotNull final String lastName,
+                          @WebParam(name = "email") @NotNull final String email) throws Exception {
 
         final User user = serviceLocator.getUserService().signUp(login, password, fistName, lastName, email);
         if (user != null) {
@@ -50,7 +49,7 @@ public class SessionEndpoint implements ISessionEndpoint {
     }
 
     @Override
-    public void remove(@WebParam(name = "session") @NotNull Session session) throws Exception {
+    public void remove(@WebParam(name = "session") @NotNull final Session session) throws Exception {
         serviceLocator.getSessionService().remove(session);
     }
 
