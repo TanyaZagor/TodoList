@@ -4,41 +4,42 @@ import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.entity.Session;
 
 import javax.jws.WebMethod;
+import javax.jws.WebParam;
 import javax.jws.WebService;
 
 @WebService
 public interface IAdminEndpoint {
 
     @WebMethod
-    void removeAllUsers(@NotNull Session session);
+    void removeAllUsers(@WebParam(name = "session") @NotNull Session session) throws Exception;
 
     @WebMethod
-    void save(@NotNull Session session);
+    void save(@WebParam(name = "session") @NotNull Session session) throws Exception;
 
     @WebMethod
-    void load(@NotNull Session session);
+    void load(@WebParam(name = "session") @NotNull Session session) throws Exception;
 
     @WebMethod
-    void saveToJson(@NotNull Session session);
+    void saveToJson(@WebParam(name = "session") @NotNull Session session) throws Exception;
 
     @WebMethod
-    void loadFromJson(@NotNull Session session);
+    void loadFromJson(@WebParam(name = "session") @NotNull Session session) throws Exception;
 
     @WebMethod
-    void saveToXml(@NotNull Session session);
+    void saveToXml(@WebParam(name = "session") @NotNull Session session) throws Exception;
 
     @WebMethod
-    void loadFromXml(@NotNull Session session);
+    void loadFromXml(@WebParam(name = "session") @NotNull Session session) throws Exception;
 
     @WebMethod
-    void saveToJsonJaxb(@NotNull Session session);
+    void saveToJsonJaxb(@WebParam(name = "session") @NotNull Session session) throws Exception;
 
     @WebMethod
-    void loadFromJsonJaxb(@NotNull Session session);
+    void loadFromJsonJaxb(@WebParam(name = "session") @NotNull Session session) throws Exception;
 
     @WebMethod
-    void saveToXmlJaxb(@NotNull Session session);
+    void saveToXmlJaxb(@WebParam(name = "session") @NotNull Session session) throws Exception;
 
     @WebMethod
-    void loadFromXmlJaxb(@NotNull Session session);
+    void loadFromXmlJaxb(@WebParam(name = "session") @NotNull Session session) throws Exception;
 }

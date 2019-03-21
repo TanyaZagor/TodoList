@@ -21,17 +21,17 @@ public class SessionService implements ISessionService {
     }
 
     @Nullable
-    public Session persist(@NotNull User user) {
+    public Session persist(@NotNull User user) throws Exception {
         @NotNull final Session session = new Session(user.getId());
         session.setSignature(sessionRepository.signSession(session));
         return sessionRepository.persist(session);
     }
 
-    public void remove(@NotNull Session session) {
+    public void remove(@NotNull Session session) throws Exception {
         sessionRepository.remove(session);
     }
 
-    public void validate(@NotNull Session session) {
+    public void validate(@NotNull Session session) throws Exception {
         sessionRepository.validate(session);
     }
 }

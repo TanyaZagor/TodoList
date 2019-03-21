@@ -3,6 +3,7 @@ package ru.zagorodnikova.tm.command.project;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.command.AbstractCommand;
+import ru.zagorodnikova.tm.endpoint.Exception_Exception;
 import ru.zagorodnikova.tm.endpoint.Project;
 
 public class ProjectFindOneCommand extends AbstractCommand {
@@ -23,7 +24,7 @@ public class ProjectFindOneCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() {
+    public void execute() throws Exception_Exception {
         System.out.println("project name");
         @NotNull final String projectName = getServiceLocator().getTerminalService().nextLine();
         System.out.println("project description");

@@ -2,6 +2,7 @@ package ru.zagorodnikova.tm.command.user;
 
 import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.command.AbstractCommand;
+import ru.zagorodnikova.tm.endpoint.Exception_Exception;
 
 public class UserSignOutCommand extends AbstractCommand {
     public UserSignOutCommand() {
@@ -20,7 +21,7 @@ public class UserSignOutCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() {
+    public void execute() throws Exception_Exception {
         getServiceLocator().getSessionService().remove(getServiceLocator().getSession());
         getServiceLocator().setSession(null);
     }

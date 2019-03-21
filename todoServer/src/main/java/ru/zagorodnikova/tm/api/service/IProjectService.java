@@ -9,9 +9,14 @@ import java.util.List;
 public interface IProjectService{
 
     @Nullable
-    Project persistProject(@NotNull String userId, @NotNull String projectName, @NotNull String description, @NotNull String dateStart, @NotNull String dateFinish);
+    Project persistProject(@NotNull String userId,
+                           @NotNull String projectName,
+                           @NotNull String description,
+                           @NotNull String dateStart,
+                           @NotNull String dateFinish);
 
-    void removeProject(@NotNull String userId, @NotNull String projectName);
+    void removeProject(@NotNull String userId,
+                       @NotNull String projectName);
 
     void removeAllProjects(@NotNull String userId);
 
@@ -19,9 +24,16 @@ public interface IProjectService{
     List<Project> findAllProjects(@NotNull String userId);
 
     @Nullable
-    Project findOneProject(@NotNull String userId, @NotNull String projectName, @NotNull String projectDescription);
+    Project findOneProject(@NotNull String userId,
+                           @NotNull String projectName,
+                           @NotNull String projectDescription);
 
-    void mergeProject(@NotNull String userId, @NotNull String oldProjectName, @NotNull String projectName, @NotNull String description, @NotNull String dateStart, @NotNull String dateFinish);
+    void mergeProject(@NotNull String userId,
+                      @NotNull String oldProjectName,
+                      @NotNull String projectName,
+                      @NotNull String description,
+                      @NotNull String dateStart,
+                      @NotNull String dateFinish);
 
     @Nullable
     List<Project> sortProjectsByDateCreated(@NotNull String userId);

@@ -26,7 +26,8 @@ public class TaskService implements ITaskService {
     }
 
     @Nullable
-    public Task persistTask(@NotNull String userId, @NotNull String projectName, @NotNull String taskName, @NotNull String description, @NotNull String dateStart, @NotNull String dateFinish) {
+    public Task persistTask(@NotNull String userId, @NotNull String projectName, @NotNull String taskName,
+                            @NotNull String description, @NotNull String dateStart, @NotNull String dateFinish) {
         if (projectName.isEmpty()) return null;
         @NotNull final Project newProject = new Project();
         newProject.setName(projectName);
@@ -74,7 +75,9 @@ public class TaskService implements ITaskService {
         }
     }
 
-    public void mergeTask(@NotNull String userId, @NotNull String projectName, @NotNull String oldTaskName, @NotNull String taskName, @NotNull String description, @NotNull String dateStart, @NotNull String dateFinish) {
+    public void mergeTask(@NotNull String userId, @NotNull String projectName, @NotNull String oldTaskName,
+                          @NotNull String taskName, @NotNull String description, @NotNull String dateStart,
+                          @NotNull String dateFinish) {
         if (projectName.isEmpty()) return;
         if (taskName.isEmpty()) return;
         if (description.isEmpty()) return;
@@ -116,7 +119,8 @@ public class TaskService implements ITaskService {
     }
 
     @Nullable
-    public Task findOneTask(@NotNull String userId, @NotNull String projectName,@NotNull String taskName, @NotNull String taskDescription) {
+    public Task findOneTask(@NotNull String userId, @NotNull String projectName,
+                            @NotNull String taskName, @NotNull String taskDescription) {
         if (projectName.isEmpty()) return null;
         @NotNull final Project newProject = new Project();
         newProject.setName(projectName);

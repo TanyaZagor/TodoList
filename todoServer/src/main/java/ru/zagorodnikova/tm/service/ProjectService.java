@@ -24,7 +24,8 @@ public class ProjectService implements IProjectService {
     }
 
     @Nullable
-    public Project persistProject(@NotNull String userId, @NotNull String projectName, @NotNull String description, @NotNull String dateStart, @NotNull String dateFinish){
+    public Project persistProject(@NotNull String userId, @NotNull String projectName,
+                                  @NotNull String description, @NotNull String dateStart, @NotNull String dateFinish){
         if (projectName.isEmpty()) return null;
         @NotNull final Project newProject = new Project();
         newProject.setName(projectName);
@@ -76,7 +77,8 @@ public class ProjectService implements IProjectService {
     }
 
     @Nullable
-    public Project findOneProject(@NotNull String userId, @NotNull String projectName, @NotNull String projectDescription) {
+    public Project findOneProject(@NotNull String userId, @NotNull String projectName,
+                                  @NotNull String projectDescription) {
         if (projectName.isEmpty()) {
             if (projectDescription.isEmpty()) return null;
             @NotNull final Project newProject = new Project();
@@ -90,7 +92,8 @@ public class ProjectService implements IProjectService {
         return projectRepository.findOne(newProject);
     }
 
-    public void mergeProject(@NotNull String userId, @NotNull String oldProjectName, @NotNull String projectName, @NotNull String description, @NotNull String dateStart, @NotNull String dateFinish){
+    public void mergeProject(@NotNull String userId, @NotNull String oldProjectName, @NotNull String projectName,
+                             @NotNull String description, @NotNull String dateStart, @NotNull String dateFinish){
         if (oldProjectName.isEmpty()) return;
         @NotNull final Project newProject = new Project();
         newProject.setName(oldProjectName);

@@ -6,6 +6,7 @@ import ru.zagorodnikova.tm.api.endpoint.IAdminEndpoint;
 import ru.zagorodnikova.tm.entity.RoleType;
 import ru.zagorodnikova.tm.entity.Session;
 
+import javax.jws.WebParam;
 import javax.jws.WebService;
 
 @WebService
@@ -20,7 +21,7 @@ public class AdminEndpoint implements IAdminEndpoint {
 
 
     @Override
-    public void removeAllUsers(@NotNull Session session) {
+    public void removeAllUsers(@WebParam(name = "session") @NotNull Session session) throws Exception {
         if (checkRole(session)) {
             serviceLocator.getAdminService().removeAllUsers();
         }
@@ -28,14 +29,14 @@ public class AdminEndpoint implements IAdminEndpoint {
     }
 
     @Override
-    public void save(@NotNull Session session) {
+    public void save(@WebParam(name = "session") @NotNull Session session) throws Exception {
         if (checkRole(session)) {
             serviceLocator.getDomainService().save();
         }
     }
 
     @Override
-    public void load(@NotNull Session session) {
+    public void load(@WebParam(name = "session") @NotNull Session session) throws Exception {
         if (checkRole(session)) {
             serviceLocator.getDomainService().load();
         }
@@ -43,14 +44,14 @@ public class AdminEndpoint implements IAdminEndpoint {
     }
 
     @Override
-    public void saveToJson(@NotNull Session session) {
+    public void saveToJson(@WebParam(name = "session") @NotNull Session session) throws Exception {
         if (checkRole(session)) {
             serviceLocator.getDomainService().saveToJson();
         }
     }
 
     @Override
-    public void loadFromJson(@NotNull Session session) {
+    public void loadFromJson(@WebParam(name = "session") @NotNull Session session) throws Exception {
         if (checkRole(session)) {
             serviceLocator.getDomainService().loadFromJson();
         }
@@ -58,48 +59,48 @@ public class AdminEndpoint implements IAdminEndpoint {
     }
 
     @Override
-    public void saveToXml(@NotNull Session session) {
+    public void saveToXml(@WebParam(name = "session") @NotNull Session session) throws Exception {
         if (checkRole(session)) {
             serviceLocator.getDomainService().saveToXml();
         }
     }
 
     @Override
-    public void loadFromXml(@NotNull Session session) {
+    public void loadFromXml(@WebParam(name = "session") @NotNull Session session) throws Exception {
         if (checkRole(session)) {
             serviceLocator.getDomainService().loadFromXml();
         }
     }
 
     @Override
-    public void saveToJsonJaxb(@NotNull Session session) {
+    public void saveToJsonJaxb(@WebParam(name = "session") @NotNull Session session) throws Exception {
         if (checkRole(session)) {
             serviceLocator.getDomainService().saveToJsonJaxb();
         }
     }
 
     @Override
-    public void loadFromJsonJaxb(@NotNull Session session) {
+    public void loadFromJsonJaxb(@WebParam(name = "session") @NotNull Session session) throws Exception {
         if (checkRole(session)) {
             serviceLocator.getDomainService().loadFromJsonJaxb();
         }
     }
 
     @Override
-    public void saveToXmlJaxb(@NotNull Session session) {
+    public void saveToXmlJaxb(@WebParam(name = "session") @NotNull Session session) throws Exception {
         if (checkRole(session)) {
             serviceLocator.getDomainService().saveToXmlJaxb();
         }
     }
 
     @Override
-    public void loadFromXmlJaxb(@NotNull Session session) {
+    public void loadFromXmlJaxb(@WebParam(name = "session") @NotNull Session session) throws Exception {
         if (checkRole(session)) {
             serviceLocator.getDomainService().loadFromXmlJaxb();
         }
     }
 
-    private boolean checkRole(@NotNull Session session) {
+    private boolean checkRole(@WebParam(name = "session") @NotNull Session session) throws Exception {
         serviceLocator.getSessionService().validate(session);
         return serviceLocator.getUserService().findOne(session.getUserId()).getRoleType() == RoleType.ADMIN;
     }

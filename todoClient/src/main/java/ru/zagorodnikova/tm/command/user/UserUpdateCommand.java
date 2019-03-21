@@ -2,6 +2,7 @@ package ru.zagorodnikova.tm.command.user;
 
 import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.command.AbstractCommand;
+import ru.zagorodnikova.tm.endpoint.Exception_Exception;
 
 public class UserUpdateCommand extends AbstractCommand {
 
@@ -21,7 +22,7 @@ public class UserUpdateCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() {
+    public void execute() throws Exception_Exception {
         System.out.println("New first name");
         @NotNull final String firstName = getServiceLocator().getTerminalService().nextLine();
         System.out.println("New last name");

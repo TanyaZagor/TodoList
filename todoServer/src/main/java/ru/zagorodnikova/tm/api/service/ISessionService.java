@@ -10,9 +10,9 @@ import java.rmi.AccessException;
 public interface ISessionService {
 
     @Nullable
-    Session persist(@NotNull User user);
+    Session persist(@NotNull User user) throws Exception;
 
-    void remove(@NotNull Session session);
+    void remove(@NotNull Session session) throws Exception;
 
-    void validate(Session session);
+    void validate(Session session) throws Exception;
 }

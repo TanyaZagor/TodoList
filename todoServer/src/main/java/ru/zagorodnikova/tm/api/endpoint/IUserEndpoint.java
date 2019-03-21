@@ -7,6 +7,7 @@ import ru.zagorodnikova.tm.entity.Session;
 import ru.zagorodnikova.tm.entity.User;
 
 import javax.jws.WebMethod;
+import javax.jws.WebParam;
 import javax.jws.WebService;
 import java.util.List;
 
@@ -14,29 +15,26 @@ import java.util.List;
 public interface IUserEndpoint {
 
     @WebMethod
-    void changePassword(@NotNull Session session,
-                        @NotNull String login,
-                        @NotNull String oldPassword,
-                        @NotNull String newPassword);
+    void changePassword(@WebParam(name = "session") @NotNull Session session,
+                        @WebParam(name = "login") @NotNull String login,
+                        @WebParam(name = "oldPassword") @NotNull String oldPassword,
+                        @WebParam(name = "newPassword") @NotNull String newPassword) throws Exception;
 
     @WebMethod
-    void updateUser(@NotNull Session session,
-                    @NotNull String firstName,
-                    @NotNull String lastName,
-                    @NotNull String email);
-
-//    @WebMethod
-//    void removeAllUsers(@NotNull Session session);
+    void updateUser(@WebParam(name = "session") @NotNull Session session,
+                    @WebParam(name = "firstName") @NotNull String firstName,
+                    @WebParam(name = "lastName") @NotNull String lastName,
+                    @WebParam(name = "email") @NotNull String email) throws Exception;
 
     @WebMethod
-    void removeUser(@NotNull Session session);
+    void removeUser(@WebParam(name = "session") @NotNull Session session) throws Exception;
 
     @WebMethod
     @Nullable
-    List<User> findAllUsers(@NotNull Session session);
+    List<User> findAllUsers(@WebParam(name = "session") @NotNull Session session) throws Exception;
 
 
     @WebMethod
     @NotNull
-    User findUser(@NotNull Session session);
+    User findUser(@WebParam(name = "session") @NotNull Session session) throws Exception;
 }

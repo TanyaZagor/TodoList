@@ -40,7 +40,8 @@ public class User extends AbstractEntity {
     private RoleType roleType = RoleType.USER;
 
 
-    public User(@Nullable String login, @Nullable String password, @Nullable String firstName, @Nullable String lastName, @Nullable String email) {
+    public User(@Nullable String login, @Nullable String password, @Nullable String firstName,
+                @Nullable String lastName, @Nullable String email) {
         this.login = login;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -53,18 +54,6 @@ public class User extends AbstractEntity {
 
     public void setPassword(@NotNull String password) {
         this.password = UtilPassword.hashPassword(password);
-    }
-
-    @NotNull
-    @Override
-    public String toString() {
-        return "User{" +
-                "login='" + login + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", roleType=" + roleType +
-                '}';
     }
 
     @Override

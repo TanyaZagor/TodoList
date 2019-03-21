@@ -8,6 +8,7 @@ import ru.zagorodnikova.tm.endpoint.*;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
+import java.lang.Exception;
 import java.util.Map;
 
 public interface ServiceLocator{
@@ -38,5 +39,5 @@ public interface ServiceLocator{
 
     void setSession(Session session);
 
-    void execute(String command);
+    void execute(String command) throws Exception;
 }

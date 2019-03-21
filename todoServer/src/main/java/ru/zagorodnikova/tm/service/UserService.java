@@ -28,7 +28,8 @@ public class UserService extends AbstractService implements IUserService {
     }
 
     @Nullable
-    public User signUp(@NotNull String login, @NotNull String password, @NotNull String fistName, @NotNull String lastName, @NotNull String email) {
+    public User signUp(@NotNull String login, @NotNull String password, @NotNull String fistName,
+                       @NotNull String lastName, @NotNull String email) {
         if (login.isEmpty()) return null;
         if (password.isEmpty()) return null;
         if (fistName.isEmpty()) return null;
@@ -38,7 +39,8 @@ public class UserService extends AbstractService implements IUserService {
         return userRepository.persist(user);
     }
 
-    public void changePassword(@NotNull String userId, @NotNull String login, @NotNull String oldPassword, @NotNull String newPassword) {
+    public void changePassword(@NotNull String userId, @NotNull String login, @NotNull String oldPassword,
+                               @NotNull String newPassword) {
         if (login.isEmpty()) return;
         if (oldPassword.isEmpty()) return;
         if (newPassword.isEmpty()) return;
@@ -53,7 +55,8 @@ public class UserService extends AbstractService implements IUserService {
 
     }
 
-    public void updateUser(@NotNull String userId, @NotNull String firstName, @NotNull String lastName, @NotNull String email) {
+    public void updateUser(@NotNull String userId, @NotNull String firstName, @NotNull String lastName,
+                           @NotNull String email) {
         if (firstName.isEmpty()) return;
         if (lastName.isEmpty()) return;
         if (email.isEmpty()) return;

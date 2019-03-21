@@ -9,6 +9,7 @@ import ru.zagorodnikova.tm.entity.RoleType;
 import ru.zagorodnikova.tm.entity.Session;
 import ru.zagorodnikova.tm.entity.User;
 
+import javax.jws.WebParam;
 import javax.jws.WebService;
 import java.util.List;
 
@@ -23,35 +24,37 @@ public class UserEndpoint implements IUserEndpoint {
         this.serviceLocator = serviceLocator;
     }
 
-    public void changePassword(@NotNull Session session, @NotNull String login, @NotNull String oldPassword, @NotNull String newPassword) {
+    public void changePassword(@WebParam(name = "session") @NotNull Session session,
+                               @WebParam(name = "login") @NotNull String login,
+                               @WebParam(name = "oldPassword") @NotNull String oldPassword,
+                               @WebParam(name = "newPassword") @NotNull String newPassword) throws Exception {
         serviceLocator.getSessionService().validate(session);
         serviceLocator.getUserService().changePassword(session.getUserId(), login, oldPassword, newPassword);
     }
 
-    public void updateUser(@NotNull Session session, @NotNull String firstName, @NotNull String lastName, @NotNull String email) {
+    public void updateUser(@WebParam(name = "session") @NotNull Session session,
+                           @WebParam(name = "firstName") @NotNull String firstName,
+                           @WebParam(name = "lastName") @NotNull String lastName,
+                           @WebParam(name = "email") @NotNull String email) throws Exception {
         serviceLocator.getSessionService().validate(session);
         serviceLocator.getUserService().updateUser(session.getUserId(), firstName, lastName, email);
     }
 
-//    public void removeAllUsers(@NotNull Session session) {
-//        serviceLocator.getSessionService().validate(session);
-//        serviceLocator.getUserService().removeAllUsers(session.getUserId());
-//    }
 
-    public void removeUser(@NotNull Session session) {
+    public void removeUser(@WebParam(name = "session") @NotNull Session session) throws Exception {
         serviceLocator.getSessionService().validate(session);
         serviceLocator.getUserService().removeUser(session.getUserId());
     }
 
     @Nullable
-    public List<User> findAllUsers(@NotNull Session session) {
+    public List<User> findAllUsers(@WebParam(name = "session") @NotNull Session session) throws Exception {
         serviceLocator.getSessionService().validate(session);
         return serviceLocator.getUserService().findAllUsers(session.getUserId());
     }
 
-    @Nullable
+    @NotNull
     @Override
-    public User findUser(@NotNull Session session) {
+    public User findUser(@WebParam(name = "session") @NotNull Session session) throws Exception {
         serviceLocator.getSessionService().validate(session);
         return serviceLocator.getUserService().findOne(session.getUserId());
     }

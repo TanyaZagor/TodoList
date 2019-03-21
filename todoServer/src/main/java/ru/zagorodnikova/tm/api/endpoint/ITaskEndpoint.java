@@ -15,68 +15,68 @@ public interface ITaskEndpoint {
 
     @WebMethod
     @Nullable
-    Task persistTask(@NotNull Session session,
-                     @NotNull String projectName,
-                     @NotNull String taskName,
-                     @NotNull String description,
-                     @NotNull String dateStart,
-                     @NotNull String dateFinish);
+    Task persistTask(@WebParam(name = "session") @NotNull Session session,
+                     @WebParam(name = "projectName") @NotNull String projectName,
+                     @WebParam(name = "taskName") @NotNull String taskName,
+                     @WebParam(name = "description") @NotNull String description,
+                     @WebParam(name = "dateStart") @NotNull String dateStart,
+                     @WebParam(name = "dateFinish") @NotNull String dateFinish) throws Exception;
 
     @WebMethod
-    void removeTask(@NotNull Session session,
-                    @NotNull String projectName,
-                    @NotNull String taskName);
+    void removeTask(@WebParam(name = "session") @NotNull Session session,
+                    @WebParam(name = "projectName") @NotNull String projectName,
+                    @WebParam(name = "taskName") @NotNull String taskName) throws Exception;
 
     @WebMethod
-    void removeAllTasksInProject(@NotNull Session session,
-                                 @NotNull String projectName);
+    void removeAllTasksInProject(@WebParam(name = "session") @NotNull Session session,
+                                 @WebParam(name = "projectName") @NotNull String projectName) throws Exception;
 
     @WebMethod
-    void removeAllTasks(@NotNull Session session);
+    void removeAllTasks(@WebParam(name = "session") @NotNull Session session) throws Exception;
 
     @WebMethod
-    void mergeTask(@NotNull Session session,
-                   @NotNull String projectName,
-                   @NotNull String oldTaskName,
-                   @NotNull String taskName,
-                   @NotNull String description,
-                   @NotNull String dateStart,
-                   @NotNull String dateFinish);
-
-    @WebMethod
-    @Nullable
-    List<Task> findAllTasksInProject(@NotNull Session session,
-                                       @NotNull String projectName);
+    void mergeTask(@WebParam(name = "session") @NotNull Session session,
+                   @WebParam(name = "projectName") @NotNull String projectName,
+                   @WebParam(name = "oldTaskName") @NotNull String oldTaskName,
+                   @WebParam(name = "taskName") @NotNull String taskName,
+                   @WebParam(name = "description") @NotNull String description,
+                   @WebParam(name = "dateStart") @NotNull String dateStart,
+                   @WebParam(name = "dateFinish") @NotNull String dateFinish) throws Exception;
 
     @WebMethod
     @Nullable
-    List<Task> findAllTasks(@NotNull Session session);
+    List<Task> findAllTasksInProject(@WebParam(name = "session") @NotNull Session session,
+                                     @WebParam(name = "projectName") @NotNull String projectName) throws Exception;
 
     @WebMethod
     @Nullable
-    Task findOneTask(@NotNull Session session,
-                  @NotNull String projectName,
-                  @NotNull String taskName,
-                  @NotNull String description);
+    List<Task> findAllTasks(@WebParam(name = "session") @NotNull Session session) throws Exception;
 
     @WebMethod
     @Nullable
-    List<Task> sortTasksByDateCreated(@NotNull Session session,
-                                   @NotNull String projectName);
+    Task findOneTask(@WebParam(name = "session") @NotNull Session session,
+                     @WebParam(name = "projectName") @NotNull String projectName,
+                     @WebParam(name = "taskName") @NotNull String taskName,
+                     @WebParam(name = "description") @NotNull String description) throws Exception;
 
     @WebMethod
     @Nullable
-    List<Task> sortTasksByDateStart(@NotNull Session session,
-                                 @NotNull String projectName);
+    List<Task> sortTasksByDateCreated(@WebParam(name = "session") @NotNull Session session,
+                                      @WebParam(name = "projectName") @NotNull String projectName) throws Exception;
 
     @WebMethod
     @Nullable
-    List<Task> sortTasksByDateFinish(@NotNull Session session,
-                                  @NotNull String projectName);
+    List<Task> sortTasksByDateStart(@WebParam(name = "session") @NotNull Session session,
+                                    @WebParam(name = "projectName") @NotNull String projectName) throws Exception;
 
     @WebMethod
     @Nullable
-    List<Task> sortTasksByStatus(@NotNull Session session,
-                              @NotNull String projectName);
+    List<Task> sortTasksByDateFinish(@WebParam(name = "session") @NotNull Session session,
+                                     @WebParam(name = "projectName") @NotNull String projectName) throws Exception;
+
+    @WebMethod
+    @Nullable
+    List<Task> sortTasksByStatus(@WebParam(name = "session") @NotNull Session session,
+                                 @WebParam(name = "projectName") @NotNull String projectName) throws Exception;
 
 }

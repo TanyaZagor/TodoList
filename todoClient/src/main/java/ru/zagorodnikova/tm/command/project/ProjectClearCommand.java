@@ -2,6 +2,7 @@ package ru.zagorodnikova.tm.command.project;
 
 import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.command.AbstractCommand;
+import ru.zagorodnikova.tm.endpoint.Exception_Exception;
 
 
 public class ProjectClearCommand extends AbstractCommand {
@@ -22,7 +23,7 @@ public class ProjectClearCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() {
+    public void execute() throws Exception_Exception {
         getServiceLocator().getProjectService().removeAllProjects(getServiceLocator().getSession());
     }
 

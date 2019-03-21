@@ -2,6 +2,7 @@ package ru.zagorodnikova.tm.command.user;
 
 import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.command.AbstractCommand;
+import ru.zagorodnikova.tm.endpoint.Exception_Exception;
 
 public class UserRemoveCommand extends AbstractCommand {
     public UserRemoveCommand() {
@@ -20,7 +21,7 @@ public class UserRemoveCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() {
+    public void execute() throws Exception_Exception {
         getServiceLocator().getUserService().removeUser(getServiceLocator().getSession());
         getServiceLocator().setSession(null);
     }

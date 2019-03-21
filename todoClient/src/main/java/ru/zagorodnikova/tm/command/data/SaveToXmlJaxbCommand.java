@@ -2,6 +2,7 @@ package ru.zagorodnikova.tm.command.data;
 
 import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.command.AbstractCommand;
+import ru.zagorodnikova.tm.endpoint.Exception_Exception;
 
 public class SaveToXmlJaxbCommand extends AbstractCommand {
     @NotNull
@@ -17,7 +18,7 @@ public class SaveToXmlJaxbCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() {
+    public void execute() throws Exception_Exception {
         getServiceLocator().getAdminService().saveToXmlJaxb(getServiceLocator().getSession());
     }
 

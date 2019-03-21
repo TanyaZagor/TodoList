@@ -14,6 +14,7 @@ import ru.zagorodnikova.tm.endpoint.UserEndpointService;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
+import java.lang.Exception;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,7 +40,6 @@ public class Bootstrap implements ServiceLocator {
 
     public void init(@NotNull Class[] commandClasses) {
         this.initCommands(this, commandClasses);
-        //this.initProjectsAndUsers();
         this.start();
     }
 
@@ -47,7 +47,7 @@ public class Bootstrap implements ServiceLocator {
         terminalService.start();
     }
 
-    public void execute(@Nullable String command) {
+    public void execute(@Nullable String command) throws Exception {
         if (command == null || command.isEmpty()) return;
         final AbstractCommand abstractCommand = commands.get(command);
         if (abstractCommand == null) return;
@@ -55,27 +55,10 @@ public class Bootstrap implements ServiceLocator {
             if (isAuth()) {
                 abstractCommand.execute();
             }
-        } else {
+        }
+        else {
             abstractCommand.execute();
         }
-
-    }
-
-
-    private void initProjectsAndUsers() {
-//        final User user1 = userService.signUp("login", "password", "first name", "last name", "email@email.ru");
-//        final User user2 = userService.signUp("login2", "password2", "first name", "last name", "email@email.ru");
-
-//        final Project project1 = projectService.persist(user1.getId(), "Project1", "Description1", "20.02.2019", "20.05.2019");
-//        final Project project2 = projectService.persist(user2.getId(), "Project2", "Description2", "20.05.2019", "20.06.2019");
-//        final Project project3 = projectService.persist(user2.getId(), "Project1", "Description1", "20.02.2016", "20.05.2020");
-//        taskService.persist(project1.getUserId(), project1.getName(), "task1", "des1", "20.02.2012", "20.02.2013");
-//        taskService.persist(project1.getUserId(), project1.getName(), "task2", "des2", "20.02.2010", "20.02.2011");
-//        taskService.persist(project2.getUserId(), project2.getName(), "task3", "des3", "20.02.2013", "20.02.2014");
-//        taskService.persist(project2.getUserId(), project2.getName(), "task3", "des3", "20.02.2013", "20.02.2014");
-//        taskService.persist(project3.getUserId(), project3.getName(), "task1", "des1", "20.02.2013", "20.02.2014");
-//        taskService.persist(project3.getUserId(), project3.getName(), "task2", "des2", "20.02.2013", "20.02.2014");
-
     }
 
     private void initCommands(@NotNull Bootstrap bootstrap,@NotNull Class[] commandClasses) {
@@ -102,7 +85,6 @@ public class Bootstrap implements ServiceLocator {
     }
 
     private boolean isAuth() {
-
         return session != null;
     }
 

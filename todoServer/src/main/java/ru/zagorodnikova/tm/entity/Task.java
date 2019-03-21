@@ -45,19 +45,14 @@ public class Task extends AbstractEntity {
     @NotNull
     private Status status = Status.SCHEDULED;
 
-    public Task(@NotNull String userId, @NotNull String projectId, @NotNull String name, @NotNull String  description, @NotNull Date dateStart, @NotNull Date dateFinish) {
+    public Task(@NotNull String userId, @NotNull String projectId, @NotNull String name,
+                @NotNull String  description, @NotNull Date dateStart, @NotNull Date dateFinish) {
         this.userId = userId;
         this.name = name;
         this.projectId = projectId;
         this.description = description;
         this.dateStart = dateStart;
         this.dateFinish = dateFinish;
-    }
-
-    @NotNull
-    @Override
-    public String toString() {
-        return "Name: " + name + ", Description: " + description + ", Date start: " + dateStart + ", Date finish: " + dateFinish + ", Date create: " + dateCreate + ", Status: " + status;
     }
 
     @Override

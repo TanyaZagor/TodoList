@@ -2,6 +2,7 @@ package ru.zagorodnikova.tm.command.task;
 
 import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.command.AbstractCommand;
+import ru.zagorodnikova.tm.endpoint.Exception_Exception;
 
 public class TaskCreateCommand extends AbstractCommand {
 
@@ -21,7 +22,7 @@ public class TaskCreateCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() {
+    public void execute() throws Exception_Exception {
         System.out.println("project name");
         @NotNull final String projectName = getServiceLocator().getTerminalService().nextLine();
         System.out.println("task name");

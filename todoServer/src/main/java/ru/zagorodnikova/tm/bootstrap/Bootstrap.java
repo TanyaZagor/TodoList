@@ -2,6 +2,7 @@ package ru.zagorodnikova.tm.bootstrap;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.eclipse.persistence.internal.expressions.FieldExpression;
 import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.api.repository.IProjectRepository;
@@ -17,6 +18,8 @@ import ru.zagorodnikova.tm.repository.UserRepository;
 import ru.zagorodnikova.tm.service.*;
 
 import javax.xml.ws.Endpoint;
+import java.io.IOException;
+import java.util.Properties;
 
 @Setter
 @Getter
@@ -34,7 +37,7 @@ public class Bootstrap implements ServiceLocator {
     @NotNull private final IAdminService adminService = new AdminService(userRepository);
 
 
-    public void init() {
+    public void init() throws Exception {
         initProjectsAndUsers();
         initEndpoints();
     }
@@ -59,17 +62,17 @@ public class Bootstrap implements ServiceLocator {
 
     }
 
-    private void initEndpoints() {
-        UserEndpoint userEndpoint = new UserEndpoint(this);
-        TaskEndpoint taskEndpoint = new TaskEndpoint(this);
-        ProjectEndpoint projectEndpoint = new ProjectEndpoint(this);
-        SessionEndpoint sessionEndpoint = new SessionEndpoint(this);
-        AdminEndpoint adminEndpoint = new AdminEndpoint(this);
-        Endpoint.publish("http://localhost:8080/ProjectEndpoint", projectEndpoint);
-        Endpoint.publish("http://localhost:8080/TaskEndpoint", taskEndpoint);
-        Endpoint.publish("http://localhost:8080/UserEndpoint", userEndpoint);
-        Endpoint.publish("http://localhost:8080/SessionEndpoint", sessionEndpoint);
-        Endpoint.publish("http://localhost:8080/AdminEndpoint", adminEndpoint);
+    private void initEndpoints() throws Exception {
+        final Properties property = new Properties();
+        property.load(this.getClass().getClassLoader().getResourceAsStream("app.properties"));
+        final String host = property.getProperty("host");
+        final String port = property.getProperty("port");
+        Endpoint.publish("http://"+ host+":"+ port+"/ProjectEndpoint", new ProjectEndpoint(this));
+        Endpoint.publish("http://"+ host+":"+ port+"/TaskEndpoint", new TaskEndpoint(this));
+        Endpoint.publish("http://"+ host+":"+ port+"/UserEndpoint", new UserEndpoint(this));
+        Endpoint.publish("http://"+ host+":"+ port+"/SessionEndpoint", new SessionEndpoint(this));
+        Endpoint.publish("http://"+ host+":"+ port+"/AdminEndpoint", new AdminEndpoint(this));
     }
+
 
 }

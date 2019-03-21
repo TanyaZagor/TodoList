@@ -8,6 +8,7 @@ import ru.zagorodnikova.tm.api.endpoint.ITaskEndpoint;
 import ru.zagorodnikova.tm.entity.Session;
 import ru.zagorodnikova.tm.entity.Task;
 
+import javax.jws.WebParam;
 import javax.jws.WebService;
 import java.util.List;
 
@@ -23,69 +24,91 @@ public class TaskEndpoint implements ITaskEndpoint {
     }
 
     @Nullable
-    public Task persistTask(@NotNull Session session, @NotNull String projectName, @NotNull String taskName, @NotNull String description, @NotNull String dateStart, @NotNull String dateFinish) {
+    public Task persistTask(@WebParam(name = "session") @NotNull Session session,
+                            @WebParam(name = "projectName") @NotNull String projectName,
+                            @WebParam(name = "taskName") @NotNull String taskName,
+                            @WebParam(name = "description") @NotNull String description,
+                            @WebParam(name = "dateStart") @NotNull String dateStart,
+                            @WebParam(name = "dateFinish") @NotNull String dateFinish) throws Exception {
         serviceLocator.getSessionService().validate(session);
         return serviceLocator.getTaskService().persistTask(session.getUserId(), projectName, taskName, description, dateStart, dateFinish);
     }
 
-    public void removeTask(@NotNull Session session, @NotNull String projectName, @NotNull String taskName) {
+    public void removeTask(@WebParam(name = "session") @NotNull Session session,
+                           @WebParam(name = "projectName") @NotNull String projectName,
+                           @WebParam(name = "taskName") @NotNull String taskName) throws Exception {
         serviceLocator.getSessionService().validate(session);
         serviceLocator.getTaskService().removeTask(session.getUserId(), projectName, taskName);
     }
 
-    public void removeAllTasksInProject(@NotNull Session session, @NotNull String projectName) {
+    public void removeAllTasksInProject(@WebParam(name = "session") @NotNull Session session,
+                                        @WebParam(name = "projectName") @NotNull String projectName) throws Exception {
         serviceLocator.getSessionService().validate(session);
         serviceLocator.getTaskService().removeAllTasksInProject(session.getUserId(), projectName);
     }
 
-    public void removeAllTasks(@NotNull Session session) {
+    public void removeAllTasks(@WebParam(name = "session") @NotNull Session session) throws Exception {
         serviceLocator.getSessionService().validate(session);
         serviceLocator.getTaskService().removeAllTasks(session.getUserId());
     }
 
-    public void mergeTask(@NotNull Session session, @NotNull String projectName, @NotNull String oldTaskName, @NotNull String taskName, @NotNull String description, @NotNull String dateStart, @NotNull String dateFinish) {
+    public void mergeTask(@WebParam(name = "session") @NotNull Session session,
+                          @WebParam(name = "projectName") @NotNull String projectName,
+                          @WebParam(name = "oldTaskName") @NotNull String oldTaskName,
+                          @WebParam(name = "taskName") @NotNull String taskName,
+                          @WebParam(name = "description") @NotNull String description,
+                          @WebParam(name = "dateStart") @NotNull String dateStart,
+                          @WebParam(name = "dateFinish") @NotNull String dateFinish) throws Exception {
         serviceLocator.getSessionService().validate(session);
         serviceLocator.getTaskService().mergeTask(session.getUserId(), projectName, oldTaskName, taskName, description, dateStart, dateFinish);
     }
 
     @Nullable
-    public List<Task> findAllTasksInProject(@NotNull Session session, @NotNull String projectName) {
+    public List<Task> findAllTasksInProject(@WebParam(name = "session") @NotNull Session session,
+                                            @WebParam(name = "projectName") @NotNull String projectName) throws Exception {
         serviceLocator.getSessionService().validate(session);
         return serviceLocator.getTaskService().findAllTasksInProject(session.getUserId(), projectName);
     }
 
     @Nullable
-    public List<Task> findAllTasks(@NotNull Session session) {
+    public List<Task> findAllTasks(@WebParam(name = "session") @NotNull Session session) throws Exception {
         serviceLocator.getSessionService().validate(session);
         return serviceLocator.getTaskService().findAllTasks(session.getUserId());
     }
 
     @Nullable
-    public Task findOneTask(@NotNull Session session, @NotNull String projectName, @NotNull String taskName, @NotNull String taskDescription) {
+    public Task findOneTask(@WebParam(name = "session") @NotNull Session session,
+                            @WebParam(name = "projectName") @NotNull String projectName,
+                            @WebParam(name = "taskName") @NotNull String taskName,
+                            @WebParam(name = "description") @NotNull String description) throws Exception {
         serviceLocator.getSessionService().validate(session);
-        return serviceLocator.getTaskService().findOneTask(session.getUserId(), projectName, taskName, taskDescription);
+        return serviceLocator.getTaskService().findOneTask(session.getUserId(), projectName, taskName, description);
     }
 
     @Nullable
-    public List<Task> sortTasksByDateCreated(@NotNull Session session, @NotNull String projectName) {
+    public List<Task> sortTasksByDateCreated(@WebParam(name = "session") @NotNull Session session,
+                                             @WebParam(name = "projectName") @NotNull String projectName) throws Exception {
         serviceLocator.getSessionService().validate(session);
         return serviceLocator.getTaskService().sortTasksByDateCreated(session.getUserId(), projectName);
     }
 
     @Nullable
-    public List<Task> sortTasksByDateStart(@NotNull Session session, @NotNull String projectName) {
+    public List<Task> sortTasksByDateStart(@WebParam(name = "session") @NotNull Session session,
+                                           @WebParam(name = "projectName") @NotNull String projectName) throws Exception {
         serviceLocator.getSessionService().validate(session);
         return serviceLocator.getTaskService().sortTasksByDateStart(session.getUserId(), projectName);
     }
 
     @Nullable
-    public List<Task> sortTasksByDateFinish(@NotNull Session session, @NotNull String projectName) {
+    public List<Task> sortTasksByDateFinish(@WebParam(name = "session") @NotNull Session session,
+                                            @WebParam(name = "projectName") @NotNull String projectName) throws Exception {
         serviceLocator.getSessionService().validate(session);
         return serviceLocator.getTaskService().sortTasksByDateFinish(session.getUserId(), projectName);
     }
 
     @Nullable
-    public List<Task> sortTasksByStatus(@NotNull Session session, @NotNull String projectName) {
+    public List<Task> sortTasksByStatus(@WebParam(name = "session") @NotNull Session session,
+                                        @WebParam(name = "projectName") @NotNull String projectName) throws Exception {
         serviceLocator.getSessionService().validate(session);
         return serviceLocator.getTaskService().sortTasksByStatus(session.getUserId(), projectName);
     }

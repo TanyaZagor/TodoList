@@ -2,6 +2,7 @@ package ru.zagorodnikova.tm.service;
 
 import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.api.ServiceLocator;
+import ru.zagorodnikova.tm.endpoint.Exception_Exception;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
@@ -19,7 +20,7 @@ public class TerminalService {
         this.serviceLocator = serviceLocator;
     }
 
-    public void start() {
+    public void start(){
         System.out.println("Welcome");
         String command = "";
         while (!"exit".equals(command)) {
@@ -31,18 +32,10 @@ public class TerminalService {
                 System.out.println(e.getMessage());
             } catch (NullPointerException e) {
                 System.out.println("wrong data");
+            } catch (Exception e) {
+                System.out.println("exception");
             }
         }
-        if (serviceLocator.getSession() != null) {
-            serviceLocator.getSessionService().remove(serviceLocator.getSession());
-            serviceLocator.setSession(null);
-        }
-
-    }
-
-    @NotNull
-    public Scanner getScanner() {
-        return scanner;
     }
 
     @NotNull

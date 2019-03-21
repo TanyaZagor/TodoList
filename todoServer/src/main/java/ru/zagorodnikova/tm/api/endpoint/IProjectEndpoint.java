@@ -6,6 +6,7 @@ import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.entity.Session;
 
 import javax.jws.WebMethod;
+import javax.jws.WebParam;
 import javax.jws.WebService;
 import java.util.List;
 
@@ -14,50 +15,50 @@ public interface IProjectEndpoint {
 
     @WebMethod
     @Nullable
-    Project persistProject(@NotNull Session session,
-                           @NotNull String projectName,
-                           @NotNull String description,
-                           @NotNull String dateStart,
-                           @NotNull String dateFinish);
+    Project persistProject(@WebParam(name = "session") @NotNull Session session,
+                           @WebParam(name = "name") @NotNull String name,
+                           @WebParam(name = "description") @NotNull String description,
+                           @WebParam(name = "dateStart") @NotNull String dateStart,
+                           @WebParam(name = "dateFinish") @NotNull String dateFinish) throws Exception;
 
     @WebMethod
-    void removeProject(@NotNull Session session,
-                       @NotNull String projectName);
+    void removeProject(@WebParam(name = "session") @NotNull Session session,
+                       @WebParam(name = "name") @NotNull String name) throws Exception;
 
     @WebMethod
-    void removeAllProjects(@NotNull Session session);
-
-    @WebMethod
-    @Nullable
-    List<Project> findAllProjects(@NotNull Session session);
+    void removeAllProjects(@WebParam(name = "session") @NotNull Session session) throws Exception;
 
     @WebMethod
     @Nullable
-    Project findOneProject(@NotNull Session session,
-                     @NotNull String projectName,
-                     @NotNull String projectDescription);
-
-    @WebMethod
-    void mergeProject(@NotNull Session session,
-                      @NotNull String oldProjectName,
-                      @NotNull String projectName,
-                      @NotNull String description,
-                      @NotNull String dateStart,
-                      @NotNull String dateFinish);
+    List<Project> findAllProjects(@WebParam(name = "session") @NotNull Session session) throws Exception;
 
     @WebMethod
     @Nullable
-    List<Project> sortProjectsByDateCreated(@NotNull Session session);
+    Project findOneProject(@WebParam(name = "session") @NotNull Session session,
+                           @WebParam(name = "name") @NotNull String name,
+                           @WebParam(name = "description") @NotNull String description) throws Exception;
+
+    @WebMethod
+    void mergeProject(@WebParam(name = "session") @NotNull Session session,
+                      @WebParam(name = "oldName") @NotNull String oldName,
+                      @WebParam(name = "name") @NotNull String name,
+                      @WebParam(name = "description") @NotNull String description,
+                      @WebParam(name = "dateStart") @NotNull String dateStart,
+                      @WebParam(name = "dateFinish") @NotNull String dateFinish) throws Exception;
 
     @WebMethod
     @Nullable
-    List<Project> sortProjectsByDateStart(@NotNull Session session);
+    List<Project> sortProjectsByDateCreated(@WebParam(name = "session") @NotNull Session session) throws Exception;
 
     @WebMethod
     @Nullable
-    List<Project> sortProjectsByDateFinish(@NotNull Session session);
+    List<Project> sortProjectsByDateStart(@WebParam(name = "session") @NotNull Session session) throws Exception;
 
     @WebMethod
     @Nullable
-    List<Project> sortProjectsByStatus(@NotNull Session session);
+    List<Project> sortProjectsByDateFinish(@WebParam(name = "session") @NotNull Session session) throws Exception;
+
+    @WebMethod
+    @Nullable
+    List<Project> sortProjectsByStatus(@WebParam(name = "session") @NotNull Session session) throws Exception;
 }

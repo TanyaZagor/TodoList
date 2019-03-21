@@ -3,6 +3,7 @@ package ru.zagorodnikova.tm.command.task;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.command.AbstractCommand;
+import ru.zagorodnikova.tm.endpoint.Exception_Exception;
 import ru.zagorodnikova.tm.endpoint.Task;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class TaskSortByFinishCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() {
+    public void execute() throws Exception_Exception {
         System.out.println("project name");
         @NotNull final String projectName = getServiceLocator().getTerminalService().nextLine();
         @Nullable final List<Task> tasks = getServiceLocator().getTaskService().sortTasksByDateFinish(getServiceLocator().getSession(), projectName);

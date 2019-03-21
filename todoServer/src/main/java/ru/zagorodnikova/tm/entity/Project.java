@@ -45,19 +45,14 @@ public class Project extends AbstractEntity {
     private Status status = Status.SCHEDULED;
 
 
-    public Project(@NotNull String userId, @NotNull String name, @NotNull String description, @NotNull Date dateStart, @NotNull Date dateFinish) {
+    public Project(@NotNull String userId, @NotNull String name, @NotNull String description,
+                   @NotNull Date dateStart, @NotNull Date dateFinish) {
         this.userId = userId;
         this.name = name;
         this.description = description;
         this.dateStart = dateStart;
         this.dateFinish = dateFinish;
     }
-
-//    @NotNull
-//    @Override
-//    public String toString() {
-//        return "Name: " + name + ", Description: " + description+ ", Date start: " + dateStart + ", Date finish: " + dateFinish + ", Date create: " + dateCreate + ", Status: " + status;
-//    }
 
     @Override
     public boolean equals(@Nullable Object o) {

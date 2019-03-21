@@ -3,6 +3,7 @@ package ru.zagorodnikova.tm.command.user;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.command.AbstractCommand;
+import ru.zagorodnikova.tm.endpoint.Exception_Exception;
 import ru.zagorodnikova.tm.endpoint.Session;
 import ru.zagorodnikova.tm.endpoint.User;
 
@@ -24,7 +25,7 @@ public class UserSignUpCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() {
+    public void execute() throws Exception_Exception {
         System.out.println("Login");
         @NotNull final String login = getServiceLocator().getTerminalService().nextLine();
         System.out.println("Password");

@@ -8,6 +8,7 @@ import ru.zagorodnikova.tm.api.endpoint.IProjectEndpoint;
 import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.entity.Session;
 
+import javax.jws.WebParam;
 import javax.jws.WebService;
 import java.util.List;
 
@@ -23,58 +24,70 @@ public class ProjectEndpoint implements IProjectEndpoint {
     }
 
     @Nullable
-    public Project persistProject(@NotNull Session session, @NotNull String projectName, @NotNull String description, @NotNull String dateStart, @NotNull String dateFinish) {
+    public Project persistProject(@WebParam(name = "session") @NotNull Session session,
+                                  @WebParam(name = "name") @NotNull String name,
+                                  @WebParam(name = "description") @NotNull String description,
+                                  @WebParam(name = "dateStart") @NotNull String dateStart,
+                                  @WebParam(name = "dateFinish") @NotNull String dateFinish) throws Exception {
         serviceLocator.getSessionService().validate(session);
-        return serviceLocator.getProjectService().persistProject(session.getUserId(), projectName, description, dateStart, dateFinish);
+        return serviceLocator.getProjectService().persistProject(session.getUserId(), name, description, dateStart, dateFinish);
     }
 
-    public void removeProject(@NotNull Session session, @NotNull String projectName) {
+    public void removeProject(@WebParam(name = "session") @NotNull Session session,
+                              @WebParam(name = "name") @NotNull String name) throws Exception {
         serviceLocator.getSessionService().validate(session);
-        serviceLocator.getProjectService().removeProject(session.getUserId(), projectName);
+        serviceLocator.getProjectService().removeProject(session.getUserId(), name);
     }
 
-    public void removeAllProjects(@NotNull Session session) {
+    public void removeAllProjects(@WebParam(name = "session") @NotNull Session session) throws Exception {
         serviceLocator.getSessionService().validate(session);
         serviceLocator.getProjectService().removeAllProjects(session.getUserId());
     }
 
     @Nullable
-    public List<Project> findAllProjects(@NotNull Session session) {
+    public List<Project> findAllProjects(@WebParam(name = "session") @NotNull Session session) throws Exception {
         serviceLocator.getSessionService().validate(session);
         return serviceLocator.getProjectService().findAllProjects(session.getUserId());
     }
 
     @Nullable
-    public Project findOneProject(@NotNull Session session, @NotNull String projectName, @NotNull String projectDescription) {
+    public Project findOneProject(@WebParam(name = "session") @NotNull Session session,
+                                  @WebParam(name = "name") @NotNull String name,
+                                  @WebParam(name = "description") @NotNull String description) throws Exception {
         serviceLocator.getSessionService().validate(session);
-        return serviceLocator.getProjectService().findOneProject(session.getUserId(), projectName, projectDescription);
+        return serviceLocator.getProjectService().findOneProject(session.getUserId(), name, description);
     }
 
-    public void mergeProject(@NotNull Session session, @NotNull String oldProjectName, @NotNull String projectName, @NotNull String description, @NotNull String dateStart, @NotNull String dateFinish) {
+    public void mergeProject(@WebParam(name = "session") @NotNull Session session,
+                             @WebParam(name = "oldName") @NotNull String oldName,
+                             @WebParam(name = "name") @NotNull String name,
+                             @WebParam(name = "description") @NotNull String description,
+                             @WebParam(name = "dateStart") @NotNull String dateStart,
+                             @WebParam(name = "dateFinish") @NotNull String dateFinish) throws Exception {
         serviceLocator.getSessionService().validate(session);
-        serviceLocator.getProjectService().mergeProject(session.getUserId(), oldProjectName, projectName, description, dateStart, dateFinish);
+        serviceLocator.getProjectService().mergeProject(session.getUserId(), oldName, name, description, dateStart, dateFinish);
     }
 
     @Nullable
-    public List<Project> sortProjectsByDateCreated(@NotNull Session session) {
+    public List<Project> sortProjectsByDateCreated(@WebParam(name = "session") @NotNull Session session) throws Exception {
         serviceLocator.getSessionService().validate(session);
         return serviceLocator.getProjectService().sortProjectsByDateCreated(session.getUserId());
     }
 
     @Nullable
-    public List<Project> sortProjectsByDateStart(@NotNull Session session) {
+    public List<Project> sortProjectsByDateStart(@WebParam(name = "session") @NotNull Session session) throws Exception {
         serviceLocator.getSessionService().validate(session);
         return serviceLocator.getProjectService().sortProjectsByDateStart(session.getUserId());
     }
 
     @Nullable
-    public List<Project> sortProjectsByDateFinish(@NotNull Session session) {
+    public List<Project> sortProjectsByDateFinish(@WebParam(name = "session") @NotNull Session session) throws Exception {
         serviceLocator.getSessionService().validate(session);
         return serviceLocator.getProjectService().sortProjectsByDateFinish(session.getUserId());
     }
 
     @Nullable
-    public List<Project> sortProjectsByStatus(@NotNull Session session) {
+    public List<Project> sortProjectsByStatus(@WebParam(name = "session") @NotNull Session session) throws Exception {
         serviceLocator.getSessionService().validate(session);
         return serviceLocator.getProjectService().sortProjectsByStatus(session.getUserId());
     }
