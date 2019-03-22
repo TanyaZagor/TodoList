@@ -2,16 +2,24 @@ package ru.zagorodnikova.tm.repository;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.api.repository.IUserRepository;
-import ru.zagorodnikova.tm.entity.RoleType;
+import ru.zagorodnikova.tm.entity.enumeration.RoleType;
 import ru.zagorodnikova.tm.entity.User;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.*;
 
 
 public class UserRepository extends AbstractRepository<User> implements IUserRepository<User> {
 
     @NotNull private final Map<String, User> users = super.getMap();
+    @NotNull private final Connection connection;
+
+    public UserRepository(ServiceLocator serviceLocator) throws Exception {
+        this.connection = serviceLocator.getConnection();
+    }
 
     @Nullable
     public User signIn(@NotNull final User user) {
@@ -34,8 +42,31 @@ public class UserRepository extends AbstractRepository<User> implements IUserRep
     }
 
     @Override
+    public void remove(@NotNull User user) throws Exception {
+        @NotNull final String query =  "DELETE FROM todo_list.app_user " +
+                "WHERE id = '"+ user.getId() +"'";
+        @NotNull final PreparedStatement statement = connection.prepareStatement(query);
+        statement.executeUpdate();
+        users.remove(user.getId());
+    }
+
+    @Override
     public void removeAll() {
         users.entrySet().removeIf((v) -> !(v.getValue().getRoleType().equals(RoleType.ADMIN)));
+    }
+
+    @Nullable
+    @Override
+    public User persist(@NotNull User user) throws Exception {
+        @NotNull final String query = "INSERT INTO todo_list.app_user (id, login, passwordHash, firstName, lastName, email, role) \n" +
+                " VALUES ('"+ user.getId()+"', '"+ user.getLogin() +"', '"+ user.getFirstName() +"', '"+ user.getLastName() +"', '"+ user.getEmail() +"', '"+ user.getEmail() +"', '"+ user.getRoleType() +"');";
+        @NotNull final PreparedStatement statement = connection.prepareStatement(query);
+        statement.executeUpdate();
+        if (!users.containsValue(user)) {
+            users.put(user.getId(), user);
+            return user;
+        }
+        return null;
     }
 
     @NotNull
@@ -45,7 +76,13 @@ public class UserRepository extends AbstractRepository<User> implements IUserRep
     }
 
     @Override
-    public void merge(@NotNull final User user) {
+    public void merge(@NotNull final User user) throws Exception {
+        @NotNull final String query =  "UPDATE todo_list.app_task SET " +
+                "firstName = '"+ user.getFirstName() +"', " +
+                "lastName = '"+ user.getLastName() +"', " +
+                "email = '"+ user.getEmail() +"'";
+        @NotNull final PreparedStatement statement = connection.prepareStatement(query);
+        statement.executeUpdate();
         users.get(user.getId()).setFirstName(user.getFirstName());
         users.get(user.getId()).setLastName(user.getLastName());
         users.get(user.getId()).setEmail(user.getEmail());

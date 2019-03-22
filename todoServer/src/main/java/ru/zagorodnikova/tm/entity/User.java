@@ -5,12 +5,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.zagorodnikova.tm.util.UtilPassword;
+import ru.zagorodnikova.tm.entity.enumeration.RoleType;
+import ru.zagorodnikova.tm.util.PasswordUtil;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
 import java.util.Objects;
 
 @Getter
@@ -47,13 +44,13 @@ public class User extends AbstractEntity {
         this.lastName = lastName;
         this.email = email;
         if (password != null) {
-            this.password = UtilPassword.hashPassword(password);
+            this.password = PasswordUtil.hashPassword(password);
         }
     }
 
 
     public void setPassword(@NotNull String password) throws Exception {
-        this.password = UtilPassword.hashPassword(password);
+        this.password = PasswordUtil.hashPassword(password);
     }
 
     @Override

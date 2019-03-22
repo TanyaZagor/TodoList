@@ -1,4 +1,4 @@
-package ru.zagorodnikova.tm.entity;
+package ru.zagorodnikova.tm.entity.enumeration;
 
 import org.jetbrains.annotations.NotNull;
 

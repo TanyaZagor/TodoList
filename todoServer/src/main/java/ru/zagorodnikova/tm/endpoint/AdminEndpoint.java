@@ -3,7 +3,7 @@ package ru.zagorodnikova.tm.endpoint;
 import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.api.endpoint.IAdminEndpoint;
-import ru.zagorodnikova.tm.entity.RoleType;
+import ru.zagorodnikova.tm.entity.enumeration.RoleType;
 import ru.zagorodnikova.tm.entity.Session;
 
 import javax.jws.WebParam;

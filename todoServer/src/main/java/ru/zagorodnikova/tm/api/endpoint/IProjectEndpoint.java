@@ -15,15 +15,19 @@ public interface IProjectEndpoint {
 
     @WebMethod
     @Nullable
-    Project persistProject(@WebParam(name = "session") @NotNull final Session session,
-                           @WebParam(name = "name") @NotNull final String name,
-                           @WebParam(name = "description") @NotNull final String description,
-                           @WebParam(name = "dateStart") @NotNull final String dateStart,
-                           @WebParam(name = "dateFinish") @NotNull final String dateFinish) throws Exception;
+    Project persistProject(
+            @WebParam(name = "session") @NotNull final Session session,
+            @WebParam(name = "name") @NotNull final String name,
+            @WebParam(name = "description") @NotNull final String description,
+            @WebParam(name = "dateStart") @NotNull final String dateStart,
+            @WebParam(name = "dateFinish") @NotNull final String dateFinish
+    ) throws Exception;
 
     @WebMethod
-    void removeProject(@WebParam(name = "session") @NotNull final Session session,
-                       @WebParam(name = "name") @NotNull final String name) throws Exception;
+    void removeProject(
+            @WebParam(name = "session") @NotNull final Session session,
+            @WebParam(name = "name") @NotNull final String name
+    ) throws Exception;
 
     @WebMethod
     void removeAllProjects(@WebParam(name = "session") @NotNull final Session session) throws Exception;
@@ -34,9 +38,10 @@ public interface IProjectEndpoint {
 
     @WebMethod
     @Nullable
-    Project findOneProject(@WebParam(name = "session") @NotNull final Session session,
-                           @WebParam(name = "name") @NotNull final String name,
-                           @WebParam(name = "description") @NotNull final String description) throws Exception;
+    Project findOneProject(
+            @WebParam(name = "session") @NotNull final Session session,
+            @WebParam(name = "name") @NotNull final String name,
+            @WebParam(name = "description") @NotNull final String description) throws Exception;
 
     @WebMethod
     void mergeProject(@WebParam(name = "session") @NotNull final Session session,

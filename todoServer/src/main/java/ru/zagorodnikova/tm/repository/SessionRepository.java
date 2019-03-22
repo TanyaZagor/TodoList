@@ -2,10 +2,13 @@ package ru.zagorodnikova.tm.repository;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.entity.Session;
-import ru.zagorodnikova.tm.util.UtilPassword;
+import ru.zagorodnikova.tm.util.PasswordUtil;
 
 import java.rmi.AccessException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -13,9 +16,18 @@ import java.util.Properties;
 public class SessionRepository {
 
     @NotNull private final Map<String, Session> sessions = new LinkedHashMap<>();
+    @NotNull private final Connection connection;
+
+    public SessionRepository(ServiceLocator serviceLocator) throws Exception {
+        this.connection = serviceLocator.getConnection();
+    }
 
     @Nullable
-    public Session persist(@NotNull final Session session) {
+    public Session persist(@NotNull final Session session) throws Exception {
+        @NotNull final String query = "INSERT INTO todo_list.app_session (id, user_id, signature, timestamp) \n" +
+                " VALUES ('"+ session.getId()+"', '"+ session.getUserId() +"', '"+ session.getSignature() +"', '"+ session.getDate().getTime() +"');";
+        @NotNull final PreparedStatement statement = connection.prepareStatement(query);
+        statement.executeUpdate();
         sessions.put(session.getId(), session);
         return session;
     }
@@ -34,7 +46,7 @@ public class SessionRepository {
         @NotNull final String salt = property.getProperty("salt");
         String signature = "";
         for (int i = 0; i < cycle; i++) {
-            signature = UtilPassword.hashPassword(salt + session.getUserId() + salt);
+            signature = PasswordUtil.hashPassword(salt + session.getUserId() + salt);
         }
         return signature;
     }

@@ -18,12 +18,12 @@ public interface ITaskService {
 
     void removeTask(@NotNull final String userId,
                     @NotNull final String projectName,
-                    @NotNull final String taskName);
+                    @NotNull final String taskName) throws Exception;
 
     void removeAllTasksInProject(@NotNull final String userId,
-                                 @NotNull final String projectName);
+                                 @NotNull final String projectName) throws Exception;
 
-    void removeAllTasks(@NotNull final String userId);
+    void removeAllTasks(@NotNull final String userId) throws Exception;
 
     void mergeTask(@NotNull final String userId,
                    @NotNull final String projectName,

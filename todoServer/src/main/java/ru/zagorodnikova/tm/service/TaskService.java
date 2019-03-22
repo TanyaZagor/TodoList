@@ -7,7 +7,7 @@ import ru.zagorodnikova.tm.api.repository.ITaskRepository;
 import ru.zagorodnikova.tm.api.service.ITaskService;
 import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.entity.Task;
-import ru.zagorodnikova.tm.util.UtilDateFormatter;
+import ru.zagorodnikova.tm.util.DateFormatterUtil;
 
 import java.util.Date;
 import java.util.List;
@@ -37,15 +37,15 @@ public class TaskService implements ITaskService {
             if (description.isEmpty()) return null;
             if (dateStart.isEmpty()) return null;
             if (dateFinish.isEmpty()) return null;
-            @NotNull final Date start = UtilDateFormatter.dateFormatter(dateStart);
-            @NotNull final Date finish = UtilDateFormatter.dateFormatter(dateFinish);
+            @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
+            @NotNull final Date finish = DateFormatterUtil.dateFormatter(dateFinish);
             @Nullable final Task task = new Task(userId, project.getId(), taskName, description, start, finish);
             return taskRepository.persist(task);
         }
         return null;
     }
 
-    public void removeTask(@NotNull final String userId, @NotNull final String projectName, @NotNull final String taskName){
+    public void removeTask(@NotNull final String userId, @NotNull final String projectName, @NotNull final String taskName) throws Exception {
         if (projectName.isEmpty()) return;
         if (taskName.isEmpty()) return;
         @Nullable Task task = findOneTask(userId, projectName, taskName, "");
@@ -55,13 +55,13 @@ public class TaskService implements ITaskService {
 
     }
 
-    public void removeAllTasks(@NotNull final String userId) {
+    public void removeAllTasks(@NotNull final String userId) throws Exception {
         @NotNull final Task task = new Task();
         task.setUserId(userId);
         taskRepository.removeAll(task);
     }
 
-    public void removeAllTasksInProject(@NotNull final String userId, @NotNull final String projectName){
+    public void removeAllTasksInProject(@NotNull final String userId, @NotNull final String projectName) throws Exception {
         if (projectName.isEmpty()) return;
         @NotNull final Project newProject = new Project();
         newProject.setName(projectName);
@@ -84,8 +84,8 @@ public class TaskService implements ITaskService {
         if (dateFinish.isEmpty()) return;
         final Task task = findOneTask(userId, projectName, oldTaskName, "");
         if (task != null) {
-            @NotNull final Date start = UtilDateFormatter.dateFormatter(dateStart);
-            @NotNull final Date finish = UtilDateFormatter.dateFormatter(dateFinish);
+            @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
+            @NotNull final Date finish = DateFormatterUtil.dateFormatter(dateFinish);
             task.setName(taskName);
             task.setDescription(description);
             task.setDateStart(start);
@@ -104,7 +104,7 @@ public class TaskService implements ITaskService {
         if (project != null) {
             @NotNull final Task task = new Task();
             task.setProjectId(project.getId());
-            return  taskRepository.findAll(task);
+            return  taskRepository.findAllTasksInProject(task);
         }
         return null;
     }

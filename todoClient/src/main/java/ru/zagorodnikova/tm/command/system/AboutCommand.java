@@ -2,7 +2,7 @@ package ru.zagorodnikova.tm.command.system;
 
 import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.command.AbstractCommand;
-import ru.zagorodnikova.tm.util.Version;
+import ru.zagorodnikova.tm.util.VersionUtil;
 
 public class AboutCommand extends AbstractCommand {
 
@@ -24,7 +24,7 @@ public class AboutCommand extends AbstractCommand {
 
     @Override
     public void execute() throws Exception {
-        System.out.println(Version.getManifestInfo());
+        System.out.println(VersionUtil.getManifestInfo());
     }
 
     @Override

@@ -55,7 +55,7 @@ public class UserService extends AbstractService implements IUserService {
     }
 
     public void updateUser(@NotNull final String userId, @NotNull final String firstName, @NotNull final String lastName,
-                           @NotNull String email) {
+                           @NotNull String email) throws Exception {
         if (firstName.isEmpty()) return;
         if (lastName.isEmpty()) return;
         if (email.isEmpty()) return;
@@ -67,7 +67,7 @@ public class UserService extends AbstractService implements IUserService {
         userRepository.merge(user);
     }
 
-    public void removeUser(@NotNull final String userId) {
+    public void removeUser(@NotNull final String userId) throws Exception {
         @NotNull final User user = new User();
         user.setId(userId);
         userRepository.remove(user);

@@ -1,5 +1,4 @@
 package ru.zagorodnikova.tm.util;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.io.InputStream;
@@ -9,7 +8,7 @@ import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
-public class Version {
+public class VersionUtil {
 
     public static String getManifestInfo() throws Exception {
         @NotNull final Enumeration resEnum = Thread.currentThread().getContextClassLoader().getResources(JarFile.MANIFEST_NAME);
@@ -31,5 +30,6 @@ public class Version {
         }
         return null;
 //        String version = Manifests.read("Main-Class");
+//        return version;
     }
 }

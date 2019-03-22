@@ -7,7 +7,7 @@ import ru.zagorodnikova.tm.api.repository.ITaskRepository;
 import ru.zagorodnikova.tm.api.service.IProjectService;
 import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.entity.Task;
-import ru.zagorodnikova.tm.util.UtilDateFormatter;
+import ru.zagorodnikova.tm.util.DateFormatterUtil;
 
 import java.util.Date;
 import java.util.List;
@@ -34,8 +34,8 @@ public class ProjectService implements IProjectService {
             if (description.isEmpty()) return null;
             if (dateStart.isEmpty()) return null;
             if (dateFinish.isEmpty()) return null;
-            @NotNull final Date start = UtilDateFormatter.dateFormatter(dateStart);
-            @NotNull final Date finish = UtilDateFormatter.dateFormatter(dateFinish);
+            @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
+            @NotNull final Date finish = DateFormatterUtil.dateFormatter(dateFinish);
             newProject.setDescription(description);
             newProject.setUserId(userId);
             newProject.setDateStart(start);
@@ -45,7 +45,7 @@ public class ProjectService implements IProjectService {
         return null;
     }
 
-    public void removeProject(@NotNull final String userId, @NotNull final String projectName){
+    public void removeProject(@NotNull final String userId, @NotNull final String projectName) throws Exception {
         if (projectName.isEmpty()) return;
         @NotNull final Project newProject= new Project();
         newProject.setName(projectName);
@@ -59,17 +59,18 @@ public class ProjectService implements IProjectService {
         }
     }
 
-    public void removeAllProjects(@NotNull final String userId) {
+    public void removeAllProjects(@NotNull final String userId) throws Exception {
         @NotNull final Project project = new Project();
         project.setUserId(userId);
-        projectRepository.removeAll(project);
         Task task = new Task();
-        task.setProjectId(project.getId());
+        task.setUserId(userId);
         taskRepository.removeAll(task);
+        projectRepository.removeAll(project);
+
     }
 
     @Nullable
-    public List<Project> findAllProjects(@NotNull final String userId) {
+    public List<Project> findAllProjects(@NotNull final String userId) throws Exception {
         @NotNull final Project project = new Project();
         project.setUserId(userId);
         return projectRepository.findAll(project);
@@ -103,8 +104,8 @@ public class ProjectService implements IProjectService {
             if (description.isEmpty()) return;
             if (dateStart.isEmpty()) return;
             if (dateFinish.isEmpty()) return;
-            @NotNull final Date start = UtilDateFormatter.dateFormatter(dateStart);
-            @NotNull final Date finish = UtilDateFormatter.dateFormatter(dateFinish);
+            @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
+            @NotNull final Date finish = DateFormatterUtil.dateFormatter(dateFinish);
             newProject.setId(project.getId());
             newProject.setName(projectName);
             newProject.setDescription(description);
@@ -115,7 +116,7 @@ public class ProjectService implements IProjectService {
     }
 
     @Nullable
-    public List<Project> sortProjectsByDateCreated(@NotNull final String userId) {
+    public List<Project> sortProjectsByDateCreated(@NotNull final String userId) throws Exception {
         @Nullable final List<Project> list = findAllProjects(userId);
         if (list != null) {
             return projectRepository.sortByDateCreated(list);
@@ -124,7 +125,7 @@ public class ProjectService implements IProjectService {
     }
 
     @Nullable
-    public List<Project> sortProjectsByDateStart(@NotNull final String userId) {
+    public List<Project> sortProjectsByDateStart(@NotNull final String userId) throws Exception {
         @Nullable final List<Project> list = findAllProjects(userId);
         if (list != null) {
             return projectRepository.sortByDateStart(list);
@@ -132,7 +133,7 @@ public class ProjectService implements IProjectService {
         return null;
     }
     @Nullable
-    public List<Project> sortProjectsByDateFinish(@NotNull final String userId) {
+    public List<Project> sortProjectsByDateFinish(@NotNull final String userId) throws Exception {
         @Nullable final List<Project> list = findAllProjects(userId);
         if (list != null) {
             return projectRepository.sortByDateFinish(list);
@@ -142,7 +143,7 @@ public class ProjectService implements IProjectService {
     }
 
     @Nullable
-    public List<Project> sortProjectsByStatus(@NotNull final String userId) {
+    public List<Project> sortProjectsByStatus(@NotNull final String userId) throws Exception {
         @Nullable final List<Project> list = findAllProjects(userId);
         if (list != null) {
             return projectRepository.sortByStatus(list);

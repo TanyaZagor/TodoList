@@ -7,7 +7,7 @@ import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
-public class Version {
+public class VersionUtil {
 
     public static String getManifestInfo() throws Exception {
         Enumeration resEnum;

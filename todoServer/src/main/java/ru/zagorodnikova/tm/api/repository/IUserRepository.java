@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.entity.User;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface IUserRepository<T extends User> {
@@ -14,16 +15,16 @@ public interface IUserRepository<T extends User> {
     void changePassword(@NotNull final T t) throws Exception;
 
     @Nullable
-    T persist(@NotNull final T t);
+    T persist(@NotNull final T t) throws Exception;
 
-    void remove(@NotNull final T t);
+    void remove(@NotNull final T t) throws Exception;
 
     void removeAll();
 
     @NotNull
     T findOne(@NotNull final T t);
 
-    void merge(@NotNull final T t);
+    void merge(@NotNull final T t) throws Exception;
 
     @Nullable
     List<T> findAll(@NotNull final T t);

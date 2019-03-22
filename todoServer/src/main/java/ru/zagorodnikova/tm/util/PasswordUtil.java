@@ -2,7 +2,7 @@ package ru.zagorodnikova.tm.util;
 
 import org.jetbrains.annotations.NotNull;
 
-public class UtilPassword {
+public class PasswordUtil {
 
     @NotNull
     public static String hashPassword(@NotNull final String password) throws Exception {
