@@ -45,8 +45,8 @@ public class UserService extends AbstractService implements IUserService {
         if (newPassword.isEmpty()) return;
         @NotNull final User user = new User();
         user.setId(userId);
-        user.setPassword(oldPassword);
         user.setLogin(login);
+        user.setPassword(oldPassword);
         if (userRepository.checkPassword(user)) {
             user.setPassword(newPassword);
             userRepository.changePassword(user);
@@ -80,7 +80,7 @@ public class UserService extends AbstractService implements IUserService {
         return userRepository.findAll(user);
     }
 
-    @NotNull
+    @Nullable
     @Override
     public User findOne(@NotNull final String userId) {
         @NotNull final User user = new User();

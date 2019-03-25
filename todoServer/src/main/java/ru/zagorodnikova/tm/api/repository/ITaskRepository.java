@@ -46,6 +46,6 @@ public interface ITaskRepository<T extends Task> {
     @NotNull
     List<T> getTasks();
 
-    void setTasks(@NotNull  final List<T> list);
+    void setTasks(@NotNull  final List<T> list) throws Exception;
 
 }

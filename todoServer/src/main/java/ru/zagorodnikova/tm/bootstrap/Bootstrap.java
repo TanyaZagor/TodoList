@@ -43,7 +43,7 @@ public class Bootstrap implements ServiceLocator {
 
 
     public void init() throws Exception {
-        initProjectsAndUsers();
+        //initProjectsAndUsers();
         initEndpoints();
     }
 

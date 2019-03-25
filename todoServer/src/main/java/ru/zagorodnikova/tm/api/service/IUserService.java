@@ -34,7 +34,7 @@ public interface IUserService {
     @Nullable
     List<User> findAllUsers(@NotNull final String userId);
 
-    @NotNull
+    @Nullable
     User findOne(@NotNull final String userId);
 
 }

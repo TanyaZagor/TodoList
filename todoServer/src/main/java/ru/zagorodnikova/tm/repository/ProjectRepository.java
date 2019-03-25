@@ -14,7 +14,6 @@ import java.util.*;
 
 public class ProjectRepository extends AbstractRepository<Project> implements IProjectRepository<Project> {
 
-    @NotNull private final Map<String, Project> projects = super.getMap();
     @NotNull private final Connection connection;
 
     public ProjectRepository(ServiceLocator serviceLocator) throws Exception {
@@ -27,14 +26,12 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
                 "WHERE id = '"+ project.getId() +"'";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         statement.executeUpdate();
-        projects.remove(project.getId());
     }
     public void removeAll(@NotNull final Project project) throws Exception {
         @NotNull final String query =  "DELETE FROM todo_list.app_project " +
                 "WHERE user_id = '"+ project.getUserId() +"'";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         statement.executeUpdate();
-        projects.entrySet().removeIf((v) -> Objects.equals(v.getValue().getUserId(), project.getUserId()));
     }
 
     @NotNull
@@ -42,7 +39,7 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
     public List<Project> getProjects() {
         @NotNull final String query =
                 "SELECT * FROM todo_list.app_project";
-        @NotNull final PreparedStatement statement = Objects.requireNonNull(connection).prepareStatement(query);
+        @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         @NotNull final ResultSet resultSet = statement.executeQuery();
         @NotNull final List<Project> list = new ArrayList<>();
         while (resultSet.next()) list.add(fetch(resultSet));
@@ -51,8 +48,7 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
     }
 
     public void setProjects(@NotNull final List<Project> list) {
-        projects.clear();
-        list.forEach((v) -> projects.put(v.getId(), v));
+        list.forEach((v) -> persist(v));
     }
 
     @Nullable
@@ -63,32 +59,19 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
                 " VALUES ('"+ project.getId()+"', '"+ project.getUserId() +"', '"+ project.getName() +"', '"+ project.getDescription() +"', '"+ DateFormatterUtil.dateFormatter(project.getDateStart()) +"', '"+ DateFormatterUtil.dateFormatter(project.getDateFinish()) +"', '"+ DateFormatterUtil.dateFormatter(project.getDateCreate()) +"');";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         statement.executeUpdate();
-        if (!projects.containsValue(project)) {
-            projects.put(project.getId(), project);
-            return project;
-        }
-        return null;
+        return project;
     }
 
     @Nullable
+    @SneakyThrows
     public Project findOne(@NotNull final Project project){
-        @NotNull final List<Project> list = new ArrayList<>();
-        if (project.getDescription() != null && !project.getDescription().isEmpty()) {
-            projects.forEach((k, v) -> {
-                if (Objects.equals(v.getDescription(), project.getDescription()) && Objects.equals(v.getUserId(), project.getUserId())) {
-                    list.add(v);
-                }
-            });
-        }
-        if (project.getName() != null && !project.getName().isEmpty()) {
-            projects.forEach((k, v) -> {
-                if (Objects.equals(v.getName(), project.getName()) && Objects.equals(v.getUserId(), project.getUserId())) {
-                    list.add(v);
-                }
-            });
-        }
-        if (list.size() > 0) {
-            return list.get(0);
+        @NotNull final String query =
+                "SELECT * FROM todo_list.app_project WHERE user_id = '" + project.getUserId() + "' AND name = '" + project.getName() + "'";
+        @NotNull final PreparedStatement statement = connection.prepareStatement(query);
+        @NotNull final ResultSet resultSet = statement.executeQuery();
+        if(resultSet.next()) {
+            System.out.println(resultSet);
+            return fetch(resultSet);
         }
         return null;
     }
@@ -103,10 +86,6 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
                 "WHERE id = '"+ project.getId() +"'";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         statement.executeUpdate();
-        projects.get(project.getId()).setName(project.getName());
-        projects.get(project.getId()).setDescription(project.getDescription());
-        projects.get(project.getId()).setDateStart(project.getDateStart());
-        projects.get(project.getId()).setDateFinish(project.getDateFinish());
     }
 
     @NotNull
@@ -140,7 +119,7 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
     public List<Project> findAll(@NotNull Project project) {
         @NotNull final String query =
                 "SELECT * FROM todo_list.app_project WHERE user_id = '"+ project.getUserId() +"'";
-        @NotNull final PreparedStatement statement = Objects.requireNonNull(connection).prepareStatement(query);
+        @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         @NotNull final ResultSet resultSet = statement.executeQuery();
         @NotNull final List<Project> list = new ArrayList<>();
         while (resultSet.next()) list.add(fetch(resultSet));
@@ -154,11 +133,11 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
         if (row == null) return null;
         @NotNull final Project project = new Project();
         project.setId(row.getString(FieldConst.ID));
+        project.setUserId(row.getString(FieldConst.USER_ID));
         project.setName(row.getString(FieldConst.NAME));
         project.setDescription(row.getString(FieldConst.DESCRIPTION));
-        project.setDateStart(row.getDate(FieldConst.DATE_START));
         project.setDateFinish(row.getDate(FieldConst.DATE_FINISH));
-        project.setUserId(row.getString(FieldConst.USER_ID));
+        project.setDateStart(row.getDate(FieldConst.DATE_START));
         return project;
     }
 

@@ -21,18 +21,19 @@ public interface IUserRepository<T extends User> {
 
     void removeAll();
 
-    @NotNull
+    @Nullable
     T findOne(@NotNull final T t);
 
     void merge(@NotNull final T t) throws Exception;
 
     @Nullable
-    List<T> findAll(@NotNull final T t);
+    List<T> findAll(@Nullable final T t);
 
     boolean checkPassword(@NotNull final T t);
-    @NotNull
+
+    @Nullable
     List<T> getUsers();
 
-    void setUsers(@NotNull final List<T> list);
+    void setUsers(@NotNull final List<T> list) throws Exception;
 
 }

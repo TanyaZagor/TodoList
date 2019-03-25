@@ -13,8 +13,6 @@ import java.util.Map;
 @Getter
 public abstract class AbstractRepository<T extends AbstractEntity> {
 
-    @NotNull private final Map<String, T> map = new LinkedHashMap<>();
-
     @Nullable
     abstract public T persist(@NotNull final T t) throws Exception;
 
@@ -25,6 +23,4 @@ public abstract class AbstractRepository<T extends AbstractEntity> {
 
     abstract public void merge(@NotNull final T t) throws Exception;
 
-//    @Nullable
-//    abstract public List<T> findAll(@NotNull final T t) throws Exception;
 }

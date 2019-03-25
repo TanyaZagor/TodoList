@@ -29,8 +29,7 @@ public class ProjectService implements IProjectService {
         @NotNull final Project newProject = new Project();
         newProject.setName(projectName);
         newProject.setUserId(userId);
-        @Nullable final Project project = projectRepository.findOne(newProject);
-        if (project == null) {
+        if (projectRepository.findOne(newProject) == null) {
             if (description.isEmpty()) return null;
             if (dateStart.isEmpty()) return null;
             if (dateFinish.isEmpty()) return null;

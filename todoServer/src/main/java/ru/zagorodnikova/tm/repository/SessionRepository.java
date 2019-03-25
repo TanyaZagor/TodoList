@@ -34,6 +34,10 @@ public class SessionRepository {
 
     public void remove(@NotNull final Session session) throws Exception {
         validate(session);
+        @NotNull final String query =  "DELETE FROM todo_list.app_session " +
+                "WHERE id = '"+ session.getId() +"'";
+        @NotNull final PreparedStatement statement = connection.prepareStatement(query);
+        statement.executeUpdate();
         sessions.remove(session.getId());
     }
 
