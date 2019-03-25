@@ -21,17 +21,21 @@ public class ProjectEndpoint implements IProjectEndpoint {
     }
 
     @Nullable
-    public Project persistProject(@WebParam(name = "session") @NotNull final Session session,
-                                  @WebParam(name = "name") @NotNull final String name,
-                                  @WebParam(name = "description") @NotNull final String description,
-                                  @WebParam(name = "dateStart") @NotNull final String dateStart,
-                                  @WebParam(name = "dateFinish") @NotNull final String dateFinish) throws Exception {
+    public Project persistProject(
+            @WebParam(name = "session") @NotNull final Session session,
+            @WebParam(name = "name") @NotNull final String name,
+            @WebParam(name = "description") @NotNull final String description,
+            @WebParam(name = "dateStart") @NotNull final String dateStart,
+            @WebParam(name = "dateFinish") @NotNull final String dateFinish
+    ) throws Exception {
         serviceLocator.getSessionService().validate(session);
         return serviceLocator.getProjectService().persistProject(session.getUserId(), name, description, dateStart, dateFinish);
     }
 
-    public void removeProject(@WebParam(name = "session") @NotNull final Session session,
-                              @WebParam(name = "name") @NotNull final String name) throws Exception {
+    public void removeProject(
+            @WebParam(name = "session") @NotNull final Session session,
+            @WebParam(name = "name") @NotNull final String name
+    ) throws Exception {
         serviceLocator.getSessionService().validate(session);
         serviceLocator.getProjectService().removeProject(session.getUserId(), name);
     }
@@ -48,19 +52,23 @@ public class ProjectEndpoint implements IProjectEndpoint {
     }
 
     @Nullable
-    public Project findOneProject(@WebParam(name = "session") @NotNull final Session session,
-                                  @WebParam(name = "name") @NotNull final String name,
-                                  @WebParam(name = "description") @NotNull final String description) throws Exception {
+    public Project findOneProject(
+            @WebParam(name = "session") @NotNull final Session session,
+            @WebParam(name = "name") @NotNull final String name,
+            @WebParam(name = "description") @NotNull final String description
+    ) throws Exception {
         serviceLocator.getSessionService().validate(session);
         return serviceLocator.getProjectService().findOneProject(session.getUserId(), name, description);
     }
 
-    public void mergeProject(@WebParam(name = "session") @NotNull final Session session,
-                             @WebParam(name = "oldName") @NotNull final String oldName,
-                             @WebParam(name = "name") @NotNull final String name,
-                             @WebParam(name = "description") @NotNull final String description,
-                             @WebParam(name = "dateStart") @NotNull final String dateStart,
-                             @WebParam(name = "dateFinish") @NotNull final String dateFinish) throws Exception {
+    public void mergeProject(
+            @WebParam(name = "session") @NotNull final Session session,
+            @WebParam(name = "oldName") @NotNull final String oldName,
+            @WebParam(name = "name") @NotNull final String name,
+            @WebParam(name = "description") @NotNull final String description,
+            @WebParam(name = "dateStart") @NotNull final String dateStart,
+            @WebParam(name = "dateFinish") @NotNull final String dateFinish
+    ) throws Exception {
         serviceLocator.getSessionService().validate(session);
         serviceLocator.getProjectService().mergeProject(session.getUserId(), oldName, name, description, dateStart, dateFinish);
     }
