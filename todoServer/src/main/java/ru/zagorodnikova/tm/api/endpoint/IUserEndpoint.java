@@ -34,6 +34,6 @@ public interface IUserEndpoint {
 
 
     @WebMethod
-    @NotNull
+    @Nullable
     User findUser(@WebParam(name = "session") @NotNull final Session session) throws Exception;
 }

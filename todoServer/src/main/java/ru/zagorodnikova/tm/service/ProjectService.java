@@ -56,7 +56,6 @@ public class ProjectService implements IProjectService {
     public void removeAllProjects(@NotNull final String userId) throws Exception {
         taskRepository.removeAll(userId);
         projectRepository.removeAll(userId);
-
     }
 
     @Nullable
@@ -65,8 +64,7 @@ public class ProjectService implements IProjectService {
     }
 
     @Nullable
-    public Project findOneProject(@NotNull final String userId, @NotNull final String projectName,
-                                  @NotNull final String projectDescription) {
+    public Project findOneProject(@NotNull final String userId, @NotNull final String projectName) {
         if (projectName.isEmpty()) return null;
         return projectRepository.findOne(userId, projectName);
     }
@@ -103,6 +101,7 @@ public class ProjectService implements IProjectService {
         }
         return null;
     }
+
     @Nullable
     public List<Project> sortProjectsByDateFinish(@NotNull final String userId) throws Exception {
         @Nullable final List<Project> list = findAllProjects(userId);
@@ -110,7 +109,6 @@ public class ProjectService implements IProjectService {
             return projectRepository.sortByDateFinish(list);
         }
         return null;
-
     }
 
     @Nullable

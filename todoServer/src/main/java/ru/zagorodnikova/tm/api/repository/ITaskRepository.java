@@ -22,7 +22,7 @@ public interface ITaskRepository<T extends Task> {
     void removeAllInProject(@NotNull final String projectId) throws Exception;
 
     @Nullable
-    T findOne(@NotNull final String userId, @NotNull final String projectId, @NotNull final String name);
+    T findOne(@NotNull final String projectId, @NotNull final String name);
 
     void merge(@NotNull final String id,
                @NotNull final String name,

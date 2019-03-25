@@ -85,9 +85,9 @@ public class TaskRepository extends AbstractRepository<Task> implements ITaskRep
 
     @Nullable
     @SneakyThrows
-    public Task findOne(@NotNull final String userId, @NotNull final String projectId, @NotNull final String name) {
+    public Task findOne(@NotNull final String projectId, @NotNull final String name) {
         @NotNull final String query =
-                "SELECT * FROM todo_list.app_task WHERE name = '" + name + "' AND user_id = '" + userId + "' AND project_id = '" + projectId + "'";
+                "SELECT * FROM todo_list.app_task WHERE name = '" + name + "' AND project_id = '" + projectId + "'";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         @NotNull final ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
@@ -112,6 +112,8 @@ public class TaskRepository extends AbstractRepository<Task> implements ITaskRep
         Collections.reverse(list);
         return list;
     }
+
+
     @NotNull
     public List<Task> sortByDateFinish(@NotNull final List<Task> list) {
         list.sort(((o1, o2) -> Objects.requireNonNull(o2.getDateFinish()).compareTo(Objects.requireNonNull(o1.getDateFinish()))));
@@ -156,6 +158,7 @@ public class TaskRepository extends AbstractRepository<Task> implements ITaskRep
         statement.close();
         return list;
     }
+
     @SneakyThrows
     public List<Task> findAllTasks(@NotNull final String userId) {
         @NotNull final String query =
@@ -182,5 +185,4 @@ public class TaskRepository extends AbstractRepository<Task> implements ITaskRep
         task.setProjectId(row.getString(FieldConst.PROJECT_ID));
         return task;
     }
-
 }

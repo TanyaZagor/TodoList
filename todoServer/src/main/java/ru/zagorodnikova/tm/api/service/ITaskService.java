@@ -43,8 +43,7 @@ public interface ITaskService {
     @Nullable
     Task findOneTask(@NotNull final String userId,
                      @NotNull final String projectName,
-                     @NotNull final String taskName,
-                     @NotNull final String taskDescription);
+                     @NotNull final String taskName);
 
     @Nullable
     List<Task> sortTasksByDateCreated(@NotNull final String userId,

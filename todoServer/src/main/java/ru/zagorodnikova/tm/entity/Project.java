@@ -42,7 +42,6 @@ public class Project extends AbstractEntity {
     @NotNull
     private Status status = Status.SCHEDULED;
 
-
     public Project(@NotNull String userId, @NotNull String name, @NotNull String description,
                    @NotNull Date dateStart, @NotNull Date dateFinish) {
         this.userId = userId;

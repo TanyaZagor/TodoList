@@ -44,7 +44,6 @@ public class UserService extends AbstractService implements IUserService {
         if (userRepository.checkPassword(login, PasswordUtil.hashPassword(oldPassword))) {
             userRepository.changePassword(userId, PasswordUtil.hashPassword(newPassword));
         }
-
     }
 
     public void updateUser(@NotNull final String userId, @NotNull final String firstName, @NotNull final String lastName,

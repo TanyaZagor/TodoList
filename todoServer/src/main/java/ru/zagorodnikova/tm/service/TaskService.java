@@ -45,7 +45,7 @@ public class TaskService implements ITaskService {
     public void removeTask(@NotNull final String userId, @NotNull final String projectName, @NotNull final String taskName) throws Exception {
         if (projectName.isEmpty()) return;
         if (taskName.isEmpty()) return;
-        @Nullable Task task = findOneTask(userId, projectName, taskName, "");
+        @Nullable final Task task = findOneTask(userId, projectName, taskName);
         if (task != null) {
             taskRepository.remove(task.getId());
         }
@@ -72,7 +72,7 @@ public class TaskService implements ITaskService {
         if (description.isEmpty()) return;
         if (dateStart.isEmpty()) return;
         if (dateFinish.isEmpty()) return;
-        final Task task = findOneTask(userId, projectName, oldTaskName, "");
+        final Task task = findOneTask(userId, projectName, oldTaskName);
         if (task != null) {
             @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
             @NotNull final Date finish = DateFormatterUtil.dateFormatter(dateFinish);
@@ -98,15 +98,16 @@ public class TaskService implements ITaskService {
 
     @Nullable
     public Task findOneTask(@NotNull final String userId, @NotNull final String projectName,
-                            @NotNull final String taskName, @NotNull final String taskDescription) {
+                            @NotNull final String taskName) {
         if (projectName.isEmpty()) return null;
         @Nullable final Project project = projectRepository.findOne(userId, projectName);
         if (project != null) {
             if (taskName.isEmpty()) return null;
-            return taskRepository.findOne(userId, project.getId(), taskName);
+            return taskRepository.findOne(project.getId(), taskName);
         }
         return null;
     }
+
     @Nullable
     public List<Task> sortTasksByDateCreated(@NotNull String userId, @NotNull String projectName) {
         @Nullable final List<Task> list = findAllTasksInProject(userId, projectName);
@@ -124,6 +125,7 @@ public class TaskService implements ITaskService {
         }
         return null;
     }
+
     @Nullable
     public List<Task> sortTasksByDateFinish(@NotNull String userId, @NotNull String projectName) {
         @Nullable final List<Task> list = findAllTasksInProject(userId, projectName);
@@ -140,7 +142,6 @@ public class TaskService implements ITaskService {
             return taskRepository.sortByStatus(list);
         }
         return null;
-
     }
 
 }

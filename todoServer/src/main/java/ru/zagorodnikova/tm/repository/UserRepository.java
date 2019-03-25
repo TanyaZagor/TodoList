@@ -150,8 +150,7 @@ public class UserRepository extends AbstractRepository<User> implements IUserRep
         user.setFirstName(row.getString(FieldConst.FIRST_NAME));
         user.setLastName(row.getString(FieldConst.LAST_NAME));
         user.setEmail(row.getString(FieldConst.EMAIL));
-        user.setRoleType(row.getString(FieldConst.ROLETYPE));
+        user.setRoleType(row.getString(FieldConst.ROLE_TYPE));
         return user;
     }
-
 }

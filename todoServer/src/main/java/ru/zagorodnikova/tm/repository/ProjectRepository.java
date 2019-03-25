@@ -29,6 +29,7 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
         statement.executeUpdate();
         statement.close();
     }
+
     public void removeAll(@NotNull final String userId) throws Exception {
         @NotNull final String query =  "DELETE FROM todo_list.app_project " +
                 "WHERE user_id = '"+ userId +"'";
@@ -60,8 +61,13 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
     @Override
     @SneakyThrows
     public Project persist(@NotNull Project project) {
-        @NotNull final String query = "INSERT INTO todo_list.app_project (id, user_id, name, description, dateStart, dateFinish, dateCreate) \n" +
-                " VALUES ('"+ project.getId()+"', '"+ project.getUserId() +"', '"+ project.getName() +"', '"+ project.getDescription() +"', '"+ DateFormatterUtil.dateFormatter(project.getDateStart()) +"', '"+ DateFormatterUtil.dateFormatter(project.getDateFinish()) +"', '"+ DateFormatterUtil.dateFormatter(project.getDateCreate()) +"');";
+        @NotNull final String query = "INSERT INTO todo_list.app_project " +
+                "(id, user_id, name, description, dateStart, dateFinish, dateCreate) \n" +
+                " VALUES ('"+ project.getId()+"', '"+ project.getUserId() +"', '"+ project.getName() +"', '" +
+                project.getDescription() +"', '" +
+                DateFormatterUtil.dateFormatter(project.getDateStart()) +"', '" +
+                DateFormatterUtil.dateFormatter(project.getDateFinish()) +"', '" +
+                DateFormatterUtil.dateFormatter(project.getDateCreate()) +"');";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         statement.executeUpdate();
         statement.close();
@@ -110,13 +116,15 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
 
     @NotNull
     public List<Project> sortByDateStart(@NotNull final List<Project> list) {
-        list.sort(((o1, o2) -> Objects.requireNonNull((o2).getDateStart()).compareTo(Objects.requireNonNull((o1).getDateStart()))));
+        list.sort(((o1, o2) -> Objects.requireNonNull((o2).getDateStart())
+                .compareTo(Objects.requireNonNull((o1).getDateStart()))));
         Collections.reverse(list);
         return list;
     }
     @NotNull
     public List<Project> sortByDateFinish(@NotNull final List<Project> list) {
-        list.sort(((o1, o2) -> Objects.requireNonNull((o2).getDateFinish()).compareTo(Objects.requireNonNull((o1).getDateFinish()))));
+        list.sort(((o1, o2) -> Objects.requireNonNull((o2).getDateFinish())
+                .compareTo(Objects.requireNonNull((o1).getDateFinish()))));
         Collections.reverse(list);
         return list;
     }

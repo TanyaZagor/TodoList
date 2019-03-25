@@ -40,8 +40,7 @@ public interface IProjectEndpoint {
     @Nullable
     Project findOneProject(
             @WebParam(name = "session") @NotNull final Session session,
-            @WebParam(name = "name") @NotNull final String name,
-            @WebParam(name = "description") @NotNull final String description) throws Exception;
+            @WebParam(name = "name") @NotNull final String name) throws Exception;
 
     @WebMethod
     void mergeProject(@WebParam(name = "session") @NotNull final Session session,

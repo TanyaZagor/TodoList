@@ -23,9 +23,10 @@ public class SessionEndpoint implements ISessionEndpoint {
 
     @Nullable
     @Override
-    public Session signIn(@WebParam(name = "login") @NotNull final String login,
-                          @WebParam(name = "password") @NotNull final String password) throws Exception {
-
+    public Session signIn(
+            @WebParam(name = "login") @NotNull final String login,
+            @WebParam(name = "password") @NotNull final String password
+    ) throws Exception {
         final User user = serviceLocator.getUserService().signIn(login, password);
         if (user != null) {
             return serviceLocator.getSessionService().persist(user);
@@ -35,12 +36,13 @@ public class SessionEndpoint implements ISessionEndpoint {
 
     @Nullable
     @Override
-    public Session signUp(@WebParam(name = "login") @NotNull final String login,
-                          @WebParam(name = "password") @NotNull final String password,
-                          @WebParam(name = "firstName") @NotNull final String fistName,
-                          @WebParam(name = "lastName") @NotNull final String lastName,
-                          @WebParam(name = "email") @NotNull final String email) throws Exception {
-
+    public Session signUp(
+            @WebParam(name = "login") @NotNull final String login,
+            @WebParam(name = "password") @NotNull final String password,
+            @WebParam(name = "firstName") @NotNull final String fistName,
+            @WebParam(name = "lastName") @NotNull final String lastName,
+            @WebParam(name = "email") @NotNull final String email
+    ) throws Exception {
         final User user = serviceLocator.getUserService().signUp(login, password, fistName, lastName, email);
         if (user != null) {
             return serviceLocator.getSessionService().persist(user);

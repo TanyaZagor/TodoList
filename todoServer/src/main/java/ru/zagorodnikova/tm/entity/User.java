@@ -36,7 +36,6 @@ public class User extends AbstractEntity {
     @NotNull
     private RoleType roleType = RoleType.USER;
 
-
     public User(@Nullable String login, @Nullable String password, @Nullable String firstName,
                 @Nullable String lastName, @Nullable String email) throws Exception {
         this.login = login;
@@ -48,7 +47,6 @@ public class User extends AbstractEntity {
         }
     }
 
-
     public void setPassword(@NotNull String password) throws Exception {
         this.password = PasswordUtil.hashPassword(password);
     }
@@ -59,6 +57,7 @@ public class User extends AbstractEntity {
             case "admin": roleType = RoleType.ADMIN; break;
         }
     }
+
     @Override
     public boolean equals(@Nullable Object o) {
         if (this == o) return true;

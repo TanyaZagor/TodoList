@@ -43,7 +43,6 @@ public class SessionRepository {
         sessions.remove(session.getId());
     }
 
-
     @NotNull
     public String signSession(@NotNull final Session session) throws Exception {
         @NotNull final Properties property = new Properties();

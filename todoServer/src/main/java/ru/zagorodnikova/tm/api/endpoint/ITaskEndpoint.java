@@ -56,8 +56,7 @@ public interface ITaskEndpoint {
     @Nullable
     Task findOneTask(@WebParam(name = "session") @NotNull final Session session,
                      @WebParam(name = "projectName") @NotNull final String projectName,
-                     @WebParam(name = "taskName") @NotNull final String taskName,
-                     @WebParam(name = "description") @NotNull final String description) throws Exception;
+                     @WebParam(name = "taskName") @NotNull final String taskName) throws Exception;
 
     @WebMethod
     @Nullable

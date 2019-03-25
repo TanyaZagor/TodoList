@@ -18,13 +18,11 @@ public class AdminEndpoint implements IAdminEndpoint {
         this.serviceLocator = serviceLocator;
     }
 
-
     @Override
     public void removeAllUsers(@WebParam(name = "session") @NotNull final Session session) throws Exception {
         if (checkRole(session)) {
             serviceLocator.getAdminService().removeAllUsers();
         }
-
     }
 
     @Override
@@ -39,7 +37,6 @@ public class AdminEndpoint implements IAdminEndpoint {
         if (checkRole(session)) {
             serviceLocator.getDomainService().load();
         }
-
     }
 
     @Override
@@ -54,7 +51,6 @@ public class AdminEndpoint implements IAdminEndpoint {
         if (checkRole(session)) {
             serviceLocator.getDomainService().loadFromJson();
         }
-
     }
 
     @Override

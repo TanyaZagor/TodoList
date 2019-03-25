@@ -25,8 +25,7 @@ public interface IProjectService{
 
     @Nullable
     Project findOneProject(@NotNull final String userId,
-                           @NotNull final String projectName,
-                           @NotNull final String projectDescription);
+                           @NotNull final String projectName);
 
     void mergeProject(@NotNull final String userId,
                       @NotNull final String oldProjectName,

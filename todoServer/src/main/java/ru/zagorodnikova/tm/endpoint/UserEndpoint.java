@@ -20,18 +20,22 @@ public class UserEndpoint implements IUserEndpoint {
         this.serviceLocator = serviceLocator;
     }
 
-    public void changePassword(@WebParam(name = "session") @NotNull final Session session,
-                               @WebParam(name = "login") @NotNull final String login,
-                               @WebParam(name = "oldPassword") @NotNull final String oldPassword,
-                               @WebParam(name = "newPassword") @NotNull final String newPassword) throws Exception {
+    public void changePassword(
+            @WebParam(name = "session") @NotNull final Session session,
+            @WebParam(name = "login") @NotNull final String login,
+            @WebParam(name = "oldPassword") @NotNull final String oldPassword,
+            @WebParam(name = "newPassword") @NotNull final String newPassword
+    ) throws Exception {
         serviceLocator.getSessionService().validate(session);
         serviceLocator.getUserService().changePassword(session.getUserId(), login, oldPassword, newPassword);
     }
 
-    public void updateUser(@WebParam(name = "session") @NotNull final Session session,
-                           @WebParam(name = "firstName") @NotNull final String firstName,
-                           @WebParam(name = "lastName") @NotNull final String lastName,
-                           @WebParam(name = "email") @NotNull final String email) throws Exception {
+    public void updateUser(
+            @WebParam(name = "session") @NotNull final Session session,
+            @WebParam(name = "firstName") @NotNull final String firstName,
+            @WebParam(name = "lastName") @NotNull final String lastName,
+            @WebParam(name = "email") @NotNull final String email
+    ) throws Exception {
         serviceLocator.getSessionService().validate(session);
         serviceLocator.getUserService().updateUser(session.getUserId(), firstName, lastName, email);
     }
@@ -48,7 +52,7 @@ public class UserEndpoint implements IUserEndpoint {
         return serviceLocator.getUserService().findAllUsers(session.getUserId());
     }
 
-    @NotNull
+    @Nullable
     @Override
     public User findUser(@WebParam(name = "session") @NotNull final Session session) throws Exception {
         serviceLocator.getSessionService().validate(session);

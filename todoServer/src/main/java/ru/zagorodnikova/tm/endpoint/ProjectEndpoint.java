@@ -54,11 +54,10 @@ public class ProjectEndpoint implements IProjectEndpoint {
     @Nullable
     public Project findOneProject(
             @WebParam(name = "session") @NotNull final Session session,
-            @WebParam(name = "name") @NotNull final String name,
-            @WebParam(name = "description") @NotNull final String description
+            @WebParam(name = "name") @NotNull final String name
     ) throws Exception {
         serviceLocator.getSessionService().validate(session);
-        return serviceLocator.getProjectService().findOneProject(session.getUserId(), name, description);
+        return serviceLocator.getProjectService().findOneProject(session.getUserId(), name);
     }
 
     public void mergeProject(
