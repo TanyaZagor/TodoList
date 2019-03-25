@@ -121,8 +121,16 @@ public class UserRepository extends AbstractRepository<User> implements IUserRep
     }
 
     @Nullable
+    @SneakyThrows
     public List<User> getUsers() {
-        return findAll(null);
+        @NotNull final String query =
+                "SELECT * FROM todo_list.app_user ";
+        @NotNull final PreparedStatement statement = connection.prepareStatement(query);
+        @NotNull final ResultSet resultSet = statement.executeQuery();
+        @NotNull final List<User> list = new ArrayList<>();
+        while (resultSet.next()) list.add(fetch(resultSet));
+        statement.close();
+        return list;
     }
 
     public void setUsers(@NotNull final List<User> list) throws Exception {
@@ -142,7 +150,7 @@ public class UserRepository extends AbstractRepository<User> implements IUserRep
         user.setFirstName(row.getString(FieldConst.FIRST_NAME));
         user.setLastName(row.getString(FieldConst.LAST_NAME));
         user.setEmail(row.getString(FieldConst.EMAIL));
-        //user.setRoleType(row.getString(FieldConst.ROLETYPE));
+        user.setRoleType(row.getString(FieldConst.ROLETYPE));
         return user;
     }
 

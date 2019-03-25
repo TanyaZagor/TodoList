@@ -10,23 +10,23 @@ import ru.zagorodnikova.tm.api.repository.IUserRepository;
 import ru.zagorodnikova.tm.api.service.*;
 import ru.zagorodnikova.tm.endpoint.*;
 import ru.zagorodnikova.tm.entity.*;
-import ru.zagorodnikova.tm.entity.enumeration.RoleType;
 import ru.zagorodnikova.tm.entity.enumeration.Status;
 import ru.zagorodnikova.tm.repository.ProjectRepository;
 import ru.zagorodnikova.tm.repository.SessionRepository;
 import ru.zagorodnikova.tm.repository.TaskRepository;
 import ru.zagorodnikova.tm.repository.UserRepository;
 import ru.zagorodnikova.tm.service.*;
+import ru.zagorodnikova.tm.util.DatabaseUtil;
 
 import javax.xml.ws.Endpoint;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.util.Properties;
 
 @Setter
 @Getter
 public class Bootstrap implements ServiceLocator {
 
+    @NotNull private final Connection connection = new DatabaseUtil().getConnection();
     @NotNull private final IProjectRepository<Project> projectRepository = new ProjectRepository(this);
     @NotNull private final ITaskRepository<Task> taskRepository = new TaskRepository(this);
     @NotNull private final IUserRepository<User> userRepository = new UserRepository(this);
@@ -51,7 +51,7 @@ public class Bootstrap implements ServiceLocator {
     private void initProjectsAndUsers() throws Exception {
         final User user1 = userService.signUp("login", "password", "first name", "last name", "email@email.ru");
         final User user2 = userService.signUp("admin", "admin", "first name", "last name", "email@email.ru");
-        user2.setRoleType(RoleType.ADMIN);
+        user2.setRoleType("admin");
 
         final Project project1 = projectService.persistProject(user1.getId(), "Project1", "Description1", "20.02.2019", "20.05.2019");
         final Project project2 = projectService.persistProject(user2.getId(), "Project2", "Description2", "20.05.2019", "20.06.2019");
@@ -77,11 +77,5 @@ public class Bootstrap implements ServiceLocator {
         Endpoint.publish("http://" + host + ":" + port + "/UserEndpoint", new UserEndpoint(this));
         Endpoint.publish("http://" + host + ":" + port + "/SessionEndpoint", new SessionEndpoint(this));
         Endpoint.publish("http://" + host + ":" + port + "/AdminEndpoint", new AdminEndpoint(this));
-    }
-
-    public Connection getConnection() throws Exception {
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/todo_list", "root", "root");
-        return connection;
     }
 }

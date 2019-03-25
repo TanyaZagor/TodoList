@@ -53,6 +53,12 @@ public class User extends AbstractEntity {
         this.password = PasswordUtil.hashPassword(password);
     }
 
+    public void setRoleType(@NotNull String role) {
+        switch (role) {
+            case "user": roleType = RoleType.USER; break;
+            case "admin": roleType = RoleType.ADMIN; break;
+        }
+    }
     @Override
     public boolean equals(@Nullable Object o) {
         if (this == o) return true;

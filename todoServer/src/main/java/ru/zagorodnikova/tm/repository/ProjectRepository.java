@@ -44,11 +44,16 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
         @NotNull final List<Project> list = new ArrayList<>();
         while (resultSet.next()) list.add(fetch(resultSet));
         statement.close();
+        for (Project project : list) {
+            System.out.println(project.getName());
+        }
         return list;
     }
 
     public void setProjects(@NotNull final List<Project> list) {
-        list.forEach((v) -> persist(v));
+        for (Project v : list) {
+            persist(v);
+        }
     }
 
     @Nullable
