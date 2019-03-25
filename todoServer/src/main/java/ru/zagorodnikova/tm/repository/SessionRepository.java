@@ -28,6 +28,7 @@ public class SessionRepository {
                 " VALUES ('"+ session.getId()+"', '"+ session.getUserId() +"', '"+ session.getSignature() +"', '"+ session.getDate().getTime() +"');";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         statement.executeUpdate();
+        statement.close();
         sessions.put(session.getId(), session);
         return session;
     }
@@ -38,6 +39,7 @@ public class SessionRepository {
                 "WHERE id = '"+ session.getId() +"'";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         statement.executeUpdate();
+        statement.close();
         sessions.remove(session.getId());
     }
 

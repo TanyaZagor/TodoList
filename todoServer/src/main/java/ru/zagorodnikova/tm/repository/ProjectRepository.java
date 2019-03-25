@@ -26,12 +26,14 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
                 "WHERE id = '"+ project.getId() +"'";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         statement.executeUpdate();
+        statement.close();
     }
     public void removeAll(@NotNull final Project project) throws Exception {
         @NotNull final String query =  "DELETE FROM todo_list.app_project " +
                 "WHERE user_id = '"+ project.getUserId() +"'";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         statement.executeUpdate();
+        statement.close();
     }
 
     @NotNull
@@ -44,9 +46,6 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
         @NotNull final List<Project> list = new ArrayList<>();
         while (resultSet.next()) list.add(fetch(resultSet));
         statement.close();
-        for (Project project : list) {
-            System.out.println(project.getName());
-        }
         return list;
     }
 
@@ -64,6 +63,7 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
                 " VALUES ('"+ project.getId()+"', '"+ project.getUserId() +"', '"+ project.getName() +"', '"+ project.getDescription() +"', '"+ DateFormatterUtil.dateFormatter(project.getDateStart()) +"', '"+ DateFormatterUtil.dateFormatter(project.getDateFinish()) +"', '"+ DateFormatterUtil.dateFormatter(project.getDateCreate()) +"');";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         statement.executeUpdate();
+        statement.close();
         return project;
     }
 
@@ -76,7 +76,9 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
         @NotNull final ResultSet resultSet = statement.executeQuery();
         if(resultSet.next()) {
             System.out.println(resultSet);
-            return fetch(resultSet);
+            Project newProject = fetch(resultSet);
+            statement.close();
+            return newProject;
         }
         return null;
     }
@@ -91,6 +93,7 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
                 "WHERE id = '"+ project.getId() +"'";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         statement.executeUpdate();
+        statement.close();
     }
 
     @NotNull

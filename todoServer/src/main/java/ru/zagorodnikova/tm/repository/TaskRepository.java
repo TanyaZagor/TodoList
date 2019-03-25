@@ -32,6 +32,7 @@ public class TaskRepository extends AbstractRepository<Task> implements ITaskRep
                 " VALUES ('"+ task.getId()+"', '"+ task.getUserId() +"', '"+ task.getProjectId() +"', '"+ task.getName() +"', '"+ task.getDescription() +"', '"+ DateFormatterUtil.dateFormatter(task.getDateStart()) +"', '"+ DateFormatterUtil.dateFormatter(task.getDateFinish()) +"', '"+ DateFormatterUtil.dateFormatter(task.getDateCreate()) +"');";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         statement.executeUpdate();
+        statement.close();
         return task;
     }
 
@@ -41,6 +42,7 @@ public class TaskRepository extends AbstractRepository<Task> implements ITaskRep
                 "WHERE id = '"+ task.getId() +"'";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         statement.executeUpdate();
+        statement.close();
     }
 
     public void merge(@NotNull final Task task) throws Exception {
@@ -52,7 +54,7 @@ public class TaskRepository extends AbstractRepository<Task> implements ITaskRep
                 "WHERE id = '"+ task.getId() +"'";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         statement.executeUpdate();
-
+        statement.close();
     }
 
 
@@ -61,6 +63,7 @@ public class TaskRepository extends AbstractRepository<Task> implements ITaskRep
                 "WHERE user_id = '"+ task.getUserId() +"'";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         statement.executeUpdate();
+        statement.close();
     }
 
     public void removeAllInProject(@NotNull final Task task) throws Exception {
@@ -68,6 +71,7 @@ public class TaskRepository extends AbstractRepository<Task> implements ITaskRep
                 "WHERE project_id = '"+ task.getProjectId() +"'";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         statement.executeUpdate();
+        statement.close();
     }
 
     @Nullable
@@ -78,7 +82,9 @@ public class TaskRepository extends AbstractRepository<Task> implements ITaskRep
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         @NotNull final ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
-            return fetch(resultSet);
+            Task newTask = fetch(resultSet);
+            statement.close();
+            return newTask;
         }
         return null;
     }

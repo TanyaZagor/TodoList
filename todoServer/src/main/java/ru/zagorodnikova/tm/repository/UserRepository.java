@@ -31,7 +31,9 @@ public class UserRepository extends AbstractRepository<User> implements IUserRep
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         @NotNull final ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
-            return fetch(resultSet);
+            User newUser = fetch(resultSet);
+            statement.close();
+            return newUser;
         }
         return null;
     }
@@ -42,6 +44,7 @@ public class UserRepository extends AbstractRepository<User> implements IUserRep
                 "' WHERE id = '" + user.getId() + "'";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         statement.executeUpdate();
+        statement.close();
     }
 
     @Override
@@ -50,6 +53,7 @@ public class UserRepository extends AbstractRepository<User> implements IUserRep
                 "WHERE id = '"+ user.getId() +"'";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         statement.executeUpdate();
+        statement.close();
     }
 
     @Override
@@ -59,6 +63,7 @@ public class UserRepository extends AbstractRepository<User> implements IUserRep
                 "WHERE role = '"+ RoleType.USER +"'";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         statement.executeUpdate();
+        statement.close();
     }
 
     @Nullable
@@ -68,6 +73,7 @@ public class UserRepository extends AbstractRepository<User> implements IUserRep
                 " VALUES ('"+ user.getId()+"', '"+ user.getLogin() +"', '"+ user.getPassword() +"', '"+ user.getFirstName() +"', '"+ user.getLastName() +"', '"+ user.getEmail() +"', '"+ user.getRoleType() +"');";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         statement.executeUpdate();
+        statement.close();
         return user;
     }
 
@@ -80,7 +86,9 @@ public class UserRepository extends AbstractRepository<User> implements IUserRep
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         @NotNull final ResultSet resultSet = statement.executeQuery();
         if ( resultSet.next()) {
-            return fetch(resultSet);
+            User newUser = fetch(resultSet);
+            statement.close();
+            return newUser;
         }
         return null;
     }
@@ -93,6 +101,7 @@ public class UserRepository extends AbstractRepository<User> implements IUserRep
                 "email = '"+ user.getEmail() +"' WHERE id = '" + user.getId() + "'";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         statement.executeUpdate();
+        statement.close();
     }
 
     @Nullable
@@ -115,9 +124,14 @@ public class UserRepository extends AbstractRepository<User> implements IUserRep
                 "SELECT * FROM todo_list.app_user WHERE login = '" + user.getLogin() + "' AND passwordHash = '" + user.getPassword() + "'";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         @NotNull final ResultSet resultSet = statement.executeQuery();
-        if ( !resultSet.next()) return false;
-        if (fetch(resultSet) == null) return false;
-        return true;
+        if (resultSet.next()) {
+            if (fetch(resultSet) != null) {
+                statement.close();
+                return true;
+            }
+        }
+        statement.close();
+        return false;
     }
 
     @Nullable
