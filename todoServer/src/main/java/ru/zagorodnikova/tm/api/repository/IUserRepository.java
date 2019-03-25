@@ -10,26 +10,23 @@ import java.util.List;
 public interface IUserRepository<T extends User> {
 
     @Nullable
-    T signIn(@NotNull final T t);
+    T signIn(@NotNull final String login, @NotNull final String password);
 
-    void changePassword(@NotNull final T t) throws Exception;
+    void changePassword(@NotNull final String userId, @NotNull final String password) throws Exception;
 
     @Nullable
     T persist(@NotNull final T t) throws Exception;
 
-    void remove(@NotNull final T t) throws Exception;
+    void remove(@NotNull final String userId) throws Exception;
 
     void removeAll();
 
-    @Nullable
-    T findOne(@NotNull final T t);
-
-    void merge(@NotNull final T t) throws Exception;
+    void merge(@NotNull final String userId, @NotNull final String firstName, @NotNull final String lastName, @NotNull final String email) throws Exception;
 
     @Nullable
-    List<T> findAll(@Nullable final T t);
+    T findOne(@NotNull final String userId);
 
-    boolean checkPassword(@NotNull final T t);
+    boolean checkPassword(@NotNull final String login, @NotNull final String password);
 
     @Nullable
     List<T> getUsers();

@@ -8,7 +8,9 @@ import ru.zagorodnikova.tm.api.repository.IUserRepository;
 import ru.zagorodnikova.tm.entity.enumeration.FieldConst;
 import ru.zagorodnikova.tm.entity.enumeration.RoleType;
 import ru.zagorodnikova.tm.entity.User;
+import ru.zagorodnikova.tm.util.PasswordUtil;
 
+import javax.print.DocFlavor;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,9 +27,9 @@ public class UserRepository extends AbstractRepository<User> implements IUserRep
 
     @Nullable
     @SneakyThrows
-    public User signIn(@NotNull final User user) {
+    public User signIn(@NotNull final String login, @NotNull final String password) {
         @NotNull final String query =
-                "SELECT * FROM todo_list.app_user WHERE login = '" + user.getLogin() + "' AND passwordHash = '" + user.getPassword() + "'";
+                "SELECT * FROM todo_list.app_user WHERE login = '" + login + "' AND passwordHash = '" + password + "'";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         @NotNull final ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
@@ -38,19 +40,19 @@ public class UserRepository extends AbstractRepository<User> implements IUserRep
         return null;
     }
 
-    public void changePassword(@NotNull final User user) throws Exception {
+    public void changePassword(@NotNull final String userId, @NotNull final String password) throws Exception {
         @NotNull final String query =  "UPDATE todo_list.app_user SET " +
-                "passwordHash = '"+ user.getPassword() +
-                "' WHERE id = '" + user.getId() + "'";
+                "passwordHash = '"+ password +
+                "' WHERE id = '" + userId + "'";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         statement.executeUpdate();
         statement.close();
     }
 
     @Override
-    public void remove(@NotNull User user) throws Exception {
+    public void remove(@NotNull final String userId) throws Exception {
         @NotNull final String query =  "DELETE FROM todo_list.app_user " +
-                "WHERE id = '"+ user.getId() +"'";
+                "WHERE id = '"+ userId +"'";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         statement.executeUpdate();
         statement.close();
@@ -78,11 +80,10 @@ public class UserRepository extends AbstractRepository<User> implements IUserRep
     }
 
     @Nullable
-    @Override
     @SneakyThrows
-    public User findOne(@NotNull final User user) {
+    public User findOne(@NotNull final String userId) {
         @NotNull final String query =
-                "SELECT * FROM todo_list.app_user WHERE id = '" + user.getId() + "'";
+                "SELECT * FROM todo_list.app_user WHERE id = '" + userId + "'";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         @NotNull final ResultSet resultSet = statement.executeQuery();
         if ( resultSet.next()) {
@@ -93,35 +94,20 @@ public class UserRepository extends AbstractRepository<User> implements IUserRep
         return null;
     }
 
-    @Override
-    public void merge(@NotNull final User user) throws Exception {
+    public void merge(@NotNull final String userId, @NotNull final String firstName, @NotNull final String lastName, @NotNull final String email) throws Exception {
         @NotNull final String query =  "UPDATE todo_list.app_user SET " +
-                "firstName = '"+ user.getFirstName() +"', " +
-                "lastName = '"+ user.getLastName() +"', " +
-                "email = '"+ user.getEmail() +"' WHERE id = '" + user.getId() + "'";
+                "firstName = '"+ firstName +"', " +
+                "lastName = '"+ lastName +"', " +
+                "email = '"+ email +"' WHERE id = '" + userId + "'";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         statement.executeUpdate();
         statement.close();
     }
 
-    @Nullable
-    @Override
     @SneakyThrows
-    public List<User> findAll(@Nullable final User user) {
+    public boolean checkPassword(@NotNull final String login, @NotNull final String password) {
         @NotNull final String query =
-                "SELECT * FROM todo_list.app_user";
-        @NotNull final PreparedStatement statement = connection.prepareStatement(query);
-        @NotNull final ResultSet resultSet = statement.executeQuery();
-        @NotNull final List<User> list = new ArrayList<>();
-        while (resultSet.next()) list.add(fetch(resultSet));
-        statement.close();
-        return list;
-    }
-
-    @SneakyThrows
-    public boolean checkPassword(@NotNull final User user) {
-        @NotNull final String query =
-                "SELECT * FROM todo_list.app_user WHERE login = '" + user.getLogin() + "' AND passwordHash = '" + user.getPassword() + "'";
+                "SELECT * FROM todo_list.app_user WHERE login = '" + login + "' AND passwordHash = '" + password + "'";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         @NotNull final ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {

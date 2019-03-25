@@ -27,9 +27,14 @@ public class TaskRepository extends AbstractRepository<Task> implements ITaskRep
 
     @Nullable
     @Override
-    public Task persist(@NotNull Task task) throws Exception {
-        @NotNull final String query = "INSERT INTO todo_list.app_task (id, user_id, project_id, name, description, dateStart, dateFinish, dateCreate) \n" +
-                " VALUES ('"+ task.getId()+"', '"+ task.getUserId() +"', '"+ task.getProjectId() +"', '"+ task.getName() +"', '"+ task.getDescription() +"', '"+ DateFormatterUtil.dateFormatter(task.getDateStart()) +"', '"+ DateFormatterUtil.dateFormatter(task.getDateFinish()) +"', '"+ DateFormatterUtil.dateFormatter(task.getDateCreate()) +"');";
+    public Task persist(@NotNull final Task task) throws Exception {
+        @NotNull final String query = "INSERT INTO todo_list.app_task " +
+                "(id, user_id, project_id, name, description, dateStart, dateFinish, dateCreate) \n" +
+                " VALUES ('"+ task.getId()+"', '"+ task.getUserId() +"', '"+ task.getProjectId() +"', '"
+                + task.getName() +"', '"+ task.getDescription() +"', '"
+                + DateFormatterUtil.dateFormatter(task.getDateStart()) +"', '"
+                + DateFormatterUtil.dateFormatter(task.getDateFinish()) +"', '"
+                + DateFormatterUtil.dateFormatter(task.getDateCreate()) +"');";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         statement.executeUpdate();
         statement.close();
@@ -37,38 +42,42 @@ public class TaskRepository extends AbstractRepository<Task> implements ITaskRep
     }
 
     @Override
-    public void remove(@NotNull Task task) throws Exception {
+    public void remove(@NotNull final String id) throws Exception {
         @NotNull final String query =  "DELETE FROM todo_list.app_task " +
-                "WHERE id = '"+ task.getId() +"'";
+                "WHERE id = '"+ id +"'";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         statement.executeUpdate();
         statement.close();
     }
 
-    public void merge(@NotNull final Task task) throws Exception {
+    public void merge(@NotNull final String id,
+                      @NotNull final String name,
+                      @NotNull final String description,
+                      @NotNull final Date dateStart,
+                      @NotNull final Date dateFinish) throws Exception {
         @NotNull final String query =  "UPDATE todo_list.app_task SET " +
-                "name = '"+ task.getName() +"', " +
-                "description = '"+ task.getDescription() +"', " +
-                "dateStart = '"+ DateFormatterUtil.dateFormatter(task.getDateStart()) +"', " +
-                "dateFinish = '"+ DateFormatterUtil.dateFormatter(task.getDateFinish()) +"'  " +
-                "WHERE id = '"+ task.getId() +"'";
+                "name = '"+ name +"', " +
+                "description = '"+ description +"', " +
+                "dateStart = '"+ DateFormatterUtil.dateFormatter(dateStart) +"', " +
+                "dateFinish = '"+ DateFormatterUtil.dateFormatter(dateFinish) +"'  " +
+                "WHERE id = '"+ id +"'";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         statement.executeUpdate();
         statement.close();
     }
 
 
-    public void removeAll(@NotNull final Task task) throws Exception {
+    public void removeAll(@NotNull final String userId) throws Exception {
         @NotNull final String query =  "DELETE FROM todo_list.app_task " +
-                "WHERE user_id = '"+ task.getUserId() +"'";
+                "WHERE user_id = '"+ userId +"'";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         statement.executeUpdate();
         statement.close();
     }
 
-    public void removeAllInProject(@NotNull final Task task) throws Exception {
+    public void removeAllInProject(@NotNull final String projectId) throws Exception {
         @NotNull final String query =  "DELETE FROM todo_list.app_task " +
-                "WHERE project_id = '"+ task.getProjectId() +"'";
+                "WHERE project_id = '"+ projectId +"'";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         statement.executeUpdate();
         statement.close();
@@ -76,9 +85,9 @@ public class TaskRepository extends AbstractRepository<Task> implements ITaskRep
 
     @Nullable
     @SneakyThrows
-    public Task findOne(@NotNull final Task task) {
+    public Task findOne(@NotNull final String userId, @NotNull final String projectId, @NotNull final String name) {
         @NotNull final String query =
-                "SELECT * FROM todo_list.app_task WHERE name = '" + task.getName() + "' AND user_id = '" + task.getUserId() + "'";
+                "SELECT * FROM todo_list.app_task WHERE name = '" + name + "' AND user_id = '" + userId + "' AND project_id = '" + projectId + "'";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         @NotNull final ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
@@ -137,9 +146,9 @@ public class TaskRepository extends AbstractRepository<Task> implements ITaskRep
     }
 
     @SneakyThrows
-    public List<Task> findAllTasksInProject(@NotNull Task task) {
+    public List<Task> findAllTasksInProject(@NotNull final String projectId) {
         @NotNull final String query =
-                "SELECT * FROM todo_list.app_task WHERE project_id = '"+ task.getProjectId() +"'";
+                "SELECT * FROM todo_list.app_task WHERE project_id = '"+ projectId +"'";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         @NotNull final ResultSet resultSet = statement.executeQuery();
         @NotNull final List<Task> list = new ArrayList<>();
@@ -148,9 +157,9 @@ public class TaskRepository extends AbstractRepository<Task> implements ITaskRep
         return list;
     }
     @SneakyThrows
-    public List<Task> findAllTasks(@NotNull Task task) {
+    public List<Task> findAllTasks(@NotNull final String userId) {
         @NotNull final String query =
-                "SELECT * FROM todo_list.app_task WHERE user_id = '"+ task.getUserId() +"'";
+                "SELECT * FROM todo_list.app_task WHERE user_id = '"+ userId +"'";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         @NotNull final ResultSet resultSet = statement.executeQuery();
         @NotNull final List<Task> list = new ArrayList<>();

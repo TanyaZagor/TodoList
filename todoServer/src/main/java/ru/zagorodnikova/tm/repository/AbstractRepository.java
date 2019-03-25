@@ -16,11 +16,6 @@ public abstract class AbstractRepository<T extends AbstractEntity> {
     @Nullable
     abstract public T persist(@NotNull final T t) throws Exception;
 
-    public abstract void remove(@NotNull final T t) throws Exception;
-
-    @Nullable
-    abstract public T findOne(@NotNull final T t);
-
-    abstract public void merge(@NotNull final T t) throws Exception;
+    public abstract void remove(@NotNull final String id) throws Exception;
 
 }

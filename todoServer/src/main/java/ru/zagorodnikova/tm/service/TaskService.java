@@ -28,10 +28,7 @@ public class TaskService implements ITaskService {
     public Task persistTask(@NotNull final String userId, @NotNull final String projectName, @NotNull final String taskName,
                             @NotNull final String description, @NotNull final String dateStart, @NotNull final String dateFinish) throws Exception {
         if (projectName.isEmpty()) return null;
-        @NotNull final Project newProject = new Project();
-        newProject.setName(projectName);
-        newProject.setUserId(userId);
-        @Nullable final Project project = projectRepository.findOne(newProject);
+        @Nullable final Project project = projectRepository.findOne(userId, projectName);
         if (project != null) {
             if (taskName.isEmpty()) return null;
             if (description.isEmpty()) return null;
@@ -50,27 +47,20 @@ public class TaskService implements ITaskService {
         if (taskName.isEmpty()) return;
         @Nullable Task task = findOneTask(userId, projectName, taskName, "");
         if (task != null) {
-            taskRepository.remove(task);
+            taskRepository.remove(task.getId());
         }
 
     }
 
     public void removeAllTasks(@NotNull final String userId) throws Exception {
-        @NotNull final Task task = new Task();
-        task.setUserId(userId);
-        taskRepository.removeAll(task);
+        taskRepository.removeAll(userId);
     }
 
     public void removeAllTasksInProject(@NotNull final String userId, @NotNull final String projectName) throws Exception {
         if (projectName.isEmpty()) return;
-        @NotNull final Project newProject = new Project();
-        newProject.setName(projectName);
-        newProject.setUserId(userId);
-        @Nullable final Project project = projectRepository.findOne(newProject);
+        @Nullable final Project project = projectRepository.findOne(userId, projectName);
         if (project != null) {
-            @NotNull final Task task = new Task();
-            task.setProjectId(project.getId());
-            taskRepository.removeAllInProject(task);
+            taskRepository.removeAllInProject(project.getId());
         }
     }
 
@@ -86,25 +76,16 @@ public class TaskService implements ITaskService {
         if (task != null) {
             @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
             @NotNull final Date finish = DateFormatterUtil.dateFormatter(dateFinish);
-            task.setName(taskName);
-            task.setDescription(description);
-            task.setDateStart(start);
-            task.setDateFinish(finish);
-            taskRepository.merge(task);
+            taskRepository.merge(task.getId(), taskName, description, start, finish);
         }
     }
 
     @Nullable
     public List<Task> findAllTasksInProject(@NotNull final String userId, @NotNull final String projectName) {
         if (projectName.isEmpty()) return null;
-        @NotNull final Project newProject = new Project();
-        newProject.setName(projectName);
-        newProject.setUserId(userId);
-        @Nullable final Project project = projectRepository.findOne(newProject);
+        @Nullable final Project project = projectRepository.findOne(userId, projectName);
         if (project != null) {
-            @NotNull final Task task = new Task();
-            task.setProjectId(project.getId());
-            return  taskRepository.findAllTasksInProject(task);
+            return  taskRepository.findAllTasksInProject(project.getId());
         }
         return null;
     }
@@ -112,31 +93,17 @@ public class TaskService implements ITaskService {
 
     @Nullable
     public List<Task> findAllTasks(@NotNull final String userId) {
-        @NotNull final Task task = new Task();
-        task.setUserId(userId);
-        return  taskRepository.findAllTasks(task);
+        return  taskRepository.findAllTasks(userId);
     }
 
     @Nullable
     public Task findOneTask(@NotNull final String userId, @NotNull final String projectName,
                             @NotNull final String taskName, @NotNull final String taskDescription) {
         if (projectName.isEmpty()) return null;
-        @NotNull final Project newProject = new Project();
-        newProject.setName(projectName);
-        newProject.setUserId(userId);
-        @Nullable final Project project = projectRepository.findOne(newProject);
+        @Nullable final Project project = projectRepository.findOne(userId, projectName);
         if (project != null) {
-            if (taskDescription.isEmpty()) {
-                if (taskName.isEmpty()) return null;
-                @NotNull Task task = new Task();
-                task.setProjectId(project.getId());
-                task.setName(taskName);
-                return taskRepository.findOne(task);
-            }
-            @NotNull final Task task = new Task();
-            task.setProjectId(project.getId());
-            task.setDescription(taskDescription);
-            return taskRepository.findOne(task);
+            if (taskName.isEmpty()) return null;
+            return taskRepository.findOne(userId, project.getId(), taskName);
         }
         return null;
     }

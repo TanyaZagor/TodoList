@@ -2,6 +2,9 @@ package ru.zagorodnikova.tm.bootstrap;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.api.repository.IProjectRepository;
@@ -19,6 +22,9 @@ import ru.zagorodnikova.tm.service.*;
 import ru.zagorodnikova.tm.util.DatabaseUtil;
 
 import javax.xml.ws.Endpoint;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
 import java.sql.Connection;
 import java.util.Properties;
 

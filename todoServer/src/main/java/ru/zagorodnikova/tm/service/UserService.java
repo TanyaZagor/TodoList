@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.repository.IUserRepository;
 import ru.zagorodnikova.tm.api.service.IUserService;
 import ru.zagorodnikova.tm.entity.User;
+import ru.zagorodnikova.tm.util.PasswordUtil;
 
 import java.util.List;
 
@@ -20,10 +21,7 @@ public class UserService extends AbstractService implements IUserService {
     public User signIn(@NotNull final String login, @NotNull final String password) throws Exception {
         if (login.isEmpty()) return null;
         if (password.isEmpty()) return null;
-        @NotNull final User user = new User();
-        user.setLogin(login);
-        user.setPassword(password);
-        return userRepository.signIn(user);
+        return userRepository.signIn(login, PasswordUtil.hashPassword(password));
     }
 
     @Nullable
@@ -43,13 +41,8 @@ public class UserService extends AbstractService implements IUserService {
         if (login.isEmpty()) return;
         if (oldPassword.isEmpty()) return;
         if (newPassword.isEmpty()) return;
-        @NotNull final User user = new User();
-        user.setId(userId);
-        user.setLogin(login);
-        user.setPassword(oldPassword);
-        if (userRepository.checkPassword(user)) {
-            user.setPassword(newPassword);
-            userRepository.changePassword(user);
+        if (userRepository.checkPassword(login, PasswordUtil.hashPassword(oldPassword))) {
+            userRepository.changePassword(userId, PasswordUtil.hashPassword(newPassword));
         }
 
     }
@@ -59,33 +52,22 @@ public class UserService extends AbstractService implements IUserService {
         if (firstName.isEmpty()) return;
         if (lastName.isEmpty()) return;
         if (email.isEmpty()) return;
-        @NotNull final User user = new User();
-        user.setId(userId);
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
-        userRepository.merge(user);
+        userRepository.merge(userId, firstName, lastName, email);
     }
 
     public void removeUser(@NotNull final String userId) throws Exception {
-        @NotNull final User user = new User();
-        user.setId(userId);
-        userRepository.remove(user);
+        userRepository.remove(userId);
     }
 
     @Nullable
     public List<User> findAllUsers(@NotNull final String userId) {
-        @NotNull final User user = new User();
-        user.setId(userId);
-        return userRepository.findAll(user);
+        return userRepository.getUsers();
     }
 
     @Nullable
     @Override
     public User findOne(@NotNull final String userId) {
-        @NotNull final User user = new User();
-        user.setId(userId);
-        return userRepository.findOne(user);
+        return userRepository.findOne(userId);
     }
 
 

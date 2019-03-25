@@ -11,6 +11,7 @@ import ru.zagorodnikova.tm.util.DateFormatterUtil;
 
 import java.sql.*;
 import java.util.*;
+import java.util.Date;
 
 public class ProjectRepository extends AbstractRepository<Project> implements IProjectRepository<Project> {
 
@@ -21,16 +22,16 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
     }
 
     @Override
-    public void remove(@NotNull Project project) throws Exception {
+    public void remove(@NotNull String id) throws Exception {
         @NotNull final String query =  "DELETE FROM todo_list.app_project " +
-                "WHERE id = '"+ project.getId() +"'";
+                "WHERE id = '"+ id +"'";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         statement.executeUpdate();
         statement.close();
     }
-    public void removeAll(@NotNull final Project project) throws Exception {
+    public void removeAll(@NotNull final String userId) throws Exception {
         @NotNull final String query =  "DELETE FROM todo_list.app_project " +
-                "WHERE user_id = '"+ project.getUserId() +"'";
+                "WHERE user_id = '"+ userId +"'";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         statement.executeUpdate();
         statement.close();
@@ -69,9 +70,9 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
 
     @Nullable
     @SneakyThrows
-    public Project findOne(@NotNull final Project project){
+    public Project findOne(@NotNull final String userId, @NotNull final String name){
         @NotNull final String query =
-                "SELECT * FROM todo_list.app_project WHERE user_id = '" + project.getUserId() + "' AND name = '" + project.getName() + "'";
+                "SELECT * FROM todo_list.app_project WHERE user_id = '" + userId + "' AND name = '" + name + "'";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         @NotNull final ResultSet resultSet = statement.executeQuery();
         if(resultSet.next()) {
@@ -84,13 +85,17 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
     }
 
     @SneakyThrows
-    public void merge(@NotNull final Project project) {
+    public void merge(@NotNull final String id,
+                      @NotNull final String projectName,
+                      @NotNull final String description,
+                      @NotNull final Date dateStart,
+                      @NotNull final Date dateFinish) {
         @NotNull final String query =  "UPDATE todo_list.app_project SET " +
-                "description = '"+ project.getDescription() +"', " +
-                "name = '"+ project.getName() +"', " +
-                "dateStart = '"+ DateFormatterUtil.dateFormatter(project.getDateStart()) +"', " +
-                "dateFinish = '"+ DateFormatterUtil.dateFormatter(project.getDateFinish()) +"'  " +
-                "WHERE id = '"+ project.getId() +"'";
+                "description = '"+ description +"', " +
+                "name = '"+ projectName +"', " +
+                "dateStart = '"+ DateFormatterUtil.dateFormatter(dateStart) +"', " +
+                "dateFinish = '"+ DateFormatterUtil.dateFormatter(dateFinish) +"'  " +
+                "WHERE id = '"+ id +"'";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         statement.executeUpdate();
         statement.close();
@@ -124,9 +129,9 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
     }
 
     @SneakyThrows
-    public List<Project> findAll(@NotNull Project project) {
+    public List<Project> findAll(@NotNull String userId) {
         @NotNull final String query =
-                "SELECT * FROM todo_list.app_project WHERE user_id = '"+ project.getUserId() +"'";
+                "SELECT * FROM todo_list.app_project WHERE user_id = '"+ userId +"'";
         @NotNull final PreparedStatement statement = connection.prepareStatement(query);
         @NotNull final ResultSet resultSet = statement.executeQuery();
         @NotNull final List<Project> list = new ArrayList<>();

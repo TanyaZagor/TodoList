@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.entity.Task;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 
@@ -14,22 +15,26 @@ public interface ITaskRepository<T extends Task> {
     @Nullable
     T persist(@NotNull final T t) throws Exception;
 
-    void remove(@NotNull final T t) throws Exception;
+    void remove(@NotNull final String id) throws Exception;
 
-    void removeAll(@NotNull final T t) throws Exception;
+    void removeAll(@NotNull final String userId) throws Exception;
 
-    void removeAllInProject(@NotNull final T t) throws Exception;
-
-    @Nullable
-    T findOne(@NotNull final T t);
-
-    void merge(@NotNull final T t) throws Exception;
+    void removeAllInProject(@NotNull final String projectId) throws Exception;
 
     @Nullable
-    List<T> findAllTasksInProject(@NotNull final T t);
+    T findOne(@NotNull final String userId, @NotNull final String projectId, @NotNull final String name);
+
+    void merge(@NotNull final String id,
+               @NotNull final String name,
+               @NotNull final String description,
+               @NotNull final Date dateStart,
+               @NotNull final Date dateFinish) throws Exception;
 
     @Nullable
-    List<T> findAllTasks(@NotNull final T t);
+    List<T> findAllTasksInProject(@NotNull final String projectId);
+
+    @Nullable
+    List<T> findAllTasks(@NotNull final String userId);
 
     @NotNull
     List<T> sortByDateCreated(@NotNull final List<T> list);
