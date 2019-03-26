@@ -85,38 +85,22 @@ public class ProjectService implements IProjectService {
     }
 
     @Nullable
-    public List<Project> sortProjectsByDateCreated(@NotNull final String userId) throws Exception {
-        @Nullable final List<Project> list = findAllProjects(userId);
-        if (list != null) {
-            return projectRepository.sortByDateCreated(list);
-        }
-        return null;
+    public List<Project> sortProjectsByDateCreated(@NotNull final String userId) {
+        return projectRepository.sortByDateCreated(userId);
     }
 
     @Nullable
-    public List<Project> sortProjectsByDateStart(@NotNull final String userId) throws Exception {
-        @Nullable final List<Project> list = findAllProjects(userId);
-        if (list != null) {
-            return projectRepository.sortByDateStart(list);
-        }
-        return null;
+    public List<Project> sortProjectsByDateStart(@NotNull final String userId) {
+        return projectRepository.sortByDateStart(userId);
     }
 
     @Nullable
-    public List<Project> sortProjectsByDateFinish(@NotNull final String userId) throws Exception {
-        @Nullable final List<Project> list = findAllProjects(userId);
-        if (list != null) {
-            return projectRepository.sortByDateFinish(list);
-        }
-        return null;
+    public List<Project> sortProjectsByDateFinish(@NotNull final String userId) {
+        return projectRepository.sortByDateFinish(userId);
     }
 
     @Nullable
-    public List<Project> sortProjectsByStatus(@NotNull final String userId) throws Exception {
-        @Nullable final List<Project> list = findAllProjects(userId);
-        if (list != null) {
-            return projectRepository.sortByStatus(list);
-        }
-        return null;
+    public List<Project> sortProjectsByStatus(@NotNull final String userId) {
+        return projectRepository.sortByStatus(userId);
     }
 }

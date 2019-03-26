@@ -2,12 +2,20 @@ package ru.zagorodnikova.tm.bootstrap;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.ibatis.datasource.pooled.PooledDataSource;
 import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.mapping.Environment;
+import org.apache.ibatis.session.Configuration;
+import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.apache.ibatis.transaction.TransactionFactory;
+import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
+import ru.zagorodnikova.tm.api.mapper.IProjectMapper;
+import ru.zagorodnikova.tm.api.mapper.ITaskMapper;
 import ru.zagorodnikova.tm.api.repository.IProjectRepository;
 import ru.zagorodnikova.tm.api.repository.ITaskRepository;
 import ru.zagorodnikova.tm.api.repository.IUserRepository;
@@ -21,12 +29,16 @@ import ru.zagorodnikova.tm.repository.TaskRepository;
 import ru.zagorodnikova.tm.repository.UserRepository;
 import ru.zagorodnikova.tm.service.*;
 import ru.zagorodnikova.tm.util.DatabaseUtil;
+import ru.zagorodnikova.tm.util.DateFormatterUtil;
 
+import javax.sql.DataSource;
 import javax.xml.ws.Endpoint;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.sql.Connection;
+import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 @Setter
@@ -52,6 +64,15 @@ public class Bootstrap implements ServiceLocator {
     public void init() throws Exception {
         //initProjectsAndUsers();
         initEndpoints();
+//        SqlSessionFactory sessionFactory = getSqlSessionFactory();
+//        SqlSession session = sessionFactory.openSession();
+//        Project project = session.getMapper(IProjectMapper.class).findOne("714bc724-ed0c-4215-9eb5-5bbd23a8473d", "Project2");
+//        System.out.println(project.getName());
+        SqlSessionFactory sessionFactory = getSqlSessionFactory();
+        SqlSession session = sessionFactory.openSession();
+        session.getMapper(IProjectMapper.class).merge("5f36d8ca-6d37-4fce-9195-a0f19fa52e03", "name", "des",  DateFormatterUtil.dateFormatter(new Date()), DateFormatterUtil.dateFormatter(new Date()));
+
+        session.commit();
     }
 
 
@@ -85,4 +106,23 @@ public class Bootstrap implements ServiceLocator {
         Endpoint.publish("http://" + host + ":" + port + "/SessionEndpoint", new SessionEndpoint(this));
         Endpoint.publish("http://" + host + ":" + port + "/AdminEndpoint", new AdminEndpoint(this));
     }
+
+    public SqlSessionFactory getSqlSessionFactory() throws Exception {
+        @Nullable final String user = "root";
+        @Nullable final String password = "root";
+        @Nullable final String url = "jdbc:mysql://localhost:3306/todo_list";
+        @Nullable final String driver = "com.mysql.jdbc.Driver";
+
+        final DataSource dataSource = new PooledDataSource(driver, url, user, password);
+        final TransactionFactory transactionFactory = new JdbcTransactionFactory();
+        final Environment environment =
+                new Environment("development", transactionFactory, dataSource);
+        final Configuration configuration = new Configuration(environment);
+//        configuration.addMapper(UserRepository.class);
+        configuration.addMapper(IProjectMapper.class);
+//        configuration.addMapper(SessionRepository.class);
+        configuration.addMapper(ITaskMapper.class);
+        return new SqlSessionFactoryBuilder().build(configuration);
+    }
+
 }

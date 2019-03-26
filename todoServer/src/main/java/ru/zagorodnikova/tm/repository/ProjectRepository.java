@@ -1,9 +1,11 @@
 package ru.zagorodnikova.tm.repository;
 
 import lombok.SneakyThrows;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
+import ru.zagorodnikova.tm.api.mapper.IProjectMapper;
 import ru.zagorodnikova.tm.api.repository.IProjectRepository;
 import ru.zagorodnikova.tm.entity.enumeration.FieldConst;
 import ru.zagorodnikova.tm.entity.Project;
@@ -13,7 +15,7 @@ import java.sql.*;
 import java.util.*;
 import java.util.Date;
 
-public class ProjectRepository extends AbstractRepository<Project> implements IProjectRepository<Project> {
+public class ProjectRepository extends AbstractRepository<Project> implements IProjectRepository<Project>{
 
     @NotNull private final Connection connection;
 
@@ -107,30 +109,38 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
         statement.close();
     }
 
-    @NotNull
-    public List<Project> sortByDateCreated(@NotNull final List<Project> list) {
+    @Nullable
+    public List<Project> sortByDateCreated(@NotNull final String userId) {
+        List<Project> list = findAll(userId);
+        if (list == null || list.isEmpty()) return null;
         list.sort(((o1, o2) -> (o2).getDateCreate().compareTo((o1).getDateCreate())));
         Collections.reverse(list);
         return list;
     }
 
-    @NotNull
-    public List<Project> sortByDateStart(@NotNull final List<Project> list) {
+    @Nullable
+    public List<Project> sortByDateStart(@NotNull final String userId) {
+        List<Project> list = findAll(userId);
+        if (list == null || list.isEmpty()) return null;
         list.sort(((o1, o2) -> Objects.requireNonNull((o2).getDateStart())
                 .compareTo(Objects.requireNonNull((o1).getDateStart()))));
         Collections.reverse(list);
         return list;
     }
-    @NotNull
-    public List<Project> sortByDateFinish(@NotNull final List<Project> list) {
+    @Nullable
+    public List<Project> sortByDateFinish(@NotNull final String userId) {
+        List<Project> list = findAll(userId);
+        if (list == null || list.isEmpty()) return null;
         list.sort(((o1, o2) -> Objects.requireNonNull((o2).getDateFinish())
                 .compareTo(Objects.requireNonNull((o1).getDateFinish()))));
         Collections.reverse(list);
         return list;
     }
 
-    @NotNull
-    public List<Project> sortByStatus(@NotNull final List<Project> list) {
+    @Nullable
+    public List<Project> sortByStatus(@NotNull final String userId) {
+        List<Project> list = findAll(userId);
+        if (list == null || list.isEmpty()) return null;
         list.sort(((o1, o2) -> (o2).getStatus().compareTo((o1).getStatus())));
         Collections.reverse(list);
         return list;

@@ -31,17 +31,17 @@ public interface IProjectRepository<T extends Project> {
     @Nullable
     List<T> findAll(@NotNull final String userId) throws Exception;
 
-    @NotNull
-    List<T> sortByDateCreated(@NotNull final List<T> list);
+    @Nullable
+    List<T> sortByDateCreated(@NotNull final String userId);
 
-    @NotNull
-    List<T> sortByDateStart(@NotNull final List<T> list);
+    @Nullable
+    List<T> sortByDateStart(@NotNull final String userId);
 
-    @NotNull
-    List<T> sortByDateFinish(@NotNull final List<T> list);
+    @Nullable
+    List<T> sortByDateFinish(@NotNull final String userId);
 
-    @NotNull
-    List<T> sortByStatus(@NotNull final List<T> list);
+    @Nullable
+    List<T> sortByStatus(@NotNull final String userId);
 
     @NotNull
     List<T> getProjects();
