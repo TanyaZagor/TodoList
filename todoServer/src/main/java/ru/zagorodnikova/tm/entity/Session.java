@@ -22,7 +22,7 @@ public class Session extends AbstractEntity implements Cloneable {
     private String signature;
 
     @NotNull
-    private Date date = new Date();
+    private long timestamp = new Date().getTime();
 
     public Session(@NotNull String userId) {
         this.userId = userId;

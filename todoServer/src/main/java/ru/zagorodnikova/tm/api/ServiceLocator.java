@@ -29,4 +29,7 @@ public interface ServiceLocator {
     @NotNull
     Connection getConnection() throws Exception;
 
+    @NotNull
+    SqlSessionFactory getSessionFactory();
+
 }

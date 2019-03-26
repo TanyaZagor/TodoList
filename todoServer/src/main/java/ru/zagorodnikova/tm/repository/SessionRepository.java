@@ -1,46 +1,34 @@
 package ru.zagorodnikova.tm.repository;
 
+import org.apache.ibatis.session.SqlSession;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
+import ru.zagorodnikova.tm.api.mapper.ISessionMapper;
 import ru.zagorodnikova.tm.entity.Session;
 import ru.zagorodnikova.tm.util.PasswordUtil;
 
 import java.rmi.AccessException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Properties;
 
 public class SessionRepository {
 
-    @NotNull private final Map<String, Session> sessions = new LinkedHashMap<>();
-    @NotNull private final Connection connection;
+    @NotNull private final ISessionMapper sessionMapper;
 
-    public SessionRepository(ServiceLocator serviceLocator) throws Exception {
-        this.connection = serviceLocator.getConnection();
+    public SessionRepository(ServiceLocator serviceLocator){
+        SqlSession session = serviceLocator.getSessionFactory().openSession();
+        this.sessionMapper = session.getMapper(ISessionMapper.class);
     }
 
     @Nullable
     public Session persist(@NotNull final Session session) throws Exception {
-        @NotNull final String query = "INSERT INTO todo_list.app_session (id, user_id, signature, timestamp) \n" +
-                " VALUES ('"+ session.getId()+"', '"+ session.getUserId() +"', '"+ session.getSignature() +"', '"+ session.getDate().getTime() +"');";
-        @NotNull final PreparedStatement statement = connection.prepareStatement(query);
-        statement.executeUpdate();
-        statement.close();
-        sessions.put(session.getId(), session);
+        session.setSignature(signSession(session));
+        sessionMapper.persist(session);
         return session;
     }
 
-    public void remove(@NotNull final Session session) throws Exception {
-        validate(session);
-        @NotNull final String query =  "DELETE FROM todo_list.app_session " +
-                "WHERE id = '"+ session.getId() +"'";
-        @NotNull final PreparedStatement statement = connection.prepareStatement(query);
-        statement.executeUpdate();
-        statement.close();
-        sessions.remove(session.getId());
+    public void remove(@NotNull final Session session) {
+        sessionMapper.remove(session);
     }
 
     @NotNull
@@ -60,12 +48,12 @@ public class SessionRepository {
         if(session == null) throw new AccessException("not valid session");
         if(session.getSignature() == null) throw new AccessException("not valid session");
         if(session.getUserId() == null) throw new AccessException("not valid session");
-        if (session.getDate() == null) throw new AccessException("not valid session");
+        if (session.getTimestamp() == 0) throw new AccessException("not valid session");
         @Nullable final Session temp = session.clone();
         if(temp == null) throw new AccessException("not valid session");
         @NotNull final String sourceSignature = signSession(session);
         @NotNull final String targetSignature = signSession(session);
         if(!sourceSignature.equals(targetSignature)) throw new AccessException("not valid session");
-        if (!sessions.containsKey(session.getId())) throw new AccessException("not valid session");
+        if (sessionMapper.findOne(session.getId()) == null) throw new AccessException("not valid session");
     }
 }

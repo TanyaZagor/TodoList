@@ -1,9 +1,11 @@
 package ru.zagorodnikova.tm.repository;
 
 import lombok.SneakyThrows;
+import org.apache.ibatis.session.SqlSession;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
+import ru.zagorodnikova.tm.api.mapper.ITaskMapper;
 import ru.zagorodnikova.tm.api.repository.ITaskRepository;
 import ru.zagorodnikova.tm.bootstrap.Bootstrap;
 import ru.zagorodnikova.tm.entity.Project;
@@ -19,83 +21,46 @@ import java.util.*;
 
 public class TaskRepository extends AbstractRepository<Task> implements ITaskRepository<Task> {
 
-    @NotNull private final Connection connection;
+    @NotNull private final ITaskMapper taskMapper;
 
-    public TaskRepository(ServiceLocator serviceLocator) throws Exception {
-        this.connection = serviceLocator.getConnection();
+    public TaskRepository(ServiceLocator serviceLocator) {
+        SqlSession session = serviceLocator.getSessionFactory().openSession();
+        this.taskMapper = session.getMapper(ITaskMapper.class);
     }
 
     @Nullable
     @Override
-    public Task persist(@NotNull final Task task) throws Exception {
-        @NotNull final String query = "INSERT INTO todo_list.app_task " +
-                "(id, user_id, project_id, name, description, dateStart, dateFinish, dateCreate) \n" +
-                " VALUES ('"+ task.getId()+"', '"+ task.getUserId() +"', '"+ task.getProjectId() +"', '"
-                + task.getName() +"', '"+ task.getDescription() +"', '"
-                + DateFormatterUtil.dateFormatter(task.getDateStart()) +"', '"
-                + DateFormatterUtil.dateFormatter(task.getDateFinish()) +"', '"
-                + DateFormatterUtil.dateFormatter(task.getDateCreate()) +"');";
-        @NotNull final PreparedStatement statement = connection.prepareStatement(query);
-        statement.executeUpdate();
-        statement.close();
+    public Task persist(@NotNull final Task task) {
+        taskMapper.persist(task);
         return task;
     }
 
     @Override
-    public void remove(@NotNull final String id) throws Exception {
-        @NotNull final String query =  "DELETE FROM todo_list.app_task " +
-                "WHERE id = '"+ id +"'";
-        @NotNull final PreparedStatement statement = connection.prepareStatement(query);
-        statement.executeUpdate();
-        statement.close();
+    public void remove(@NotNull final String id) {
+        taskMapper.remove(id);
     }
 
     public void merge(@NotNull final String id,
                       @NotNull final String name,
                       @NotNull final String description,
                       @NotNull final Date dateStart,
-                      @NotNull final Date dateFinish) throws Exception {
-        @NotNull final String query =  "UPDATE todo_list.app_task SET " +
-                "name = '"+ name +"', " +
-                "description = '"+ description +"', " +
-                "dateStart = '"+ DateFormatterUtil.dateFormatter(dateStart) +"', " +
-                "dateFinish = '"+ DateFormatterUtil.dateFormatter(dateFinish) +"'  " +
-                "WHERE id = '"+ id +"'";
-        @NotNull final PreparedStatement statement = connection.prepareStatement(query);
-        statement.executeUpdate();
-        statement.close();
+                      @NotNull final Date dateFinish){
+        taskMapper.merge(id, name, description, dateStart, dateFinish);
     }
 
 
-    public void removeAll(@NotNull final String userId) throws Exception {
-        @NotNull final String query =  "DELETE FROM todo_list.app_task " +
-                "WHERE user_id = '"+ userId +"'";
-        @NotNull final PreparedStatement statement = connection.prepareStatement(query);
-        statement.executeUpdate();
-        statement.close();
+    public void removeAll(@NotNull final String userId) {
+        taskMapper.removeAll(userId);
     }
 
-    public void removeAllInProject(@NotNull final String projectId) throws Exception {
-        @NotNull final String query =  "DELETE FROM todo_list.app_task " +
-                "WHERE project_id = '"+ projectId +"'";
-        @NotNull final PreparedStatement statement = connection.prepareStatement(query);
-        statement.executeUpdate();
-        statement.close();
+    public void removeAllInProject(@NotNull final String projectId) {
+        taskMapper.removeAllInProject(projectId);
     }
 
     @Nullable
     @SneakyThrows
     public Task findOne(@NotNull final String projectId, @NotNull final String name) {
-        @NotNull final String query =
-                "SELECT * FROM todo_list.app_task WHERE name = '" + name + "' AND project_id = '" + projectId + "'";
-        @NotNull final PreparedStatement statement = connection.prepareStatement(query);
-        @NotNull final ResultSet resultSet = statement.executeQuery();
-        if (resultSet.next()) {
-            Task newTask = fetch(resultSet);
-            statement.close();
-            return newTask;
-        }
-        return null;
+        return taskMapper.findOne(projectId, name);
     }
 
 
@@ -131,17 +96,10 @@ public class TaskRepository extends AbstractRepository<Task> implements ITaskRep
     @NotNull
     @SneakyThrows
     public List<Task> getTasks() {
-        @NotNull final String query =
-                "SELECT * FROM todo_list.app_task ";
-        @NotNull final PreparedStatement statement = connection.prepareStatement(query);
-        @NotNull final ResultSet resultSet = statement.executeQuery();
-        @NotNull final List<Task> list = new ArrayList<>();
-        while (resultSet.next()) list.add(fetch(resultSet));
-        statement.close();
-        return list;
+        return taskMapper.getTasks();
     }
 
-    public void setTasks(@NotNull final List<Task> list) throws Exception {
+    public void setTasks(@NotNull final List<Task> list){
         for (Task task : list) {
             persist(task);
         }
@@ -149,40 +107,11 @@ public class TaskRepository extends AbstractRepository<Task> implements ITaskRep
 
     @SneakyThrows
     public List<Task> findAllTasksInProject(@NotNull final String projectId) {
-        @NotNull final String query =
-                "SELECT * FROM todo_list.app_task WHERE project_id = '"+ projectId +"'";
-        @NotNull final PreparedStatement statement = connection.prepareStatement(query);
-        @NotNull final ResultSet resultSet = statement.executeQuery();
-        @NotNull final List<Task> list = new ArrayList<>();
-        while (resultSet.next()) list.add(fetch(resultSet));
-        statement.close();
-        return list;
+        return taskMapper.findAllTasksInProject(projectId);
     }
 
     @SneakyThrows
     public List<Task> findAllTasks(@NotNull final String userId) {
-        @NotNull final String query =
-                "SELECT * FROM todo_list.app_task WHERE user_id = '"+ userId +"'";
-        @NotNull final PreparedStatement statement = connection.prepareStatement(query);
-        @NotNull final ResultSet resultSet = statement.executeQuery();
-        @NotNull final List<Task> list = new ArrayList<>();
-        while (resultSet.next()) list.add(fetch(resultSet));
-        statement.close();
-        return list;
-    }
-
-    @Nullable
-    @SneakyThrows
-    private Task fetch(@Nullable final ResultSet row) {
-        if (row == null) return null;
-        @NotNull final Task task = new Task();
-        task.setId(row.getString(FieldConst.ID));
-        task.setName(row.getString(FieldConst.NAME));
-        task.setDescription(row.getString(FieldConst.DESCRIPTION));
-        task.setDateStart(row.getDate(FieldConst.DATE_START));
-        task.setDateFinish(row.getDate(FieldConst.DATE_FINISH));
-        task.setUserId(row.getString(FieldConst.USER_ID));
-        task.setProjectId(row.getString(FieldConst.PROJECT_ID));
-        return task;
+        return taskMapper.findAllTasks(userId);
     }
 }

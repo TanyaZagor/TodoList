@@ -18,11 +18,10 @@ public class SessionService implements ISessionService {
     @Nullable
     public Session persist(@NotNull final User user) throws Exception {
         @NotNull final Session session = new Session(user.getId());
-        session.setSignature(sessionRepository.signSession(session));
         return sessionRepository.persist(session);
     }
 
-    public void remove(@NotNull final Session session) throws Exception {
+    public void remove(@NotNull final Session session) {
         sessionRepository.remove(session);
     }
 
