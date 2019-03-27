@@ -1,31 +1,65 @@
 package ru.zagorodnikova.tm.service;
 
+import org.apache.ibatis.session.SqlSession;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.zagorodnikova.tm.api.ServiceLocator;
+import ru.zagorodnikova.tm.api.repository.SessionRepository;
 import ru.zagorodnikova.tm.api.service.ISessionService;
 import ru.zagorodnikova.tm.entity.Session;
 import ru.zagorodnikova.tm.entity.User;
-import ru.zagorodnikova.tm.repository.SessionRepository;
+import ru.zagorodnikova.tm.util.PasswordUtil;
+
+import java.rmi.AccessException;
+import java.util.Properties;
 
 public class SessionService implements ISessionService {
 
+    @NotNull private final SqlSession sqlSession;
     @NotNull private final SessionRepository sessionRepository;
 
-    public SessionService(@NotNull final SessionRepository sessionRepository) {
-        this.sessionRepository = sessionRepository;
+    public SessionService(@NotNull final ServiceLocator serviceLocator) {
+        this.sqlSession = serviceLocator.getSessionFactory().openSession();
+        this.sessionRepository = sqlSession.getMapper(SessionRepository.class);
     }
 
     @Nullable
     public Session persist(@NotNull final User user) throws Exception {
         @NotNull final Session session = new Session(user.getId());
-        return sessionRepository.persist(session);
+        session.setSignature(signSession(session));
+        sessionRepository.persist(session);
+        sqlSession.commit();
+        return session;
     }
 
     public void remove(@NotNull final Session session) {
         sessionRepository.remove(session);
+        sqlSession.commit();
     }
 
-    public void validate(@NotNull final Session session) throws Exception {
-        sessionRepository.validate(session);
+    @NotNull
+    public String signSession(@NotNull final Session session) throws Exception {
+        @NotNull final Properties property = new Properties();
+        property.load(this.getClass().getClassLoader().getResourceAsStream("app.properties"));
+        @NotNull final int cycle = Integer.valueOf( property.getProperty("cycle"));
+        @NotNull final String salt = property.getProperty("salt");
+        String signature = "";
+        for (int i = 0; i < cycle; i++) {
+            signature = PasswordUtil.hashPassword(salt + session.getUserId() + salt);
+        }
+        return signature;
+    }
+
+    public void validate( final Session session) throws Exception {
+        if(session == null) throw new AccessException("not valid session");
+        if(session.getSignature() == null) throw new AccessException("not valid session");
+        if(session.getUserId() == null) throw new AccessException("not valid session");
+        if (session.getTimestamp() == 0) throw new AccessException("not valid session");
+        @Nullable final Session temp = session.clone();
+        if(temp == null) throw new AccessException("not valid session");
+        @NotNull final String sourceSignature = signSession(session);
+        @NotNull final String targetSignature = signSession(session);
+        if(!sourceSignature.equals(targetSignature)) throw new AccessException("not valid session");
+        if (sessionRepository.findOne(session.getId()) == null) throw new AccessException("not valid session");
     }
 }

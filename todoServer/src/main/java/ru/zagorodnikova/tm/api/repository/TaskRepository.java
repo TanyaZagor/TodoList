@@ -1,4 +1,4 @@
-package ru.zagorodnikova.tm.api.mapper;
+package ru.zagorodnikova.tm.api.repository;
 
 import org.apache.ibatis.annotations.*;
 import org.jetbrains.annotations.NotNull;
@@ -9,7 +9,7 @@ import ru.zagorodnikova.tm.entity.enumeration.Status;
 import java.util.Date;
 import java.util.List;
 
-public interface ITaskMapper {
+public interface TaskRepository {
 
     @Insert("Insert app_task values (#{id}, #{userId}, #{projectId}, #{name}, #{description}, #{dateStart}, #{dateFinish}, #{dateCreate}, #{status})")
     void persist(@NotNull final Task task);

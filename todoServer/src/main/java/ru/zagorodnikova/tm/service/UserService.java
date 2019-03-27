@@ -1,8 +1,10 @@
 package ru.zagorodnikova.tm.service;
 
+import org.apache.ibatis.session.SqlSession;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.zagorodnikova.tm.api.repository.IUserRepository;
+import ru.zagorodnikova.tm.api.ServiceLocator;
+import ru.zagorodnikova.tm.api.repository.UserRepository;
 import ru.zagorodnikova.tm.api.service.IUserService;
 import ru.zagorodnikova.tm.entity.User;
 import ru.zagorodnikova.tm.util.PasswordUtil;
@@ -11,10 +13,12 @@ import java.util.List;
 
 public class UserService extends AbstractService implements IUserService {
 
-    @NotNull private final IUserRepository<User> userRepository;
+    @NotNull private final SqlSession sqlSession;
+    @NotNull private final UserRepository userRepository;
 
-    public UserService(@NotNull final IUserRepository<User> userRepository) {
-        this.userRepository = userRepository;
+    public UserService(@NotNull final ServiceLocator serviceLocator) {
+        this.sqlSession = serviceLocator.getSessionFactory().openSession();
+        this.userRepository = sqlSession.getMapper(UserRepository.class);
     }
 
     @Nullable
@@ -33,7 +37,9 @@ public class UserService extends AbstractService implements IUserService {
         if (lastName.isEmpty()) return null;
         if (email.isEmpty()) return null;
         @NotNull final User user = new User(login, password, fistName, lastName, email);
-        return userRepository.persist(user);
+        userRepository.persist(user);
+        sqlSession.commit();
+        return user;
     }
 
     public void changePassword(@NotNull final String userId, @NotNull final String login, @NotNull final String oldPassword,
@@ -41,8 +47,9 @@ public class UserService extends AbstractService implements IUserService {
         if (login.isEmpty()) return;
         if (oldPassword.isEmpty()) return;
         if (newPassword.isEmpty()) return;
-        if (userRepository.checkPassword(login, PasswordUtil.hashPassword(oldPassword))) {
+        if (userRepository.checkPassword(login, PasswordUtil.hashPassword(oldPassword)) != null) {
             userRepository.changePassword(userId, PasswordUtil.hashPassword(newPassword));
+            sqlSession.commit();
         }
     }
 
@@ -52,10 +59,12 @@ public class UserService extends AbstractService implements IUserService {
         if (lastName.isEmpty()) return;
         if (email.isEmpty()) return;
         userRepository.merge(userId, firstName, lastName, email);
+        sqlSession.commit();
     }
 
     public void removeUser(@NotNull final String userId) throws Exception {
         userRepository.remove(userId);
+        sqlSession.commit();
     }
 
     @Nullable
@@ -67,6 +76,24 @@ public class UserService extends AbstractService implements IUserService {
     @Override
     public User findOne(@NotNull final String userId) {
         return userRepository.findOne(userId);
+    }
+
+    @Override
+    public void removeAll() {
+        userRepository.removeAll();
+        sqlSession.commit();
+    }
+
+    @Nullable
+    public List<User> getUsers() {
+        return userRepository.getUsers();
+    }
+
+    public void setUsers(@NotNull final List<User> list) {
+        for (User user : list) {
+            userRepository.persist(user);
+            sqlSession.commit();
+        }
     }
 
 

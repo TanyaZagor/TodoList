@@ -27,9 +27,6 @@ public interface ServiceLocator {
     IAdminService getAdminService();
 
     @NotNull
-    Connection getConnection() throws Exception;
-
-    @NotNull
     SqlSessionFactory getSessionFactory();
 
 }

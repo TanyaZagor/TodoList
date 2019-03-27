@@ -1,4 +1,4 @@
-package ru.zagorodnikova.tm.api.mapper;
+package ru.zagorodnikova.tm.api.repository;
 
 import org.apache.ibatis.annotations.*;
 import org.jetbrains.annotations.NotNull;
@@ -8,7 +8,7 @@ import ru.zagorodnikova.tm.entity.User;
 
 import java.util.List;
 
-public interface IUserMapper {
+public interface UserRepository {
 
     @Insert("Insert into app_user values (#{id}, #{login}, #{password}, #{firstName}, #{lastName}, #{email}, #{roleType}, null, null, null)")
     void persist(@NotNull final User user);

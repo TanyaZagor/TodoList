@@ -9,10 +9,10 @@ import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.zagorodnikova.tm.api.mapper.IProjectMapper;
-import ru.zagorodnikova.tm.api.mapper.ISessionMapper;
-import ru.zagorodnikova.tm.api.mapper.ITaskMapper;
-import ru.zagorodnikova.tm.api.mapper.IUserMapper;
+import ru.zagorodnikova.tm.api.repository.ProjectRepository;
+import ru.zagorodnikova.tm.api.repository.SessionRepository;
+import ru.zagorodnikova.tm.api.repository.TaskRepository;
+import ru.zagorodnikova.tm.api.repository.UserRepository;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -48,10 +48,10 @@ public class DatabaseUtil {
         final Environment environment =
                 new Environment("development", transactionFactory, dataSource);
         final Configuration configuration = new Configuration(environment);
-        configuration.addMapper(IUserMapper.class);
-        configuration.addMapper(IProjectMapper.class);
-        configuration.addMapper(ISessionMapper.class);
-        configuration.addMapper(ITaskMapper.class);
+        configuration.addMapper(UserRepository.class);
+        configuration.addMapper(ProjectRepository.class);
+        configuration.addMapper(SessionRepository.class);
+        configuration.addMapper(TaskRepository.class);
         return new SqlSessionFactoryBuilder().build(configuration);
     }
 }
