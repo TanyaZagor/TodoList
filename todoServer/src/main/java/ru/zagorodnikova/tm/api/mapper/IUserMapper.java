@@ -22,7 +22,7 @@ public interface IUserMapper {
             @Result(property = "firstName", column = "firstName"),
             @Result(property = "lastName", column = "lastName"),
             @Result(property = "email", column = "email"),
-            @Result(property = "roleTypeString", column = "role")
+            @Result(property = "roleType", column = "role")
     })
     User signIn(@NotNull @Param("login") final String login, @NotNull @Param("password") final String password);
 
@@ -44,7 +44,7 @@ public interface IUserMapper {
             @Result(property = "firstName", column = "firstName"),
             @Result(property = "lastName", column = "lastName"),
             @Result(property = "email", column = "email"),
-            @Result(property = "roleTypeString", column = "role")
+            @Result(property = "roleType", column = "role")
     })
     User findOne(@NotNull @Param("id") final String userId);
 
@@ -60,7 +60,7 @@ public interface IUserMapper {
             @Result(property = "firstName", column = "firstName"),
             @Result(property = "lastName", column = "lastName"),
             @Result(property = "email", column = "email"),
-            @Result(property = "roleTypeString", column = "role")
+            @Result(property = "roleType", column = "role")
     })
     List<User> getUsers();
 

@@ -86,7 +86,8 @@ public class ProjectService implements IProjectService {
             if (dateFinish.isEmpty()) return;
             @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
             @NotNull final Date finish = DateFormatterUtil.dateFormatter(dateFinish);
-            projectRepository.merge(project.getId(), projectName, description, start, finish, status);
+            @NotNull final Status newStatus = createStatus(status);
+            projectRepository.merge(project.getId(), projectName, description, start, finish, newStatus);
         }
     }
 
@@ -109,4 +110,14 @@ public class ProjectService implements IProjectService {
     public List<Project> sortProjectsByStatus(@NotNull final String userId) {
         return projectRepository.sortByStatus(userId);
     }
+
+    private Status createStatus(String status) {
+        switch (status) {
+            case "scheduled": return Status.SCHEDULED;
+            case "in progress": return Status.IN_PROGRESS;
+            case "done" : return Status.DONE;
+            default: return Status.SCHEDULED;
+        }
+    }
+
 }

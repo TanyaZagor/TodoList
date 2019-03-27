@@ -4,6 +4,7 @@ package ru.zagorodnikova.tm.api.repository;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.entity.Project;
+import ru.zagorodnikova.tm.entity.enumeration.Status;
 
 import java.util.Date;
 import java.util.List;
@@ -26,7 +27,7 @@ public interface IProjectRepository<T extends Project> {
             @NotNull final String description,
             @NotNull final Date dateStart,
             @NotNull final Date dateFinish,
-            @NotNull final String status) throws Exception;
+            @NotNull final Status status) throws Exception;
 
     @Nullable
     List<T> findAll(@NotNull final String userId) throws Exception;

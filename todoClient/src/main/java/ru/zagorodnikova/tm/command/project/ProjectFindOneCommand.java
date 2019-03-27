@@ -31,7 +31,7 @@ public class ProjectFindOneCommand extends AbstractCommand {
         if (project != null) {
             System.out.println("Name: " + project.getName() + ", Description: " + project.getDescription()+
                     ", Date start: " + project.getDateStart() + ", Date finish: " + project.getDateFinish() +
-                    ", Date create: " + project.getDateCreate() + ", Status: " + project.getStatus());
+                    ", Date create: " + project.getDateCreate() + ", Status: " + project.getStatus().toString());
         }
     }
 

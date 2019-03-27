@@ -11,6 +11,7 @@ import ru.zagorodnikova.tm.bootstrap.Bootstrap;
 import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.entity.Task;
 import ru.zagorodnikova.tm.entity.enumeration.FieldConst;
+import ru.zagorodnikova.tm.entity.enumeration.Status;
 import ru.zagorodnikova.tm.util.DateFormatterUtil;
 
 import java.sql.Connection;
@@ -48,7 +49,7 @@ public class TaskRepository extends AbstractRepository<Task> implements ITaskRep
                       @NotNull final String description,
                       @NotNull final Date dateStart,
                       @NotNull final Date dateFinish,
-                      @NotNull final String  status){
+                      @NotNull final Status status){
         taskMapper.merge(id, name, description, dateStart, dateFinish, status);
         sqlSession.commit();
     }

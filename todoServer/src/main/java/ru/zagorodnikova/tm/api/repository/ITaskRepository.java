@@ -4,6 +4,7 @@ package ru.zagorodnikova.tm.api.repository;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.entity.Task;
+import ru.zagorodnikova.tm.entity.enumeration.Status;
 
 import java.sql.SQLException;
 import java.util.Date;
@@ -29,7 +30,7 @@ public interface ITaskRepository<T extends Task> {
                @NotNull final String description,
                @NotNull final Date dateStart,
                @NotNull final Date dateFinish,
-               @NotNull final String status) throws Exception;
+               @NotNull final Status status) throws Exception;
 
     @Nullable
     List<T> findAllTasksInProject(@NotNull final String projectId);

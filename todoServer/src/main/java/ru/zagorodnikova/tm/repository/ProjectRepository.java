@@ -72,7 +72,7 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
                       @NotNull final String description,
                       @NotNull final Date dateStart,
                       @NotNull final Date dateFinish,
-                      @NotNull final String status) {
+                      @NotNull final Status status) {
         projectMapper.merge(id, projectName, description, dateStart, dateFinish, status);
         sqlSession.commit();
     }

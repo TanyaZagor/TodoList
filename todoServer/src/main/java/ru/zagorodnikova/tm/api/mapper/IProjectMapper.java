@@ -4,13 +4,14 @@ import org.apache.ibatis.annotations.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.entity.Project;
+import ru.zagorodnikova.tm.entity.enumeration.Status;
 
 import java.util.Date;
 import java.util.List;
 
 public interface IProjectMapper {
 
-    @Insert("Insert into app_project values (#{id}, #{userId}, #{name}, #{description}, #{dateFinish}, #{dateStart}, #{dateCreate}, #{statusString})")
+    @Insert("Insert into app_project values (#{id}, #{userId}, #{name}, #{description}, #{dateFinish}, #{dateStart}, #{dateCreate}, #{status})")
     void persist(@NotNull final Project project);
 
     @Delete("Delete from app_project where id = #{id}")
@@ -29,18 +30,18 @@ public interface IProjectMapper {
             @Result(property = "dateFinish", column = "dateFinish"),
             @Result(property = "dateStart", column = "dateStart"),
             @Result(property = "dateCreate", column = "dateCreate"),
-            @Result(property = "statusString", column = "status")
+            @Result(property = "status", column = "status")
     })
     Project findOne(@NotNull @Param("userId") final String userId, @NotNull @Param("name") final String name);
 
     @Update("Update app_project set name = #{projectName}, description = #{description}, " +
-            "dateStart = #{dateStart}, dateFinish = #{dateFinish}, status = #{statusString} where id = #{id}")
+            "dateStart = #{dateStart}, dateFinish = #{dateFinish}, status = #{status} where id = #{id}")
     void merge(@NotNull @Param("id") final String id,
                @NotNull @Param("projectName") final String projectName,
                @NotNull @Param("description") final String description,
                @NotNull @Param("dateStart") final Date dateStart,
                @NotNull @Param("dateFinish") final Date dateFinish,
-               @NotNull @Param("status") final String status);
+               @NotNull @Param("status") final Status status);
 
     @Nullable
     @Select("Select * from app_project where user_id = #{userId}")
@@ -52,7 +53,7 @@ public interface IProjectMapper {
             @Result(property = "dateFinish", column = "dateFinish"),
             @Result(property = "dateStart", column = "dateStart"),
             @Result(property = "dateCreate", column = "dateCreate"),
-            @Result(property = "statusString", column = "status")
+            @Result(property = "status", column = "status")
     })
     List<Project> findAll(@NotNull @Param("userId") final String userId);
 
@@ -66,7 +67,7 @@ public interface IProjectMapper {
             @Result(property = "dateFinish", column = "dateFinish"),
             @Result(property = "dateStart", column = "dateStart"),
             @Result(property = "dateCreate", column = "dateCreate"),
-            @Result(property = "statusString", column = "status")
+            @Result(property = "status", column = "status")
     })
     List<Project> getProjects();
 }

@@ -7,6 +7,7 @@ import ru.zagorodnikova.tm.api.repository.ITaskRepository;
 import ru.zagorodnikova.tm.api.service.ITaskService;
 import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.entity.Task;
+import ru.zagorodnikova.tm.entity.enumeration.Status;
 import ru.zagorodnikova.tm.util.DateFormatterUtil;
 
 import java.util.Date;
@@ -76,7 +77,8 @@ public class TaskService implements ITaskService {
         if (task != null) {
             @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
             @NotNull final Date finish = DateFormatterUtil.dateFormatter(dateFinish);
-            taskRepository.merge(task.getId(), taskName, description, start, finish, status);
+            @NotNull final Status newStatus = createStatus(status);
+            taskRepository.merge(task.getId(), taskName, description, start, finish, newStatus);
         }
     }
 
@@ -142,6 +144,16 @@ public class TaskService implements ITaskService {
             return taskRepository.sortByStatus(list);
         }
         return null;
+    }
+
+
+    private Status createStatus(String status) {
+        switch (status) {
+            case "scheduled": return Status.SCHEDULED;
+            case "in progress": return Status.IN_PROGRESS;
+            case "done" : return Status.DONE;
+            default: return Status.SCHEDULED;
+        }
     }
 
 }
