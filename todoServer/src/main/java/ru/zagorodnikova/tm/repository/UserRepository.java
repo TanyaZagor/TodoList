@@ -1,9 +1,8 @@
-package ru.zagorodnikova.tm.api.repository;
+package ru.zagorodnikova.tm.repository;
 
 import org.apache.ibatis.annotations.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.zagorodnikova.tm.entity.Task;
 import ru.zagorodnikova.tm.entity.User;
 
 import java.util.List;
@@ -16,12 +15,7 @@ public interface UserRepository {
     @Nullable
     @Select("Select * from app_user where login = #{login} and passwordHash = #{password}")
     @Results(value = {
-            @Result(property = "id", column = "id"),
-            @Result(property = "login", column = "login"),
             @Result(property = "password", column = "passwordHash"),
-            @Result(property = "firstName", column = "firstName"),
-            @Result(property = "lastName", column = "lastName"),
-            @Result(property = "email", column = "email"),
             @Result(property = "roleType", column = "role")
     })
     User signIn(@NotNull @Param("login") final String login, @NotNull @Param("password") final String password);
@@ -38,12 +32,7 @@ public interface UserRepository {
     @Nullable
     @Select("Select * from app_user where id = #{id}")
     @Results(value = {
-            @Result(property = "id", column = "id"),
-            @Result(property = "login", column = "login"),
             @Result(property = "password", column = "passwordHash"),
-            @Result(property = "firstName", column = "firstName"),
-            @Result(property = "lastName", column = "lastName"),
-            @Result(property = "email", column = "email"),
             @Result(property = "roleType", column = "role")
     })
     User findOne(@NotNull @Param("id") final String userId);
@@ -54,12 +43,7 @@ public interface UserRepository {
     @Nullable
     @Select("Select from app_user")
     @Results(value = {
-            @Result(property = "id", column = "id"),
-            @Result(property = "login", column = "login"),
             @Result(property = "password", column = "passwordHash"),
-            @Result(property = "firstName", column = "firstName"),
-            @Result(property = "lastName", column = "lastName"),
-            @Result(property = "email", column = "email"),
             @Result(property = "roleType", column = "role")
     })
     List<User> getUsers();

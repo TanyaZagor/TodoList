@@ -1,4 +1,4 @@
-package ru.zagorodnikova.tm.api.repository;
+package ru.zagorodnikova.tm.repository;
 
 import org.apache.ibatis.annotations.*;
 import org.jetbrains.annotations.NotNull;

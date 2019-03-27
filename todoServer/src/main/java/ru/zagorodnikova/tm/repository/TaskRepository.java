@@ -1,4 +1,4 @@
-package ru.zagorodnikova.tm.api.repository;
+package ru.zagorodnikova.tm.repository;
 
 import org.apache.ibatis.annotations.*;
 import org.jetbrains.annotations.NotNull;
@@ -34,60 +34,32 @@ public interface TaskRepository {
     @Nullable
     @Select("Select * from app_task where project_id = #{projectId} and name = #{name}")
     @Results(value = {
-            @Result(property = "id", column = "id"),
             @Result(property = "userId", column = "user_id"),
-            @Result(property = "projectId", column = "project_id"),
-            @Result(property = "name", column = "name"),
-            @Result(property = "description", column = "description"),
-            @Result(property = "dateStart", column = "dateStart"),
-            @Result(property = "dateFinish", column = "dateFinish"),
-            @Result(property = "dateCreate", column = "dateCreate"),
-            @Result(property = "status", column = "status")
+            @Result(property = "projectId", column = "project_id")
     })
     Task findOne(@NotNull @Param("projectId") final String projectId, @NotNull @Param("name") final String name);
 
     @Nullable
     @Select("Select * from app_task where project_id = #{projectId}")
     @Results(value = {
-            @Result(property = "id", column = "id"),
             @Result(property = "userId", column = "user_id"),
-            @Result(property = "projectId", column = "project_id"),
-            @Result(property = "name", column = "name"),
-            @Result(property = "description", column = "description"),
-            @Result(property = "dateStart", column = "dateStart"),
-            @Result(property = "dateFinish", column = "dateFinish"),
-            @Result(property = "dateCreate", column = "dateCreate"),
-            @Result(property = "status", column = "status")
+            @Result(property = "projectId", column = "project_id")
     })
     List<Task> findAllTasksInProject(@NotNull @Param("projectId") final String projectId);
 
     @Nullable
     @Select("Select * from app_task where user_id = #{userId}")
     @Results(value = {
-            @Result(property = "id", column = "id"),
             @Result(property = "userId", column = "user_id"),
-            @Result(property = "projectId", column = "project_id"),
-            @Result(property = "name", column = "name"),
-            @Result(property = "description", column = "description"),
-            @Result(property = "dateStart", column = "dateStart"),
-            @Result(property = "dateFinish", column = "dateFinish"),
-            @Result(property = "dateCreate", column = "dateCreate"),
-            @Result(property = "status", column = "status")
+            @Result(property = "projectId", column = "project_id")
     })
     List<Task> findAllTasks(@NotNull @Param("userId") final String userId);
 
     @NotNull
     @Select("Select * from app_task")
     @Results(value = {
-            @Result(property = "id", column = "id"),
             @Result(property = "userId", column = "user_id"),
-            @Result(property = "projectId", column = "project_id"),
-            @Result(property = "name", column = "name"),
-            @Result(property = "description", column = "description"),
-            @Result(property = "dateStart", column = "dateStart"),
-            @Result(property = "dateFinish", column = "dateFinish"),
-            @Result(property = "dateCreate", column = "dateCreate"),
-            @Result(property = "status", column = "status")
+            @Result(property = "projectId", column = "project_id")
     })
     List<Task> getTasks();
 

@@ -5,8 +5,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
-import ru.zagorodnikova.tm.api.repository.ProjectRepository;
-import ru.zagorodnikova.tm.api.repository.TaskRepository;
+import ru.zagorodnikova.tm.repository.ProjectRepository;
+import ru.zagorodnikova.tm.repository.TaskRepository;
 import ru.zagorodnikova.tm.api.service.ITaskService;
 import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.entity.Task;
@@ -44,35 +44,51 @@ public class TaskService implements ITaskService {
             @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
             @NotNull final Date finish = DateFormatterUtil.dateFormatter(dateFinish);
             @Nullable final Task task = new Task(userId, project.getId(), taskName, description, start, finish);
-            taskRepository.persist(task);
-            sqlSession.commit();
-            return task;
+            try {
+                taskRepository.persist(task);
+                sqlSession.commit();
+                return task;
+            } catch (Exception e) {
+                sqlSession.rollback();
+            }
         }
         return null;
     }
 
-    public void removeTask(@NotNull final String userId, @NotNull final String projectName, @NotNull final String taskName) throws Exception {
+    public void removeTask(@NotNull final String userId, @NotNull final String projectName, @NotNull final String taskName) {
         if (projectName.isEmpty()) return;
         if (taskName.isEmpty()) return;
         @Nullable final Task task = findOneTask(userId, projectName, taskName);
         if (task != null) {
-            taskRepository.remove(task.getId());
-            sqlSession.commit();
+            try {
+                taskRepository.remove(task.getId());
+                sqlSession.commit();
+            } catch (Exception e) {
+                sqlSession.rollback();
+            }
         }
 
     }
 
-    public void removeAllTasks(@NotNull final String userId) throws Exception {
-        taskRepository.removeAll(userId);
-        sqlSession.commit();
+    public void removeAllTasks(@NotNull final String userId) {
+        try {
+            taskRepository.removeAll(userId);
+            sqlSession.commit();
+        } catch (Exception e) {
+            sqlSession.rollback();
+        }
     }
 
-    public void removeAllTasksInProject(@NotNull final String userId, @NotNull final String projectName) throws Exception {
+    public void removeAllTasksInProject(@NotNull final String userId, @NotNull final String projectName) {
         if (projectName.isEmpty()) return;
         @Nullable final Project project = projectRepository.findOne(userId, projectName);
         if (project != null) {
-            taskRepository.removeAllInProject(project.getId());
-            sqlSession.commit();
+            try {
+                taskRepository.removeAllInProject(project.getId());
+                sqlSession.commit();
+            } catch (Exception e) {
+                sqlSession.rollback();
+            }
         }
     }
 
@@ -89,8 +105,12 @@ public class TaskService implements ITaskService {
             @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
             @NotNull final Date finish = DateFormatterUtil.dateFormatter(dateFinish);
             @NotNull final Status newStatus = createStatus(status);
-            taskRepository.merge(task.getId(), taskName, description, start, finish, newStatus);
-            sqlSession.commit();
+            try {
+                taskRepository.merge(task.getId(), taskName, description, start, finish, newStatus);
+                sqlSession.commit();
+            } catch (Exception e) {
+                sqlSession.rollback();
+            }
         }
     }
 
@@ -173,9 +193,13 @@ public class TaskService implements ITaskService {
     }
 
     public void setTasks(@NotNull final List<Task> list){
-        for (Task task : list) {
-            taskRepository.persist(task);
+        try {
+            for (Task task : list) {
+                taskRepository.persist(task);
+            }
             sqlSession.commit();
+        } catch (Exception e) {
+            sqlSession.rollback();
         }
     }
 

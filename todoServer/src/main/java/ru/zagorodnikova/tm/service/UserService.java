@@ -4,7 +4,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
-import ru.zagorodnikova.tm.api.repository.UserRepository;
+import ru.zagorodnikova.tm.repository.UserRepository;
 import ru.zagorodnikova.tm.api.service.IUserService;
 import ru.zagorodnikova.tm.entity.User;
 import ru.zagorodnikova.tm.util.PasswordUtil;
@@ -37,34 +37,52 @@ public class UserService extends AbstractService implements IUserService {
         if (lastName.isEmpty()) return null;
         if (email.isEmpty()) return null;
         @NotNull final User user = new User(login, password, fistName, lastName, email);
-        userRepository.persist(user);
-        sqlSession.commit();
-        return user;
+        try {
+            userRepository.persist(user);
+            sqlSession.commit();
+            return user;
+        } catch (Exception e) {
+            sqlSession.rollback();
+            return null;
+        }
+
     }
 
     public void changePassword(@NotNull final String userId, @NotNull final String login, @NotNull final String oldPassword,
-                               @NotNull final String newPassword) throws Exception {
+                               @NotNull final String newPassword) {
         if (login.isEmpty()) return;
         if (oldPassword.isEmpty()) return;
         if (newPassword.isEmpty()) return;
-        if (userRepository.checkPassword(login, PasswordUtil.hashPassword(oldPassword)) != null) {
-            userRepository.changePassword(userId, PasswordUtil.hashPassword(newPassword));
-            sqlSession.commit();
+        try {
+            if (userRepository.checkPassword(login, PasswordUtil.hashPassword(oldPassword)) != null) {
+                userRepository.changePassword(userId, PasswordUtil.hashPassword(newPassword));
+                sqlSession.commit();
+            }
+        } catch (Exception e) {
+            sqlSession.rollback();
         }
     }
 
     public void updateUser(@NotNull final String userId, @NotNull final String firstName, @NotNull final String lastName,
-                           @NotNull String email) throws Exception {
+                           @NotNull String email){
         if (firstName.isEmpty()) return;
         if (lastName.isEmpty()) return;
         if (email.isEmpty()) return;
-        userRepository.merge(userId, firstName, lastName, email);
-        sqlSession.commit();
+        try {
+            userRepository.merge(userId, firstName, lastName, email);
+            sqlSession.commit();
+        } catch (Exception e) {
+            sqlSession.rollback();
+        }
     }
 
-    public void removeUser(@NotNull final String userId) throws Exception {
-        userRepository.remove(userId);
-        sqlSession.commit();
+    public void removeUser(@NotNull final String userId) {
+        try {
+            userRepository.remove(userId);
+            sqlSession.commit();
+        } catch (Exception e) {
+            sqlSession.rollback();
+        }
     }
 
     @Nullable
@@ -80,8 +98,12 @@ public class UserService extends AbstractService implements IUserService {
 
     @Override
     public void removeAll() {
-        userRepository.removeAll();
-        sqlSession.commit();
+        try {
+            userRepository.removeAll();
+            sqlSession.commit();
+        } catch (Exception e) {
+            sqlSession.rollback();
+        }
     }
 
     @Nullable
@@ -90,9 +112,13 @@ public class UserService extends AbstractService implements IUserService {
     }
 
     public void setUsers(@NotNull final List<User> list) {
-        for (User user : list) {
-            userRepository.persist(user);
+        try {
+            for (User user : list) {
+                userRepository.persist(user);
+            }
             sqlSession.commit();
+        } catch (Exception e) {
+            sqlSession.rollback();
         }
     }
 

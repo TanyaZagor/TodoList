@@ -1,4 +1,4 @@
-package ru.zagorodnikova.tm.api.repository;
+package ru.zagorodnikova.tm.repository;
 
 import org.apache.ibatis.annotations.*;
 import org.jetbrains.annotations.NotNull;
@@ -23,14 +23,7 @@ public interface ProjectRepository {
     @Nullable
     @Select("Select * from app_project where user_id = #{userId} and name = #{name}")
     @Results(value = {
-            @Result(property = "id", column = "id"),
-            @Result(property = "userId", column = "user_id"),
-            @Result(property = "name", column = "name"),
-            @Result(property = "description", column = "description"),
-            @Result(property = "dateFinish", column = "dateFinish"),
-            @Result(property = "dateStart", column = "dateStart"),
-            @Result(property = "dateCreate", column = "dateCreate"),
-            @Result(property = "status", column = "status")
+            @Result(property = "userId", column = "user_id")
     })
     Project findOne(@NotNull @Param("userId") final String userId, @NotNull @Param("name") final String name);
 
@@ -46,28 +39,14 @@ public interface ProjectRepository {
     @Nullable
     @Select("Select * from app_project where user_id = #{userId}")
     @Results(value = {
-            @Result(property = "id", column = "id"),
-            @Result(property = "userId", column = "user_id"),
-            @Result(property = "name", column = "name"),
-            @Result(property = "description", column = "description"),
-            @Result(property = "dateFinish", column = "dateFinish"),
-            @Result(property = "dateStart", column = "dateStart"),
-            @Result(property = "dateCreate", column = "dateCreate"),
-            @Result(property = "status", column = "status")
+            @Result(property = "userId", column = "user_id")
     })
     List<Project> findAll(@NotNull @Param("userId") final String userId);
 
     @NotNull
     @Select("Select * from app_project")
     @Results(value = {
-            @Result(property = "id", column = "id"),
-            @Result(property = "userId", column = "user_id"),
-            @Result(property = "name", column = "name"),
-            @Result(property = "description", column = "description"),
-            @Result(property = "dateFinish", column = "dateFinish"),
-            @Result(property = "dateStart", column = "dateStart"),
-            @Result(property = "dateCreate", column = "dateCreate"),
-            @Result(property = "status", column = "status")
+            @Result(property = "userId", column = "user_id")
     })
     List<Project> getProjects();
 }

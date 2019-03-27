@@ -4,7 +4,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
-import ru.zagorodnikova.tm.api.repository.SessionRepository;
+import ru.zagorodnikova.tm.repository.SessionRepository;
 import ru.zagorodnikova.tm.api.service.ISessionService;
 import ru.zagorodnikova.tm.entity.Session;
 import ru.zagorodnikova.tm.entity.User;
@@ -27,18 +27,28 @@ public class SessionService implements ISessionService {
     public Session persist(@NotNull final User user) throws Exception {
         @NotNull final Session session = new Session(user.getId());
         session.setSignature(signSession(session));
-        sessionRepository.persist(session);
-        sqlSession.commit();
-        return session;
+        try {
+            sessionRepository.persist(session);
+            sqlSession.commit();
+            return session;
+        } catch (Exception e) {
+            sqlSession.rollback();
+            return null;
+        }
     }
 
     public void remove(@NotNull final Session session) {
-        sessionRepository.remove(session);
-        sqlSession.commit();
+        try {
+            sessionRepository.remove(session);
+            sqlSession.commit();
+        } catch (Exception e) {
+            sqlSession.rollback();
+        }
+
     }
 
     @NotNull
-    public String signSession(@NotNull final Session session) throws Exception {
+    private String signSession(@NotNull final Session session) throws Exception {
         @NotNull final Properties property = new Properties();
         property.load(this.getClass().getClassLoader().getResourceAsStream("app.properties"));
         @NotNull final int cycle = Integer.valueOf( property.getProperty("cycle"));
