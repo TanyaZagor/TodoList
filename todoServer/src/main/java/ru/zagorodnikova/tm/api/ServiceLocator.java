@@ -1,5 +1,6 @@
 package ru.zagorodnikova.tm.api;
 
+import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.api.service.*;

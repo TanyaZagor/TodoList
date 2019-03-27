@@ -1,6 +1,7 @@
 package ru.zagorodnikova.tm.service;
 
 import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
@@ -15,36 +16,39 @@ import java.util.Properties;
 
 public class SessionService implements ISessionService {
 
-    @NotNull private final SqlSession sqlSession;
-    @NotNull private final SessionRepository sessionRepository;
+    @NotNull private final SqlSessionFactory sqlSessionFactory;
 
     public SessionService(@NotNull final ServiceLocator serviceLocator) {
-        this.sqlSession = serviceLocator.getSessionFactory().openSession();
-        this.sessionRepository = sqlSession.getMapper(SessionRepository.class);
+        this.sqlSessionFactory = serviceLocator.getSessionFactory();
     }
 
     @Nullable
-    public Session persist(@NotNull final User user) throws Exception {
-        @NotNull final Session session = new Session(user.getId());
-        session.setSignature(signSession(session));
-        try {
-            sessionRepository.persist(session);
-            sqlSession.commit();
-            return session;
-        } catch (Exception e) {
-            sqlSession.rollback();
-            return null;
+    public Session persist(@NotNull final User user) {
+        try(SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            try {
+                SessionRepository sessionRepository = sqlSession.getMapper(SessionRepository.class);
+                @NotNull final Session session = new Session(user.getId());
+                session.setSignature(signSession(session));
+                sessionRepository.persist(session);
+                sqlSession.commit();
+                return session;
+            } catch (Exception e) {
+                sqlSession.rollback();
+                return null;
+            }
         }
     }
 
     public void remove(@NotNull final Session session) {
-        try {
-            sessionRepository.remove(session);
-            sqlSession.commit();
-        } catch (Exception e) {
-            sqlSession.rollback();
+        try(SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            try {
+                SessionRepository sessionRepository = sqlSession.getMapper(SessionRepository.class);
+                sessionRepository.remove(session);
+                sqlSession.commit();
+            } catch (Exception e) {
+                sqlSession.rollback();
+            }
         }
-
     }
 
     @NotNull
@@ -60,7 +64,7 @@ public class SessionService implements ISessionService {
         return signature;
     }
 
-    public void validate( final Session session) throws Exception {
+    public void validate( final Session session) throws Exception{
         if(session == null) throw new AccessException("not valid session");
         if(session.getSignature() == null) throw new AccessException("not valid session");
         if(session.getUserId() == null) throw new AccessException("not valid session");
@@ -70,6 +74,9 @@ public class SessionService implements ISessionService {
         @NotNull final String sourceSignature = signSession(session);
         @NotNull final String targetSignature = signSession(session);
         if(!sourceSignature.equals(targetSignature)) throw new AccessException("not valid session");
-        if (sessionRepository.findOne(session.getId()) == null) throw new AccessException("not valid session");
+        try(SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            SessionRepository sessionRepository = sqlSession.getMapper(SessionRepository.class);
+            if (sessionRepository.findOne(session.getId()) == null) throw new AccessException("not valid session");
+        }
     }
 }

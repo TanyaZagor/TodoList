@@ -1,6 +1,7 @@
 package ru.zagorodnikova.tm.service;
 
 import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
@@ -18,50 +19,54 @@ import java.util.Objects;
 
 public class ProjectService implements IProjectService {
 
-    @NotNull private final SqlSession sqlSession;
-    @NotNull private final ProjectRepository projectRepository;
-    @NotNull private final TaskRepository taskRepository;
+    @NotNull private final SqlSessionFactory sqlSessionFactory;
 
     public ProjectService(@NotNull final ServiceLocator serviceLocator) {
-        this.sqlSession = serviceLocator.getSessionFactory().openSession();
-        this.projectRepository = sqlSession.getMapper(ProjectRepository.class);
-        this.taskRepository = sqlSession.getMapper(TaskRepository.class);
+        this.sqlSessionFactory = serviceLocator.getSessionFactory();
     }
 
     @Nullable
     public Project persistProject(@NotNull final String userId, @NotNull final String projectName,
-                                  @NotNull final String description, @NotNull final String dateStart, @NotNull final String dateFinish) throws Exception {
+                                  @NotNull final String description, @NotNull final String dateStart, @NotNull final String dateFinish) {
         if (projectName.isEmpty()) return null;
         if (description.isEmpty()) return null;
         if (dateStart.isEmpty()) return null;
         if (dateFinish.isEmpty()) return null;
-        @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
-        @NotNull final Date finish = DateFormatterUtil.dateFormatter(dateFinish);
-        @NotNull final Project newProject = new Project();
-        newProject.setName(projectName);
-        newProject.setUserId(userId);
-        newProject.setDescription(description);
-        newProject.setUserId(userId);
-        newProject.setDateStart(start);
-        newProject.setDateFinish(finish);
-        try {
-            projectRepository.persist(newProject);
-            sqlSession.commit();
-            return newProject;
-        } catch (Exception e) {
-            sqlSession.rollback();
-            return null;
+        try(SqlSession sqlSession = getSqlSession()) {
+            try{
+                @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
+                @NotNull final Date finish = DateFormatterUtil.dateFormatter(dateFinish);
+                @NotNull final Project newProject = new Project();
+                newProject.setName(projectName);
+                newProject.setUserId(userId);
+                newProject.setDescription(description);
+                newProject.setUserId(userId);
+                newProject.setDateStart(start);
+                newProject.setDateFinish(finish);
+                ProjectRepository projectRepository = sqlSession.getMapper(ProjectRepository.class);
+                projectRepository.persist(newProject);
+                sqlSession.commit();
+                return newProject;
+            } catch (Exception e) {
+                sqlSession.rollback();
+                return null;
+            }
         }
+
     }
 
     public void removeProject(@NotNull final String userId, @NotNull final String projectName) {
         if (projectName.isEmpty()) return;
-        @Nullable final Project project = projectRepository.findOne(userId, projectName);
-        if (project != null) {
+        try(SqlSession sqlSession = getSqlSession()) {
             try {
-                taskRepository.removeAllInProject(project.getId());
-                projectRepository.remove(project.getId());
-                sqlSession.commit();
+                ProjectRepository projectRepository = sqlSession.getMapper(ProjectRepository.class);
+                TaskRepository taskRepository = sqlSession.getMapper(TaskRepository.class);
+                @Nullable final Project project = projectRepository.findOne(userId, projectName);
+                if (project != null) {
+                    taskRepository.removeAllInProject(project.getId());
+                    projectRepository.remove(project.getId());
+                    sqlSession.commit();
+                }
             } catch (Exception e) {
                 sqlSession.rollback();
             }
@@ -69,24 +74,34 @@ public class ProjectService implements IProjectService {
     }
 
     public void removeAllProjects(@NotNull final String userId){
-        try {
-            taskRepository.removeAll(userId);
-            projectRepository.removeAll(userId);
-            sqlSession.commit();
-        } catch (Exception e) {
-            sqlSession.rollback();
+        try(SqlSession sqlSession = getSqlSession()) {
+            try {
+                ProjectRepository projectRepository = sqlSession.getMapper(ProjectRepository.class);
+                TaskRepository taskRepository = sqlSession.getMapper(TaskRepository.class);
+                taskRepository.removeAll(userId);
+                projectRepository.removeAll(userId);
+                sqlSession.commit();
+            } catch (Exception e) {
+                sqlSession.rollback();
+            }
         }
     }
 
     @Nullable
     public List<Project> findAllProjects(@NotNull final String userId) {
-        return projectRepository.findAll(userId);
+        try(SqlSession sqlSession = getSqlSession()) {
+            ProjectRepository projectRepository = sqlSession.getMapper(ProjectRepository.class);
+            return projectRepository.findAll(userId);
+        }
     }
 
     @Nullable
     public Project findOneProject(@NotNull final String userId, @NotNull final String projectName) {
         if (projectName.isEmpty()) return null;
-        return projectRepository.findOne(userId, projectName);
+        try(SqlSession sqlSession = getSqlSession()) {
+            ProjectRepository projectRepository = sqlSession.getMapper(ProjectRepository.class);
+            return projectRepository.findOne(userId, projectName);
+        }
     }
 
     public void mergeProject(@NotNull final String userId,
@@ -95,23 +110,27 @@ public class ProjectService implements IProjectService {
                              @NotNull final String description,
                              @NotNull final String dateStart,
                              @NotNull final String dateFinish,
-                             @NotNull final String status) throws Exception {
+                             @NotNull final String status) {
         if (oldProjectName.isEmpty()) return;
-        @Nullable final Project project = projectRepository.findOne(userId, oldProjectName);
-        if (project != null) {
-            if (projectName.isEmpty()) return;
-            if (description.isEmpty()) return;
-            if (dateStart.isEmpty()) return;
-            if (dateFinish.isEmpty()) return;
-            @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
-            @NotNull final Date finish = DateFormatterUtil.dateFormatter(dateFinish);
-            @NotNull final Status newStatus = createStatus(status);
+        if (projectName.isEmpty()) return;
+        if (description.isEmpty()) return;
+        if (dateStart.isEmpty()) return;
+        if (dateFinish.isEmpty()) return;
+        try(SqlSession sqlSession = getSqlSession()) {
             try {
-                projectRepository.merge(project.getId(), projectName, description, start, finish, newStatus);
-                sqlSession.commit();
+                ProjectRepository projectRepository = sqlSession.getMapper(ProjectRepository.class);
+                @Nullable final Project project = projectRepository.findOne(userId, oldProjectName);
+                if (project != null) {
+                    @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
+                    @NotNull final Date finish = DateFormatterUtil.dateFormatter(dateFinish);
+                    @NotNull final Status newStatus = createStatus(status);
+                    projectRepository.merge(project.getId(), projectName, description, start, finish, newStatus);
+                    sqlSession.commit();
+                }
             } catch (Exception e) {
                 sqlSession.rollback();
             }
+
         }
     }
     @Nullable
@@ -153,17 +172,23 @@ public class ProjectService implements IProjectService {
 
     @NotNull
     public List<Project> getProjects() {
-        return projectRepository.getProjects();
+        try(SqlSession sqlSession = getSqlSession()) {
+            ProjectRepository projectRepository = sqlSession.getMapper(ProjectRepository.class);
+            return projectRepository.getProjects();
+        }
     }
 
     public void setProjects(@NotNull final List<Project> list) {
-        try {
-            for (Project v : list) {
-                projectRepository.persist(v);
+        try(SqlSession sqlSession = getSqlSession()) {
+            try {
+                ProjectRepository projectRepository = sqlSession.getMapper(ProjectRepository.class);
+                for (Project v : list) {
+                    projectRepository.persist(v);
+                }
+                sqlSession.commit();
+            } catch (Exception e) {
+                sqlSession.rollback();
             }
-            sqlSession.commit();
-        } catch (Exception e) {
-            sqlSession.rollback();
         }
     }
 
@@ -174,6 +199,10 @@ public class ProjectService implements IProjectService {
             case "done" : return Status.DONE;
             default: return Status.SCHEDULED;
         }
+    }
+
+    private SqlSession getSqlSession() {
+        return sqlSessionFactory.openSession();
     }
 
 }
