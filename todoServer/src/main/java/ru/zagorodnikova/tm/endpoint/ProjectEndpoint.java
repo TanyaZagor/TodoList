@@ -6,6 +6,7 @@ import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.api.endpoint.IProjectEndpoint;
 import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.entity.Session;
+import ru.zagorodnikova.tm.entity.enumeration.Status;
 
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -66,10 +67,11 @@ public class ProjectEndpoint implements IProjectEndpoint {
             @WebParam(name = "name") @NotNull final String name,
             @WebParam(name = "description") @NotNull final String description,
             @WebParam(name = "dateStart") @NotNull final String dateStart,
-            @WebParam(name = "dateFinish") @NotNull final String dateFinish
+            @WebParam(name = "dateFinish") @NotNull final String dateFinish,
+            @WebParam(name = "status") @NotNull final String status
     ) throws Exception {
         serviceLocator.getSessionService().validate(session);
-        serviceLocator.getProjectService().mergeProject(session.getUserId(), oldName, name, description, dateStart, dateFinish);
+        serviceLocator.getProjectService().mergeProject(session.getUserId(), oldName, name, description, dateStart, dateFinish, status);
     }
 
     @Nullable

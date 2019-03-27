@@ -33,7 +33,9 @@ public class ProjectUpdateCommand extends AbstractCommand {
         @NotNull final String dateStart = getServiceLocator().getTerminalService().nextLine();
         System.out.println("New date finish");
         @NotNull final String dateFinish = getServiceLocator().getTerminalService().nextLine();
-        getServiceLocator().getProjectService().mergeProject(getServiceLocator().getSession(), oldProjectName, projectName, description, dateStart, dateFinish);
+        System.out.println("Status");
+        @NotNull final String status = getServiceLocator().getTerminalService().nextLine();
+        getServiceLocator().getProjectService().mergeProject(getServiceLocator().getSession(), oldProjectName, projectName, description, dateStart, dateFinish, status);
 
     }
 

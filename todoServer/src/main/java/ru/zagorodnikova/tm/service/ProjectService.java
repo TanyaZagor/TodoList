@@ -7,6 +7,7 @@ import ru.zagorodnikova.tm.api.repository.ITaskRepository;
 import ru.zagorodnikova.tm.api.service.IProjectService;
 import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.entity.Task;
+import ru.zagorodnikova.tm.entity.enumeration.Status;
 import ru.zagorodnikova.tm.util.DateFormatterUtil;
 
 import java.util.Date;
@@ -69,8 +70,13 @@ public class ProjectService implements IProjectService {
         return projectRepository.findOne(userId, projectName);
     }
 
-    public void mergeProject(@NotNull final String userId, @NotNull final String oldProjectName, @NotNull final String projectName,
-                             @NotNull final String description, @NotNull final String dateStart, @NotNull final String dateFinish) throws Exception {
+    public void mergeProject(@NotNull final String userId,
+                             @NotNull final String oldProjectName,
+                             @NotNull final String projectName,
+                             @NotNull final String description,
+                             @NotNull final String dateStart,
+                             @NotNull final String dateFinish,
+                             @NotNull final String status) throws Exception {
         if (oldProjectName.isEmpty()) return;
         @Nullable final Project project = projectRepository.findOne(userId, oldProjectName);
         if (project != null) {
@@ -80,7 +86,7 @@ public class ProjectService implements IProjectService {
             if (dateFinish.isEmpty()) return;
             @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
             @NotNull final Date finish = DateFormatterUtil.dateFormatter(dateFinish);
-            projectRepository.merge(project.getId(), projectName, description, start, finish);
+            projectRepository.merge(project.getId(), projectName, description, start, finish, status);
         }
     }
 

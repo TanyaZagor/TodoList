@@ -28,7 +28,8 @@ public interface ITaskRepository<T extends Task> {
                @NotNull final String name,
                @NotNull final String description,
                @NotNull final Date dateStart,
-               @NotNull final Date dateFinish) throws Exception;
+               @NotNull final Date dateFinish,
+               @NotNull final String status) throws Exception;
 
     @Nullable
     List<T> findAllTasksInProject(@NotNull final String projectId);

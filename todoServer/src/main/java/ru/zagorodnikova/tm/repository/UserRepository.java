@@ -21,11 +21,12 @@ import java.util.*;
 
 public class UserRepository extends AbstractRepository<User> implements IUserRepository<User> {
 
+    @NotNull private final SqlSession sqlSession;
     @NotNull private final IUserMapper userMapper;
 
     public UserRepository(ServiceLocator serviceLocator) {
-        SqlSession session = serviceLocator.getSessionFactory().openSession();
-        this.userMapper = session.getMapper(IUserMapper.class);
+        sqlSession = serviceLocator.getSessionFactory().openSession();
+        this.userMapper = sqlSession.getMapper(IUserMapper.class);
     }
 
     @Nullable
@@ -36,23 +37,27 @@ public class UserRepository extends AbstractRepository<User> implements IUserRep
 
     public void changePassword(@NotNull final String userId, @NotNull final String password) {
         userMapper.checkPassword(userId, password);
+        sqlSession.commit();
     }
 
     @Override
     public void remove(@NotNull final String userId) {
         userMapper.remove(userId);
+        sqlSession.commit();
     }
 
     @Override
     @SneakyThrows
     public void removeAll() {
         userMapper.removeAll();
+        sqlSession.commit();
     }
 
     @Nullable
     @Override
     public User persist(@NotNull User user) {
         userMapper.persist(user);
+        sqlSession.commit();
         return user;
     }
 
@@ -64,6 +69,7 @@ public class UserRepository extends AbstractRepository<User> implements IUserRep
 
     public void merge(@NotNull final String userId, @NotNull final String firstName, @NotNull final String lastName, @NotNull final String email) {
         userMapper.merge(userId, firstName, lastName, email);
+        sqlSession.commit();
     }
 
     @SneakyThrows

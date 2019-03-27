@@ -10,15 +10,16 @@ import java.util.List;
 
 public interface ITaskMapper {
 
-    @Insert("Insert app_task values (#{id}, #{userId}, #{projectId}, #{name}, #{description}, #{dateStart}, #{dateFinish}, #{dateCreate})")
+    @Insert("Insert app_task values (#{id}, #{userId}, #{projectId}, #{name}, #{description}, #{dateStart}, #{dateFinish}, #{dateCreate}, #{statusString})")
     void persist(@NotNull final Task task);
 
-    @Update("Update app_task set name = #{name}, description = #{description}, dateStart = #{dateStart}, dateFinish = #{dateFinish} where id= #{id}")
+    @Update("Update app_task set name = #{name}, description = #{description}, dateStart = #{dateStart}, dateFinish = #{dateFinish}, status = #{status} where id= #{id}")
     void merge(@NotNull @Param("id") final String id,
                @NotNull @Param("name") final String name,
                @NotNull @Param("description") final String description,
                @NotNull @Param("dateStart") final Date dateStart,
-               @NotNull @Param("dateFinish") final Date dateFinish);
+               @NotNull @Param("dateFinish") final Date dateFinish,
+               @NotNull @Param("status") final String status);
 
     @Delete("Delete from app_task where id = #{id}")
     void remove(@NotNull @Param("id") String id);
@@ -39,7 +40,8 @@ public interface ITaskMapper {
             @Result(property = "description", column = "description"),
             @Result(property = "dateStart", column = "dateStart"),
             @Result(property = "dateFinish", column = "dateFinish"),
-            @Result(property = "dateCreate", column = "dateCreate")
+            @Result(property = "dateCreate", column = "dateCreate"),
+            @Result(property = "statusString", column = "status")
     })
     Task findOne(@NotNull @Param("projectId") final String projectId, @NotNull @Param("name") final String name);
 
@@ -53,7 +55,8 @@ public interface ITaskMapper {
             @Result(property = "description", column = "description"),
             @Result(property = "dateStart", column = "dateStart"),
             @Result(property = "dateFinish", column = "dateFinish"),
-            @Result(property = "dateCreate", column = "dateCreate")
+            @Result(property = "dateCreate", column = "dateCreate"),
+            @Result(property = "statusString", column = "status")
     })
     List<Task> findAllTasksInProject(@NotNull @Param("projectId") final String projectId);
 
@@ -67,7 +70,8 @@ public interface ITaskMapper {
             @Result(property = "description", column = "description"),
             @Result(property = "dateStart", column = "dateStart"),
             @Result(property = "dateFinish", column = "dateFinish"),
-            @Result(property = "dateCreate", column = "dateCreate")
+            @Result(property = "dateCreate", column = "dateCreate"),
+            @Result(property = "statusString", column = "status")
     })
     List<Task> findAllTasks(@NotNull @Param("userId") final String userId);
 
@@ -81,7 +85,8 @@ public interface ITaskMapper {
             @Result(property = "description", column = "description"),
             @Result(property = "dateStart", column = "dateStart"),
             @Result(property = "dateFinish", column = "dateFinish"),
-            @Result(property = "dateCreate", column = "dateCreate")
+            @Result(property = "dateCreate", column = "dateCreate"),
+            @Result(property = "statusString", column = "status")
     })
     List<Task> getTasks();
 

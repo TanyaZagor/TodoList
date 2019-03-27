@@ -5,7 +5,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.entity.Project;
 
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -26,7 +25,8 @@ public interface IProjectRepository<T extends Project> {
             @NotNull final String projectName,
             @NotNull final String description,
             @NotNull final Date dateStart,
-            @NotNull final Date dateFinish) throws Exception;
+            @NotNull final Date dateFinish,
+            @NotNull final String status) throws Exception;
 
     @Nullable
     List<T> findAll(@NotNull final String userId) throws Exception;

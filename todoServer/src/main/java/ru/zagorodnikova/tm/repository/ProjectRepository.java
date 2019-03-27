@@ -10,6 +10,7 @@ import ru.zagorodnikova.tm.api.mapper.IProjectMapper;
 import ru.zagorodnikova.tm.api.repository.IProjectRepository;
 import ru.zagorodnikova.tm.entity.enumeration.FieldConst;
 import ru.zagorodnikova.tm.entity.Project;
+import ru.zagorodnikova.tm.entity.enumeration.Status;
 import ru.zagorodnikova.tm.util.DateFormatterUtil;
 
 import java.sql.*;
@@ -18,22 +19,24 @@ import java.util.Date;
 
 public class ProjectRepository extends AbstractRepository<Project> implements IProjectRepository<Project>{
 
-    @NotNull private final SqlSession session;
+    @NotNull private final SqlSession sqlSession;
     @NotNull private final IProjectMapper projectMapper;
 
 
     public ProjectRepository(ServiceLocator serviceLocator) {
-        this.session = serviceLocator.getSessionFactory().openSession();
-        this.projectMapper = session.getMapper(IProjectMapper.class);
+        this.sqlSession = serviceLocator.getSessionFactory().openSession();
+        this.projectMapper = sqlSession.getMapper(IProjectMapper.class);
     }
 
     @Override
     public void remove(@NotNull String id){
         projectMapper.remove(id);
+        sqlSession.commit();
     }
 
     public void removeAll(@NotNull final String userId) {
         projectMapper.removeAll(userId);
+        sqlSession.commit();
     }
 
     @NotNull
@@ -53,6 +56,7 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
     @SneakyThrows
     public Project persist(@NotNull Project project) {
         projectMapper.persist(project);
+        sqlSession.commit();
         return project;
     }
 
@@ -67,8 +71,10 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
                       @NotNull final String projectName,
                       @NotNull final String description,
                       @NotNull final Date dateStart,
-                      @NotNull final Date dateFinish) {
-        projectMapper.merge(id, projectName, description, dateStart, dateFinish);
+                      @NotNull final Date dateFinish,
+                      @NotNull final String status) {
+        projectMapper.merge(id, projectName, description, dateStart, dateFinish, status);
+        sqlSession.commit();
     }
 
     @Nullable

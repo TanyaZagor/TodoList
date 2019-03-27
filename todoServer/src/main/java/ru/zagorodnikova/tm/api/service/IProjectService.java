@@ -3,6 +3,7 @@ package ru.zagorodnikova.tm.api.service;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.entity.Project;
+import ru.zagorodnikova.tm.entity.enumeration.Status;
 
 import java.util.List;
 
@@ -32,7 +33,8 @@ public interface IProjectService{
                       @NotNull final String projectName,
                       @NotNull final String description,
                       @NotNull final String dateStart,
-                      @NotNull final String dateFinish) throws Exception;
+                      @NotNull final String dateFinish,
+                      @NotNull final String status) throws Exception;
 
     @Nullable
     List<Project> sortProjectsByDateCreated(@NotNull final String userId) throws Exception;

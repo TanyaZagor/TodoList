@@ -66,7 +66,7 @@ public class TaskService implements ITaskService {
 
     public void mergeTask(@NotNull final String userId, @NotNull final String projectName, @NotNull final String oldTaskName,
                           @NotNull final String taskName, @NotNull final String description, @NotNull final String dateStart,
-                          @NotNull final String dateFinish) throws Exception {
+                          @NotNull final String dateFinish, @NotNull final String status) throws Exception {
         if (projectName.isEmpty()) return;
         if (taskName.isEmpty()) return;
         if (description.isEmpty()) return;
@@ -76,7 +76,7 @@ public class TaskService implements ITaskService {
         if (task != null) {
             @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
             @NotNull final Date finish = DateFormatterUtil.dateFormatter(dateFinish);
-            taskRepository.merge(task.getId(), taskName, description, start, finish);
+            taskRepository.merge(task.getId(), taskName, description, start, finish, status);
         }
     }
 

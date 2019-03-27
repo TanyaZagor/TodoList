@@ -21,40 +21,47 @@ import java.util.*;
 
 public class TaskRepository extends AbstractRepository<Task> implements ITaskRepository<Task> {
 
+    @NotNull private final SqlSession sqlSession;
     @NotNull private final ITaskMapper taskMapper;
 
     public TaskRepository(ServiceLocator serviceLocator) {
-        SqlSession session = serviceLocator.getSessionFactory().openSession();
-        this.taskMapper = session.getMapper(ITaskMapper.class);
+        sqlSession = serviceLocator.getSessionFactory().openSession();
+        this.taskMapper = sqlSession.getMapper(ITaskMapper.class);
     }
 
     @Nullable
     @Override
     public Task persist(@NotNull final Task task) {
         taskMapper.persist(task);
+        sqlSession.commit();
         return task;
     }
 
     @Override
     public void remove(@NotNull final String id) {
         taskMapper.remove(id);
+        sqlSession.commit();
     }
 
     public void merge(@NotNull final String id,
                       @NotNull final String name,
                       @NotNull final String description,
                       @NotNull final Date dateStart,
-                      @NotNull final Date dateFinish){
-        taskMapper.merge(id, name, description, dateStart, dateFinish);
+                      @NotNull final Date dateFinish,
+                      @NotNull final String  status){
+        taskMapper.merge(id, name, description, dateStart, dateFinish, status);
+        sqlSession.commit();
     }
 
 
     public void removeAll(@NotNull final String userId) {
         taskMapper.removeAll(userId);
+        sqlSession.commit();
     }
 
     public void removeAllInProject(@NotNull final String projectId) {
         taskMapper.removeAllInProject(projectId);
+        sqlSession.commit();
     }
 
     @Nullable

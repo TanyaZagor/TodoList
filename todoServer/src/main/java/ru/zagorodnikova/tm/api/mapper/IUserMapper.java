@@ -22,7 +22,7 @@ public interface IUserMapper {
             @Result(property = "firstName", column = "firstName"),
             @Result(property = "lastName", column = "lastName"),
             @Result(property = "email", column = "email"),
-            @Result(property = "roleType", column = "role")
+            @Result(property = "roleTypeString", column = "role")
     })
     User signIn(@NotNull @Param("login") final String login, @NotNull @Param("password") final String password);
 
@@ -36,7 +36,7 @@ public interface IUserMapper {
     void removeAll();
 
     @Nullable
-    @Select("Select from app_user where id = #{id}")
+    @Select("Select * from app_user where id = #{id}")
     @Results(value = {
             @Result(property = "id", column = "id"),
             @Result(property = "login", column = "login"),
@@ -44,7 +44,7 @@ public interface IUserMapper {
             @Result(property = "firstName", column = "firstName"),
             @Result(property = "lastName", column = "lastName"),
             @Result(property = "email", column = "email"),
-            @Result(property = "roleType", column = "role")
+            @Result(property = "roleTypeString", column = "role")
     })
     User findOne(@NotNull @Param("id") final String userId);
 
@@ -60,7 +60,7 @@ public interface IUserMapper {
             @Result(property = "firstName", column = "firstName"),
             @Result(property = "lastName", column = "lastName"),
             @Result(property = "email", column = "email"),
-            @Result(property = "roleType", column = "role")
+            @Result(property = "roleTypeString", column = "role")
     })
     List<User> getUsers();
 

@@ -52,6 +52,22 @@ public class Project extends AbstractEntity {
         this.dateFinish = dateFinish;
     }
 
+    public void setStatusString(@NotNull String status) {
+        switch (status) {
+            case "scheduled": this.status = Status.SCHEDULED; break;
+            case "in progress": this.status = Status.IN_PROGRESS; break;
+            case "done" : this.status = Status.DONE; break;
+            default: this.status = Status.SCHEDULED; break;
+        }
+    }
+
+    public String getStatusString() {
+        return status.toString();
+    }
+    public void setStatus(@NotNull Status status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(@Nullable Object o) {
         if (this == o) return true;
@@ -60,7 +76,6 @@ public class Project extends AbstractEntity {
         return Objects.equals(userId, project.userId) &&
                 Objects.equals(name, project.name);
     }
-
     @Override
     public int hashCode() {
         return Objects.hash(userId, name);

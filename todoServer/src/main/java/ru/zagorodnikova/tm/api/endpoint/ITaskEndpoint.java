@@ -41,7 +41,8 @@ public interface ITaskEndpoint {
                    @WebParam(name = "taskName") @NotNull final String taskName,
                    @WebParam(name = "description") @NotNull final String description,
                    @WebParam(name = "dateStart") @NotNull final String dateStart,
-                   @WebParam(name = "dateFinish") @NotNull final String dateFinish) throws Exception;
+                   @WebParam(name = "dateFinish") @NotNull final String dateFinish,
+                   @WebParam(name = "status") @NotNull final String status) throws Exception;
 
     @WebMethod
     @Nullable

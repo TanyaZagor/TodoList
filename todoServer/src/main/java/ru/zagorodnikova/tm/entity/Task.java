@@ -53,6 +53,24 @@ public class Task extends AbstractEntity {
         this.dateFinish = dateFinish;
     }
 
+    public void setStatusString(@NotNull String status) {
+        switch (status) {
+            case "scheduled": this.status = Status.SCHEDULED; break;
+            case "in progress": this.status = Status.IN_PROGRESS; break;
+            case "done" : this.status = Status.DONE; break;
+            default: this.status = Status.SCHEDULED; break;
+        }
+    }
+
+    public String getStatusString() {
+        return status.toString();
+    }
+
+
+    public void setStatus(@NotNull Status status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(@Nullable Object o) {
         if (this == o) return true;

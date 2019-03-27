@@ -67,39 +67,18 @@ public class Bootstrap implements ServiceLocator {
     public void init() throws Exception {
         //initProjectsAndUsers();
         initEndpoints();
-//        SqlSessionFactory sessionFactory = getSqlSessionFactory();
-//        SqlSession session = sessionFactory.openSession();
-//        Project project = session.getMapper(IProjectMapper.class).findOne("714bc724-ed0c-4215-9eb5-5bbd23a8473d", "Project2");
-//        System.out.println(project.getName());
-        SqlSession session = sessionFactory.openSession();
-        Project project = new Project();
-        project.setUserId("9be2aad9-5fcf-4a60-9146-c0547dee98bd");
-        project.setDateStart(new Date());
-        project.setName("test");
-        session.getMapper(IProjectMapper.class).persist(project);
-        session.commit();
-//        session.getMapper(IProjectMapper.class).merge("5f36d8ca-6d37-4fce-9195-a0f19fa52e03", "name", "des",  DateFormatterUtil.dateFormatter(new Date()), DateFormatterUtil.dateFormatter(new Date()));
-//        session.commit();
-//        System.out.println(session.getMapper(IUserMapper.class).checkPassword("admin", PasswordUtil.hashPassword("ad")));
-//        User user = new User();
-//        user.setLogin("l");
-//        user.setPassword("p");
-//        session.getMapper(IUserMapper.class).persist(user);
-//        session.commit();
-//        session.getMapper(IUserMapper.class).merge("5d86b3e1-0646-4278-baba-dc885a1e22c6", "first", "last", "email");
-//        session.commit();
     }
 
 
     private void initProjectsAndUsers() throws Exception {
         final User user1 = userService.signUp("login", "password", "first name", "last name", "email@email.ru");
         final User user2 = userService.signUp("admin", "admin", "first name", "last name", "email@email.ru");
-        user2.setRoleType("admin");
+        //user2.setRoleType("admin");
 
         final Project project1 = projectService.persistProject(user1.getId(), "Project1", "Description1", "20.02.2019", "20.05.2019");
         final Project project2 = projectService.persistProject(user2.getId(), "Project2", "Description2", "20.05.2019", "20.06.2019");
         final Project project3 = projectService.persistProject(user2.getId(), "Project1", "Description1", "20.02.2016", "20.05.2020");
-        project3.setStatus(Status.DONE);
+        //project3.setStatus("done");
 
         taskService.persistTask(project1.getUserId(), project1.getName(), "task1", "des1", "20.02.2012", "20.02.2013");
         taskService.persistTask(project1.getUserId(), project1.getName(), "task2", "des2", "20.02.2010", "20.02.2011");

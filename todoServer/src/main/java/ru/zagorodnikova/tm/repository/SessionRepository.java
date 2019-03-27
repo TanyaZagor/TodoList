@@ -13,22 +13,25 @@ import java.util.Properties;
 
 public class SessionRepository {
 
+    @NotNull private final SqlSession sqlSession;
     @NotNull private final ISessionMapper sessionMapper;
 
     public SessionRepository(ServiceLocator serviceLocator){
-        SqlSession session = serviceLocator.getSessionFactory().openSession();
-        this.sessionMapper = session.getMapper(ISessionMapper.class);
+        sqlSession = serviceLocator.getSessionFactory().openSession();
+        this.sessionMapper = sqlSession.getMapper(ISessionMapper.class);
     }
 
     @Nullable
     public Session persist(@NotNull final Session session) throws Exception {
         session.setSignature(signSession(session));
         sessionMapper.persist(session);
+        sqlSession.commit();
         return session;
     }
 
     public void remove(@NotNull final Session session) {
         sessionMapper.remove(session);
+        sqlSession.commit();
     }
 
     @NotNull
