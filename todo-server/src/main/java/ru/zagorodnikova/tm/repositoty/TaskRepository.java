@@ -27,20 +27,20 @@ public class TaskRepository implements ITaskRepository {
     }
 
     @Override
-    public void remove(@NotNull String id) {
-        entityManager.remove(id);
+    public void remove(@NotNull Task task) {
+        entityManager.remove(task);
     }
 
     @Override
     public void removeAll(@NotNull String userId) {
-        entityManager.createQuery("Delete from app_task where user_id = ?1")
+        entityManager.createQuery("Delete from Task task where task.userId = ?1")
                 .setParameter(1, userId)
                 .executeUpdate();
     }
 
     @Override
     public void removeAllInProject(@NotNull String projectId) {
-        entityManager.createQuery("Delete from app_task where project_id = ?1")
+        entityManager.createQuery("Delete from Task task where task.projectId = ?1")
                 .setParameter(1, projectId)
                 .executeUpdate();
     }
@@ -48,7 +48,7 @@ public class TaskRepository implements ITaskRepository {
     @Nullable
     @Override
     public Task findOne(@NotNull String projectId, @NotNull String name) {
-        Task task = (Task) entityManager.createQuery("Select * from app_task where project_id = ?1 and name = ?2")
+        Task task = (Task) entityManager.createQuery("Select task from Task task where task.projectId = ?1 and task.name = ?2")
                 .setParameter(1, projectId)
                 .setParameter(2,name)
                 .getSingleResult();
@@ -58,7 +58,7 @@ public class TaskRepository implements ITaskRepository {
     @Nullable
     @Override
     public List<Task> findAllTasksInProject(@NotNull String projectId) {
-        List list = entityManager.createQuery("Select from app_task where project_id = ?1 ")
+        List list = entityManager.createQuery("Select task from Task task where task.projectId = ?1 ")
                 .setParameter(1, projectId)
                 .getResultList();
         return list;
@@ -67,7 +67,7 @@ public class TaskRepository implements ITaskRepository {
     @Nullable
     @Override
     public List<Task> findAllTasks(@NotNull String userId) {
-        List list = entityManager.createQuery("Select from app_task where user_id = ?1 ")
+        List list = entityManager.createQuery("Select task from Task task where task.userId = ?1 ")
                 .setParameter(1, userId)
                 .getResultList();
         return list;
@@ -76,7 +76,7 @@ public class TaskRepository implements ITaskRepository {
     @NotNull
     @Override
     public List<Task> getTasks() {
-        List list = entityManager.createQuery("Select from app_task")
+        List list = entityManager.createQuery("Select task from Task task")
                 .getResultList();
         return list;
     }

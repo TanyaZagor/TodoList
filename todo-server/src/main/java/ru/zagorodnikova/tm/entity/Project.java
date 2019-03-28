@@ -27,8 +27,6 @@ public class Project extends AbstractEntity {
     private String id = super.getId();
 
     @Nullable
-//    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "user_id")
     @Column(name = "user_id")
     private String userId;
 

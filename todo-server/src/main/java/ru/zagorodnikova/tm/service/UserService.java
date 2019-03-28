@@ -7,6 +7,7 @@ import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.api.service.IUserService;
 import ru.zagorodnikova.tm.entity.User;
 import ru.zagorodnikova.tm.repositoty.UserRepository;
+import ru.zagorodnikova.tm.util.PasswordUtil;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -25,7 +26,7 @@ public class UserService extends AbstractService implements IUserService {
         if (password.isEmpty()) return null;
         EntityManager entityManager = serviceLocator.getFactory().createEntityManager();
         UserRepository userRepository = new UserRepository(entityManager);
-        return userRepository.signIn(login, password);
+        return userRepository.signIn(login, PasswordUtil.hashPassword(password));
     }
 
     @Nullable

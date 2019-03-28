@@ -22,13 +22,13 @@ public class ProjectRepository implements IProjectRepository {
     }
 
     @Override
-    public void remove(@NotNull String id) {
-        entityManager.remove(id);
+    public void remove(@NotNull Project project) {
+        entityManager.remove(project);
     }
 
     @Override
     public void removeAll(@NotNull String userId) {
-        entityManager.createQuery("Delete from app_project where user_id = ?1")
+        entityManager.createQuery("Delete from Project project where project.userId = ?1")
                 .setParameter(1, userId)
                 .executeUpdate();
     }
@@ -36,7 +36,7 @@ public class ProjectRepository implements IProjectRepository {
     @Nullable
     @Override
     public Project findOne(@NotNull String userId, @NotNull String name) {
-        Project project = (Project) entityManager.createQuery("Select * from app_project where user_id = ?1 and name = ?2")
+        Project project = (Project) entityManager.createQuery("Select project from Project project where project.userId = ?1 and project.name = ?2")
                 .setParameter(1,userId)
                 .setParameter(2, name)
                 .getSingleResult();
@@ -51,7 +51,7 @@ public class ProjectRepository implements IProjectRepository {
     @Nullable
     @Override
     public List<Project> findAll(@NotNull String userId) {
-        List list = entityManager.createQuery("Select * from app_project where user_id = ?1")
+        List list = entityManager.createQuery("Select project from Project project where project.userId = ?1")
                 .setParameter(1,userId)
                 .getResultList();
         return list;
@@ -60,7 +60,7 @@ public class ProjectRepository implements IProjectRepository {
     @NotNull
     @Override
     public List<Project> getProjects() {
-        List list = entityManager.createQuery("Select * from app_project")
+        List list = entityManager.createQuery("Select project from Project project")
                 .getResultList();
         return list;
     }

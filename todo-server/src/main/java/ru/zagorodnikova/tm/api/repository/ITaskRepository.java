@@ -12,7 +12,7 @@ public interface ITaskRepository {
 
     void merge(@NotNull final Task task);
 
-    void remove(@NotNull String id);
+    void remove(@NotNull Task task);
 
     void removeAll(@NotNull final String userId);
 

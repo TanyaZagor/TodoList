@@ -16,7 +16,7 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public User findOne(String id) {
+    public User findOne(@NotNull final String id) {
         return entityManager.find(User.class, id);
     }
 
@@ -28,7 +28,7 @@ public class UserRepository implements IUserRepository {
     @Override
     public User signIn(@NotNull final String login,
                 @NotNull final String password) {
-        User user = (User) entityManager.createQuery("Select * from app_user where login = ?1 and passwordHash = ?2")
+        User user = (User) entityManager.createQuery("SELECT user FROM User user WHERE user.login = ?1 AND user.password = ?2")
                 .setParameter(1, login)
                 .setParameter(2, password)
                 .getSingleResult();
@@ -36,18 +36,18 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public void remove(@NotNull final String id) {
-        entityManager.remove(id);
+    public void remove(@NotNull final User user) {
+        entityManager.remove(user);
     }
 
     @Override
     public void removeAll() {
-        entityManager.createQuery("Delete from app_user where role = USER").executeUpdate();
+        entityManager.createQuery("Delete from User user where user.roleType = USER").executeUpdate();
     }
 
     @Override
     public List<User> getUsers() {
-        List list = entityManager.createQuery("Select * from app_user")
+        List list = entityManager.createQuery("Select user from User user")
                 .getResultList();
         return list;
     }

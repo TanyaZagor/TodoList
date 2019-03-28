@@ -24,14 +24,10 @@ public class Task extends AbstractEntity {
     private String id = super.getId();
 
     @Nullable
-//    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "user_id")
     @Column(name = "user_id")
     private String userId;
 
     @Nullable
-//    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "project_id")
     @Column(name = "project_id")
     private String projectId;
 

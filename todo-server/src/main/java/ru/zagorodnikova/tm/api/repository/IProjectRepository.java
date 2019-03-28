@@ -10,7 +10,7 @@ public interface IProjectRepository {
 
     void persist(@NotNull final Project project);
 
-    void remove(@NotNull final String id);
+    void remove(@NotNull final Project project);
 
     void  removeAll(@NotNull final String userId);
 

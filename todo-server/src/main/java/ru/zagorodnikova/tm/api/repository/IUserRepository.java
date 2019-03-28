@@ -14,7 +14,7 @@ public interface IUserRepository {
     User signIn(@NotNull final String login,
                 @NotNull final String password);
 
-    void remove(@NotNull final String userId);
+    void remove(@NotNull final User user);
 
     void removeAll();
 
