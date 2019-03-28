@@ -7,6 +7,7 @@ import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.entity.enumeration.Status;
+import ru.zagorodnikova.tm.util.DateFormatterUtil;
 
 import java.util.Date;
 import java.util.Objects;
@@ -59,7 +60,6 @@ public class Project extends AbstractEntity {
         return Objects.equals(userId, project.userId) &&
                 Objects.equals(name, project.name);
     }
-
     @Override
     public int hashCode() {
         return Objects.hash(userId, name);

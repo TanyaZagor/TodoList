@@ -31,7 +31,8 @@ public interface ITaskService {
                    @NotNull final String taskName,
                    @NotNull final String description,
                    @NotNull final String dateStart,
-                   @NotNull final String dateFinish) throws Exception;
+                   @NotNull final String dateFinish,
+                   @NotNull final String status) throws Exception;
 
     @Nullable
     List<Task> findAllTasksInProject(@NotNull final String userId,
@@ -61,4 +62,8 @@ public interface ITaskService {
     List<Task> sortTasksByStatus(@NotNull final String userId,
                                  @NotNull final String projectName);
 
+    @NotNull
+    List<Task> getTasks();
+
+    void setTasks(@NotNull final List<Task> list);
 }

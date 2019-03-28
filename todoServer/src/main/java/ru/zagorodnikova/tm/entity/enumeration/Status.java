@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 public enum Status {
 
     SCHEDULED("scheduled"),
-    INPROGRESS("in progress"),
+    IN_PROGRESS("in progress"),
     DONE("done");
 
     @NotNull private final String displayName;

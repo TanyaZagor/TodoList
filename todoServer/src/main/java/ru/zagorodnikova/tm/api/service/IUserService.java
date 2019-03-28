@@ -37,4 +37,10 @@ public interface IUserService {
     @Nullable
     User findOne(@NotNull final String userId);
 
+    void removeAll();
+
+    @Nullable
+    List<User> getUsers();
+
+    void setUsers(@NotNull final List<User> list);
 }
