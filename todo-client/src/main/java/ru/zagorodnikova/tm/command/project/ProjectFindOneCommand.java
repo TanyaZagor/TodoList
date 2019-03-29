@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.endpoint.Exception_Exception;
-import ru.zagorodnikova.tm.endpoint.Project;
+import ru.zagorodnikova.tm.endpoint.ProjectDto;
 
 public class ProjectFindOneCommand extends AbstractCommand {
 
@@ -27,7 +27,7 @@ public class ProjectFindOneCommand extends AbstractCommand {
     public void execute() throws Exception_Exception {
         System.out.println("project name");
         @NotNull final String projectName = getServiceLocator().getTerminalService().nextLine();
-        @Nullable final Project project = getServiceLocator().getProjectService().findOneProject(getServiceLocator().getSession(), projectName);
+        @Nullable final ProjectDto project = getServiceLocator().getProjectService().findOneProject(getServiceLocator().getSession(), projectName);
         if (project != null) {
             System.out.println("Name: " + project.getName() + ", Description: " + project.getDescription()+
                     ", Date start: " + project.getDateStart() + ", Date finish: " + project.getDateFinish() +

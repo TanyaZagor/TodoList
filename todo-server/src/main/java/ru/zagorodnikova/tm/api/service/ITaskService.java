@@ -62,7 +62,7 @@ public interface ITaskService {
     List<Task> sortTasksByStatus(@NotNull final String userId,
                                  @NotNull final String projectName);
 
-    @NotNull
+    @Nullable
     List<Task> getTasks();
 
     void setTasks(@NotNull final List<Task> list);

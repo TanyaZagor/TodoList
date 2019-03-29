@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.endpoint.Exception_Exception;
-import ru.zagorodnikova.tm.endpoint.Task;
+import ru.zagorodnikova.tm.endpoint.TaskDto;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class TaskSortByStartCommand extends AbstractCommand {
     public void execute() throws Exception_Exception {
         System.out.println("project name");
         @NotNull final String projectName = getServiceLocator().getTerminalService().nextLine();
-        @Nullable final List<Task> tasks = getServiceLocator().getTaskService().sortTasksByDateStart(getServiceLocator().getSession(), projectName);
+        @Nullable final List<TaskDto> tasks = getServiceLocator().getTaskService().sortTasksByDateStart(getServiceLocator().getSession(), projectName);
         if (tasks!= null) {
             tasks.forEach(task -> System.out.println("Name: " + task.getName() +
                     ", Description: " + task.getDescription() + ", Date start: " + task.getDateStart() +

@@ -1,10 +1,13 @@
-package ru.zagorodnikova.tm.entity;
+package ru.zagorodnikova.tm.dto;
 
 
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.zagorodnikova.tm.entity.Project;
+import ru.zagorodnikova.tm.entity.Task;
+import ru.zagorodnikova.tm.entity.User;
 
 import javax.xml.bind.annotation.*;
 import java.io.Serializable;

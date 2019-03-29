@@ -48,7 +48,7 @@ public interface IProjectService{
     @Nullable
     List<Project> sortProjectsByStatus(@NotNull final String userId) throws Exception;
 
-    @NotNull
+    @Nullable
     List<Project> getProjects();
 
     void setProjects(@NotNull final List<Project> list);

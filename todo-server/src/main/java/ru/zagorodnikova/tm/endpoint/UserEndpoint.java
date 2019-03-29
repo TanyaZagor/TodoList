@@ -4,11 +4,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.api.endpoint.IUserEndpoint;
+import ru.zagorodnikova.tm.dto.UserDto;
 import ru.zagorodnikova.tm.entity.Session;
 import ru.zagorodnikova.tm.entity.User;
 
 import javax.jws.WebParam;
 import javax.jws.WebService;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebService
@@ -47,16 +49,21 @@ public class UserEndpoint implements IUserEndpoint {
     }
 
     @Nullable
-    public List<User> findAllUsers(@WebParam(name = "session") @NotNull final Session session) throws Exception {
+    public List<UserDto> findAllUsers(@WebParam(name = "session") @NotNull final Session session) throws Exception {
         serviceLocator.getSessionService().validate(session);
-        return serviceLocator.getUserService().findAllUsers(session.getUserId());
+        @NotNull final List<UserDto> listDto = new ArrayList<>();
+        @Nullable final List<User> list = serviceLocator.getUserService().getUsers();
+        if (list == null || list.isEmpty()) return null;
+        list.forEach(user -> listDto.add(new UserDto(user)));
+        return listDto;
     }
 
     @Nullable
     @Override
-    public User findUser(@WebParam(name = "session") @NotNull final Session session) throws Exception {
+    public UserDto findUser(@WebParam(name = "session") @NotNull final Session session) throws Exception {
         serviceLocator.getSessionService().validate(session);
-        return serviceLocator.getUserService().findOne(session.getUserId());
+        @Nullable final User user = serviceLocator.getUserService().findOne(session.getUserId());
+        if (user == null) return null;
+        return new UserDto(user);
     }
-
 }

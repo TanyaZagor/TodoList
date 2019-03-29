@@ -20,7 +20,6 @@ public class User extends AbstractEntity {
 
     @NotNull
     @Id
-    @Column
     private String id = super.getId();
 
     @Nullable
@@ -32,15 +31,12 @@ public class User extends AbstractEntity {
     private String password;
 
     @Nullable
-    @Column
     private String firstName;
 
     @Nullable
-    @Column
     private String lastName;
 
     @Nullable
-    @Column
     private String email;
 
     @NotNull

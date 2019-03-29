@@ -2,6 +2,7 @@ package ru.zagorodnikova.tm.api.endpoint;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.zagorodnikova.tm.dto.UserDto;
 import ru.zagorodnikova.tm.entity.Session;
 import ru.zagorodnikova.tm.entity.User;
 
@@ -30,10 +31,10 @@ public interface IUserEndpoint {
 
     @WebMethod
     @Nullable
-    List<User> findAllUsers(@WebParam(name = "session") @NotNull final Session session) throws Exception;
+    List<UserDto> findAllUsers(@WebParam(name = "session") @NotNull final Session session) throws Exception;
 
 
     @WebMethod
     @Nullable
-    User findUser(@WebParam(name = "session") @NotNull final Session session) throws Exception;
+    UserDto findUser(@WebParam(name = "session") @NotNull final Session session) throws Exception;
 }

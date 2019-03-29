@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.endpoint.Exception_Exception;
-import ru.zagorodnikova.tm.endpoint.Project;
+import ru.zagorodnikova.tm.endpoint.ProjectDto;
 
 public class ProjectCreateCommand extends AbstractCommand {
 
@@ -34,7 +34,7 @@ public class ProjectCreateCommand extends AbstractCommand {
         @NotNull final String dateStart = getServiceLocator().getTerminalService().nextLine();
         System.out.println("project date finish");
         @NotNull final String dateFinish = getServiceLocator().getTerminalService().nextLine();
-        @Nullable final Project project = getServiceLocator().getProjectService().persistProject(getServiceLocator().getSession(), projectName, description, dateStart, dateFinish);
+        @Nullable final ProjectDto project = getServiceLocator().getProjectService().persistProject(getServiceLocator().getSession(), projectName, description, dateStart, dateFinish);
         if (project != null) {
             System.out.println(project.getName());
         }

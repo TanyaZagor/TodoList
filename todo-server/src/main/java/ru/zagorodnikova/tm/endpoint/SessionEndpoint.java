@@ -27,7 +27,7 @@ public class SessionEndpoint implements ISessionEndpoint {
             @WebParam(name = "login") @NotNull final String login,
             @WebParam(name = "password") @NotNull final String password
     ) throws Exception {
-        final User user = serviceLocator.getUserService().signIn(login, password);
+        @Nullable final User user = serviceLocator.getUserService().signIn(login, password);
         if (user != null) {
             return serviceLocator.getSessionService().persist(user);
         }
@@ -43,7 +43,7 @@ public class SessionEndpoint implements ISessionEndpoint {
             @WebParam(name = "lastName") @NotNull final String lastName,
             @WebParam(name = "email") @NotNull final String email
     ) throws Exception {
-        final User user = serviceLocator.getUserService().signUp(login, password, fistName, lastName, email);
+        @Nullable final User user = serviceLocator.getUserService().signUp(login, password, fistName, lastName, email);
         if (user != null) {
             return serviceLocator.getSessionService().persist(user);
         }

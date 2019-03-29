@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.endpoint.Exception_Exception;
-import ru.zagorodnikova.tm.endpoint.Task;
+import ru.zagorodnikova.tm.endpoint.TaskDto;
 
 public class TaskFindOneCommand extends AbstractCommand {
 
@@ -29,7 +29,7 @@ public class TaskFindOneCommand extends AbstractCommand {
         @NotNull final String projectName = getServiceLocator().getTerminalService().nextLine();
         System.out.println("task name");
         @NotNull final String taskName = getServiceLocator().getTerminalService().nextLine();
-        @Nullable final Task task = getServiceLocator().getTaskService().findOneTask(getServiceLocator().getSession(), projectName, taskName);
+        @Nullable final TaskDto task = getServiceLocator().getTaskService().findOneTask(getServiceLocator().getSession(), projectName, taskName);
         if (task != null) {
             System.out.println("Name: " + task.getName() + ", Description: " + task.getDescription() +
                     ", Date start: " + task.getDateStart() + ", Date finish: " + task.getDateFinish() +

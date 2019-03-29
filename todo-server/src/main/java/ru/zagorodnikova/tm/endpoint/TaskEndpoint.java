@@ -4,11 +4,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.api.endpoint.ITaskEndpoint;
+import ru.zagorodnikova.tm.dto.TaskDto;
 import ru.zagorodnikova.tm.entity.Session;
 import ru.zagorodnikova.tm.entity.Task;
 
 import javax.jws.WebParam;
 import javax.jws.WebService;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebService
@@ -21,7 +23,7 @@ public class TaskEndpoint implements ITaskEndpoint {
     }
 
     @Nullable
-    public Task persistTask(
+    public TaskDto persistTask(
             @WebParam(name = "session") @NotNull final Session session,
             @WebParam(name = "projectName") @NotNull final String projectName,
             @WebParam(name = "taskName") @NotNull final String taskName,
@@ -30,7 +32,9 @@ public class TaskEndpoint implements ITaskEndpoint {
             @WebParam(name = "dateFinish") @NotNull final String dateFinish
     ) throws Exception {
         serviceLocator.getSessionService().validate(session);
-        return serviceLocator.getTaskService().persistTask(session.getUserId(), projectName, taskName, description, dateStart, dateFinish);
+        @Nullable final Task task = serviceLocator.getTaskService().persistTask(session.getUserId(), projectName, taskName, description, dateStart, dateFinish);
+        if (task == null) return null;
+        return new TaskDto(task);
     }
 
     public void removeTask(
@@ -70,63 +74,89 @@ public class TaskEndpoint implements ITaskEndpoint {
     }
 
     @Nullable
-    public List<Task> findAllTasksInProject(
+    public List<TaskDto> findAllTasksInProject(
             @WebParam(name = "session") @NotNull final Session session,
             @WebParam(name = "projectName") @NotNull final String projectName
     ) throws Exception {
         serviceLocator.getSessionService().validate(session);
-        return serviceLocator.getTaskService().findAllTasksInProject(session.getUserId(), projectName);
+        @NotNull final List<TaskDto> listDto = new ArrayList<>();
+        @Nullable final List<Task> list = serviceLocator.getTaskService().findAllTasksInProject(session.getUserId(), projectName);
+        if (list == null || list.isEmpty()) return null;
+        list.forEach(v -> listDto.add(new TaskDto(v)));
+        return listDto;
     }
 
     @Nullable
-    public List<Task> findAllTasks(@WebParam(name = "session") @NotNull final Session session) throws Exception {
+    public List<TaskDto> findAllTasks(@WebParam(name = "session") @NotNull final Session session) throws Exception {
         serviceLocator.getSessionService().validate(session);
-        return serviceLocator.getTaskService().findAllTasks(session.getUserId());
+        @NotNull final List<TaskDto> listDto = new ArrayList<>();
+        @Nullable final List<Task> list = serviceLocator.getTaskService().findAllTasks(session.getUserId());
+        if (list == null || list.isEmpty()) return null;
+        list.forEach(v -> listDto.add(new TaskDto(v)));
+        return listDto;
     }
 
     @Nullable
-    public Task findOneTask(
+    public TaskDto findOneTask(
             @WebParam(name = "session") @NotNull final Session session,
             @WebParam(name = "projectName") @NotNull final String projectName,
             @WebParam(name = "taskName") @NotNull final String taskName
     ) throws Exception {
         serviceLocator.getSessionService().validate(session);
-        return serviceLocator.getTaskService().findOneTask(session.getUserId(), projectName, taskName);
+        @Nullable final Task task = serviceLocator.getTaskService().findOneTask(session.getUserId(), projectName, taskName);
+        if (task == null) return null;
+        return new TaskDto(task);
     }
 
     @Nullable
-    public List<Task> sortTasksByDateCreated(
+    public List<TaskDto> sortTasksByDateCreated(
             @WebParam(name = "session") @NotNull final Session session,
             @WebParam(name = "projectName") @NotNull final String projectName
     ) throws Exception {
         serviceLocator.getSessionService().validate(session);
-        return serviceLocator.getTaskService().sortTasksByDateCreated(session.getUserId(), projectName);
+        @NotNull final List<TaskDto> listDto = new ArrayList<>();
+        @Nullable final List<Task> list = serviceLocator.getTaskService().sortTasksByDateCreated(session.getUserId(), projectName);
+        if (list == null || list.isEmpty()) return null;
+        list.forEach(v -> listDto.add(new TaskDto(v)));
+        return listDto;
     }
 
     @Nullable
-    public List<Task> sortTasksByDateStart(
+    public List<TaskDto> sortTasksByDateStart(
             @WebParam(name = "session") @NotNull final Session session,
             @WebParam(name = "projectName") @NotNull final String projectName
     ) throws Exception {
         serviceLocator.getSessionService().validate(session);
-        return serviceLocator.getTaskService().sortTasksByDateStart(session.getUserId(), projectName);
+        @NotNull final List<TaskDto> listDto = new ArrayList<>();
+        @Nullable final List<Task> list = serviceLocator.getTaskService().sortTasksByDateStart(session.getUserId(), projectName);
+        if (list == null || list.isEmpty()) return null;
+        list.forEach(v -> listDto.add(new TaskDto(v)));
+        return listDto;
     }
 
     @Nullable
-    public List<Task> sortTasksByDateFinish(
+    public List<TaskDto> sortTasksByDateFinish(
             @WebParam(name = "session") @NotNull final Session session,
             @WebParam(name = "projectName") @NotNull final String projectName
     ) throws Exception {
         serviceLocator.getSessionService().validate(session);
-        return serviceLocator.getTaskService().sortTasksByDateFinish(session.getUserId(), projectName);
+        @NotNull final List<TaskDto> listDto = new ArrayList<>();
+        @Nullable final List<Task> list = serviceLocator.getTaskService().sortTasksByDateFinish(session.getUserId(), projectName);
+        if (list == null || list.isEmpty()) return null;
+        list.forEach(v -> listDto.add(new TaskDto(v)));
+        return listDto;
     }
 
     @Nullable
-    public List<Task> sortTasksByStatus(
+    public List<TaskDto> sortTasksByStatus(
             @WebParam(name = "session") @NotNull final Session session,
             @WebParam(name = "projectName") @NotNull final String projectName
     ) throws Exception {
         serviceLocator.getSessionService().validate(session);
-        return serviceLocator.getTaskService().sortTasksByStatus(session.getUserId(), projectName);
+        @NotNull final List<TaskDto> listDto = new ArrayList<>();
+        @Nullable final List<Task> list = serviceLocator.getTaskService().sortTasksByStatus(session.getUserId(), projectName);
+        if (list == null || list.isEmpty()) return null;
+        list.forEach(v -> listDto.add(new TaskDto(v)));
+        return listDto;
     }
 }

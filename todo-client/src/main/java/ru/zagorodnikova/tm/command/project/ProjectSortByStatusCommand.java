@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.endpoint.Exception_Exception;
-import ru.zagorodnikova.tm.endpoint.Project;
+import ru.zagorodnikova.tm.endpoint.ProjectDto;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class ProjectSortByStatusCommand extends AbstractCommand {
 
     @Override
     public void execute() throws Exception_Exception {
-        @Nullable final List<Project> list = getServiceLocator().getProjectService().sortProjectsByStatus(getServiceLocator().getSession());
+        @Nullable final List<ProjectDto> list = getServiceLocator().getProjectService().sortProjectsByStatus(getServiceLocator().getSession());
         if (list!= null) {
             list.forEach((project) -> System.out.println("Name: " + project.getName() +
                     ", Description: " + project.getDescription()+ ", Date start: " + project.getDateStart() +

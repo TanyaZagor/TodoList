@@ -1,6 +1,7 @@
 package ru.zagorodnikova.tm.api.endpoint;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.zagorodnikova.tm.dto.TaskDto;
 import ru.zagorodnikova.tm.entity.Session;
 import ru.zagorodnikova.tm.entity.Task;
 
@@ -15,12 +16,12 @@ public interface ITaskEndpoint {
 
     @WebMethod
     @Nullable
-    Task persistTask(@WebParam(name = "session") @NotNull final Session session,
-                     @WebParam(name = "projectName") @NotNull final String projectName,
-                     @WebParam(name = "taskName") @NotNull final String taskName,
-                     @WebParam(name = "description") @NotNull final String description,
-                     @WebParam(name = "dateStart") @NotNull final String dateStart,
-                     @WebParam(name = "dateFinish") @NotNull final String dateFinish) throws Exception;
+    TaskDto persistTask(@WebParam(name = "session") @NotNull final Session session,
+                        @WebParam(name = "projectName") @NotNull final String projectName,
+                        @WebParam(name = "taskName") @NotNull final String taskName,
+                        @WebParam(name = "description") @NotNull final String description,
+                        @WebParam(name = "dateStart") @NotNull final String dateStart,
+                        @WebParam(name = "dateFinish") @NotNull final String dateFinish) throws Exception;
 
     @WebMethod
     void removeTask(@WebParam(name = "session") @NotNull final Session session,
@@ -46,37 +47,37 @@ public interface ITaskEndpoint {
 
     @WebMethod
     @Nullable
-    List<Task> findAllTasksInProject(@WebParam(name = "session") @NotNull final Session session,
+    List<TaskDto> findAllTasksInProject(@WebParam(name = "session") @NotNull final Session session,
                                      @WebParam(name = "projectName") @NotNull final String projectName) throws Exception;
 
     @WebMethod
     @Nullable
-    List<Task> findAllTasks(@WebParam(name = "session") @NotNull final Session session) throws Exception;
+    List<TaskDto> findAllTasks(@WebParam(name = "session") @NotNull final Session session) throws Exception;
 
     @WebMethod
     @Nullable
-    Task findOneTask(@WebParam(name = "session") @NotNull final Session session,
+    TaskDto findOneTask(@WebParam(name = "session") @NotNull final Session session,
                      @WebParam(name = "projectName") @NotNull final String projectName,
                      @WebParam(name = "taskName") @NotNull final String taskName) throws Exception;
 
     @WebMethod
     @Nullable
-    List<Task> sortTasksByDateCreated(@WebParam(name = "session") @NotNull final Session session,
+    List<TaskDto> sortTasksByDateCreated(@WebParam(name = "session") @NotNull final Session session,
                                       @WebParam(name = "projectName") @NotNull final String projectName) throws Exception;
 
     @WebMethod
     @Nullable
-    List<Task> sortTasksByDateStart(@WebParam(name = "session") @NotNull final Session session,
+    List<TaskDto> sortTasksByDateStart(@WebParam(name = "session") @NotNull final Session session,
                                     @WebParam(name = "projectName") @NotNull final String projectName) throws Exception;
 
     @WebMethod
     @Nullable
-    List<Task> sortTasksByDateFinish(@WebParam(name = "session") @NotNull final Session session,
+    List<TaskDto> sortTasksByDateFinish(@WebParam(name = "session") @NotNull final Session session,
                                      @WebParam(name = "projectName") @NotNull final String projectName) throws Exception;
 
     @WebMethod
     @Nullable
-    List<Task> sortTasksByStatus(@WebParam(name = "session") @NotNull final Session session,
+    List<TaskDto> sortTasksByStatus(@WebParam(name = "session") @NotNull final Session session,
                                  @WebParam(name = "projectName") @NotNull final String projectName) throws Exception;
 
 }

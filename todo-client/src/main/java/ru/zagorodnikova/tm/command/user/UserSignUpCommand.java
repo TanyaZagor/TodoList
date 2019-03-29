@@ -5,7 +5,6 @@ import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.endpoint.Exception_Exception;
 import ru.zagorodnikova.tm.endpoint.Session;
-import ru.zagorodnikova.tm.endpoint.User;
 
 public class UserSignUpCommand extends AbstractCommand {
 

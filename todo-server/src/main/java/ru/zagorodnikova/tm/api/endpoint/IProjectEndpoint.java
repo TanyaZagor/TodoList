@@ -2,6 +2,7 @@ package ru.zagorodnikova.tm.api.endpoint;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.zagorodnikova.tm.dto.ProjectDto;
 import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.entity.Session;
 
@@ -15,7 +16,7 @@ public interface IProjectEndpoint {
 
     @WebMethod
     @Nullable
-    Project persistProject(
+    ProjectDto persistProject(
             @WebParam(name = "session") @NotNull final Session session,
             @WebParam(name = "name") @NotNull final String name,
             @WebParam(name = "description") @NotNull final String description,
@@ -34,11 +35,11 @@ public interface IProjectEndpoint {
 
     @WebMethod
     @Nullable
-    List<Project> findAllProjects(@WebParam(name = "session") @NotNull final Session session) throws Exception;
+    List<ProjectDto> findAllProjects(@WebParam(name = "session") @NotNull final Session session) throws Exception;
 
     @WebMethod
     @Nullable
-    Project findOneProject(
+    ProjectDto findOneProject(
             @WebParam(name = "session") @NotNull final Session session,
             @WebParam(name = "name") @NotNull final String name) throws Exception;
 
@@ -53,17 +54,17 @@ public interface IProjectEndpoint {
 
     @WebMethod
     @Nullable
-    List<Project> sortProjectsByDateCreated(@WebParam(name = "session") @NotNull final Session session) throws Exception;
+    List<ProjectDto> sortProjectsByDateCreated(@WebParam(name = "session") @NotNull final Session session) throws Exception;
 
     @WebMethod
     @Nullable
-    List<Project> sortProjectsByDateStart(@WebParam(name = "session") @NotNull final Session session) throws Exception;
+    List<ProjectDto> sortProjectsByDateStart(@WebParam(name = "session") @NotNull final Session session) throws Exception;
 
     @WebMethod
     @Nullable
-    List<Project> sortProjectsByDateFinish(@WebParam(name = "session") @NotNull final Session session) throws Exception;
+    List<ProjectDto> sortProjectsByDateFinish(@WebParam(name = "session") @NotNull final Session session) throws Exception;
 
     @WebMethod
     @Nullable
-    List<Project> sortProjectsByStatus(@WebParam(name = "session") @NotNull final Session session) throws Exception;
+    List<ProjectDto> sortProjectsByStatus(@WebParam(name = "session") @NotNull final Session session) throws Exception;
 }

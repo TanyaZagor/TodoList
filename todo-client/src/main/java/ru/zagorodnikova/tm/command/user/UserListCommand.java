@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.endpoint.Exception_Exception;
-import ru.zagorodnikova.tm.endpoint.User;
+import ru.zagorodnikova.tm.endpoint.UserDto;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ public class UserListCommand extends AbstractCommand {
 
     @Override
     public void execute() throws Exception_Exception {
-        @Nullable final List<User> list = getServiceLocator().getUserService().findAllUsers(getServiceLocator().getSession());
+        @Nullable final List<UserDto> list = getServiceLocator().getUserService().findAllUsers(getServiceLocator().getSession());
         if (!(list == null || list.isEmpty())) {
             list.forEach(user -> System.out.println(user.getLogin()));
         }

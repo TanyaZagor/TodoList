@@ -11,7 +11,7 @@ import ru.zagorodnikova.tm.api.service.IDomainService;
 import ru.zagorodnikova.tm.api.service.IProjectService;
 import ru.zagorodnikova.tm.api.service.ITaskService;
 import ru.zagorodnikova.tm.api.service.IUserService;
-import ru.zagorodnikova.tm.entity.Domain;
+import ru.zagorodnikova.tm.dto.Domain;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;

@@ -4,12 +4,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.api.endpoint.IProjectEndpoint;
+import ru.zagorodnikova.tm.dto.ProjectDto;
 import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.entity.Session;
 import ru.zagorodnikova.tm.entity.enumeration.Status;
 
 import javax.jws.WebParam;
 import javax.jws.WebService;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebService
@@ -22,7 +24,7 @@ public class ProjectEndpoint implements IProjectEndpoint {
     }
 
     @Nullable
-    public Project persistProject(
+    public ProjectDto persistProject(
             @WebParam(name = "session") @NotNull final Session session,
             @WebParam(name = "name") @NotNull final String name,
             @WebParam(name = "description") @NotNull final String description,
@@ -30,7 +32,9 @@ public class ProjectEndpoint implements IProjectEndpoint {
             @WebParam(name = "dateFinish") @NotNull final String dateFinish
     ) throws Exception {
         serviceLocator.getSessionService().validate(session);
-        return serviceLocator.getProjectService().persistProject(session.getUserId(), name, description, dateStart, dateFinish);
+        @Nullable final Project project = serviceLocator.getProjectService().persistProject(session.getUserId(), name, description, dateStart, dateFinish);
+        if (project == null) return null;
+        return new ProjectDto(project);
     }
 
     public void removeProject(
@@ -47,18 +51,24 @@ public class ProjectEndpoint implements IProjectEndpoint {
     }
 
     @Nullable
-    public List<Project> findAllProjects(@WebParam(name = "session") @NotNull final Session session) throws Exception {
+    public List<ProjectDto> findAllProjects(@WebParam(name = "session") @NotNull final Session session) throws Exception {
         serviceLocator.getSessionService().validate(session);
-        return serviceLocator.getProjectService().findAllProjects(session.getUserId());
+        @NotNull final List<ProjectDto> listDto = new ArrayList<>();
+        @Nullable final List<Project> list = serviceLocator.getProjectService().findAllProjects(session.getUserId());
+        if (list == null || list.isEmpty()) return null;
+        list.forEach(v -> listDto.add(new ProjectDto(v)));
+        return listDto;
     }
 
     @Nullable
-    public Project findOneProject(
+    public ProjectDto findOneProject(
             @WebParam(name = "session") @NotNull final Session session,
             @WebParam(name = "name") @NotNull final String name
     ) throws Exception {
         serviceLocator.getSessionService().validate(session);
-        return serviceLocator.getProjectService().findOneProject(session.getUserId(), name);
+        @Nullable final Project project = serviceLocator.getProjectService().findOneProject(session.getUserId(), name);
+        if (project == null) return null;
+        return new ProjectDto(project);
     }
 
     public void mergeProject(
@@ -75,26 +85,42 @@ public class ProjectEndpoint implements IProjectEndpoint {
     }
 
     @Nullable
-    public List<Project> sortProjectsByDateCreated(@WebParam(name = "session") @NotNull final Session session) throws Exception {
+    public List<ProjectDto> sortProjectsByDateCreated(@WebParam(name = "session") @NotNull final Session session) throws Exception {
         serviceLocator.getSessionService().validate(session);
-        return serviceLocator.getProjectService().sortProjectsByDateCreated(session.getUserId());
+        @NotNull final List<ProjectDto> listDto = new ArrayList<>();
+        @Nullable final List<Project> list = serviceLocator.getProjectService().sortProjectsByDateCreated(session.getUserId());
+        if (list == null || list.isEmpty()) return null;
+        list.forEach(v -> listDto.add(new ProjectDto(v)));
+        return listDto;
     }
 
     @Nullable
-    public List<Project> sortProjectsByDateStart(@WebParam(name = "session") @NotNull final Session session) throws Exception {
+    public List<ProjectDto> sortProjectsByDateStart(@WebParam(name = "session") @NotNull final Session session) throws Exception {
         serviceLocator.getSessionService().validate(session);
-        return serviceLocator.getProjectService().sortProjectsByDateStart(session.getUserId());
+        @NotNull final List<ProjectDto> listDto = new ArrayList<>();
+        @Nullable final List<Project> list = serviceLocator.getProjectService().sortProjectsByDateStart(session.getUserId());
+        if (list == null || list.isEmpty()) return null;
+        list.forEach(v -> listDto.add(new ProjectDto(v)));
+        return listDto;
     }
 
     @Nullable
-    public List<Project> sortProjectsByDateFinish(@WebParam(name = "session") @NotNull final Session session) throws Exception {
+    public List<ProjectDto> sortProjectsByDateFinish(@WebParam(name = "session") @NotNull final Session session) throws Exception {
         serviceLocator.getSessionService().validate(session);
-        return serviceLocator.getProjectService().sortProjectsByDateFinish(session.getUserId());
+        @NotNull final List<ProjectDto> listDto = new ArrayList<>();
+        @Nullable final List<Project> list = serviceLocator.getProjectService().sortProjectsByDateFinish(session.getUserId());
+        if (list == null || list.isEmpty()) return null;
+        list.forEach(v -> listDto.add(new ProjectDto(v)));
+        return listDto;
     }
 
     @Nullable
-    public List<Project> sortProjectsByStatus(@WebParam(name = "session") @NotNull final Session session) throws Exception {
+    public List<ProjectDto> sortProjectsByStatus(@WebParam(name = "session") @NotNull final Session session) throws Exception {
         serviceLocator.getSessionService().validate(session);
-        return serviceLocator.getProjectService().sortProjectsByStatus(session.getUserId());
+        @NotNull final List<ProjectDto> listDto = new ArrayList<>();
+        @Nullable final List<Project> list = serviceLocator.getProjectService().sortProjectsByStatus(session.getUserId());
+        if (list == null || list.isEmpty()) return null;
+        list.forEach(v -> listDto.add(new ProjectDto(v)));
+        return listDto;
     }
 }

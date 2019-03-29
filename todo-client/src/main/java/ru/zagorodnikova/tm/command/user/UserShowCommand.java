@@ -3,7 +3,7 @@ package ru.zagorodnikova.tm.command.user;
 import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.endpoint.Exception_Exception;
-import ru.zagorodnikova.tm.endpoint.User;
+import ru.zagorodnikova.tm.endpoint.UserDto;
 
 
 public class UserShowCommand extends AbstractCommand {
@@ -24,7 +24,7 @@ public class UserShowCommand extends AbstractCommand {
 
     @Override
     public void execute() throws Exception_Exception {
-        @NotNull User user = getServiceLocator().getUserService().findUser(getServiceLocator().getSession());
+        @NotNull UserDto user = getServiceLocator().getUserService().findUser(getServiceLocator().getSession());
         System.out.println("Login: " + user.getLogin() + ", name: " + user.getFirstName() +
                 ", lastName: " + user.getLastName() + ", email: " + user.getEmail() +
                 ", status: " + user.getRoleType().toString());
