@@ -3,6 +3,7 @@ package ru.zagorodnikova.tm.service;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import lombok.NoArgsConstructor;
 import org.eclipse.persistence.jaxb.MarshallerProperties;
 import org.eclipse.persistence.jaxb.UnmarshallerProperties;
 import org.jetbrains.annotations.NotNull;
@@ -13,22 +14,24 @@ import ru.zagorodnikova.tm.api.service.ITaskService;
 import ru.zagorodnikova.tm.api.service.IUserService;
 import ru.zagorodnikova.tm.dto.Domain;
 
+import javax.enterprise.inject.Default;
+import javax.inject.Inject;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
 
+@NoArgsConstructor
 public class DomainService implements IDomainService {
 
-    @NotNull private final IProjectService projectService;
-    @NotNull private final ITaskService taskService;
-    @NotNull private final IUserService userService;
+    @Inject
+    private IProjectService projectService;
 
-    public DomainService(@NotNull final ServiceLocator serviceLocator) {
-        this.projectService = serviceLocator.getProjectService();
-        this.taskService = serviceLocator.getTaskService();
-        this.userService = serviceLocator.getUserService();
-    }
+    @Inject
+    private ITaskService taskService;
+
+    @Inject
+    private IUserService userService;
 
     public void save() throws Exception {
         @NotNull final Domain domain = new Domain();

@@ -1,5 +1,6 @@
 package ru.zagorodnikova.tm.util;
 
+import lombok.NoArgsConstructor;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -14,6 +15,7 @@ import ru.zagorodnikova.tm.entity.Session;
 import ru.zagorodnikova.tm.entity.Task;
 import ru.zagorodnikova.tm.entity.User;
 
+import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManagerFactory;
 import java.io.InputStream;
 import java.sql.DriverManager;
@@ -22,6 +24,7 @@ import java.util.Map;
 import java.util.Properties;
 
 
+@NoArgsConstructor
 public class DatabaseUtil {
 
     private Properties getProperties() throws Exception {
@@ -30,6 +33,7 @@ public class DatabaseUtil {
         return property;
     }
 
+    @Produces
     public EntityManagerFactory factory() throws Exception {
         final Map<String, String> settings = new HashMap<>();
         @NotNull final Properties property = getProperties();

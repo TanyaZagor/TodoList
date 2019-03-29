@@ -1,6 +1,5 @@
 package ru.zagorodnikova.tm.entity;
 
-import com.sun.org.apache.xml.internal.serialize.LineSeparator;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

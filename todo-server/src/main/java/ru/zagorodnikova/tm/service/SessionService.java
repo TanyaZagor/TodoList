@@ -1,5 +1,6 @@
 package ru.zagorodnikova.tm.service;
 
+import lombok.NoArgsConstructor;
 import org.apache.ibatis.session.SqlSession;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -10,21 +11,22 @@ import ru.zagorodnikova.tm.entity.User;
 import ru.zagorodnikova.tm.repositoty.SessionRepository;
 import ru.zagorodnikova.tm.util.PasswordUtil;
 
+import javax.enterprise.inject.Default;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import java.rmi.AccessException;
 import java.util.Properties;
 
+@NoArgsConstructor
 public class SessionService implements ISessionService {
 
-    @NotNull private final ServiceLocator serviceLocator;
-
-    public SessionService(@NotNull final ServiceLocator serviceLocator) {
-        this.serviceLocator = serviceLocator;
-    }
+    @Inject
+    private EntityManagerFactory factory;
 
     @Nullable
     public Session persist(@NotNull final User user) throws Exception {
-        EntityManager entityManager = serviceLocator.getFactory().createEntityManager();
+        EntityManager entityManager = factory.createEntityManager();
         try {
             SessionRepository sessionRepository = new SessionRepository(entityManager);
             @NotNull final Session session = new Session(user.getId());
@@ -40,7 +42,7 @@ public class SessionService implements ISessionService {
     }
 
     public void remove(@NotNull final Session session) {
-        EntityManager entityManager = serviceLocator.getFactory().createEntityManager();
+        EntityManager entityManager = factory.createEntityManager();
         try {
             SessionRepository sessionRepository = new SessionRepository(entityManager);
             entityManager.getTransaction().begin();
@@ -74,7 +76,7 @@ public class SessionService implements ISessionService {
         @NotNull final String sourceSignature = signSession(session);
         @NotNull final String targetSignature = signSession(session);
         if(!sourceSignature.equals(targetSignature)) throw new AccessException("not valid session");
-        EntityManager entityManager = serviceLocator.getFactory().createEntityManager();
+        EntityManager entityManager = factory.createEntityManager();
         try {
             SessionRepository sessionRepository = new SessionRepository(entityManager);
             if (sessionRepository.findOne(session.getId()) == null) throw new AccessException("not valid session");

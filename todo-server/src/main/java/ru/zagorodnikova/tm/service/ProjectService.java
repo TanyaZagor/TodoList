@@ -1,5 +1,6 @@
 package ru.zagorodnikova.tm.service;
 
+import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
@@ -10,19 +11,20 @@ import ru.zagorodnikova.tm.repositoty.ProjectRepository;
 import ru.zagorodnikova.tm.repositoty.TaskRepository;
 import ru.zagorodnikova.tm.util.DateFormatterUtil;
 
+import javax.enterprise.inject.Default;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+@NoArgsConstructor
 public class ProjectService implements IProjectService {
 
-    @NotNull private final ServiceLocator serviceLocator;
-
-    public ProjectService(@NotNull final ServiceLocator serviceLocator) {
-        this.serviceLocator = serviceLocator;
-    }
+    @Inject
+    private EntityManagerFactory factory;
 
     @Nullable
     public Project persistProject(@NotNull final String userId, @NotNull final String projectName,
@@ -31,7 +33,7 @@ public class ProjectService implements IProjectService {
         if (description.isEmpty()) return null;
         if (dateStart.isEmpty()) return null;
         if (dateFinish.isEmpty()) return null;
-        EntityManager entityManager = serviceLocator.getFactory().createEntityManager();
+        EntityManager entityManager = factory.createEntityManager();
         try {
             ProjectRepository projectRepository = new ProjectRepository(entityManager);
             @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
@@ -49,7 +51,7 @@ public class ProjectService implements IProjectService {
 
     public void removeProject(@NotNull final String userId, @NotNull final String projectName) {
         if (projectName.isEmpty()) return;
-        EntityManager entityManager = serviceLocator.getFactory().createEntityManager();
+        EntityManager entityManager = factory.createEntityManager();
         try {
             ProjectRepository projectRepository = new ProjectRepository(entityManager);
             Project project = projectRepository.findOne(userId, projectName);
@@ -63,7 +65,7 @@ public class ProjectService implements IProjectService {
     }
 
     public void removeAllProjects(@NotNull final String userId){
-        EntityManager entityManager = serviceLocator.getFactory().createEntityManager();
+        EntityManager entityManager = factory.createEntityManager();
         try {
             ProjectRepository projectRepository = new ProjectRepository(entityManager);
             entityManager.getTransaction().begin();
@@ -76,7 +78,7 @@ public class ProjectService implements IProjectService {
 
     @Nullable
     public List<Project> findAllProjects(@NotNull final String userId) {
-        EntityManager entityManager = serviceLocator.getFactory().createEntityManager();
+        EntityManager entityManager = factory.createEntityManager();
         try {
             ProjectRepository projectRepository = new ProjectRepository(entityManager);
             return projectRepository.findAll(userId);
@@ -89,7 +91,7 @@ public class ProjectService implements IProjectService {
     public Project findOneProject(@NotNull final String userId, @NotNull final String projectName) {
         if (projectName.isEmpty()) return null;
         try {
-            EntityManager entityManager = serviceLocator.getFactory().createEntityManager();
+            EntityManager entityManager = factory.createEntityManager();
             ProjectRepository projectRepository = new ProjectRepository(entityManager);
             return projectRepository.findOne(userId, projectName);
         } catch (Exception e) {
@@ -109,7 +111,7 @@ public class ProjectService implements IProjectService {
         if (description.isEmpty()) return;
         if (dateStart.isEmpty()) return;
         if (dateFinish.isEmpty()) return;
-        EntityManager entityManager = serviceLocator.getFactory().createEntityManager();
+        EntityManager entityManager = factory.createEntityManager();
         try {
             ProjectRepository projectRepository = new ProjectRepository(entityManager);
             Project project = projectRepository.findOne(userId, oldProjectName);
@@ -168,7 +170,7 @@ public class ProjectService implements IProjectService {
 
     @Nullable
     public List<Project> getProjects() {
-        EntityManager entityManager = serviceLocator.getFactory().createEntityManager();
+        EntityManager entityManager = factory.createEntityManager();
         try {
             ProjectRepository projectRepository = new ProjectRepository(entityManager);
             return projectRepository.getProjects();
@@ -178,7 +180,7 @@ public class ProjectService implements IProjectService {
     }
 
     public void setProjects(@NotNull final List<Project> list) {
-        EntityManager entityManager = serviceLocator.getFactory().createEntityManager();
+        EntityManager entityManager = factory.createEntityManager();
         try {
             ProjectRepository projectRepository = new ProjectRepository(entityManager);
             entityManager.getTransaction().begin();

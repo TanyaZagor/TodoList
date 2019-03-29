@@ -6,24 +6,5 @@ import javax.persistence.EntityManagerFactory;
 
 public interface ServiceLocator {
 
-    @NotNull
-    IUserService getUserService();
-
-    @NotNull
-    IProjectService getProjectService();
-
-    @NotNull
-    ITaskService getTaskService();
-
-    @NotNull
-    ISessionService getSessionService();
-
-    @NotNull
-    IDomainService getDomainService();
-
-    @NotNull
-    IAdminService getAdminService();
-
-    @NotNull
-    EntityManagerFactory getFactory();
+    void init() throws Exception;
 }

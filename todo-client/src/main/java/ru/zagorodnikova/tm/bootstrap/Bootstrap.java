@@ -1,6 +1,7 @@
 package ru.zagorodnikova.tm.bootstrap;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -9,12 +10,15 @@ import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.endpoint.*;
 import ru.zagorodnikova.tm.service.TerminalService;
 
+import javax.enterprise.inject.Default;
 import java.lang.Exception;
 import java.util.HashMap;
 import java.util.Map;
 
 @Setter
 @Getter
+@Default
+@NoArgsConstructor
 public class Bootstrap implements ServiceLocator {
 
     @NotNull private final Map<String, AbstractCommand> commands = new HashMap<>();

@@ -1,5 +1,6 @@
 package ru.zagorodnikova.tm.service;
 
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -12,20 +13,21 @@ import ru.zagorodnikova.tm.repositoty.ProjectRepository;
 import ru.zagorodnikova.tm.repositoty.TaskRepository;
 import ru.zagorodnikova.tm.util.DateFormatterUtil;
 
+import javax.enterprise.inject.Default;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 
+@NoArgsConstructor
 public class TaskService implements ITaskService {
 
-    @NotNull private final ServiceLocator serviceLocator;
-
-    public TaskService(@NotNull final ServiceLocator serviceLocator) {
-        this.serviceLocator = serviceLocator;
-    }
+    @Inject
+    private EntityManagerFactory factory;
 
     @Nullable
     public Task persistTask(@NotNull final String userId, @NotNull final String projectName, @NotNull final String taskName,
@@ -35,7 +37,7 @@ public class TaskService implements ITaskService {
         if (description.isEmpty()) return null;
         if (dateStart.isEmpty()) return null;
         if (dateFinish.isEmpty()) return null;
-        EntityManager entityManager = serviceLocator.getFactory().createEntityManager();
+        EntityManager entityManager = factory.createEntityManager();
         try {
             ProjectRepository projectRepository = new ProjectRepository(entityManager);
             @Nullable final Project project = projectRepository.findOne(userId, projectName);
@@ -57,7 +59,7 @@ public class TaskService implements ITaskService {
     public void removeTask(@NotNull final String userId, @NotNull final String projectName, @NotNull final String taskName) {
         if (projectName.isEmpty()) return;
         if (taskName.isEmpty()) return;
-        EntityManager entityManager = serviceLocator.getFactory().createEntityManager();
+        EntityManager entityManager = factory.createEntityManager();
         try {
             TaskRepository taskRepository = new TaskRepository(entityManager);
             ProjectRepository projectRepository = new ProjectRepository(entityManager);
@@ -74,7 +76,7 @@ public class TaskService implements ITaskService {
     }
 
     public void removeAllTasks(@NotNull final String userId) {
-        EntityManager entityManager = serviceLocator.getFactory().createEntityManager();
+        EntityManager entityManager = factory.createEntityManager();
         try {
             TaskRepository taskRepository = new TaskRepository(entityManager);
             entityManager.getTransaction().begin();
@@ -87,7 +89,7 @@ public class TaskService implements ITaskService {
 
     public void removeAllTasksInProject(@NotNull final String userId, @NotNull final String projectName) {
         if (projectName.isEmpty()) return;
-        EntityManager entityManager = serviceLocator.getFactory().createEntityManager();
+        EntityManager entityManager = factory.createEntityManager();
         try {
             TaskRepository taskRepository = new TaskRepository(entityManager);
             ProjectRepository projectRepository = new ProjectRepository(entityManager);
@@ -109,7 +111,7 @@ public class TaskService implements ITaskService {
         if (description.isEmpty()) return;
         if (dateStart.isEmpty()) return;
         if (dateFinish.isEmpty()) return;
-        EntityManager entityManager = serviceLocator.getFactory().createEntityManager();
+        EntityManager entityManager = factory.createEntityManager();
         try {
             TaskRepository taskRepository = new TaskRepository(entityManager);
             ProjectRepository projectRepository = new ProjectRepository(entityManager);
@@ -135,7 +137,7 @@ public class TaskService implements ITaskService {
 
     @Nullable
     public List<Task> findAllTasksInProject(@NotNull final String userId, @NotNull final String projectName) {
-        EntityManager entityManager = serviceLocator.getFactory().createEntityManager();
+        EntityManager entityManager = factory.createEntityManager();
         try {
             TaskRepository taskRepository = new TaskRepository(entityManager);
             ProjectRepository projectRepository = new ProjectRepository(entityManager);
@@ -150,7 +152,7 @@ public class TaskService implements ITaskService {
 
     @Nullable
     public List<Task> findAllTasks(@NotNull final String userId) {
-        EntityManager entityManager = serviceLocator.getFactory().createEntityManager();
+        EntityManager entityManager = factory.createEntityManager();
         try {
             TaskRepository taskRepository = new TaskRepository(entityManager);
             return taskRepository.findAllTasks(userId);
@@ -164,7 +166,7 @@ public class TaskService implements ITaskService {
                             @NotNull final String taskName) {
         if (projectName.isEmpty()) return null;
         if (taskName.isEmpty()) return null;
-        EntityManager entityManager = serviceLocator.getFactory().createEntityManager();
+        EntityManager entityManager = factory.createEntityManager();
         try {
             TaskRepository taskRepository = new TaskRepository(entityManager);
             ProjectRepository projectRepository = new ProjectRepository(entityManager);
@@ -227,7 +229,7 @@ public class TaskService implements ITaskService {
     @Nullable
     @SneakyThrows
     public List<Task> getTasks() {
-        EntityManager entityManager = serviceLocator.getFactory().createEntityManager();
+        EntityManager entityManager = factory.createEntityManager();
         try {
             TaskRepository taskRepository = new TaskRepository(entityManager);
             return taskRepository.getTasks();
@@ -237,7 +239,7 @@ public class TaskService implements ITaskService {
     }
 
     public void setTasks(@NotNull final List<Task> list){
-        EntityManager entityManager = serviceLocator.getFactory().createEntityManager();
+        EntityManager entityManager = factory.createEntityManager();
         try {
             TaskRepository taskRepository = new TaskRepository(entityManager);
             entityManager.getTransaction().begin();
