@@ -1,33 +1,32 @@
 package ru.zagorodnikova.tm.service;
 
 import lombok.NoArgsConstructor;
+import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.api.service.IUserService;
 import ru.zagorodnikova.tm.entity.User;
 import ru.zagorodnikova.tm.repositoty.UserRepository;
 import ru.zagorodnikova.tm.util.PasswordUtil;
 
-import javax.enterprise.inject.Default;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
+import javax.inject.Singleton;
 import java.util.List;
 
+@ApplicationScoped
 @NoArgsConstructor
-public class UserService extends AbstractService implements IUserService {
+public class UserService implements IUserService {
 
     @Inject
-    private EntityManagerFactory factory;
+    private UserRepository userRepository;
+
 
     @Nullable
     public User signIn(@NotNull final String login, @NotNull final String password) throws Exception {
         if (login.isEmpty()) return null;
         if (password.isEmpty()) return null;
-        EntityManager entityManager = factory.createEntityManager();
         try {
-            UserRepository userRepository = new UserRepository(entityManager);
             return userRepository.signIn(login, PasswordUtil.hashPassword(password));
         } catch (Exception e) {
             return null;
@@ -42,16 +41,14 @@ public class UserService extends AbstractService implements IUserService {
         if (fistName.isEmpty()) return null;
         if (lastName.isEmpty()) return null;
         if (email.isEmpty()) return null;
-        EntityManager entityManager = factory.createEntityManager();
         try {
-            UserRepository userRepository = new UserRepository(entityManager);
             @NotNull final User user = new User(login, password, fistName, lastName, email);
-            entityManager.getTransaction().begin();
+            userRepository.getEntityManager().getTransaction().begin();
             userRepository.persist(user);
-            entityManager.getTransaction().commit();
+            userRepository.getEntityManager().getTransaction().commit();
             return user;
         } catch (Exception e) {
-            entityManager.getTransaction().rollback();
+            userRepository.getEntityManager().getTransaction().rollback();
             return null;
         }
     }
@@ -61,17 +58,15 @@ public class UserService extends AbstractService implements IUserService {
         if (login.isEmpty()) return;
         if (oldPassword.isEmpty()) return;
         if (newPassword.isEmpty()) return;
-        EntityManager entityManager = factory.createEntityManager();
         try {
-            UserRepository userRepository = new UserRepository(entityManager);
             User user = userRepository.findOne(userId);
             if (user != null) {
-                entityManager.getTransaction().begin();
+                userRepository.getEntityManager().getTransaction().begin();
                 user.setPassword(newPassword);
-                entityManager.getTransaction().commit();
+                userRepository.getEntityManager().getTransaction().commit();
             }
         } catch (Exception e) {
-            entityManager.getTransaction().rollback();
+            userRepository.getEntityManager().getTransaction().rollback();
         }
     }
 
@@ -80,46 +75,40 @@ public class UserService extends AbstractService implements IUserService {
         if (firstName.isEmpty()) return;
         if (lastName.isEmpty()) return;
         if (email.isEmpty()) return;
-        EntityManager entityManager = factory.createEntityManager();
         try {
-            UserRepository userRepository = new UserRepository(entityManager);
             User user = userRepository.findOne(userId);
             if (user != null) {
-                entityManager.getTransaction().begin();
+                userRepository.getEntityManager().getTransaction().begin();
                 user.setFirstName(firstName);
                 user.setLastName(lastName);
                 user.setEmail(email);
-                entityManager.getTransaction().commit();
+                userRepository.getEntityManager().getTransaction().commit();
             }
         } catch (Exception e) {
-            entityManager.getTransaction().rollback();
+            userRepository.getEntityManager().getTransaction().rollback();
         }
     }
 
     public void removeUser(@NotNull final String userId) {
-        EntityManager entityManager = factory.createEntityManager();
         try {
-            UserRepository userRepository = new UserRepository(entityManager);
             User user = userRepository.findOne(userId);
             if (user == null) return;
             try {
-                entityManager.getTransaction().begin();
+                userRepository.getEntityManager().getTransaction().begin();
                 userRepository.remove(user);
-                entityManager.getTransaction().commit();
+                userRepository.getEntityManager().getTransaction().commit();
             } catch (Exception e) {
-                entityManager.getTransaction().rollback();
+                userRepository.getEntityManager().getTransaction().rollback();
             }
         } catch (Exception e) {
-            entityManager.getTransaction().rollback();
+            userRepository.getEntityManager().getTransaction().rollback();
         }
     }
 
     @Nullable
     @Override
     public User findOne(@NotNull final String userId) {
-        EntityManager entityManager = factory.createEntityManager();
         try {
-            UserRepository userRepository = new UserRepository(entityManager);
             return userRepository.findOne(userId);
         } catch (Exception e) {
             return null;
@@ -128,22 +117,18 @@ public class UserService extends AbstractService implements IUserService {
 
     @Override
     public void removeAll() {
-        EntityManager entityManager = factory.createEntityManager();
         try {
-            UserRepository userRepository = new UserRepository(entityManager);
-            entityManager.getTransaction().begin();
+            userRepository.getEntityManager().getTransaction().begin();
             userRepository.removeAll();
-            entityManager.getTransaction().commit();
+            userRepository.getEntityManager().getTransaction().commit();
         } catch (Exception e) {
-            entityManager.getTransaction().rollback();
+            userRepository.getEntityManager().getTransaction().rollback();
         }
     }
 
     @Nullable
     public List<User> getUsers() {
-        EntityManager entityManager = factory.createEntityManager();
         try {
-            UserRepository userRepository = new UserRepository(entityManager);
             return userRepository.getUsers();
         } catch (Exception e) {
             return null;
@@ -151,16 +136,14 @@ public class UserService extends AbstractService implements IUserService {
     }
 
     public void setUsers(@NotNull final List<User> list) {
-        EntityManager entityManager = factory.createEntityManager();
         try {
-            UserRepository userRepository = new UserRepository(entityManager);
-            entityManager.getTransaction().begin();
+            userRepository.getEntityManager().getTransaction().begin();
             for (User user : list) {
                 userRepository.persist(user);
             }
-            entityManager.getTransaction().commit();
+            userRepository.getEntityManager().getTransaction().commit();
         } catch (Exception e) {
-            entityManager.getTransaction().rollback();
+            userRepository.getEntityManager().getTransaction().rollback();
         }
     }
 

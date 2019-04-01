@@ -5,16 +5,14 @@ import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.repository.ITaskRepository;
 import ru.zagorodnikova.tm.entity.Task;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.List;
 
 public class TaskRepository implements ITaskRepository {
 
-    @NotNull private final EntityManager entityManager;
-
-    public TaskRepository(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
+    @Inject
+    private EntityManager entityManager;
 
     @Override
     public void persist(@NotNull Task task) {
@@ -79,5 +77,9 @@ public class TaskRepository implements ITaskRepository {
         List list = entityManager.createQuery("Select task from Task task")
                 .getResultList();
         return list;
+    }
+
+    public EntityManager getEntityManager() {
+        return entityManager;
     }
 }

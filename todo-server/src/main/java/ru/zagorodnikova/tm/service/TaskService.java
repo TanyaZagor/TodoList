@@ -13,8 +13,10 @@ import ru.zagorodnikova.tm.repositoty.ProjectRepository;
 import ru.zagorodnikova.tm.repositoty.TaskRepository;
 import ru.zagorodnikova.tm.util.DateFormatterUtil;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.util.Collections;
@@ -23,11 +25,15 @@ import java.util.List;
 import java.util.Objects;
 
 
+@ApplicationScoped
 @NoArgsConstructor
 public class TaskService implements ITaskService {
 
     @Inject
-    private EntityManagerFactory factory;
+    private ProjectRepository projectRepository;
+
+    @Inject
+    private TaskRepository taskRepository;
 
     @Nullable
     public Task persistTask(@NotNull final String userId, @NotNull final String projectName, @NotNull final String taskName,
@@ -37,21 +43,18 @@ public class TaskService implements ITaskService {
         if (description.isEmpty()) return null;
         if (dateStart.isEmpty()) return null;
         if (dateFinish.isEmpty()) return null;
-        EntityManager entityManager = factory.createEntityManager();
         try {
-            ProjectRepository projectRepository = new ProjectRepository(entityManager);
             @Nullable final Project project = projectRepository.findOne(userId, projectName);
             if (project == null) return null;
             @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
             @NotNull final Date finish = DateFormatterUtil.dateFormatter(dateFinish);
             @Nullable final Task task = new Task(userId, project.getId(), taskName, description, start, finish);
-            TaskRepository taskRepository = new TaskRepository(entityManager);
-            entityManager.getTransaction().begin();
+            taskRepository.getEntityManager().getTransaction().begin();
             taskRepository.persist(task);
-            entityManager.getTransaction().commit();
+            taskRepository.getEntityManager().getTransaction().commit();
             return task;
         } catch (Exception e) {
-            entityManager.getTransaction().rollback();
+            taskRepository.getEntityManager().getTransaction().rollback();
             return null;
         }
     }
@@ -59,47 +62,39 @@ public class TaskService implements ITaskService {
     public void removeTask(@NotNull final String userId, @NotNull final String projectName, @NotNull final String taskName) {
         if (projectName.isEmpty()) return;
         if (taskName.isEmpty()) return;
-        EntityManager entityManager = factory.createEntityManager();
         try {
-            TaskRepository taskRepository = new TaskRepository(entityManager);
-            ProjectRepository projectRepository = new ProjectRepository(entityManager);
             Project project = projectRepository.findOne(userId, projectName);
             if (project == null) return;
             @Nullable final Task task = taskRepository.findOne(project.getId(), taskName);
             if (task == null) return;
-            entityManager.getTransaction().begin();
+            taskRepository.getEntityManager().getTransaction().begin();
             taskRepository.remove(task);
-            entityManager.getTransaction().commit();
+            taskRepository.getEntityManager().getTransaction().commit();
         } catch (Exception e) {
-            entityManager.getTransaction().rollback();
+            taskRepository.getEntityManager().getTransaction().rollback();
         }
     }
 
     public void removeAllTasks(@NotNull final String userId) {
-        EntityManager entityManager = factory.createEntityManager();
         try {
-            TaskRepository taskRepository = new TaskRepository(entityManager);
-            entityManager.getTransaction().begin();
+            taskRepository.getEntityManager().getTransaction().begin();
             taskRepository.removeAll(userId);
-            entityManager.getTransaction().commit();
+            taskRepository.getEntityManager().getTransaction().commit();
         } catch (Exception e) {
-            entityManager.getTransaction().rollback();
+            taskRepository.getEntityManager().getTransaction().rollback();
         }
     }
 
     public void removeAllTasksInProject(@NotNull final String userId, @NotNull final String projectName) {
         if (projectName.isEmpty()) return;
-        EntityManager entityManager = factory.createEntityManager();
         try {
-            TaskRepository taskRepository = new TaskRepository(entityManager);
-            ProjectRepository projectRepository = new ProjectRepository(entityManager);
             Project project = projectRepository.findOne(userId, projectName);
             if (project == null) return;
-            entityManager.getTransaction().begin();
+            taskRepository.getEntityManager().getTransaction().begin();
             taskRepository.removeAllInProject(project.getId());
-            entityManager.getTransaction().commit();
+            taskRepository.getEntityManager().getTransaction().commit();
         } catch (Exception e) {
-            entityManager.getTransaction().rollback();
+            taskRepository.getEntityManager().getTransaction().rollback();
         }
     }
 
@@ -111,10 +106,7 @@ public class TaskService implements ITaskService {
         if (description.isEmpty()) return;
         if (dateStart.isEmpty()) return;
         if (dateFinish.isEmpty()) return;
-        EntityManager entityManager = factory.createEntityManager();
         try {
-            TaskRepository taskRepository = new TaskRepository(entityManager);
-            ProjectRepository projectRepository = new ProjectRepository(entityManager);
             Project project = projectRepository.findOne(userId, projectName);
             if (project == null) return;
             Task task = taskRepository.findOne(project.getId(), oldTaskName);
@@ -127,20 +119,17 @@ public class TaskService implements ITaskService {
             task.setDateStart(start);
             task.setDateFinish(finish);
             task.setStatus(newStatus);
-            entityManager.getTransaction().begin();
+            taskRepository.getEntityManager().getTransaction().begin();
             taskRepository.merge(task);
-            entityManager.getTransaction().commit();
+            taskRepository.getEntityManager().getTransaction().commit();
         } catch (Exception e) {
-            entityManager.getTransaction().rollback();
+            taskRepository.getEntityManager().getTransaction().rollback();
         }
     }
 
     @Nullable
     public List<Task> findAllTasksInProject(@NotNull final String userId, @NotNull final String projectName) {
-        EntityManager entityManager = factory.createEntityManager();
         try {
-            TaskRepository taskRepository = new TaskRepository(entityManager);
-            ProjectRepository projectRepository = new ProjectRepository(entityManager);
             Project project = projectRepository.findOne(userId, projectName);
             if (project == null) return null;
             return taskRepository.findAllTasksInProject(project.getId());
@@ -152,9 +141,7 @@ public class TaskService implements ITaskService {
 
     @Nullable
     public List<Task> findAllTasks(@NotNull final String userId) {
-        EntityManager entityManager = factory.createEntityManager();
         try {
-            TaskRepository taskRepository = new TaskRepository(entityManager);
             return taskRepository.findAllTasks(userId);
         } catch (Exception e) {
             return null;
@@ -166,10 +153,7 @@ public class TaskService implements ITaskService {
                             @NotNull final String taskName) {
         if (projectName.isEmpty()) return null;
         if (taskName.isEmpty()) return null;
-        EntityManager entityManager = factory.createEntityManager();
         try {
-            TaskRepository taskRepository = new TaskRepository(entityManager);
-            ProjectRepository projectRepository = new ProjectRepository(entityManager);
             Project project = projectRepository.findOne(userId, projectName);
             if (project == null) return null;
             return taskRepository.findOne(project.getId(), taskName);
@@ -229,9 +213,7 @@ public class TaskService implements ITaskService {
     @Nullable
     @SneakyThrows
     public List<Task> getTasks() {
-        EntityManager entityManager = factory.createEntityManager();
         try {
-            TaskRepository taskRepository = new TaskRepository(entityManager);
             return taskRepository.getTasks();
         } catch (Exception e) {
             return null;
@@ -239,16 +221,14 @@ public class TaskService implements ITaskService {
     }
 
     public void setTasks(@NotNull final List<Task> list){
-        EntityManager entityManager = factory.createEntityManager();
         try {
-            TaskRepository taskRepository = new TaskRepository(entityManager);
-            entityManager.getTransaction().begin();
+            taskRepository.getEntityManager().getTransaction().begin();
             for (Task task : list) {
                 taskRepository.persist(task);
             }
-            entityManager.getTransaction().commit();
+            taskRepository.getEntityManager().getTransaction().commit();
         } catch (Exception e) {
-            entityManager.getTransaction().rollback();
+            taskRepository.getEntityManager().getTransaction().rollback();
         }
     }
 

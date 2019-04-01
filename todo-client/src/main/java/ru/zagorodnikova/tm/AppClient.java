@@ -1,8 +1,5 @@
 package ru.zagorodnikova.tm;
 
-
-import org.jetbrains.annotations.NotNull;
-import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.bootstrap.Bootstrap;
 import ru.zagorodnikova.tm.command.admin.AdminRemoveUsersCommand;
 import ru.zagorodnikova.tm.command.data.*;
@@ -11,11 +8,8 @@ import ru.zagorodnikova.tm.command.system.AboutCommand;
 import ru.zagorodnikova.tm.command.system.HelpCommand;
 import ru.zagorodnikova.tm.command.task.*;
 import ru.zagorodnikova.tm.command.user.*;
-
-import javax.enterprise.inject.Default;
 import javax.enterprise.inject.se.SeContainerInitializer;
 
-@Default
 public class AppClient {
     private static final Class[] commandClasses = new Class[] {
             ProjectClearCommand.class,
@@ -64,6 +58,6 @@ public class AppClient {
     public static void main(String[] args) {
         System.setProperty("org.apache.logging.log4j.simplelog.StatusLogger.level","INFO");
         SeContainerInitializer.newInstance().addPackages(AppClient.class).initialize()
-                .select(ServiceLocator.class).get().init(commandClasses);
+                .select(Bootstrap.class).get().init(commandClasses);
     }
 }

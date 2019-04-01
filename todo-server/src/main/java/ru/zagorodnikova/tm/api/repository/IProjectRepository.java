@@ -1,5 +1,6 @@
 package ru.zagorodnikova.tm.api.repository;
 
+import org.apache.deltaspike.data.api.Repository;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.entity.Project;

@@ -4,16 +4,14 @@ import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.api.repository.IUserRepository;
 import ru.zagorodnikova.tm.entity.User;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.List;
 
 public class UserRepository implements IUserRepository {
 
-    @NotNull private final EntityManager entityManager;
-
-    public UserRepository (@NotNull final EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
+    @Inject
+    private EntityManager entityManager;
 
     @Override
     public User findOne(@NotNull final String id) {
@@ -55,5 +53,9 @@ public class UserRepository implements IUserRepository {
     @Override
     public void merge(@NotNull final User user) {
         entityManager.merge(user);
+    }
+
+    public EntityManager getEntityManager() {
+        return entityManager;
     }
 }

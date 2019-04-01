@@ -11,45 +11,44 @@ import ru.zagorodnikova.tm.entity.User;
 import ru.zagorodnikova.tm.repositoty.SessionRepository;
 import ru.zagorodnikova.tm.util.PasswordUtil;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.rmi.AccessException;
 import java.util.Properties;
 
+@ApplicationScoped
 @NoArgsConstructor
 public class SessionService implements ISessionService {
 
     @Inject
-    private EntityManagerFactory factory;
+    private SessionRepository sessionRepository;
 
     @Nullable
     public Session persist(@NotNull final User user) throws Exception {
-        EntityManager entityManager = factory.createEntityManager();
         try {
-            SessionRepository sessionRepository = new SessionRepository(entityManager);
             @NotNull final Session session = new Session(user.getId());
             session.setSignature(signSession(session));
-            entityManager.getTransaction().begin();
+            sessionRepository.getEntityManager().getTransaction().begin();
             sessionRepository.persist(session);
-            entityManager.getTransaction().commit();
+            sessionRepository.getEntityManager().getTransaction().commit();
             return session;
         } catch (Exception e) {
-            entityManager.getTransaction().rollback();
+            sessionRepository.getEntityManager().getTransaction().rollback();
             return null;
         }
     }
 
     public void remove(@NotNull final Session session) {
-        EntityManager entityManager = factory.createEntityManager();
         try {
-            SessionRepository sessionRepository = new SessionRepository(entityManager);
-            entityManager.getTransaction().begin();
+            sessionRepository.getEntityManager().getTransaction().begin();
             sessionRepository.remove(session);
-            entityManager.getTransaction().commit();
+            sessionRepository.getEntityManager().getTransaction().commit();
         } catch (Exception e) {
-            entityManager.getTransaction().rollback();
+            sessionRepository.getEntityManager().getTransaction().rollback();
         }
     }
 
@@ -76,9 +75,7 @@ public class SessionService implements ISessionService {
         @NotNull final String sourceSignature = signSession(session);
         @NotNull final String targetSignature = signSession(session);
         if(!sourceSignature.equals(targetSignature)) throw new AccessException("not valid session");
-        EntityManager entityManager = factory.createEntityManager();
         try {
-            SessionRepository sessionRepository = new SessionRepository(entityManager);
             if (sessionRepository.findOne(session.getId()) == null) throw new AccessException("not valid session");
         } catch (AccessException e) {
             throw new AccessException("not valid session");

@@ -5,16 +5,14 @@ import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.repository.IProjectRepository;
 import ru.zagorodnikova.tm.entity.Project;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.List;
 
 public class ProjectRepository implements IProjectRepository {
 
-    @NotNull private final EntityManager entityManager;
-
-    public ProjectRepository(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
+    @Inject
+    private EntityManager entityManager;
 
     @Override
     public void persist(@NotNull Project project) {
@@ -63,5 +61,9 @@ public class ProjectRepository implements IProjectRepository {
         List list = entityManager.createQuery("Select project from Project project")
                 .getResultList();
         return list;
+    }
+
+    public EntityManager getEntityManager() {
+        return entityManager;
     }
 }

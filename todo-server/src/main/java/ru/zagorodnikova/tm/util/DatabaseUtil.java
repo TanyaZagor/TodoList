@@ -15,10 +15,12 @@ import ru.zagorodnikova.tm.entity.Session;
 import ru.zagorodnikova.tm.entity.Task;
 import ru.zagorodnikova.tm.entity.User;
 
+import javax.enterprise.inject.Any;
+import javax.enterprise.inject.Default;
+import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import java.io.InputStream;
-import java.sql.DriverManager;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -33,8 +35,8 @@ public class DatabaseUtil {
         return property;
     }
 
-    @Produces
-    public EntityManagerFactory factory() throws Exception {
+
+    private EntityManagerFactory factory() throws Exception {
         final Map<String, String> settings = new HashMap<>();
         @NotNull final Properties property = getProperties();
         settings.put(Environment.DRIVER, property.getProperty("driverDB"));
@@ -55,4 +57,14 @@ public class DatabaseUtil {
         return metadata.getSessionFactoryBuilder().build();
     }
 
+    @Produces
+    public EntityManager entityManager() throws Exception {
+        return factory().createEntityManager();
+    }
+
+    public void close(@Disposes @Any EntityManager entityManager) {
+        if (entityManager.isOpen()) {
+            entityManager.close();
+        }
+    }
 }

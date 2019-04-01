@@ -14,13 +14,16 @@ import ru.zagorodnikova.tm.api.service.ITaskService;
 import ru.zagorodnikova.tm.api.service.IUserService;
 import ru.zagorodnikova.tm.dto.Domain;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
 
+@ApplicationScoped
 @NoArgsConstructor
 public class DomainService implements IDomainService {
 

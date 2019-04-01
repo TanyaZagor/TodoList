@@ -11,8 +11,10 @@ import ru.zagorodnikova.tm.repositoty.ProjectRepository;
 import ru.zagorodnikova.tm.repositoty.TaskRepository;
 import ru.zagorodnikova.tm.util.DateFormatterUtil;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.util.Collections;
@@ -20,11 +22,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+@ApplicationScoped
 @NoArgsConstructor
 public class ProjectService implements IProjectService {
 
     @Inject
-    private EntityManagerFactory factory;
+    private ProjectRepository projectRepository;
 
     @Nullable
     public Project persistProject(@NotNull final String userId, @NotNull final String projectName,
@@ -33,54 +36,46 @@ public class ProjectService implements IProjectService {
         if (description.isEmpty()) return null;
         if (dateStart.isEmpty()) return null;
         if (dateFinish.isEmpty()) return null;
-        EntityManager entityManager = factory.createEntityManager();
         try {
-            ProjectRepository projectRepository = new ProjectRepository(entityManager);
             @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
             @NotNull final Date finish = DateFormatterUtil.dateFormatter(dateFinish);
             @NotNull final Project project = new Project(userId, projectName, description, start, finish);
-            entityManager.getTransaction().begin();
+            projectRepository.getEntityManager().getTransaction().begin();
             projectRepository.merge(project);
-            entityManager.getTransaction().commit();
+            projectRepository.getEntityManager().getTransaction().commit();
             return project;
         } catch (Exception e) {
-            entityManager.getTransaction().rollback();
+            projectRepository.getEntityManager().getTransaction().rollback();
             return null;
         }
     }
 
     public void removeProject(@NotNull final String userId, @NotNull final String projectName) {
         if (projectName.isEmpty()) return;
-        EntityManager entityManager = factory.createEntityManager();
         try {
-            ProjectRepository projectRepository = new ProjectRepository(entityManager);
             Project project = projectRepository.findOne(userId, projectName);
             if (project == null) return;
-            entityManager.getTransaction().begin();
+            projectRepository.getEntityManager().getTransaction().begin();
             projectRepository.remove(project);
-            entityManager.getTransaction().commit();
+            projectRepository.getEntityManager().getTransaction().commit();
         } catch (Exception e) {
-            entityManager.getTransaction().rollback();
+            projectRepository.getEntityManager().getTransaction().rollback();
         }
     }
 
     public void removeAllProjects(@NotNull final String userId){
-        EntityManager entityManager = factory.createEntityManager();
         try {
-            ProjectRepository projectRepository = new ProjectRepository(entityManager);
-            entityManager.getTransaction().begin();
+            projectRepository.getEntityManager().getTransaction().begin();
             projectRepository.removeAll(userId);
-            entityManager.getTransaction().commit();
+            projectRepository.getEntityManager().getTransaction().commit();
         } catch (Exception e) {
-            entityManager.getTransaction().rollback();
+            projectRepository.getEntityManager().getTransaction().rollback();
         }
     }
 
     @Nullable
     public List<Project> findAllProjects(@NotNull final String userId) {
-        EntityManager entityManager = factory.createEntityManager();
         try {
-            ProjectRepository projectRepository = new ProjectRepository(entityManager);
             return projectRepository.findAll(userId);
         } catch (Exception e) {
             return null;
@@ -91,8 +86,6 @@ public class ProjectService implements IProjectService {
     public Project findOneProject(@NotNull final String userId, @NotNull final String projectName) {
         if (projectName.isEmpty()) return null;
         try {
-            EntityManager entityManager = factory.createEntityManager();
-            ProjectRepository projectRepository = new ProjectRepository(entityManager);
             return projectRepository.findOne(userId, projectName);
         } catch (Exception e) {
             return null;
@@ -111,9 +104,7 @@ public class ProjectService implements IProjectService {
         if (description.isEmpty()) return;
         if (dateStart.isEmpty()) return;
         if (dateFinish.isEmpty()) return;
-        EntityManager entityManager = factory.createEntityManager();
         try {
-            ProjectRepository projectRepository = new ProjectRepository(entityManager);
             Project project = projectRepository.findOne(userId, oldProjectName);
             if (project == null) return;
             @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
@@ -124,11 +115,11 @@ public class ProjectService implements IProjectService {
             project.setDateStart(start);
             project.setDateFinish(finish);
             project.setStatus(newStatus);
-            entityManager.getTransaction().begin();
+            projectRepository.getEntityManager().getTransaction().begin();
             projectRepository.merge(project);
-            entityManager.getTransaction().commit();
+            projectRepository.getEntityManager().getTransaction().commit();
         } catch (Exception e) {
-            entityManager.getTransaction().rollback();
+            projectRepository.getEntityManager().getTransaction().rollback();
         }
     }
     @Nullable
@@ -170,9 +161,7 @@ public class ProjectService implements IProjectService {
 
     @Nullable
     public List<Project> getProjects() {
-        EntityManager entityManager = factory.createEntityManager();
         try {
-            ProjectRepository projectRepository = new ProjectRepository(entityManager);
             return projectRepository.getProjects();
         } catch (Exception e) {
             return null;
@@ -180,16 +169,14 @@ public class ProjectService implements IProjectService {
     }
 
     public void setProjects(@NotNull final List<Project> list) {
-        EntityManager entityManager = factory.createEntityManager();
         try {
-            ProjectRepository projectRepository = new ProjectRepository(entityManager);
-            entityManager.getTransaction().begin();
+            projectRepository.getEntityManager().getTransaction().begin();
             for (Project v : list) {
                 projectRepository.persist(v);
             }
-            entityManager.getTransaction().commit();
+            projectRepository.getEntityManager().getTransaction().commit();
         } catch (Exception e) {
-            entityManager.getTransaction().rollback();
+            projectRepository.getEntityManager().getTransaction().rollback();
         }
     }
 

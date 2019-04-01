@@ -4,15 +4,13 @@ import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.api.repository.ISessionRepository;
 import ru.zagorodnikova.tm.entity.Session;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 public class SessionRepository implements ISessionRepository {
 
-    @NotNull private final EntityManager entityManager;
-
-    public SessionRepository(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
+    @Inject
+    private EntityManager entityManager;
 
     @Override
     public void persist(@NotNull Session session) {
@@ -27,5 +25,9 @@ public class SessionRepository implements ISessionRepository {
     @Override
     public Session findOne(@NotNull String id) {
         return entityManager.find(Session.class, id);
+    }
+
+    public EntityManager getEntityManager() {
+        return entityManager;
     }
 }

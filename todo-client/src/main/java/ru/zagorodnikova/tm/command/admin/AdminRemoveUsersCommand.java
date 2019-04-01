@@ -5,6 +5,8 @@ import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.endpoint.Exception_Exception;
 
 public class AdminRemoveUsersCommand extends AbstractCommand {
+
+
     @NotNull
     @Override
     public String command() {

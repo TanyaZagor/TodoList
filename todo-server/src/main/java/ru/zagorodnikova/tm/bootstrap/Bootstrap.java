@@ -9,6 +9,8 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Environment;
 import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.api.ServiceLocator;
+import ru.zagorodnikova.tm.api.endpoint.*;
+import ru.zagorodnikova.tm.api.repository.ITaskRepository;
 import ru.zagorodnikova.tm.api.service.*;
 import ru.zagorodnikova.tm.endpoint.*;
 import ru.zagorodnikova.tm.entity.*;
@@ -17,8 +19,12 @@ import ru.zagorodnikova.tm.entity.enumeration.Status;
 import ru.zagorodnikova.tm.service.*;
 import ru.zagorodnikova.tm.util.DatabaseUtil;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.persistence.EntityManagerFactory;
 import javax.xml.ws.Endpoint;
 import java.util.HashMap;
@@ -29,7 +35,23 @@ import java.util.Properties;
 @Getter
 @Default
 @NoArgsConstructor
+@ApplicationScoped
 public class Bootstrap implements ServiceLocator {
+
+    @Inject
+    private ISessionEndpoint sessionEndpoint;
+
+    @Inject
+    private IUserEndpoint userEndpoint;
+
+    @Inject
+    private IProjectEndpoint projectEndpoint;
+
+    @Inject
+    private ITaskEndpoint taskEndpoint;
+
+    @Inject
+    private IAdminEndpoint adminEndpoint;
 
 
     public void init() throws Exception {
@@ -62,11 +84,11 @@ public class Bootstrap implements ServiceLocator {
         property.load(this.getClass().getClassLoader().getResourceAsStream("app.properties"));
         @NotNull final String host = property.getProperty("host");
         @NotNull final String port = property.getProperty("port");
-        Endpoint.publish("http://" + host + ":" + port + "/ProjectEndpoint", new ProjectEndpoint());
-        Endpoint.publish("http://" + host + ":" + port + "/TaskEndpoint", new TaskEndpoint());
-        Endpoint.publish("http://" + host + ":" + port + "/UserEndpoint", new UserEndpoint());
-        Endpoint.publish("http://" + host + ":" + port + "/SessionEndpoint", new SessionEndpoint());
-        Endpoint.publish("http://" + host + ":" + port + "/AdminEndpoint", new AdminEndpoint());
+        Endpoint.publish("http://" + host + ":" + port + "/ProjectEndpoint", projectEndpoint);
+        Endpoint.publish("http://" + host + ":" + port + "/TaskEndpoint", taskEndpoint);
+        Endpoint.publish("http://" + host + ":" + port + "/UserEndpoint", userEndpoint);
+        Endpoint.publish("http://" + host + ":" + port + "/SessionEndpoint", sessionEndpoint);
+        Endpoint.publish("http://" + host + ":" + port + "/AdminEndpoint", adminEndpoint);
     }
 
 

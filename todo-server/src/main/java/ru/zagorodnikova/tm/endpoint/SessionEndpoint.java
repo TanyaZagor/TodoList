@@ -3,7 +3,6 @@ package ru.zagorodnikova.tm.endpoint;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.api.endpoint.ISessionEndpoint;
 import ru.zagorodnikova.tm.api.service.ISessionService;
 import ru.zagorodnikova.tm.api.service.IUserService;
@@ -17,7 +16,8 @@ import javax.jws.WebService;
 @WebService
 public class SessionEndpoint implements ISessionEndpoint {
 
-    private IUserService userService;
+    @Inject
+    public IUserService userService;
 
     @Inject
     private ISessionService sessionService;
@@ -29,7 +29,8 @@ public class SessionEndpoint implements ISessionEndpoint {
             @WebParam(name = "login") @NotNull final String login,
             @WebParam(name = "password") @NotNull final String password
     ) throws Exception {
-        @Nullable final User user = userService.signIn(login, password);
+        @Nullable final User user;
+        user = userService.signIn(login, password);
         if (user != null) {
             return sessionService.persist(user);
         }
