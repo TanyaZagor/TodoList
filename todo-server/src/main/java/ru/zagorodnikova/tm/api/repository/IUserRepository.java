@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.entity.User;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 public interface IUserRepository {
@@ -26,4 +27,7 @@ public interface IUserRepository {
     List<User> getUsers();
 
     void merge(@NotNull final User user);
+
+    @NotNull
+    EntityManager getEntityManager();
 }

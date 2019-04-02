@@ -5,6 +5,8 @@ import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
+import ru.zagorodnikova.tm.api.repository.IProjectRepository;
+import ru.zagorodnikova.tm.api.repository.ITaskRepository;
 import ru.zagorodnikova.tm.api.service.ITaskService;
 import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.entity.Task;
@@ -30,10 +32,10 @@ import java.util.Objects;
 public class TaskService implements ITaskService {
 
     @Inject
-    private ProjectRepository projectRepository;
+    private IProjectRepository projectRepository;
 
     @Inject
-    private TaskRepository taskRepository;
+    private ITaskRepository taskRepository;
 
     @Nullable
     public Task persistTask(@NotNull final String userId, @NotNull final String projectName, @NotNull final String taskName,

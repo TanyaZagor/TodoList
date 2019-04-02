@@ -1,10 +1,12 @@
 package ru.zagorodnikova.tm.service;
 
 import lombok.NoArgsConstructor;
+import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.apache.ibatis.session.SqlSession;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
+import ru.zagorodnikova.tm.api.repository.ISessionRepository;
 import ru.zagorodnikova.tm.api.service.ISessionService;
 import ru.zagorodnikova.tm.entity.Session;
 import ru.zagorodnikova.tm.entity.User;
@@ -25,21 +27,15 @@ import java.util.Properties;
 public class SessionService implements ISessionService {
 
     @Inject
-    private SessionRepository sessionRepository;
+    private ISessionRepository sessionRepository;
 
     @Nullable
+    @Transactional
     public Session persist(@NotNull final User user) throws Exception {
-        try {
-            @NotNull final Session session = new Session(user.getId());
-            session.setSignature(signSession(session));
-            sessionRepository.getEntityManager().getTransaction().begin();
-            sessionRepository.persist(session);
-            sessionRepository.getEntityManager().getTransaction().commit();
-            return session;
-        } catch (Exception e) {
-            sessionRepository.getEntityManager().getTransaction().rollback();
-            return null;
-        }
+        @NotNull final Session session = new Session(user.getId());
+        session.setSignature(signSession(session));
+        sessionRepository.persist(session);
+        return session;
     }
 
     public void remove(@NotNull final Session session) {
@@ -65,6 +61,7 @@ public class SessionService implements ISessionService {
         return signature;
     }
 
+    @Transactional
     public void validate( final Session session) throws Exception{
         if(session == null) throw new AccessException("not valid session");
         if(session.getSignature() == null) throw new AccessException("not valid session");

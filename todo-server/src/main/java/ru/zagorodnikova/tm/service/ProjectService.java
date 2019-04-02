@@ -1,9 +1,11 @@
 package ru.zagorodnikova.tm.service;
 
 import lombok.NoArgsConstructor;
+import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
+import ru.zagorodnikova.tm.api.repository.IProjectRepository;
 import ru.zagorodnikova.tm.api.service.IProjectService;
 import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.entity.enumeration.Status;
@@ -17,6 +19,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -27,8 +30,9 @@ import java.util.Objects;
 public class ProjectService implements IProjectService {
 
     @Inject
-    private ProjectRepository projectRepository;
+    private IProjectRepository projectRepository;
 
+    @Transactional
     @Nullable
     public Project persistProject(@NotNull final String userId, @NotNull final String projectName,
                                   @NotNull final String description, @NotNull final String dateStart, @NotNull final String dateFinish) throws Exception {
@@ -36,62 +40,49 @@ public class ProjectService implements IProjectService {
         if (description.isEmpty()) return null;
         if (dateStart.isEmpty()) return null;
         if (dateFinish.isEmpty()) return null;
-        try {
-            @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
-            @NotNull final Date finish = DateFormatterUtil.dateFormatter(dateFinish);
-            @NotNull final Project project = new Project(userId, projectName, description, start, finish);
-            projectRepository.getEntityManager().getTransaction().begin();
-            projectRepository.merge(project);
-            projectRepository.getEntityManager().getTransaction().commit();
-            return project;
-        } catch (Exception e) {
-            projectRepository.getEntityManager().getTransaction().rollback();
-            return null;
-        }
+        if (findOneProject(userId, projectName) != null) return null;
+        @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
+        @NotNull final Date finish = DateFormatterUtil.dateFormatter(dateFinish);
+        @NotNull final Project project = new Project(userId, projectName, description, start, finish);
+        projectRepository.merge(project);
+        return project;
     }
 
+    @Transactional
     public void removeProject(@NotNull final String userId, @NotNull final String projectName) {
         if (projectName.isEmpty()) return;
-        try {
-            Project project = projectRepository.findOne(userId, projectName);
-            if (project == null) return;
-            projectRepository.getEntityManager().getTransaction().begin();
-            projectRepository.remove(project);
-            projectRepository.getEntityManager().getTransaction().commit();
-        } catch (Exception e) {
-            projectRepository.getEntityManager().getTransaction().rollback();
-        }
+        Project project = projectRepository.findOne(userId, projectName);
+        if (project == null) return;
+        projectRepository.remove(project);
     }
 
+    @Transactional
     public void removeAllProjects(@NotNull final String userId){
-        try {
-            projectRepository.getEntityManager().getTransaction().begin();
-            projectRepository.removeAll(userId);
-            projectRepository.getEntityManager().getTransaction().commit();
-        } catch (Exception e) {
-            projectRepository.getEntityManager().getTransaction().rollback();
-        }
+        projectRepository.removeAll(userId);
     }
 
+    @Transactional
     @Nullable
     public List<Project> findAllProjects(@NotNull final String userId) {
         try {
             return projectRepository.findAll(userId);
-        } catch (Exception e) {
+        } catch (NoResultException e) {
             return null;
         }
     }
 
+    @Transactional
     @Nullable
     public Project findOneProject(@NotNull final String userId, @NotNull final String projectName) {
         if (projectName.isEmpty()) return null;
         try {
             return projectRepository.findOne(userId, projectName);
-        } catch (Exception e) {
+        } catch (NoResultException e) {
             return null;
         }
     }
 
+    @Transactional
     public void mergeProject(@NotNull final String userId,
                              @NotNull final String oldProjectName,
                              @NotNull final String projectName,
@@ -104,23 +95,17 @@ public class ProjectService implements IProjectService {
         if (description.isEmpty()) return;
         if (dateStart.isEmpty()) return;
         if (dateFinish.isEmpty()) return;
-        try {
-            Project project = projectRepository.findOne(userId, oldProjectName);
-            if (project == null) return;
-            @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
-            @NotNull final Date finish = DateFormatterUtil.dateFormatter(dateFinish);
-            @NotNull final Status newStatus = createStatus(status);
-            project.setName(projectName);
-            project.setDescription(description);
-            project.setDateStart(start);
-            project.setDateFinish(finish);
-            project.setStatus(newStatus);
-            projectRepository.getEntityManager().getTransaction().begin();
-            projectRepository.merge(project);
-            projectRepository.getEntityManager().getTransaction().commit();
-        } catch (Exception e) {
-            projectRepository.getEntityManager().getTransaction().rollback();
-        }
+        Project project = projectRepository.findOne(userId, oldProjectName);
+        if (project == null) return;
+        @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
+        @NotNull final Date finish = DateFormatterUtil.dateFormatter(dateFinish);
+        @NotNull final Status newStatus = createStatus(status);
+        project.setName(projectName);
+        project.setDescription(description);
+        project.setDateStart(start);
+        project.setDateFinish(finish);
+        project.setStatus(newStatus);
+        projectRepository.merge(project);
     }
     @Nullable
     public List<Project> sortProjectsByDateCreated(@NotNull final String userId) {
@@ -159,24 +144,20 @@ public class ProjectService implements IProjectService {
         return list;
     }
 
+    @Transactional
     @Nullable
     public List<Project> getProjects() {
         try {
             return projectRepository.getProjects();
-        } catch (Exception e) {
+        } catch (NoResultException e) {
             return null;
         }
     }
 
+    @Transactional
     public void setProjects(@NotNull final List<Project> list) {
-        try {
-            projectRepository.getEntityManager().getTransaction().begin();
-            for (Project v : list) {
-                projectRepository.persist(v);
-            }
-            projectRepository.getEntityManager().getTransaction().commit();
-        } catch (Exception e) {
-            projectRepository.getEntityManager().getTransaction().rollback();
+        for (Project v : list) {
+            projectRepository.persist(v);
         }
     }
 

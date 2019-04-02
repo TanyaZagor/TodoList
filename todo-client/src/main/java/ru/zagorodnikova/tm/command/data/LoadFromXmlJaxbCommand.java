@@ -18,7 +18,7 @@ public class LoadFromXmlJaxbCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() throws Exception_Exception {
+    public void execute() throws Exception {
         getServiceLocator().getAdminService().loadFromXmlJaxb(getServiceLocator().getSession());
     }
 

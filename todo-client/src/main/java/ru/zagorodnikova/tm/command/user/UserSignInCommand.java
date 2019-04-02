@@ -8,11 +8,8 @@ import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.endpoint.Exception_Exception;
 import ru.zagorodnikova.tm.endpoint.Session;
 
-import javax.inject.Inject;
 
 public class UserSignInCommand extends AbstractCommand {
-
-    private ServiceLocator serviceLocator;
 
     @NotNull
     @Override
@@ -27,12 +24,12 @@ public class UserSignInCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() throws Exception_Exception {
+    public void execute() throws Exception {
         System.out.println("Login");
-        @NotNull final String login = serviceLocator.getTerminalService().nextLine();
+        @NotNull final String login = getServiceLocator().getTerminalService().nextLine();
         System.out.println("Password");
-        @NotNull final String password = serviceLocator.getTerminalService().nextLine();
-        @Nullable final Session session = serviceLocator.getSessionService().signIn(login, password);
+        @NotNull final String password = getServiceLocator().getTerminalService().nextLine();
+        @Nullable final Session session = getServiceLocator().getSessionService().signIn(login, password);
         if (session != null) {
             getServiceLocator().setSession(session);
             System.out.println("ok");
@@ -44,9 +41,4 @@ public class UserSignInCommand extends AbstractCommand {
         return false;
     }
 
-    @Inject
-    @Override
-    public void setServiceLocator(ServiceLocator serviceLocator) {
-        this.serviceLocator = serviceLocator;
-    }
 }

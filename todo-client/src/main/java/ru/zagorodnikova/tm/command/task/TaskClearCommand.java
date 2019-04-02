@@ -22,7 +22,7 @@ public class TaskClearCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() throws Exception_Exception {
+    public void execute() throws Exception {
         System.out.println("project name");
         @NotNull final String projectName = getServiceLocator().getTerminalService().nextLine();
         getServiceLocator().getTaskService().removeAllTasksInProject(getServiceLocator().getSession(), projectName);

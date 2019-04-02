@@ -22,7 +22,7 @@ public class ProjectRemoveCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() throws Exception_Exception {
+    public void execute() throws Exception {
         System.out.println("project name");
         @NotNull final String projectName = getServiceLocator().getTerminalService().nextLine();
         getServiceLocator().getProjectService().removeProject(getServiceLocator().getSession(), projectName);

@@ -4,6 +4,7 @@ import lombok.NoArgsConstructor;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.zagorodnikova.tm.api.repository.IUserRepository;
 import ru.zagorodnikova.tm.api.service.IUserService;
 import ru.zagorodnikova.tm.entity.User;
 import ru.zagorodnikova.tm.repositoty.UserRepository;
@@ -19,18 +20,20 @@ import java.util.List;
 public class UserService implements IUserService {
 
     @Inject
-    private UserRepository userRepository;
+    private IUserRepository userRepository;
 
 
     @Nullable
+    @Transactional
     public User signIn(@NotNull final String login, @NotNull final String password) throws Exception {
         if (login.isEmpty()) return null;
         if (password.isEmpty()) return null;
-        try {
-            return userRepository.signIn(login, PasswordUtil.hashPassword(password));
-        } catch (Exception e) {
-            return null;
-        }
+        return userRepository.signIn(login, PasswordUtil.hashPassword(password));
+//        try {
+//
+//        } catch (Exception e) {
+//            return null;
+//        }
     }
 
     @Nullable

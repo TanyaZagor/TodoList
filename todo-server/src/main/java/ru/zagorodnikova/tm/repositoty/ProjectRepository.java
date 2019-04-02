@@ -1,5 +1,6 @@
 package ru.zagorodnikova.tm.repositoty;
 
+import org.apache.deltaspike.data.api.Repository;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.repository.IProjectRepository;
@@ -8,6 +9,7 @@ import ru.zagorodnikova.tm.entity.Project;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.List;
+
 
 public class ProjectRepository implements IProjectRepository {
 
@@ -63,6 +65,7 @@ public class ProjectRepository implements IProjectRepository {
         return list;
     }
 
+    @NotNull
     public EntityManager getEntityManager() {
         return entityManager;
     }

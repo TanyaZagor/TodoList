@@ -23,7 +23,7 @@ public class ProjectSortByStartCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() throws Exception_Exception {
+    public void execute() throws Exception {
         @Nullable final List<ProjectDto> list = getServiceLocator().getProjectService().sortProjectsByDateStart(getServiceLocator().getSession());
         if (list!= null) {
             list.forEach((project) -> System.out.println("Name: " + project.getName() +

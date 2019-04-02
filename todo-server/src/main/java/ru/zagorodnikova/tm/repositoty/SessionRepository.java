@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.api.repository.ISessionRepository;
 import ru.zagorodnikova.tm.entity.Session;
 
+import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 

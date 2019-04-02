@@ -66,4 +66,5 @@ public interface ITaskService {
     List<Task> getTasks();
 
     void setTasks(@NotNull final List<Task> list);
+
 }

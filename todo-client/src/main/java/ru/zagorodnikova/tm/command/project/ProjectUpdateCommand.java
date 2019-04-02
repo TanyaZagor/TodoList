@@ -22,7 +22,7 @@ public class ProjectUpdateCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() throws Exception_Exception {
+    public void execute() throws Exception {
         System.out.println("project name");
         @NotNull final String oldProjectName = getServiceLocator().getTerminalService().nextLine();
         System.out.println("New project name");

@@ -22,7 +22,7 @@ public class UserUpdateCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() throws Exception_Exception {
+    public void execute() throws Exception {
         System.out.println("New first name");
         @NotNull final String firstName = getServiceLocator().getTerminalService().nextLine();
         System.out.println("New last name");
