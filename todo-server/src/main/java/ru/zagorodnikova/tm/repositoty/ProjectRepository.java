@@ -28,7 +28,7 @@ public class ProjectRepository implements IProjectRepository {
 
     @Override
     public void removeAll(@NotNull String userId) {
-        entityManager.createQuery("DELETE FROM Project project WHERE project.userId =: userId")
+        entityManager.createQuery("DELETE FROM Project project WHERE project.userId = :userId")
                 .setParameter("userId", userId)
                 .executeUpdate();
     }
@@ -36,7 +36,7 @@ public class ProjectRepository implements IProjectRepository {
     @Nullable
     @Override
     public Project findOne(@NotNull String userId, @NotNull String name) {
-        Project project = entityManager.createQuery("SELECT project FROM Project project WHERE project.userId =: userId AND project.name =: name", Project.class)
+        Project project = entityManager.createQuery("SELECT project FROM Project project WHERE project.userId = :userId AND project.name = :name", Project.class)
                 .setParameter("userId",userId)
                 .setParameter("name", name)
                 .getSingleResult();
@@ -51,7 +51,7 @@ public class ProjectRepository implements IProjectRepository {
     @Nullable
     @Override
     public List<Project> findAll(@NotNull String userId) {
-        List<Project> list = entityManager.createQuery("SELECT project FROM Project project WHERE project.userId =: userId", Project.class)
+        List<Project> list = entityManager.createQuery("SELECT project FROM Project project WHERE project.userId = :userId", Project.class)
                 .setParameter("userId",userId)
                 .getResultList();
         return list;

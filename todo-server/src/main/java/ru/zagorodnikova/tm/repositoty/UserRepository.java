@@ -27,7 +27,7 @@ public class UserRepository implements IUserRepository {
     @Override
     public User signIn(@NotNull final String login,
                 @NotNull final String password) {
-        User user = entityManager.createQuery("SELECT user FROM User user WHERE user.login =: login AND user.password =: password", User.class)
+        User user = entityManager.createQuery("SELECT user FROM User user WHERE user.login = :login AND user.password = :password", User.class)
                 .setParameter("login", login)
                 .setParameter("password", password)
                 .getSingleResult();
@@ -41,7 +41,7 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public void removeAll() {
-        entityManager.createQuery("DELETE FROM User user WHERE user.roleType = USER").executeUpdate();
+        entityManager.createQuery("DELETE FROM User user WHERE user.roleType = :USER").executeUpdate();
     }
 
     @Override
