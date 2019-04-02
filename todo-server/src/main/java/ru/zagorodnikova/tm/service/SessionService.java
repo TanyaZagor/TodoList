@@ -1,54 +1,49 @@
 package ru.zagorodnikova.tm.service;
 
+import lombok.NoArgsConstructor;
+import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.apache.ibatis.session.SqlSession;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
+import ru.zagorodnikova.tm.api.repository.ISessionRepository;
 import ru.zagorodnikova.tm.api.service.ISessionService;
 import ru.zagorodnikova.tm.entity.Session;
 import ru.zagorodnikova.tm.entity.User;
 import ru.zagorodnikova.tm.repositoty.SessionRepository;
 import ru.zagorodnikova.tm.util.PasswordUtil;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Default;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import java.rmi.AccessException;
 import java.util.Properties;
 
+@ApplicationScoped
+@NoArgsConstructor
 public class SessionService implements ISessionService {
 
-    @NotNull private final ServiceLocator serviceLocator;
-
-    public SessionService(@NotNull final ServiceLocator serviceLocator) {
-        this.serviceLocator = serviceLocator;
-    }
+    @Inject
+    private ISessionRepository sessionRepository;
 
     @Nullable
+    @Transactional
     public Session persist(@NotNull final User user) throws Exception {
-        EntityManager entityManager = serviceLocator.getFactory().createEntityManager();
-        try {
-            SessionRepository sessionRepository = new SessionRepository(entityManager);
-            @NotNull final Session session = new Session(user.getId());
-            session.setSignature(signSession(session));
-            entityManager.getTransaction().begin();
-            sessionRepository.persist(session);
-            entityManager.getTransaction().commit();
-            return session;
-        } catch (Exception e) {
-            entityManager.getTransaction().rollback();
-            return null;
-        }
+        @NotNull final Session session = new Session(user.getId());
+        session.setSignature(signSession(session));
+        sessionRepository.persist(session);
+        return session;
     }
 
-    public void remove(@NotNull final Session session) {
-        EntityManager entityManager = serviceLocator.getFactory().createEntityManager();
-        try {
-            SessionRepository sessionRepository = new SessionRepository(entityManager);
-            entityManager.getTransaction().begin();
-            sessionRepository.remove(session);
-            entityManager.getTransaction().commit();
-        } catch (Exception e) {
-            entityManager.getTransaction().rollback();
-        }
+    @Transactional
+    public void remove(@NotNull final Session sessionIn) {
+        @Nullable final Session session = sessionRepository.findOne(sessionIn.getId());
+        if(session == null) return;
+        sessionRepository.remove(session);
     }
 
     @NotNull
@@ -64,7 +59,8 @@ public class SessionService implements ISessionService {
         return signature;
     }
 
-    public void validate( final Session session) throws Exception{
+    @Transactional
+    public void validate(final Session session) throws Exception{
         if(session == null) throw new AccessException("not valid session");
         if(session.getSignature() == null) throw new AccessException("not valid session");
         if(session.getUserId() == null) throw new AccessException("not valid session");
@@ -74,11 +70,9 @@ public class SessionService implements ISessionService {
         @NotNull final String sourceSignature = signSession(session);
         @NotNull final String targetSignature = signSession(session);
         if(!sourceSignature.equals(targetSignature)) throw new AccessException("not valid session");
-        EntityManager entityManager = serviceLocator.getFactory().createEntityManager();
         try {
-            SessionRepository sessionRepository = new SessionRepository(entityManager);
             if (sessionRepository.findOne(session.getId()) == null) throw new AccessException("not valid session");
-        } catch (AccessException e) {
+        } catch (NoResultException e) {
             throw new AccessException("not valid session");
         }
     }

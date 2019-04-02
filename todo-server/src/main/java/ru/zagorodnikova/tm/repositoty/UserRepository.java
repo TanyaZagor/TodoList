@@ -4,16 +4,15 @@ import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.api.repository.IUserRepository;
 import ru.zagorodnikova.tm.entity.User;
 
+import javax.enterprise.inject.Default;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.List;
 
 public class UserRepository implements IUserRepository {
 
-    @NotNull private final EntityManager entityManager;
-
-    public UserRepository (@NotNull final EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
+    @Inject
+    private EntityManager entityManager;
 
     @Override
     public User findOne(@NotNull final String id) {
@@ -28,9 +27,9 @@ public class UserRepository implements IUserRepository {
     @Override
     public User signIn(@NotNull final String login,
                 @NotNull final String password) {
-        User user = (User) entityManager.createQuery("SELECT user FROM User user WHERE user.login = ?1 AND user.password = ?2")
-                .setParameter(1, login)
-                .setParameter(2, password)
+        User user = entityManager.createQuery("SELECT user FROM User user WHERE user.login =: login AND user.password =: password", User.class)
+                .setParameter("login", login)
+                .setParameter("password", password)
                 .getSingleResult();
         return user;
     }
@@ -42,12 +41,12 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public void removeAll() {
-        entityManager.createQuery("Delete from User user where user.roleType = USER").executeUpdate();
+        entityManager.createQuery("DELETE FROM User user WHERE user.roleType = USER").executeUpdate();
     }
 
     @Override
     public List<User> getUsers() {
-        List list = entityManager.createQuery("Select user from User user")
+        List<User> list = entityManager.createQuery("SELECT user FROM User user", User.class)
                 .getResultList();
         return list;
     }
@@ -55,5 +54,9 @@ public class UserRepository implements IUserRepository {
     @Override
     public void merge(@NotNull final User user) {
         entityManager.merge(user);
+    }
+
+    public EntityManager getEntityManager() {
+        return entityManager;
     }
 }

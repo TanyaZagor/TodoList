@@ -18,7 +18,7 @@ public class SaveToJsonCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() throws Exception_Exception {
+    public void execute() throws Exception {
         getServiceLocator().getAdminService().saveToJson(getServiceLocator().getSession());
 
     }

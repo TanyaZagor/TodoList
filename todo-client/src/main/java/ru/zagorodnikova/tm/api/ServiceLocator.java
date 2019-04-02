@@ -11,6 +11,8 @@ import java.util.Map;
 
 public interface ServiceLocator{
 
+    void init(@NotNull Class[] commandClasses);
+
     @NotNull
     UserEndpoint getUserService();
 

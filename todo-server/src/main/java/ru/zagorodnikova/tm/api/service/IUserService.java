@@ -4,9 +4,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.entity.User;
 
+import java.io.Serializable;
 import java.util.List;
 
-public interface IUserService {
+public interface IUserService extends Serializable {
 
     @Nullable
     User signIn(@NotNull final String login,

@@ -3,100 +3,111 @@ package ru.zagorodnikova.tm.endpoint;
 import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.api.endpoint.IAdminEndpoint;
+import ru.zagorodnikova.tm.api.service.IAdminService;
+import ru.zagorodnikova.tm.api.service.IDomainService;
+import ru.zagorodnikova.tm.api.service.ISessionService;
+import ru.zagorodnikova.tm.api.service.IUserService;
 import ru.zagorodnikova.tm.entity.enumeration.RoleType;
 import ru.zagorodnikova.tm.entity.Session;
 
+import javax.inject.Inject;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
 @WebService
 public class AdminEndpoint implements IAdminEndpoint {
 
-    @NotNull private final ServiceLocator serviceLocator;
+    @Inject
+    private IAdminService adminService;
 
-    public AdminEndpoint(@NotNull final ServiceLocator serviceLocator) {
-        this.serviceLocator = serviceLocator;
-    }
+    @Inject
+    private IDomainService domainService;
+
+    @Inject
+    private ISessionService sessionService;
+
+    @Inject
+    private IUserService userService;
 
     @Override
     public void removeAllUsers(@WebParam(name = "session") @NotNull final Session session) throws Exception {
         if (checkRole(session)) {
-            serviceLocator.getAdminService().removeAllUsers();
+            adminService.removeAllUsers();
         }
     }
 
     @Override
     public void save(@WebParam(name = "session") @NotNull final Session session) throws Exception {
         if (checkRole(session)) {
-            serviceLocator.getDomainService().save();
+            domainService.save();
         }
     }
 
     @Override
     public void load(@WebParam(name = "session") @NotNull final Session session) throws Exception {
         if (checkRole(session)) {
-            serviceLocator.getDomainService().load();
+            domainService.load();
         }
     }
 
     @Override
     public void saveToJson(@WebParam(name = "session") @NotNull final Session session) throws Exception {
         if (checkRole(session)) {
-            serviceLocator.getDomainService().saveToJson();
+            domainService.saveToJson();
         }
     }
 
     @Override
     public void loadFromJson(@WebParam(name = "session") @NotNull final Session session) throws Exception {
         if (checkRole(session)) {
-            serviceLocator.getDomainService().loadFromJson();
+            domainService.loadFromJson();
         }
     }
 
     @Override
     public void saveToXml(@WebParam(name = "session") @NotNull final Session session) throws Exception {
         if (checkRole(session)) {
-            serviceLocator.getDomainService().saveToXml();
+            domainService.saveToXml();
         }
     }
 
     @Override
     public void loadFromXml(@WebParam(name = "session") @NotNull final Session session) throws Exception {
         if (checkRole(session)) {
-            serviceLocator.getDomainService().loadFromXml();
+            domainService.loadFromXml();
         }
     }
 
     @Override
     public void saveToJsonJaxb(@WebParam(name = "session") @NotNull final Session session) throws Exception {
         if (checkRole(session)) {
-            serviceLocator.getDomainService().saveToJsonJaxb();
+            domainService.saveToJsonJaxb();
         }
     }
 
     @Override
     public void loadFromJsonJaxb(@WebParam(name = "session") @NotNull final Session session) throws Exception {
         if (checkRole(session)) {
-            serviceLocator.getDomainService().loadFromJsonJaxb();
+            domainService.loadFromJsonJaxb();
         }
     }
 
     @Override
     public void saveToXmlJaxb(@WebParam(name = "session") @NotNull final Session session) throws Exception {
         if (checkRole(session)) {
-            serviceLocator.getDomainService().saveToXmlJaxb();
+            domainService.saveToXmlJaxb();
         }
     }
 
     @Override
     public void loadFromXmlJaxb(@WebParam(name = "session") @NotNull final Session session) throws Exception {
         if (checkRole(session)) {
-            serviceLocator.getDomainService().loadFromXmlJaxb();
+            domainService.loadFromXmlJaxb();
         }
     }
 
     private boolean checkRole(@WebParam(name = "session") @NotNull final Session session) throws Exception {
-        serviceLocator.getSessionService().validate(session);
-        return serviceLocator.getUserService().findOne(session.getUserId()).getRoleType() == RoleType.ADMIN;
+        sessionService.validate(session);
+        return userService.findOne(session.getUserId()).getRoleType() == RoleType.ADMIN;
     }
 }

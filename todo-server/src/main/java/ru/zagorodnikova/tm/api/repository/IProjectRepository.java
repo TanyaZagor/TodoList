@@ -1,9 +1,12 @@
 package ru.zagorodnikova.tm.api.repository;
 
+import org.apache.deltaspike.data.api.Repository;
+import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.entity.Project;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 public interface IProjectRepository {
@@ -24,4 +27,7 @@ public interface IProjectRepository {
 
     @NotNull
     List<Project> getProjects();
+
+    @NotNull
+    EntityManager getEntityManager();
 }

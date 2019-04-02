@@ -24,7 +24,7 @@ public class ProjectFindOneCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() throws Exception_Exception {
+    public void execute() throws Exception {
         System.out.println("project name");
         @NotNull final String projectName = getServiceLocator().getTerminalService().nextLine();
         @Nullable final ProjectDto project = getServiceLocator().getProjectService().findOneProject(getServiceLocator().getSession(), projectName);

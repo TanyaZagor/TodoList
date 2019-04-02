@@ -23,7 +23,7 @@ public class ProjectSortByFinishCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() throws Exception_Exception {
+    public void execute() throws Exception {
         @Nullable final List<ProjectDto> list = getServiceLocator().getProjectService().sortProjectsByDateFinish(getServiceLocator().getSession());
         if (list!= null) {
             list.forEach((project) -> System.out.println("Name: " + project.getName() +

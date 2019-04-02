@@ -1,9 +1,11 @@
 package ru.zagorodnikova.tm.api.repository;
 
+import org.apache.deltaspike.data.api.Repository;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.entity.Task;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 public interface ITaskRepository {
@@ -29,5 +31,8 @@ public interface ITaskRepository {
 
     @NotNull
     List<Task> getTasks();
+
+    @NotNull
+    EntityManager getEntityManager();
 
 }

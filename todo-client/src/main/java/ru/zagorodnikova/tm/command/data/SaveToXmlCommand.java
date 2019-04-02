@@ -18,7 +18,7 @@ public class SaveToXmlCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() throws Exception_Exception {
+    public void execute() throws Exception {
         getServiceLocator().getAdminService().saveToXml(getServiceLocator().getSession());
     }
 

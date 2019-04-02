@@ -1,15 +1,20 @@
 package ru.zagorodnikova.tm.command.user;
 
+import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.endpoint.Exception_Exception;
 import ru.zagorodnikova.tm.endpoint.Session;
 
-public class UserSignInCommand extends AbstractCommand {
+import javax.inject.Inject;
 
-    public UserSignInCommand() {
-    }
+
+public class UserSignInCommand extends AbstractCommand {
+//
+//    @Inject
+//    private ServiceLocator serviceLocator;
 
     @NotNull
     @Override
@@ -24,7 +29,7 @@ public class UserSignInCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() throws Exception_Exception {
+    public void execute() throws Exception {
         System.out.println("Login");
         @NotNull final String login = getServiceLocator().getTerminalService().nextLine();
         System.out.println("Password");
@@ -40,4 +45,5 @@ public class UserSignInCommand extends AbstractCommand {
     public boolean isSecure() {
         return false;
     }
+
 }

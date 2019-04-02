@@ -1,6 +1,7 @@
 package ru.zagorodnikova.tm.bootstrap;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -9,29 +10,43 @@ import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.endpoint.*;
 import ru.zagorodnikova.tm.service.TerminalService;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Default;
+import javax.enterprise.inject.Produces;
+import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.lang.Exception;
 import java.util.HashMap;
 import java.util.Map;
 
 @Setter
 @Getter
+@NoArgsConstructor
+@ApplicationScoped
 public class Bootstrap implements ServiceLocator {
 
     @NotNull private final Map<String, AbstractCommand> commands = new HashMap<>();
-    @NotNull private final ProjectEndpointService  projectEndpointService = new ProjectEndpointService();
-    @NotNull private final TaskEndpointService taskEndpointService = new TaskEndpointService();
-    @NotNull private final UserEndpointService userEndpointService= new UserEndpointService();
-    @NotNull private final SessionEndpointService sessionEndpointService = new SessionEndpointService();
-    @NotNull private final AdminEndpointService adminEndpointService = new AdminEndpointService();
-    @NotNull private final ProjectEndpoint projectService = projectEndpointService.getProjectEndpointPort();
-    @NotNull private final TaskEndpoint taskService = taskEndpointService.getTaskEndpointPort();
-    @NotNull private final UserEndpoint userService = userEndpointService.getUserEndpointPort();
-    @NotNull private final SessionEndpoint sessionService = sessionEndpointService.getSessionEndpointPort();
-    @NotNull private final AdminEndpoint adminService = adminEndpointService.getAdminEndpointPort();
 
-    @NotNull private final TerminalService terminalService = new TerminalService(this);
+    @Inject
+    private ProjectEndpoint projectService;
+
+    @Inject
+    private TaskEndpoint taskService;
+
+    @Inject
+    private UserEndpoint userService;
+
+    @Inject
+    private SessionEndpoint sessionService;
+
+    @Inject
+    private AdminEndpoint adminService;
+
+    @Inject
+    private TerminalService terminalService;
+
     @Nullable private Session session;
-
 
     public void init(@NotNull Class[] commandClasses) {
         this.initCommands(this, commandClasses);
@@ -39,7 +54,21 @@ public class Bootstrap implements ServiceLocator {
     }
 
     private void start() {
-        terminalService.start();
+        System.out.println("Welcome");
+        @NotNull String command = "";
+        while (!"exit".equals(command)) {
+            System.out.println("Command: ");
+            command = terminalService.nextLine();
+            try {
+                execute(command);
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            } catch (NullPointerException e) {
+                System.out.println("wrong data");
+            } catch (Exception e) {
+                System.out.println("exception");
+            }
+        }
     }
 
     public void execute(@Nullable String command) throws Exception {
@@ -57,22 +86,14 @@ public class Bootstrap implements ServiceLocator {
     }
 
     private void initCommands(@NotNull Bootstrap bootstrap,@NotNull Class[] commandClasses) {
-
         addCommand(commandClasses, bootstrap);
-
     }
 
     private void addCommand(@NotNull Class[] commandClasses, @NotNull ServiceLocator bootstrap){
         for (Class commandClass : commandClasses) {
             if (commandClass.getSuperclass().equals(AbstractCommand.class)) {
-                AbstractCommand abstractCommand = null;
-                try {
-                    abstractCommand = (AbstractCommand) commandClass.newInstance();
-                } catch (InstantiationException | IllegalAccessException e) {
-                    e.printStackTrace();
-                }
+                AbstractCommand abstractCommand = (AbstractCommand) CDI.current().select(commandClass).get();
                 if (abstractCommand != null) {
-                    abstractCommand.setServiceLocator(bootstrap);
                     commands.put(abstractCommand.command(), abstractCommand);
                 }
             }
@@ -82,5 +103,4 @@ public class Bootstrap implements ServiceLocator {
     private boolean isAuth() {
         return session != null;
     }
-
 }

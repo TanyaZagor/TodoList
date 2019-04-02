@@ -23,7 +23,7 @@ public class UserShowCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() throws Exception_Exception {
+    public void execute() throws Exception {
         @NotNull UserDto user = getServiceLocator().getUserService().findUser(getServiceLocator().getSession());
         System.out.println("Login: " + user.getLogin() + ", name: " + user.getFirstName() +
                 ", lastName: " + user.getLastName() + ", email: " + user.getEmail() +

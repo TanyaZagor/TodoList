@@ -26,7 +26,7 @@ public class ProjectListCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() throws Exception_Exception {
+    public void execute() throws Exception {
         @Nullable final List<ProjectDto> projects = getServiceLocator().getProjectService().findAllProjects(getServiceLocator().getSession());
         if (!(projects == null || projects.isEmpty())) {
             projects.forEach((v) -> System.out.println(v.getName()));

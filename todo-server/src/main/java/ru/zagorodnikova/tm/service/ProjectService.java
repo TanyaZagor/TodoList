@@ -1,8 +1,11 @@
 package ru.zagorodnikova.tm.service;
 
+import lombok.NoArgsConstructor;
+import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
+import ru.zagorodnikova.tm.api.repository.IProjectRepository;
 import ru.zagorodnikova.tm.api.service.IProjectService;
 import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.entity.enumeration.Status;
@@ -10,20 +13,26 @@ import ru.zagorodnikova.tm.repositoty.ProjectRepository;
 import ru.zagorodnikova.tm.repositoty.TaskRepository;
 import ru.zagorodnikova.tm.util.DateFormatterUtil;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Default;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+@ApplicationScoped
+@NoArgsConstructor
 public class ProjectService implements IProjectService {
 
-    @NotNull private final ServiceLocator serviceLocator;
+    @Inject
+    private IProjectRepository projectRepository;
 
-    public ProjectService(@NotNull final ServiceLocator serviceLocator) {
-        this.serviceLocator = serviceLocator;
-    }
-
+    @Transactional
     @Nullable
     public Project persistProject(@NotNull final String userId, @NotNull final String projectName,
                                   @NotNull final String description, @NotNull final String dateStart, @NotNull final String dateFinish) throws Exception {
@@ -31,72 +40,49 @@ public class ProjectService implements IProjectService {
         if (description.isEmpty()) return null;
         if (dateStart.isEmpty()) return null;
         if (dateFinish.isEmpty()) return null;
-        EntityManager entityManager = serviceLocator.getFactory().createEntityManager();
-        try {
-            ProjectRepository projectRepository = new ProjectRepository(entityManager);
-            @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
-            @NotNull final Date finish = DateFormatterUtil.dateFormatter(dateFinish);
-            @NotNull final Project project = new Project(userId, projectName, description, start, finish);
-            entityManager.getTransaction().begin();
-            projectRepository.merge(project);
-            entityManager.getTransaction().commit();
-            return project;
-        } catch (Exception e) {
-            entityManager.getTransaction().rollback();
-            return null;
-        }
+        if (findOneProject(userId, projectName) != null) return null;
+        @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
+        @NotNull final Date finish = DateFormatterUtil.dateFormatter(dateFinish);
+        @NotNull final Project project = new Project(userId, projectName, description, start, finish);
+        projectRepository.merge(project);
+        return project;
     }
 
+    @Transactional
     public void removeProject(@NotNull final String userId, @NotNull final String projectName) {
         if (projectName.isEmpty()) return;
-        EntityManager entityManager = serviceLocator.getFactory().createEntityManager();
-        try {
-            ProjectRepository projectRepository = new ProjectRepository(entityManager);
-            Project project = projectRepository.findOne(userId, projectName);
-            if (project == null) return;
-            entityManager.getTransaction().begin();
-            projectRepository.remove(project);
-            entityManager.getTransaction().commit();
-        } catch (Exception e) {
-            entityManager.getTransaction().rollback();
-        }
+        Project project = projectRepository.findOne(userId, projectName);
+        if (project == null) return;
+        projectRepository.remove(project);
     }
 
+    @Transactional
     public void removeAllProjects(@NotNull final String userId){
-        EntityManager entityManager = serviceLocator.getFactory().createEntityManager();
-        try {
-            ProjectRepository projectRepository = new ProjectRepository(entityManager);
-            entityManager.getTransaction().begin();
-            projectRepository.removeAll(userId);
-            entityManager.getTransaction().commit();
-        } catch (Exception e) {
-            entityManager.getTransaction().rollback();
-        }
+        projectRepository.removeAll(userId);
     }
 
+    @Transactional
     @Nullable
     public List<Project> findAllProjects(@NotNull final String userId) {
-        EntityManager entityManager = serviceLocator.getFactory().createEntityManager();
         try {
-            ProjectRepository projectRepository = new ProjectRepository(entityManager);
             return projectRepository.findAll(userId);
-        } catch (Exception e) {
+        } catch (NoResultException e) {
             return null;
         }
     }
 
+    @Transactional
     @Nullable
     public Project findOneProject(@NotNull final String userId, @NotNull final String projectName) {
         if (projectName.isEmpty()) return null;
         try {
-            EntityManager entityManager = serviceLocator.getFactory().createEntityManager();
-            ProjectRepository projectRepository = new ProjectRepository(entityManager);
             return projectRepository.findOne(userId, projectName);
-        } catch (Exception e) {
+        } catch (NoResultException e) {
             return null;
         }
     }
 
+    @Transactional
     public void mergeProject(@NotNull final String userId,
                              @NotNull final String oldProjectName,
                              @NotNull final String projectName,
@@ -109,25 +95,17 @@ public class ProjectService implements IProjectService {
         if (description.isEmpty()) return;
         if (dateStart.isEmpty()) return;
         if (dateFinish.isEmpty()) return;
-        EntityManager entityManager = serviceLocator.getFactory().createEntityManager();
-        try {
-            ProjectRepository projectRepository = new ProjectRepository(entityManager);
-            Project project = projectRepository.findOne(userId, oldProjectName);
-            if (project == null) return;
-            @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
-            @NotNull final Date finish = DateFormatterUtil.dateFormatter(dateFinish);
-            @NotNull final Status newStatus = createStatus(status);
-            project.setName(projectName);
-            project.setDescription(description);
-            project.setDateStart(start);
-            project.setDateFinish(finish);
-            project.setStatus(newStatus);
-            entityManager.getTransaction().begin();
-            projectRepository.merge(project);
-            entityManager.getTransaction().commit();
-        } catch (Exception e) {
-            entityManager.getTransaction().rollback();
-        }
+        Project project = projectRepository.findOne(userId, oldProjectName);
+        if (project == null) return;
+        @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
+        @NotNull final Date finish = DateFormatterUtil.dateFormatter(dateFinish);
+        @NotNull final Status newStatus = Status.createStatus(status);
+        project.setName(projectName);
+        project.setDescription(description);
+        project.setDateStart(start);
+        project.setDateFinish(finish);
+        project.setStatus(newStatus);
+        projectRepository.merge(project);
     }
     @Nullable
     public List<Project> sortProjectsByDateCreated(@NotNull final String userId) {
@@ -166,37 +144,20 @@ public class ProjectService implements IProjectService {
         return list;
     }
 
+    @Transactional
     @Nullable
     public List<Project> getProjects() {
-        EntityManager entityManager = serviceLocator.getFactory().createEntityManager();
         try {
-            ProjectRepository projectRepository = new ProjectRepository(entityManager);
             return projectRepository.getProjects();
-        } catch (Exception e) {
+        } catch (NoResultException e) {
             return null;
         }
     }
 
+    @Transactional
     public void setProjects(@NotNull final List<Project> list) {
-        EntityManager entityManager = serviceLocator.getFactory().createEntityManager();
-        try {
-            ProjectRepository projectRepository = new ProjectRepository(entityManager);
-            entityManager.getTransaction().begin();
-            for (Project v : list) {
-                projectRepository.persist(v);
-            }
-            entityManager.getTransaction().commit();
-        } catch (Exception e) {
-            entityManager.getTransaction().rollback();
-        }
-    }
-
-    private Status createStatus(String status) {
-        switch (status) {
-            case "scheduled": return Status.SCHEDULED;
-            case "in progress": return Status.IN_PROGRESS;
-            case "done" : return Status.DONE;
-            default: return Status.SCHEDULED;
+        for (Project v : list) {
+            projectRepository.persist(v);
         }
     }
 

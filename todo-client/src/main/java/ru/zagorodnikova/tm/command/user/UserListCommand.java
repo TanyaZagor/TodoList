@@ -25,7 +25,7 @@ public class UserListCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() throws Exception_Exception {
+    public void execute() throws Exception {
         @Nullable final List<UserDto> list = getServiceLocator().getUserService().findAllUsers(getServiceLocator().getSession());
         if (!(list == null || list.isEmpty())) {
             list.forEach(user -> System.out.println(user.getLogin()));

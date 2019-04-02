@@ -5,6 +5,8 @@ import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.endpoint.Exception_Exception;
 
 public class AdminRemoveUsersCommand extends AbstractCommand {
+
+
     @NotNull
     @Override
     public String command() {
@@ -18,7 +20,7 @@ public class AdminRemoveUsersCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() throws Exception_Exception {
+    public void execute() throws Exception {
         getServiceLocator().getAdminService().removeAllUsers(getServiceLocator().getSession());
     }
 

@@ -1,5 +1,8 @@
 package ru.zagorodnikova.tm.util;
 
+import lombok.NoArgsConstructor;
+import org.apache.deltaspike.jpa.api.entitymanager.EntityManagerConfig;
+import org.apache.deltaspike.jpa.api.transaction.TransactionScoped;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -14,14 +17,21 @@ import ru.zagorodnikova.tm.entity.Session;
 import ru.zagorodnikova.tm.entity.Task;
 import ru.zagorodnikova.tm.entity.User;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Any;
+import javax.enterprise.inject.Default;
+import javax.enterprise.inject.Disposes;
+import javax.enterprise.inject.Produces;
+import javax.inject.Singleton;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import java.io.InputStream;
-import java.sql.DriverManager;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
 
+@NoArgsConstructor
+@ApplicationScoped
 public class DatabaseUtil {
 
     private Properties getProperties() throws Exception {
@@ -30,7 +40,8 @@ public class DatabaseUtil {
         return property;
     }
 
-    public EntityManagerFactory factory() throws Exception {
+
+    private EntityManagerFactory factory() throws Exception {
         final Map<String, String> settings = new HashMap<>();
         @NotNull final Properties property = getProperties();
         settings.put(Environment.DRIVER, property.getProperty("driverDB"));
@@ -51,4 +62,16 @@ public class DatabaseUtil {
         return metadata.getSessionFactoryBuilder().build();
     }
 
+    @NotNull
+    @Produces
+    @TransactionScoped
+    public EntityManager entityManager() throws Exception {
+        return factory().createEntityManager();
+    }
+
+    public void close(@Disposes EntityManager entityManager) {
+        if (entityManager.isOpen()) {
+            entityManager.close();
+        }
+    }
 }

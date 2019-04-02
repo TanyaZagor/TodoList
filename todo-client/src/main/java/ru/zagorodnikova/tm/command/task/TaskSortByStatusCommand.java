@@ -23,7 +23,7 @@ public class TaskSortByStatusCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() throws Exception_Exception {
+    public void execute() throws Exception {
         System.out.println("project name");
         @NotNull final String projectName = getServiceLocator().getTerminalService().nextLine();
         @Nullable final List<TaskDto> tasks = getServiceLocator().getTaskService().sortTasksByStatus(getServiceLocator().getSession(), projectName);

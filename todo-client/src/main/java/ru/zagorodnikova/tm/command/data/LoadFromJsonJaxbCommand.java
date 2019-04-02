@@ -19,7 +19,7 @@ public class LoadFromJsonJaxbCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() throws Exception_Exception {
+    public void execute() throws Exception {
         getServiceLocator().getAdminService().loadFromJsonJaxb(getServiceLocator().getSession());
     }
 

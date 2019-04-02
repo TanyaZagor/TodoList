@@ -22,7 +22,7 @@ public class UserChangePasswordCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() throws Exception_Exception {
+    public void execute() throws Exception {
         System.out.println("Login");
         @NotNull final String login = getServiceLocator().getTerminalService().nextLine();
         System.out.println("Password");
