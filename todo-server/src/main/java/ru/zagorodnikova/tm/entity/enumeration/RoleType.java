@@ -12,7 +12,6 @@ public enum RoleType {
         this.displayName = display;
     }
 
-
     @NotNull
     @Override
     public String toString() {

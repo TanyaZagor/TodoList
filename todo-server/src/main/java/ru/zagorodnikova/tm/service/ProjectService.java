@@ -99,7 +99,7 @@ public class ProjectService implements IProjectService {
         if (project == null) return;
         @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
         @NotNull final Date finish = DateFormatterUtil.dateFormatter(dateFinish);
-        @NotNull final Status newStatus = createStatus(status);
+        @NotNull final Status newStatus = Status.createStatus(status);
         project.setName(projectName);
         project.setDescription(description);
         project.setDateStart(start);
@@ -158,15 +158,6 @@ public class ProjectService implements IProjectService {
     public void setProjects(@NotNull final List<Project> list) {
         for (Project v : list) {
             projectRepository.persist(v);
-        }
-    }
-
-    private Status createStatus(String status) {
-        switch (status) {
-            case "scheduled": return Status.SCHEDULED;
-            case "in progress": return Status.IN_PROGRESS;
-            case "done" : return Status.DONE;
-            default: return Status.SCHEDULED;
         }
     }
 

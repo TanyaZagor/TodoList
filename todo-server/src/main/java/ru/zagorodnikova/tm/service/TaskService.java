@@ -87,7 +87,7 @@ public class TaskService implements ITaskService {
         if (task == null) return;
         @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
         @NotNull final Date finish = DateFormatterUtil.dateFormatter(dateFinish);
-        @NotNull final Status newStatus = createStatus(status);
+        @NotNull final Status newStatus = Status.createStatus(status);
         task.setName(taskName);
         task.setDescription(description);
         task.setDateStart(start);
@@ -196,15 +196,6 @@ public class TaskService implements ITaskService {
     public void setTasks(@NotNull final List<Task> list){
         for (Task task : list) {
             taskRepository.persist(task);
-        }
-    }
-
-    private Status createStatus(String status) {
-        switch (status) {
-            case "scheduled": return Status.SCHEDULED;
-            case "in progress": return Status.IN_PROGRESS;
-            case "done" : return Status.DONE;
-            default: return Status.SCHEDULED;
         }
     }
 

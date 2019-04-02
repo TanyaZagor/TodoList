@@ -19,4 +19,13 @@ public enum Status {
         return this.displayName;
     }
 
+    public static Status createStatus(String status) {
+        switch (status) {
+            case "scheduled": return Status.SCHEDULED;
+            case "in progress": return Status.IN_PROGRESS;
+            case "done" : return Status.DONE;
+            default: return Status.SCHEDULED;
+        }
+    }
+
 }
