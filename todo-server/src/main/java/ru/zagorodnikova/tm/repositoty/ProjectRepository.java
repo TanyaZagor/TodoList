@@ -28,17 +28,17 @@ public class ProjectRepository implements IProjectRepository {
 
     @Override
     public void removeAll(@NotNull String userId) {
-        entityManager.createQuery("Delete from Project project where project.userId = ?1")
-                .setParameter(1, userId)
+        entityManager.createQuery("DELETE FROM Project project WHERE project.userId =: userId")
+                .setParameter("userId", userId)
                 .executeUpdate();
     }
 
     @Nullable
     @Override
     public Project findOne(@NotNull String userId, @NotNull String name) {
-        Project project = (Project) entityManager.createQuery("Select project from Project project where project.userId = ?1 and project.name = ?2")
-                .setParameter(1,userId)
-                .setParameter(2, name)
+        Project project = entityManager.createQuery("SELECT project FROM Project project WHERE project.userId =: userId AND project.name =: name", Project.class)
+                .setParameter("userId",userId)
+                .setParameter("name", name)
                 .getSingleResult();
         return project;
     }
@@ -51,8 +51,8 @@ public class ProjectRepository implements IProjectRepository {
     @Nullable
     @Override
     public List<Project> findAll(@NotNull String userId) {
-        List list = entityManager.createQuery("Select project from Project project where project.userId = ?1")
-                .setParameter(1,userId)
+        List<Project> list = entityManager.createQuery("SELECT project FROM Project project WHERE project.userId =: userId", Project.class)
+                .setParameter("userId",userId)
                 .getResultList();
         return list;
     }
@@ -60,7 +60,7 @@ public class ProjectRepository implements IProjectRepository {
     @NotNull
     @Override
     public List<Project> getProjects() {
-        List list = entityManager.createQuery("Select project from Project project")
+        List<Project> list = entityManager.createQuery("SELECT project FROM Project project", Project.class)
                 .getResultList();
         return list;
     }

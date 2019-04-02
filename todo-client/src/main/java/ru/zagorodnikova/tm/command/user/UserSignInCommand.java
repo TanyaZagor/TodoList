@@ -8,8 +8,13 @@ import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.endpoint.Exception_Exception;
 import ru.zagorodnikova.tm.endpoint.Session;
 
+import javax.inject.Inject;
+
 
 public class UserSignInCommand extends AbstractCommand {
+//
+//    @Inject
+//    private ServiceLocator serviceLocator;
 
     @NotNull
     @Override

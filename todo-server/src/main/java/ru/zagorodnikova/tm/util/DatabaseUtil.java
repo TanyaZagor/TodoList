@@ -62,13 +62,14 @@ public class DatabaseUtil {
         return metadata.getSessionFactoryBuilder().build();
     }
 
+    @NotNull
     @Produces
     @TransactionScoped
     public EntityManager entityManager() throws Exception {
         return factory().createEntityManager();
     }
 
-    public void close(@Disposes @Any EntityManager entityManager) {
+    public void close(@Disposes EntityManager entityManager) {
         if (entityManager.isOpen()) {
             entityManager.close();
         }

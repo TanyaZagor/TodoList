@@ -11,6 +11,7 @@ import java.io.IOException;
 
 public abstract class AbstractCommand {
 
+    @Inject
     private ServiceLocator serviceLocator;
 
     @NotNull
@@ -22,10 +23,6 @@ public abstract class AbstractCommand {
     abstract public void execute() throws Exception;
 
     abstract public boolean isSecure();
-
-    public void setServiceLocator(@NotNull final ServiceLocator serviceLocator) {
-        this.serviceLocator = serviceLocator;
-    }
 
     public ServiceLocator getServiceLocator() {
         return serviceLocator;

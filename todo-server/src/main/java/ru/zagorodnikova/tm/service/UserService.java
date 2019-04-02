@@ -13,6 +13,7 @@ import ru.zagorodnikova.tm.util.PasswordUtil;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import javax.persistence.NoResultException;
 import java.util.List;
 
 @ApplicationScoped
@@ -28,15 +29,15 @@ public class UserService implements IUserService {
     public User signIn(@NotNull final String login, @NotNull final String password) throws Exception {
         if (login.isEmpty()) return null;
         if (password.isEmpty()) return null;
-        return userRepository.signIn(login, PasswordUtil.hashPassword(password));
-//        try {
-//
-//        } catch (Exception e) {
-//            return null;
-//        }
+        try {
+            return userRepository.signIn(login, PasswordUtil.hashPassword(password));
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Nullable
+    @Transactional
     public User signUp(@NotNull final String login, @NotNull final String password, @NotNull final String fistName,
                        @NotNull final String lastName, @NotNull final String email) throws Exception {
         if (login.isEmpty()) return null;
@@ -44,109 +45,76 @@ public class UserService implements IUserService {
         if (fistName.isEmpty()) return null;
         if (lastName.isEmpty()) return null;
         if (email.isEmpty()) return null;
-        try {
-            @NotNull final User user = new User(login, password, fistName, lastName, email);
-            userRepository.getEntityManager().getTransaction().begin();
-            userRepository.persist(user);
-            userRepository.getEntityManager().getTransaction().commit();
-            return user;
-        } catch (Exception e) {
-            userRepository.getEntityManager().getTransaction().rollback();
-            return null;
-        }
+        @NotNull final User user = new User(login, password, fistName, lastName, email);
+        userRepository.persist(user);
+        return user;
     }
 
+    @Transactional
     public void changePassword(@NotNull final String userId, @NotNull final String login, @NotNull final String oldPassword,
                                @NotNull final String newPassword) throws Exception {
         if (login.isEmpty()) return;
         if (oldPassword.isEmpty()) return;
         if (newPassword.isEmpty()) return;
-        try {
-            User user = userRepository.findOne(userId);
-            if (user != null) {
-                userRepository.getEntityManager().getTransaction().begin();
-                user.setPassword(newPassword);
-                userRepository.getEntityManager().getTransaction().commit();
-            }
-        } catch (Exception e) {
-            userRepository.getEntityManager().getTransaction().rollback();
+        User user = userRepository.findOne(userId);
+        if (user != null) {
+            user.setPassword(newPassword);
         }
     }
 
+    @Transactional
     public void updateUser(@NotNull final String userId, @NotNull final String firstName, @NotNull final String lastName,
                            @NotNull String email){
         if (firstName.isEmpty()) return;
         if (lastName.isEmpty()) return;
         if (email.isEmpty()) return;
-        try {
-            User user = userRepository.findOne(userId);
-            if (user != null) {
-                userRepository.getEntityManager().getTransaction().begin();
-                user.setFirstName(firstName);
-                user.setLastName(lastName);
-                user.setEmail(email);
-                userRepository.getEntityManager().getTransaction().commit();
-            }
-        } catch (Exception e) {
-            userRepository.getEntityManager().getTransaction().rollback();
+        User user = userRepository.findOne(userId);
+        if (user != null) {
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+            user.setEmail(email);
+            userRepository.merge(user);
         }
     }
 
+    @Transactional
     public void removeUser(@NotNull final String userId) {
-        try {
-            User user = userRepository.findOne(userId);
-            if (user == null) return;
-            try {
-                userRepository.getEntityManager().getTransaction().begin();
-                userRepository.remove(user);
-                userRepository.getEntityManager().getTransaction().commit();
-            } catch (Exception e) {
-                userRepository.getEntityManager().getTransaction().rollback();
-            }
-        } catch (Exception e) {
-            userRepository.getEntityManager().getTransaction().rollback();
-        }
+        User user = userRepository.findOne(userId);
+        if (user == null) return;
+        userRepository.remove(user);
     }
 
     @Nullable
     @Override
+    @Transactional
     public User findOne(@NotNull final String userId) {
         try {
             return userRepository.findOne(userId);
-        } catch (Exception e) {
+        } catch (NoResultException e) {
             return null;
         }
     }
 
     @Override
+    @Transactional
     public void removeAll() {
-        try {
-            userRepository.getEntityManager().getTransaction().begin();
-            userRepository.removeAll();
-            userRepository.getEntityManager().getTransaction().commit();
-        } catch (Exception e) {
-            userRepository.getEntityManager().getTransaction().rollback();
-        }
+        userRepository.removeAll();
     }
 
     @Nullable
+    @Transactional
     public List<User> getUsers() {
         try {
             return userRepository.getUsers();
-        } catch (Exception e) {
+        } catch (NoResultException e) {
             return null;
         }
     }
 
+    @Transactional
     public void setUsers(@NotNull final List<User> list) {
-        try {
-            userRepository.getEntityManager().getTransaction().begin();
-            for (User user : list) {
-                userRepository.persist(user);
-            }
-            userRepository.getEntityManager().getTransaction().commit();
-        } catch (Exception e) {
-            userRepository.getEntityManager().getTransaction().rollback();
+        for (User user : list) {
+            userRepository.persist(user);
         }
     }
 

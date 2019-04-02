@@ -13,6 +13,7 @@ import ru.zagorodnikova.tm.service.TerminalService;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Default;
 import javax.enterprise.inject.Produces;
+import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.lang.Exception;
@@ -91,14 +92,8 @@ public class Bootstrap implements ServiceLocator {
     private void addCommand(@NotNull Class[] commandClasses, @NotNull ServiceLocator bootstrap){
         for (Class commandClass : commandClasses) {
             if (commandClass.getSuperclass().equals(AbstractCommand.class)) {
-                AbstractCommand abstractCommand = null;
-                try {
-                    abstractCommand = (AbstractCommand) commandClass.newInstance();
-                } catch ( InstantiationException | IllegalAccessException e) {
-                    e.printStackTrace();
-                }
+                AbstractCommand abstractCommand = (AbstractCommand) CDI.current().select(commandClass).get();
                 if (abstractCommand != null) {
-                    abstractCommand.setServiceLocator(bootstrap);
                     commands.put(abstractCommand.command(), abstractCommand);
                 }
             }

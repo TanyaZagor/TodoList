@@ -19,6 +19,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import java.rmi.AccessException;
 import java.util.Properties;
 
@@ -38,14 +39,11 @@ public class SessionService implements ISessionService {
         return session;
     }
 
-    public void remove(@NotNull final Session session) {
-        try {
-            sessionRepository.getEntityManager().getTransaction().begin();
-            sessionRepository.remove(session);
-            sessionRepository.getEntityManager().getTransaction().commit();
-        } catch (Exception e) {
-            sessionRepository.getEntityManager().getTransaction().rollback();
-        }
+    @Transactional
+    public void remove(@NotNull final Session sessionIn) {
+        @Nullable final Session session = sessionRepository.findOne(sessionIn.getId());
+        if(session == null) return;
+        sessionRepository.remove(session);
     }
 
     @NotNull
@@ -62,7 +60,7 @@ public class SessionService implements ISessionService {
     }
 
     @Transactional
-    public void validate( final Session session) throws Exception{
+    public void validate(final Session session) throws Exception{
         if(session == null) throw new AccessException("not valid session");
         if(session.getSignature() == null) throw new AccessException("not valid session");
         if(session.getUserId() == null) throw new AccessException("not valid session");
@@ -74,7 +72,7 @@ public class SessionService implements ISessionService {
         if(!sourceSignature.equals(targetSignature)) throw new AccessException("not valid session");
         try {
             if (sessionRepository.findOne(session.getId()) == null) throw new AccessException("not valid session");
-        } catch (AccessException e) {
+        } catch (NoResultException e) {
             throw new AccessException("not valid session");
         }
     }
