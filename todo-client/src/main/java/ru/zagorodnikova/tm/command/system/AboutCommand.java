@@ -4,11 +4,9 @@ import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.util.VersionUtil;
 
+import javax.inject.Inject;
+
 public class AboutCommand extends AbstractCommand {
-
-
-    public AboutCommand() {
-    }
 
     @NotNull
     @Override

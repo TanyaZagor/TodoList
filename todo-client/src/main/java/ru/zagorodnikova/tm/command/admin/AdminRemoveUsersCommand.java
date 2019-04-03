@@ -1,11 +1,20 @@
 package ru.zagorodnikova.tm.command.admin;
 
 import org.jetbrains.annotations.NotNull;
+import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
+import ru.zagorodnikova.tm.endpoint.AdminEndpoint;
 import ru.zagorodnikova.tm.endpoint.Exception_Exception;
+
+import javax.inject.Inject;
 
 public class AdminRemoveUsersCommand extends AbstractCommand {
 
+    @Inject
+    private AdminEndpoint adminService;
+
+    @Inject
+    private ServiceLocator serviceLocator;
 
     @NotNull
     @Override
@@ -21,7 +30,7 @@ public class AdminRemoveUsersCommand extends AbstractCommand {
 
     @Override
     public void execute() throws Exception {
-        getServiceLocator().getAdminService().removeAllUsers(getServiceLocator().getSession());
+        adminService.removeAllUsers(serviceLocator.getSession());
     }
 
     @Override

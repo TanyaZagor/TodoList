@@ -29,21 +29,6 @@ public class Bootstrap implements ServiceLocator {
     @NotNull private final Map<String, AbstractCommand> commands = new HashMap<>();
 
     @Inject
-    private ProjectEndpoint projectService;
-
-    @Inject
-    private TaskEndpoint taskService;
-
-    @Inject
-    private UserEndpoint userService;
-
-    @Inject
-    private SessionEndpoint sessionService;
-
-    @Inject
-    private AdminEndpoint adminService;
-
-    @Inject
     private TerminalService terminalService;
 
     @Nullable private Session session;

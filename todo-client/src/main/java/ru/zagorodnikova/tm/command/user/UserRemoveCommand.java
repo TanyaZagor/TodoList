@@ -1,12 +1,20 @@
 package ru.zagorodnikova.tm.command.user;
 
 import org.jetbrains.annotations.NotNull;
+import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.endpoint.Exception_Exception;
+import ru.zagorodnikova.tm.endpoint.UserEndpoint;
+import ru.zagorodnikova.tm.service.TerminalService;
+
+import javax.inject.Inject;
 
 public class UserRemoveCommand extends AbstractCommand {
-    public UserRemoveCommand() {
-    }
+    @Inject
+    private UserEndpoint userService;
+
+    @Inject
+    private ServiceLocator serviceLocator;
 
     @NotNull
     @Override
@@ -22,8 +30,8 @@ public class UserRemoveCommand extends AbstractCommand {
 
     @Override
     public void execute() throws Exception {
-        getServiceLocator().getUserService().removeUser(getServiceLocator().getSession());
-        getServiceLocator().setSession(null);
+        userService.removeUser(serviceLocator.getSession());
+        serviceLocator.setSession(null);
     }
 
     @Override

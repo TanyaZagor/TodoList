@@ -1,13 +1,24 @@
 package ru.zagorodnikova.tm.command.task;
 
 import org.jetbrains.annotations.NotNull;
+import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.endpoint.Exception_Exception;
+import ru.zagorodnikova.tm.endpoint.TaskEndpoint;
+import ru.zagorodnikova.tm.service.TerminalService;
+
+import javax.inject.Inject;
 
 public class TaskRemoveCommand extends AbstractCommand {
 
-    public TaskRemoveCommand() {
-    }
+    @Inject
+    private TaskEndpoint taskService;
+
+    @Inject
+    private ServiceLocator serviceLocator;
+
+    @Inject
+    private TerminalService terminalService;
 
     @NotNull
     @Override
@@ -24,10 +35,10 @@ public class TaskRemoveCommand extends AbstractCommand {
     @Override
     public void execute() throws Exception {
         System.out.println("project name");
-        @NotNull final String projectName = getServiceLocator().getTerminalService().nextLine();
+        @NotNull final String projectName = terminalService.nextLine();
         System.out.println("task name");
-        @NotNull final String taskName = getServiceLocator().getTerminalService().nextLine();
-        getServiceLocator().getTaskService().removeTask(getServiceLocator().getSession(), projectName, taskName);
+        @NotNull final String taskName = terminalService.nextLine();
+        taskService.removeTask(serviceLocator.getSession(), projectName, taskName);
     }
 
     @Override
