@@ -4,21 +4,14 @@ import lombok.NoArgsConstructor;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.zagorodnikova.tm.api.ServiceLocator;
-import ru.zagorodnikova.tm.api.repository.IProjectRepository;
 import ru.zagorodnikova.tm.api.service.IProjectService;
 import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.entity.enumeration.Status;
 import ru.zagorodnikova.tm.repositoty.ProjectRepository;
-import ru.zagorodnikova.tm.repositoty.TaskRepository;
 import ru.zagorodnikova.tm.util.DateFormatterUtil;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Default;
 import javax.inject.Inject;
-import javax.inject.Singleton;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import java.util.Collections;
 import java.util.Date;
@@ -30,10 +23,10 @@ import java.util.Objects;
 public class ProjectService implements IProjectService {
 
     @Inject
-    private IProjectRepository projectRepository;
+    private ProjectRepository projectRepository;
 
-    @Transactional
     @Nullable
+    @Transactional
     public Project persistProject(@NotNull final String userId, @NotNull final String projectName,
                                   @NotNull final String description, @NotNull final String dateStart, @NotNull final String dateFinish) throws Exception {
         if (projectName.isEmpty()) return null;
@@ -44,14 +37,14 @@ public class ProjectService implements IProjectService {
         @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
         @NotNull final Date finish = DateFormatterUtil.dateFormatter(dateFinish);
         @NotNull final Project project = new Project(userId, projectName, description, start, finish);
-        projectRepository.merge(project);
+        projectRepository.persist(project);
         return project;
     }
 
     @Transactional
     public void removeProject(@NotNull final String userId, @NotNull final String projectName) {
         if (projectName.isEmpty()) return;
-        Project project = projectRepository.findOne(userId, projectName);
+        Project project = findOneProject(userId, projectName);
         if (project == null) return;
         projectRepository.remove(project);
     }
@@ -61,18 +54,18 @@ public class ProjectService implements IProjectService {
         projectRepository.removeAll(userId);
     }
 
-    @Transactional
     @Nullable
+    @Transactional
     public List<Project> findAllProjects(@NotNull final String userId) {
         try {
-            return projectRepository.findAll(userId);
+            return projectRepository.findAllByUserId(userId);
         } catch (NoResultException e) {
             return null;
         }
     }
 
-    @Transactional
     @Nullable
+    @Transactional
     public Project findOneProject(@NotNull final String userId, @NotNull final String projectName) {
         if (projectName.isEmpty()) return null;
         try {
@@ -95,7 +88,7 @@ public class ProjectService implements IProjectService {
         if (description.isEmpty()) return;
         if (dateStart.isEmpty()) return;
         if (dateFinish.isEmpty()) return;
-        Project project = projectRepository.findOne(userId, oldProjectName);
+        Project project = findOneProject(userId, oldProjectName);
         if (project == null) return;
         @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
         @NotNull final Date finish = DateFormatterUtil.dateFormatter(dateFinish);
@@ -144,11 +137,11 @@ public class ProjectService implements IProjectService {
         return list;
     }
 
-    @Transactional
     @Nullable
+    @Transactional
     public List<Project> getProjects() {
         try {
-            return projectRepository.getProjects();
+            return projectRepository.findAll();
         } catch (NoResultException e) {
             return null;
         }

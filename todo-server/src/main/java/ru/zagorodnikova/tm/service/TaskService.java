@@ -4,13 +4,14 @@ import lombok.NoArgsConstructor;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.zagorodnikova.tm.api.repository.IProjectRepository;
-import ru.zagorodnikova.tm.api.repository.ITaskRepository;
 import ru.zagorodnikova.tm.api.service.ITaskService;
 import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.entity.Task;
 import ru.zagorodnikova.tm.entity.enumeration.Status;
+import ru.zagorodnikova.tm.repositoty.ProjectRepository;
+import ru.zagorodnikova.tm.repositoty.TaskRepository;
 import ru.zagorodnikova.tm.util.DateFormatterUtil;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
@@ -25,10 +26,10 @@ import java.util.Objects;
 public class TaskService implements ITaskService {
 
     @Inject
-    private IProjectRepository projectRepository;
+    private ProjectRepository projectRepository;
 
     @Inject
-    private ITaskRepository taskRepository;
+    private TaskRepository taskRepository;
 
     @Nullable
     @Transactional
@@ -39,7 +40,12 @@ public class TaskService implements ITaskService {
         if (description.isEmpty()) return null;
         if (dateStart.isEmpty()) return null;
         if (dateFinish.isEmpty()) return null;
-        @Nullable final Project project = projectRepository.findOne(userId, projectName);
+        @Nullable final Project project;
+        try {
+            project = projectRepository.findOne(userId, projectName);
+        } catch (NoResultException e) {
+            return null;
+        }
         if (project == null) return null;
         @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
         @NotNull final Date finish = DateFormatterUtil.dateFormatter(dateFinish);
@@ -52,9 +58,7 @@ public class TaskService implements ITaskService {
     public void removeTask(@NotNull final String userId, @NotNull final String projectName, @NotNull final String taskName) {
         if (projectName.isEmpty()) return;
         if (taskName.isEmpty()) return;
-        Project project = projectRepository.findOne(userId, projectName);
-        if (project == null) return;
-        @Nullable final Task task = taskRepository.findOne(project.getId(), taskName);
+        @Nullable final Task task = findOneTask(userId, projectName, taskName);
         if (task == null) return;
         taskRepository.remove(task);
     }
@@ -67,7 +71,12 @@ public class TaskService implements ITaskService {
     @Transactional
     public void removeAllTasksInProject(@NotNull final String userId, @NotNull final String projectName) {
         if (projectName.isEmpty()) return;
-        Project project = projectRepository.findOne(userId, projectName);
+        Project project = null;
+        try {
+            project = projectRepository.findOne(userId, projectName);
+        } catch (NoResultException e) {
+            return;
+        }
         if (project == null) return;
         taskRepository.removeAllInProject(project.getId());
     }
@@ -81,9 +90,7 @@ public class TaskService implements ITaskService {
         if (description.isEmpty()) return;
         if (dateStart.isEmpty()) return;
         if (dateFinish.isEmpty()) return;
-        Project project = projectRepository.findOne(userId, projectName);
-        if (project == null) return;
-        Task task = taskRepository.findOne(project.getId(), oldTaskName);
+        Task task = findOneTask(userId, projectName, oldTaskName);
         if (task == null) return;
         @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
         @NotNull final Date finish = DateFormatterUtil.dateFormatter(dateFinish);
@@ -113,7 +120,7 @@ public class TaskService implements ITaskService {
     @Transactional
     public List<Task> findAllTasks(@NotNull final String userId) {
         try {
-            return taskRepository.findAllTasks(userId);
+            return taskRepository.findAllTasksByUserId(userId);
         } catch (NoResultException e) {
             return null;
         }
@@ -186,7 +193,7 @@ public class TaskService implements ITaskService {
     @Transactional
     public List<Task> getTasks() {
         try {
-            return taskRepository.getTasks();
+            return taskRepository.findAll();
         } catch (NoResultException e) {
             return null;
         }

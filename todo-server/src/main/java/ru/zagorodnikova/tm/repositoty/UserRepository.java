@@ -1,62 +1,33 @@
 package ru.zagorodnikova.tm.repositoty;
 
+import org.apache.deltaspike.data.api.*;
 import org.jetbrains.annotations.NotNull;
-import ru.zagorodnikova.tm.api.repository.IUserRepository;
+import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.entity.User;
 
-import javax.enterprise.inject.Default;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
 import java.util.List;
 
-public class UserRepository implements IUserRepository {
+@Repository(forEntity = User.class)
+public interface UserRepository extends FullEntityRepository<User, String> {
 
-    @Inject
-    private EntityManager entityManager;
+    void persist(@NotNull final User user);
 
-    @Override
-    public User findOne(@NotNull final String id) {
-        return entityManager.find(User.class, id);
-    }
+    @Nullable
+    @Query(value = "SELECT user FROM User user WHERE user.login = :login AND user.password = :password", max = 1)
+    User signIn(@NotNull @QueryParam("login") final String login,
+                @NotNull @QueryParam("password") final String password);
 
-    @Override
-    public void persist(@NotNull final User user) {
-        entityManager.persist(user);
-    }
+    void remove(@NotNull final User user);
 
-    @Override
-    public User signIn(@NotNull final String login,
-                @NotNull final String password) {
-        User user = entityManager.createQuery("SELECT user FROM User user WHERE user.login = :login AND user.password = :password", User.class)
-                .setParameter("login", login)
-                .setParameter("password", password)
-                .getSingleResult();
-        return user;
-    }
+    @Modifying
+    @Query(value = "DELETE FROM User user WHERE user.roleType = USER")
+    void removeAll();
 
-    @Override
-    public void remove(@NotNull final User user) {
-        entityManager.remove(user);
-    }
+    @Nullable
+    User findBy(@NotNull final String userId);
 
-    @Override
-    public void removeAll() {
-        entityManager.createQuery("DELETE FROM User user WHERE user.roleType = :USER").executeUpdate();
-    }
+    @Nullable
+    List<User> findAll();
 
-    @Override
-    public List<User> getUsers() {
-        List<User> list = entityManager.createQuery("SELECT user FROM User user", User.class)
-                .getResultList();
-        return list;
-    }
-
-    @Override
-    public void merge(@NotNull final User user) {
-        entityManager.merge(user);
-    }
-
-    public EntityManager getEntityManager() {
-        return entityManager;
-    }
+    User merge(@NotNull final User user);
 }

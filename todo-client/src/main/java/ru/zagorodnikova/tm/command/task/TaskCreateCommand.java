@@ -1,9 +1,10 @@
 package ru.zagorodnikova.tm.command.task;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
-import ru.zagorodnikova.tm.endpoint.Exception_Exception;
+import ru.zagorodnikova.tm.endpoint.TaskDto;
 import ru.zagorodnikova.tm.endpoint.TaskEndpoint;
 import ru.zagorodnikova.tm.service.TerminalService;
 
@@ -44,8 +45,10 @@ public class TaskCreateCommand extends AbstractCommand {
         @NotNull final String dateStart = terminalService.nextLine();
         System.out.println("task data finish");
         @NotNull final String dateFinish = terminalService.nextLine();
-        taskService.persistTask(serviceLocator.getSession(), projectName, taskName, description, dateStart, dateFinish);
-
+        @Nullable final TaskDto task = taskService.persistTask(serviceLocator.getSession(), projectName, taskName, description, dateStart, dateFinish);
+        if (task != null) {
+            System.out.println(task.getName());
+        }
     }
 
     @Override

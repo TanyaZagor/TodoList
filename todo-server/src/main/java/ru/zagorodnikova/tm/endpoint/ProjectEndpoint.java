@@ -2,15 +2,12 @@ package ru.zagorodnikova.tm.endpoint;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.api.endpoint.IProjectEndpoint;
-import ru.zagorodnikova.tm.api.repository.IProjectRepository;
 import ru.zagorodnikova.tm.api.service.IProjectService;
 import ru.zagorodnikova.tm.api.service.ISessionService;
 import ru.zagorodnikova.tm.dto.ProjectDto;
 import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.entity.Session;
-import ru.zagorodnikova.tm.entity.enumeration.Status;
 
 import javax.inject.Inject;
 import javax.jws.WebParam;

@@ -4,7 +4,6 @@ import lombok.NoArgsConstructor;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.zagorodnikova.tm.api.repository.IUserRepository;
 import ru.zagorodnikova.tm.api.service.IUserService;
 import ru.zagorodnikova.tm.entity.User;
 import ru.zagorodnikova.tm.repositoty.UserRepository;
@@ -12,7 +11,6 @@ import ru.zagorodnikova.tm.util.PasswordUtil;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.inject.Singleton;
 import javax.persistence.NoResultException;
 import java.util.List;
 
@@ -21,7 +19,7 @@ import java.util.List;
 public class UserService implements IUserService {
 
     @Inject
-    private IUserRepository userRepository;
+    private UserRepository userRepository;
 
 
     @Nullable
@@ -45,6 +43,7 @@ public class UserService implements IUserService {
         if (fistName.isEmpty()) return null;
         if (lastName.isEmpty()) return null;
         if (email.isEmpty()) return null;
+
         @NotNull final User user = new User(login, password, fistName, lastName, email);
         userRepository.persist(user);
         return user;
@@ -56,7 +55,7 @@ public class UserService implements IUserService {
         if (login.isEmpty()) return;
         if (oldPassword.isEmpty()) return;
         if (newPassword.isEmpty()) return;
-        User user = userRepository.findOne(userId);
+        User user = findOne(userId);
         if (user != null) {
             user.setPassword(newPassword);
         }
@@ -68,7 +67,7 @@ public class UserService implements IUserService {
         if (firstName.isEmpty()) return;
         if (lastName.isEmpty()) return;
         if (email.isEmpty()) return;
-        User user = userRepository.findOne(userId);
+        User user = findOne(userId);
         if (user != null) {
             user.setFirstName(firstName);
             user.setLastName(lastName);
@@ -79,7 +78,7 @@ public class UserService implements IUserService {
 
     @Transactional
     public void removeUser(@NotNull final String userId) {
-        User user = userRepository.findOne(userId);
+        User user = findOne(userId);
         if (user == null) return;
         userRepository.remove(user);
     }
@@ -89,7 +88,7 @@ public class UserService implements IUserService {
     @Transactional
     public User findOne(@NotNull final String userId) {
         try {
-            return userRepository.findOne(userId);
+            return userRepository.findBy(userId);
         } catch (NoResultException e) {
             return null;
         }
@@ -105,7 +104,7 @@ public class UserService implements IUserService {
     @Transactional
     public List<User> getUsers() {
         try {
-            return userRepository.getUsers();
+            return userRepository.findAll();
         } catch (NoResultException e) {
             return null;
         }

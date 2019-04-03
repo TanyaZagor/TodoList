@@ -1,17 +1,11 @@
-package ru.zagorodnikova.tm.util;
+package ru.zagorodnikova.tm.producer;
 
 import lombok.NoArgsConstructor;
-import org.apache.deltaspike.jpa.api.entitymanager.EntityManagerConfig;
-import org.apache.deltaspike.jpa.api.transaction.TransactionScoped;
-import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Environment;
-import org.jetbrains.annotations.NotNull;
 import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.entity.Session;
 import ru.zagorodnikova.tm.entity.Task;
@@ -19,23 +13,16 @@ import ru.zagorodnikova.tm.entity.User;
 import ru.zagorodnikova.tm.service.PropertyService;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Any;
-import javax.enterprise.inject.Default;
-import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
-import javax.inject.Singleton;
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 
 @NoArgsConstructor
 @ApplicationScoped
-public class DatabaseUtil {
-
+public class FactoryProducer {
     @Inject
     private PropertyService propertyService;
 

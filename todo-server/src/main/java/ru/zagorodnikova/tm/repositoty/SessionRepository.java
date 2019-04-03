@@ -1,34 +1,18 @@
 package ru.zagorodnikova.tm.repositoty;
 
+import org.apache.deltaspike.data.api.FullEntityRepository;
+import org.apache.deltaspike.data.api.Repository;
 import org.jetbrains.annotations.NotNull;
-import ru.zagorodnikova.tm.api.repository.ISessionRepository;
+import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.entity.Session;
 
-import javax.enterprise.inject.Default;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
+@Repository(forEntity = Session.class)
+public interface SessionRepository extends FullEntityRepository<Session, String> {
 
-public class SessionRepository implements ISessionRepository {
+    void persist(@NotNull final Session session);
 
-    @Inject
-    private EntityManager entityManager;
+    void remove(@NotNull final Session session);
 
-    @Override
-    public void persist(@NotNull Session session) {
-        entityManager.persist(session);
-    }
-
-    @Override
-    public void remove(@NotNull Session session) {
-        entityManager.remove(session);
-    }
-
-    @Override
-    public Session findOne(@NotNull String id) {
-        return entityManager.find(Session.class, id);
-    }
-
-    public EntityManager getEntityManager() {
-        return entityManager;
-    }
+    @Nullable
+    Session findBy(@NotNull final String id);
 }

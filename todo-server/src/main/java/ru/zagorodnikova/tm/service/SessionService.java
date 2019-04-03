@@ -2,11 +2,8 @@ package ru.zagorodnikova.tm.service;
 
 import lombok.NoArgsConstructor;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
-import org.apache.ibatis.session.SqlSession;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.zagorodnikova.tm.api.ServiceLocator;
-import ru.zagorodnikova.tm.api.repository.ISessionRepository;
 import ru.zagorodnikova.tm.api.service.ISessionService;
 import ru.zagorodnikova.tm.entity.Session;
 import ru.zagorodnikova.tm.entity.User;
@@ -14,11 +11,7 @@ import ru.zagorodnikova.tm.repositoty.SessionRepository;
 import ru.zagorodnikova.tm.util.PasswordUtil;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Default;
 import javax.inject.Inject;
-import javax.inject.Singleton;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import java.rmi.AccessException;
 import java.util.Properties;
@@ -28,7 +21,7 @@ import java.util.Properties;
 public class SessionService implements ISessionService {
 
     @Inject
-    private ISessionRepository sessionRepository;
+    private SessionRepository sessionRepository;
 
     @Nullable
     @Transactional
@@ -41,9 +34,13 @@ public class SessionService implements ISessionService {
 
     @Transactional
     public void remove(@NotNull final Session sessionIn) {
-        @Nullable final Session session = sessionRepository.findOne(sessionIn.getId());
-        if(session == null) return;
-        sessionRepository.remove(session);
+        try {
+            @Nullable final Session session = sessionRepository.findBy(sessionIn.getId());
+            if(session == null) return;
+            sessionRepository.remove(session);
+        } catch (NoResultException e) {
+            return;
+        }
     }
 
     @NotNull
@@ -71,7 +68,7 @@ public class SessionService implements ISessionService {
         @NotNull final String targetSignature = signSession(session);
         if(!sourceSignature.equals(targetSignature)) throw new AccessException("not valid session");
         try {
-            if (sessionRepository.findOne(session.getId()) == null) throw new AccessException("not valid session");
+            if (sessionRepository.findBy(session.getId()) == null) throw new AccessException("not valid session");
         } catch (NoResultException e) {
             throw new AccessException("not valid session");
         }
