@@ -29,21 +29,6 @@ public class Bootstrap implements ServiceLocator {
     @NotNull private final Map<String, AbstractCommand> commands = new HashMap<>();
 
     @Inject
-    private ProjectEndpoint projectService;
-
-    @Inject
-    private TaskEndpoint taskService;
-
-    @Inject
-    private UserEndpoint userService;
-
-    @Inject
-    private SessionEndpoint sessionService;
-
-    @Inject
-    private AdminEndpoint adminService;
-
-    @Inject
     private TerminalService terminalService;
 
     @Nullable private Session session;
@@ -92,10 +77,9 @@ public class Bootstrap implements ServiceLocator {
     private void addCommand(@NotNull Class[] commandClasses, @NotNull ServiceLocator bootstrap){
         for (Class commandClass : commandClasses) {
             if (commandClass.getSuperclass().equals(AbstractCommand.class)) {
-                AbstractCommand abstractCommand = (AbstractCommand) CDI.current().select(commandClass).get();
-                if (abstractCommand != null) {
-                    commands.put(abstractCommand.command(), abstractCommand);
-                }
+                Object object = CDI.current().select(commandClass).get();
+                @NotNull final AbstractCommand abstractCommand = (AbstractCommand) object;
+                commands.put(abstractCommand.command(), abstractCommand);
             }
         }
     }

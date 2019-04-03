@@ -1,12 +1,21 @@
 package ru.zagorodnikova.tm.command.user;
 
 import org.jetbrains.annotations.NotNull;
+import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.endpoint.Exception_Exception;
+import ru.zagorodnikova.tm.endpoint.SessionEndpoint;
+import ru.zagorodnikova.tm.endpoint.UserEndpoint;
+import ru.zagorodnikova.tm.service.TerminalService;
+
+import javax.inject.Inject;
 
 public class UserSignOutCommand extends AbstractCommand {
-    public UserSignOutCommand() {
-    }
+    @Inject
+    private SessionEndpoint sessionService;
+
+    @Inject
+    private ServiceLocator serviceLocator;
 
     @NotNull
     @Override
@@ -22,8 +31,8 @@ public class UserSignOutCommand extends AbstractCommand {
 
     @Override
     public void execute() throws Exception {
-        getServiceLocator().getSessionService().remove(getServiceLocator().getSession());
-        getServiceLocator().setSession(null);
+        sessionService.remove(serviceLocator.getSession());
+        serviceLocator.setSession(null);
     }
 
     @Override

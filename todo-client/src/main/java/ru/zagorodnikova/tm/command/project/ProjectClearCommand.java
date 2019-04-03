@@ -1,11 +1,21 @@
 package ru.zagorodnikova.tm.command.project;
 
 import org.jetbrains.annotations.NotNull;
+import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
+import ru.zagorodnikova.tm.endpoint.AdminEndpoint;
 import ru.zagorodnikova.tm.endpoint.Exception_Exception;
+import ru.zagorodnikova.tm.endpoint.ProjectEndpoint;
+
+import javax.inject.Inject;
 
 
 public class ProjectClearCommand extends AbstractCommand {
+    @Inject
+    private ProjectEndpoint projectService;
+
+    @Inject
+    private ServiceLocator serviceLocator;
 
     public ProjectClearCommand() {
     }
@@ -24,7 +34,7 @@ public class ProjectClearCommand extends AbstractCommand {
 
     @Override
     public void execute() throws Exception {
-        getServiceLocator().getProjectService().removeAllProjects(getServiceLocator().getSession());
+        projectService.removeAllProjects(serviceLocator.getSession());
     }
 
     @Override

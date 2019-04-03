@@ -3,14 +3,25 @@ package ru.zagorodnikova.tm.command.project;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.endpoint.Exception_Exception;
 import ru.zagorodnikova.tm.endpoint.ProjectDto;
+import ru.zagorodnikova.tm.endpoint.ProjectEndpoint;
+import ru.zagorodnikova.tm.service.TerminalService;
+
+import javax.inject.Inject;
 
 public class ProjectCreateCommand extends AbstractCommand {
 
-    public ProjectCreateCommand() {
-    }
+    @Inject
+    private ProjectEndpoint projectService;
+
+    @Inject
+    private ServiceLocator serviceLocator;
+
+    @Inject
+    private TerminalService terminalService;
 
     @NotNull
     @Override
@@ -27,14 +38,14 @@ public class ProjectCreateCommand extends AbstractCommand {
     @Override
     public void execute() throws Exception {
         System.out.println("project name");
-        @NotNull final String projectName = getServiceLocator().getTerminalService().nextLine();
+        @NotNull final String projectName = terminalService.nextLine();
         System.out.println("project description");
-        @NotNull final String description = getServiceLocator().getTerminalService().nextLine();
+        @NotNull final String description = terminalService.nextLine();
         System.out.println("project date start");
-        @NotNull final String dateStart = getServiceLocator().getTerminalService().nextLine();
+        @NotNull final String dateStart = terminalService.nextLine();
         System.out.println("project date finish");
-        @NotNull final String dateFinish = getServiceLocator().getTerminalService().nextLine();
-        @Nullable final ProjectDto project = getServiceLocator().getProjectService().persistProject(getServiceLocator().getSession(), projectName, description, dateStart, dateFinish);
+        @NotNull final String dateFinish = terminalService.nextLine();
+        @Nullable final ProjectDto project = projectService.persistProject(serviceLocator.getSession(), projectName, description, dateStart, dateFinish);
         if (project != null) {
             System.out.println(project.getName());
         }

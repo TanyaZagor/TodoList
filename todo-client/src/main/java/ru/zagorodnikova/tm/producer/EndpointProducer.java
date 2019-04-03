@@ -1,11 +1,11 @@
-package ru.zagorodnikova.tm.util;
+package ru.zagorodnikova.tm.producer;
 
 import ru.zagorodnikova.tm.endpoint.*;
 
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
-public class EndpointUtil {
+public class EndpointProducer {
 
     @Inject
     private ProjectEndpointService  projectEndpointService;

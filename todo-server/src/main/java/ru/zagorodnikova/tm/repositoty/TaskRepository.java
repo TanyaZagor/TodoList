@@ -32,14 +32,14 @@ public class TaskRepository implements ITaskRepository {
 
     @Override
     public void removeAll(@NotNull String userId) {
-        entityManager.createQuery("DELETE FROM Task task WHERE task.userId =: userId")
+        entityManager.createQuery("DELETE FROM Task task WHERE task.userId = :userId")
                 .setParameter("userId", userId)
                 .executeUpdate();
     }
 
     @Override
     public void removeAllInProject(@NotNull String projectId) {
-        entityManager.createQuery("DELETE FROM Task task WHERE task.projectId =: projectId")
+        entityManager.createQuery("DELETE FROM Task task WHERE task.projectId = :projectId")
                 .setParameter("projectId", projectId)
                 .executeUpdate();
     }
@@ -47,7 +47,7 @@ public class TaskRepository implements ITaskRepository {
     @Nullable
     @Override
     public Task findOne(@NotNull String projectId, @NotNull String name) {
-        Task task = entityManager.createQuery("SELECT task FROM Task task WHERE task.projectId =: projectId AND task.name =: name", Task.class)
+        Task task = entityManager.createQuery("SELECT task FROM Task task WHERE task.projectId = :projectId AND task.name = :name", Task.class)
                 .setParameter("projectId", projectId)
                 .setParameter("name",name)
                 .getSingleResult();
@@ -57,7 +57,7 @@ public class TaskRepository implements ITaskRepository {
     @Nullable
     @Override
     public List<Task> findAllTasksInProject(@NotNull String projectId) {
-        List<Task> list = entityManager.createQuery("SELECT task FROM Task task WHERE task.projectId =: projectId", Task.class)
+        List<Task> list = entityManager.createQuery("SELECT task FROM Task task WHERE task.projectId = :projectId", Task.class)
                 .setParameter("projectId", projectId)
                 .getResultList();
         return list;
@@ -66,7 +66,7 @@ public class TaskRepository implements ITaskRepository {
     @Nullable
     @Override
     public List<Task> findAllTasks(@NotNull String userId) {
-        List<Task> list = entityManager.createQuery("SELECT task FROM Task task WHERE task.userId =: userId", Task.class)
+        List<Task> list = entityManager.createQuery("SELECT task FROM Task task WHERE task.userId = :userId", Task.class)
                 .setParameter("userId", userId)
                 .getResultList();
         return list;

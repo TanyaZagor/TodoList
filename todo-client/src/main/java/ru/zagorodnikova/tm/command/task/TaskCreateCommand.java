@@ -1,13 +1,24 @@
 package ru.zagorodnikova.tm.command.task;
 
 import org.jetbrains.annotations.NotNull;
+import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.endpoint.Exception_Exception;
+import ru.zagorodnikova.tm.endpoint.TaskEndpoint;
+import ru.zagorodnikova.tm.service.TerminalService;
+
+import javax.inject.Inject;
 
 public class TaskCreateCommand extends AbstractCommand {
 
-    public TaskCreateCommand() {
-    }
+    @Inject
+    private TaskEndpoint taskService;
+
+    @Inject
+    private ServiceLocator serviceLocator;
+
+    @Inject
+    private TerminalService terminalService;
 
     @NotNull
     @Override
@@ -24,16 +35,16 @@ public class TaskCreateCommand extends AbstractCommand {
     @Override
     public void execute() throws Exception {
         System.out.println("project name");
-        @NotNull final String projectName = getServiceLocator().getTerminalService().nextLine();
+        @NotNull final String projectName = terminalService.nextLine();
         System.out.println("task name");
-        @NotNull final String taskName = getServiceLocator().getTerminalService().nextLine();
+        @NotNull final String taskName = terminalService.nextLine();
         System.out.println("task description");
-        @NotNull final String description = getServiceLocator().getTerminalService().nextLine();
+        @NotNull final String description = terminalService.nextLine();
         System.out.println("task data start");
-        @NotNull final String dateStart = getServiceLocator().getTerminalService().nextLine();
+        @NotNull final String dateStart = terminalService.nextLine();
         System.out.println("task data finish");
-        @NotNull final String dateFinish = getServiceLocator().getTerminalService().nextLine();
-        getServiceLocator().getTaskService().persistTask(getServiceLocator().getSession(), projectName, taskName, description, dateStart, dateFinish);
+        @NotNull final String dateFinish = terminalService.nextLine();
+        taskService.persistTask(serviceLocator.getSession(), projectName, taskName, description, dateStart, dateFinish);
 
     }
 

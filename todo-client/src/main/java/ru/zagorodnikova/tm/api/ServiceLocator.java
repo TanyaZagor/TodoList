@@ -14,21 +14,6 @@ public interface ServiceLocator{
     void init(@NotNull Class[] commandClasses);
 
     @NotNull
-    UserEndpoint getUserService();
-
-    @NotNull
-    ProjectEndpoint getProjectService();
-
-    @NotNull
-    TaskEndpoint getTaskService();
-
-    @NotNull
-    SessionEndpoint getSessionService();
-
-    @NotNull
-    AdminEndpoint getAdminService();
-
-    @NotNull
     TerminalService getTerminalService();
 
     @Nullable

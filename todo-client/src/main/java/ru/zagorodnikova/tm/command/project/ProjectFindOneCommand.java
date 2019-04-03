@@ -2,14 +2,26 @@ package ru.zagorodnikova.tm.command.project;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.endpoint.Exception_Exception;
 import ru.zagorodnikova.tm.endpoint.ProjectDto;
+import ru.zagorodnikova.tm.endpoint.ProjectEndpoint;
+import ru.zagorodnikova.tm.service.TerminalService;
+
+import javax.inject.Inject;
 
 public class ProjectFindOneCommand extends AbstractCommand {
 
-    public ProjectFindOneCommand() {
-    }
+
+    @Inject
+    private ProjectEndpoint projectService;
+
+    @Inject
+    private ServiceLocator serviceLocator;
+
+    @Inject
+    private TerminalService terminalService;
 
     @NotNull
     @Override
@@ -26,8 +38,8 @@ public class ProjectFindOneCommand extends AbstractCommand {
     @Override
     public void execute() throws Exception {
         System.out.println("project name");
-        @NotNull final String projectName = getServiceLocator().getTerminalService().nextLine();
-        @Nullable final ProjectDto project = getServiceLocator().getProjectService().findOneProject(getServiceLocator().getSession(), projectName);
+        @NotNull final String projectName = terminalService.nextLine();
+        @Nullable final ProjectDto project = projectService.findOneProject(serviceLocator.getSession(), projectName);
         if (project != null) {
             System.out.println("Name: " + project.getName() + ", Description: " + project.getDescription()+
                     ", Date start: " + project.getDateStart() + ", Date finish: " + project.getDateFinish() +

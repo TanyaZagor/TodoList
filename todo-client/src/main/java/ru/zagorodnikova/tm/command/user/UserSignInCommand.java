@@ -7,14 +7,22 @@ import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.endpoint.Exception_Exception;
 import ru.zagorodnikova.tm.endpoint.Session;
+import ru.zagorodnikova.tm.endpoint.SessionEndpoint;
+import ru.zagorodnikova.tm.endpoint.UserEndpoint;
+import ru.zagorodnikova.tm.service.TerminalService;
 
 import javax.inject.Inject;
 
 
 public class UserSignInCommand extends AbstractCommand {
-//
-//    @Inject
-//    private ServiceLocator serviceLocator;
+    @Inject
+    private SessionEndpoint sessionService;
+
+    @Inject
+    private ServiceLocator serviceLocator;
+
+    @Inject
+    private TerminalService terminalService;
 
     @NotNull
     @Override
@@ -31,12 +39,12 @@ public class UserSignInCommand extends AbstractCommand {
     @Override
     public void execute() throws Exception {
         System.out.println("Login");
-        @NotNull final String login = getServiceLocator().getTerminalService().nextLine();
+        @NotNull final String login = terminalService.nextLine();
         System.out.println("Password");
-        @NotNull final String password = getServiceLocator().getTerminalService().nextLine();
-        @Nullable final Session session = getServiceLocator().getSessionService().signIn(login, password);
+        @NotNull final String password = terminalService.nextLine();
+        @Nullable final Session session = sessionService.signIn(login, password);
         if (session != null) {
-            getServiceLocator().setSession(session);
+            serviceLocator.setSession(session);
             System.out.println("ok");
         }
     }

@@ -1,13 +1,24 @@
 package ru.zagorodnikova.tm.command.user;
 
 import org.jetbrains.annotations.NotNull;
+import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.endpoint.Exception_Exception;
+import ru.zagorodnikova.tm.endpoint.UserEndpoint;
+import ru.zagorodnikova.tm.service.TerminalService;
+
+import javax.inject.Inject;
 
 public class UserChangePasswordCommand extends AbstractCommand {
 
-    public UserChangePasswordCommand() {
-    }
+    @Inject
+    private UserEndpoint userService;
+
+    @Inject
+    private ServiceLocator serviceLocator;
+
+    @Inject
+    private TerminalService terminalService;
 
     @NotNull
     @Override
@@ -24,12 +35,12 @@ public class UserChangePasswordCommand extends AbstractCommand {
     @Override
     public void execute() throws Exception {
         System.out.println("Login");
-        @NotNull final String login = getServiceLocator().getTerminalService().nextLine();
+        @NotNull final String login = terminalService.nextLine();
         System.out.println("Password");
-        @NotNull final String password = getServiceLocator().getTerminalService().nextLine();
+        @NotNull final String password = terminalService.nextLine();
         System.out.println("New password");
-        @NotNull final String newPassword = getServiceLocator().getTerminalService().nextLine();
-        getServiceLocator().getUserService().changePassword(getServiceLocator().getSession(), login, password, newPassword);
+        @NotNull final String newPassword = terminalService.nextLine();
+        userService.changePassword(serviceLocator.getSession(), login, password, newPassword);
     }
 
     @Override

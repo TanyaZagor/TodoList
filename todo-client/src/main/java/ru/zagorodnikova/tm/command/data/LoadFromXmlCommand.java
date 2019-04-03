@@ -1,10 +1,20 @@
 package ru.zagorodnikova.tm.command.data;
 
 import org.jetbrains.annotations.NotNull;
+import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
+import ru.zagorodnikova.tm.endpoint.AdminEndpoint;
 import ru.zagorodnikova.tm.endpoint.Exception_Exception;
 
+import javax.inject.Inject;
+
 public class LoadFromXmlCommand extends AbstractCommand {
+    @Inject
+    private AdminEndpoint adminService;
+
+    @Inject
+    private ServiceLocator serviceLocator;
+
     @NotNull
     @Override
     public String command() {
@@ -19,7 +29,7 @@ public class LoadFromXmlCommand extends AbstractCommand {
 
     @Override
     public void execute() throws Exception {
-        getServiceLocator().getAdminService().loadFromXml(getServiceLocator().getSession());
+        adminService.loadFromXml(serviceLocator.getSession());
     }
 
     @Override

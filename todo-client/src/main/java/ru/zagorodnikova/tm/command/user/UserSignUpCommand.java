@@ -2,14 +2,26 @@ package ru.zagorodnikova.tm.command.user;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.endpoint.Exception_Exception;
 import ru.zagorodnikova.tm.endpoint.Session;
+import ru.zagorodnikova.tm.endpoint.SessionEndpoint;
+import ru.zagorodnikova.tm.endpoint.UserEndpoint;
+import ru.zagorodnikova.tm.service.TerminalService;
+
+import javax.inject.Inject;
 
 public class UserSignUpCommand extends AbstractCommand {
 
-    public UserSignUpCommand() {
-    }
+    @Inject
+    private SessionEndpoint sessionService;
+
+    @Inject
+    private ServiceLocator serviceLocator;
+
+    @Inject
+    private TerminalService terminalService;
 
     @NotNull
     @Override
@@ -26,18 +38,18 @@ public class UserSignUpCommand extends AbstractCommand {
     @Override
     public void execute() throws Exception {
         System.out.println("Login");
-        @NotNull final String login = getServiceLocator().getTerminalService().nextLine();
+        @NotNull final String login = terminalService.nextLine();
         System.out.println("Password");
-        @NotNull final String password = getServiceLocator().getTerminalService().nextLine();
+        @NotNull final String password = terminalService.nextLine();
         System.out.println("New first name");
-        @NotNull final String firstName = getServiceLocator().getTerminalService().nextLine();
+        @NotNull final String firstName = terminalService.nextLine();
         System.out.println("New last name");
-        @NotNull final String lastName = getServiceLocator().getTerminalService().nextLine();
+        @NotNull final String lastName = terminalService.nextLine();
         System.out.println("New email");
-        @NotNull final String email = getServiceLocator().getTerminalService().nextLine();
-        @Nullable final Session session = getServiceLocator().getSessionService().signUp(login, password, firstName, lastName, email);
+        @NotNull final String email = terminalService.nextLine();
+        @Nullable final Session session = sessionService.signUp(login, password, firstName, lastName, email);
         if (session != null) {
-            getServiceLocator().setSession(session);
+            serviceLocator.setSession(session);
             System.out.println("ok");
         }
     }
