@@ -2,9 +2,11 @@ package ru.zagorodnikova.tm.producer;
 
 import ru.zagorodnikova.tm.endpoint.*;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
+@ApplicationScoped
 public class EndpointProducer {
 
     @Inject

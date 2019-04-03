@@ -16,12 +16,14 @@ import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.entity.Session;
 import ru.zagorodnikova.tm.entity.Task;
 import ru.zagorodnikova.tm.entity.User;
+import ru.zagorodnikova.tm.service.PropertyService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Default;
 import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -34,20 +36,16 @@ import java.util.Properties;
 @ApplicationScoped
 public class DatabaseUtil {
 
-    private Properties getProperties() throws Exception {
-        @NotNull final Properties property = new Properties();
-        property.load(this.getClass().getClassLoader().getResourceAsStream("app.properties"));
-        return property;
-    }
+    @Inject
+    private PropertyService propertyService;
 
-
-    private EntityManagerFactory factory() throws Exception {
+    @Produces
+    public EntityManagerFactory factory() throws Exception {
         final Map<String, String> settings = new HashMap<>();
-        @NotNull final Properties property = getProperties();
-        settings.put(Environment.DRIVER, property.getProperty("driverDB"));
-        settings.put(Environment.URL, property.getProperty("urlDB"));
-        settings.put(Environment.USER, property.getProperty("userDB"));
-        settings.put(Environment.PASS, property.getProperty("passwordDB"));
+        settings.put(Environment.DRIVER, propertyService.getJdbcDriver());
+        settings.put(Environment.URL, propertyService.getJdbcUrl());
+        settings.put(Environment.USER, propertyService.getJdbcUsername());
+        settings.put(Environment.PASS, propertyService.getJdbcPassword());
         settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL5InnoDBDialect");
         settings.put(Environment.HBM2DDL_AUTO, "update"); settings.put(Environment.SHOW_SQL, "true");
         final StandardServiceRegistryBuilder registryBuilder = new StandardServiceRegistryBuilder();
