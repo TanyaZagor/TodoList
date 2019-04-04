@@ -4,12 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.entity.enumeration.Status;
-import ru.zagorodnikova.tm.util.DateFormatterUtil;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -51,7 +48,7 @@ public class Project extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private Status status = Status.SCHEDULED;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "projectId", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, mappedBy = "projectId", orphanRemoval = true)
     private List<Task> tasks;
 
     public Project(@NotNull String userId, @NotNull String name, @NotNull String description,

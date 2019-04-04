@@ -43,7 +43,7 @@ public class UserService implements IUserService {
         if (fistName.isEmpty()) return null;
         if (lastName.isEmpty()) return null;
         if (email.isEmpty()) return null;
-
+        if (signIn(login, password) != null) return null;
         @NotNull final User user = new User(login, password, fistName, lastName, email);
         userRepository.persist(user);
         return user;

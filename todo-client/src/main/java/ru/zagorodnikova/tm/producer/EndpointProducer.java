@@ -25,22 +25,22 @@ public class EndpointProducer {
     private AdminEndpointService adminEndpointService;
 
     @Produces
-    private TaskEndpoint getTaskEndpoint() {
+    public TaskEndpoint getTaskEndpoint() {
         return taskEndpointService.getTaskEndpointPort();
     }
 
     @Produces
-    private ProjectEndpoint getProjectEndpoint() {
+    public ProjectEndpoint getProjectEndpoint() {
         return projectEndpointService.getProjectEndpointPort();
     }
 
     @Produces
-    private UserEndpoint getUserEndpoint() {
+    public UserEndpoint getUserEndpoint() {
         return userEndpointService.getUserEndpointPort();
     }
 
     @Produces
-    private SessionEndpoint getSessionEndpoint() {
+    public SessionEndpoint getSessionEndpoint() {
         return sessionEndpointService.getSessionEndpointPort();
     }
 

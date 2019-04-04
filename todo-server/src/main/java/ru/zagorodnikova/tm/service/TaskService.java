@@ -47,6 +47,7 @@ public class TaskService implements ITaskService {
             return null;
         }
         if (project == null) return null;
+        if (findOneTask(userId, projectName, taskName) != null) return null;
         @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
         @NotNull final Date finish = DateFormatterUtil.dateFormatter(dateFinish);
         @Nullable final Task task = new Task(userId, project.getId(), taskName, description, start, finish);
