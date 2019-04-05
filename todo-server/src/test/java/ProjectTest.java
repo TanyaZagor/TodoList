@@ -2,7 +2,9 @@ import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import ru.zagorodnikova.tm.api.service.IProjectService;
+import ru.zagorodnikova.tm.api.service.IUserService;
 import ru.zagorodnikova.tm.entity.Project;
+import ru.zagorodnikova.tm.entity.User;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -13,46 +15,54 @@ public class ProjectTest {
     @Inject
     private IProjectService projectService;
 
-    private String userId = "e7e8f51a-5ea8-464b-a0cb-2f903e120b10";
+    @Inject
+    private IUserService userService;
+
+    private String userId = null;
+
+    public void signIn() throws Exception {
+        if (userId == null) {
+            User user = userService.signIn("test", "test");
+            userId = user.getId();
+        }
+
+    }
 
     @Test
     public void persist() throws Exception {
+        signIn();
         Project project = projectService.persistProject(userId,
                 "test", "des", "20.02.2020", "20.02.2020");
-        if (project != null) {
-            System.out.println(project.getName());
-        }
     }
 
     @Test
     public void merge() throws Exception {
+        signIn();
         projectService.mergeProject(userId, "test",
                 "TTT", "des", "20.02.2020", "20.02.2020", "done");
     }
 
     @Test
-    public void findOne() {
+    public void findOne() throws Exception {
+        signIn();
         Project project = projectService.findOneProject(userId, "test");
-        if (project != null) {
-            System.out.println(project.getName());
-        }
     }
 
     @Test
     public void findAll() throws Exception {
+        signIn();
         List<Project> list = projectService.findAllProjects(userId);
-        if (list != null) {
-            list.forEach(v -> System.out.println(v.getName()));
-        }
     }
 
     @Test
     public void remove() throws Exception {
+        signIn();
         projectService.removeProject(userId, "test");
     }
 
     @Test
     public void removeAll() throws Exception {
+        signIn();
         projectService.removeAllProjects(userId);
     }
 

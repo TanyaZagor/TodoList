@@ -51,7 +51,7 @@ public class SessionService implements ISessionService {
         @NotNull final String salt = property.getProperty("salt");
         String signature = "";
         for (int i = 0; i < cycle; i++) {
-            signature = PasswordUtil.hashPassword(salt + session.getUserId() + salt);
+            signature = PasswordUtil.hashPassword(salt + session.getId() + salt);
         }
         return signature;
     }

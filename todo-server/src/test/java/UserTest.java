@@ -1,4 +1,5 @@
 import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import ru.zagorodnikova.tm.api.service.IUserService;
@@ -12,44 +13,45 @@ public class UserTest {
     @Inject
     private IUserService userService;
 
-    private String userId = "e7e8f51a-5ea8-464b-a0cb-2f903e120b10";
+    private String userId = null;
 
     @Test
     public void signUp() throws Exception {
         User user = userService.signUp("test", "test", "fn", "ln", "email");
-        if (user != null) {
-            System.out.println(user.getLogin());
-        }
     }
 
     @Test
     public void signIn() throws Exception {
-        User user = userService.signIn("test", "test");
-        if (user != null) {
-            System.out.println(user.getLogin());
+        if (userId == null) {
+            User user = userService.signIn("test", "test");
+            userId = user.getId();
         }
+
     }
 
+    @Ignore
     @Test
     public void changePassword() throws Exception {
+        signIn();
         userService.changePassword(userId, "test", "test", "admin");
     }
 
     @Test
     public void updateUser() throws Exception {
+        signIn();
         userService.updateUser(userId, "FN", "LN", "EMAIL");
     }
 
     @Test
-    public void findOne() {
+    public void findOne() throws Exception {
+        signIn();
         User user = userService.findOne(userId);
-        if (user != null) {
-            System.out.println(user.getLogin());
-        }
     }
 
+    @Ignore
     @Test
     public void remove() throws Exception {
+        signIn();
         userService.removeUser(userId);
     }
 

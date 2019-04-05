@@ -2,7 +2,9 @@ import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import ru.zagorodnikova.tm.api.service.ITaskService;
+import ru.zagorodnikova.tm.api.service.IUserService;
 import ru.zagorodnikova.tm.entity.Task;
+import ru.zagorodnikova.tm.entity.User;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -13,29 +15,28 @@ public class TaskTest {
     @Inject
     private ITaskService taskService;
 
-    private String userId = "e7e8f51a-5ea8-464b-a0cb-2f903e120b10";
+    @Inject
+    private IUserService userService;
 
-    @Test
-    public void persist() throws Exception {
-        taskService.persistTask(userId, "project", "test",
-                "des", "20.02.2020", "20.02.2020");
+    private String userId = null;
+
+    public void signIn() throws Exception {
+        if (userId == null) {
+            User user = userService.signIn("test", "test");
+            userId = user.getId();
+        }
+
     }
 
     @Test
     public void findOne() {
         Task task = taskService.findOneTask(userId, "test",
                 "test");
-        if (task != null) {
-            System.out.println(task.getName());
-        }
     }
 
     @Test
     public void findAll() {
         List<Task> list = taskService.findAllTasks(userId);
-        if (list != null) {
-            list.forEach(v -> System.out.println(v.getName()));
-        }
     }
 
     @Test

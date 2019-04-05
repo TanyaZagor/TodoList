@@ -1,51 +1,57 @@
 import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.junit.runner.RunWith;
+import ru.zagorodnikova.tm.endpoint.Session;
+import ru.zagorodnikova.tm.endpoint.SessionEndpoint;
+import ru.zagorodnikova.tm.endpoint.UserDto;
+import ru.zagorodnikova.tm.endpoint.UserEndpoint;
+
+import javax.inject.Inject;
 
 @RunWith(CdiTestRunner.class)
 public class UserTest {
 
-//    @Inject
-//    private UserEndpoint userService;
-//
-//    private String userId = "e7e8f51a-5ea8-464b-a0cb-2f903e120b10";
-//
-//    @Test
-//    public void signUp() throws Exception {
-//        UserDto user = userService.signUp("test", "test", "fn", "ln", "email");
-//        if (user != null) {
-//            System.out.println(user.getLogin());
-//        }
-//    }
-//
-//    @Test
-//    public void signIn() throws Exception {
-//        UserDto user = userService.signIn("test", "test");
-//        if (user != null) {
-//            System.out.println(user.getLogin());
-//        }
-//    }
-//
-//    @Test
-//    public void changePassword() throws Exception {
-//        userService.changePassword(userId, "test", "test", "admin");
-//    }
-//
-//    @Test
-//    public void updateUser() throws Exception {
-//        userService.updateUser(userId, "FN", "LN", "EMAIL");
-//    }
-//
-//    @Test
-//    public void findOne() {
-//        UserDto user = userService.findUser(userId);
-//        if (user != null) {
-//            System.out.println(user.getLogin());
-//        }
-//    }
-//
-//    @Test
-//    public void remove() throws Exception {
-//        userService.removeUser(userId);
-//    }
+    @Inject
+    private UserEndpoint userService;
+
+    @Inject
+    private SessionEndpoint sessionService;
+
+    private Session session;
+
+    public void signIn() throws Exception {
+        if (session == null) {
+            Session session = sessionService.signIn("test", "test");
+            if (session != null) {
+                this.session = session;
+            }
+        }
+    }
+
+    @Ignore
+    @Test
+    public void changePassword() throws Exception {
+        signIn();
+        userService.changePassword(session, "test", "test", "admin");
+    }
+
+    @Test
+    public void updateUser() throws Exception {
+        signIn();
+        userService.updateUser(session, "FN", "LN", "EMAIL");
+    }
+
+    @Test
+    public void findOne() throws Exception {
+        signIn();
+        UserDto user = userService.findUser(session);
+    }
+
+    @Test
+    public void remove() throws Exception {
+        signIn();
+        userService.removeUser(session);
+    }
 
 }

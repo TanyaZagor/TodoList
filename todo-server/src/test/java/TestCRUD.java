@@ -1,6 +1,10 @@
 import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
+import org.junit.Assert;
+import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import ru.zagorodnikova.tm.api.service.IProjectService;
 import ru.zagorodnikova.tm.api.service.ITaskService;
 import ru.zagorodnikova.tm.api.service.IUserService;
@@ -12,7 +16,8 @@ import javax.inject.Inject;
 import java.util.List;
 
 @RunWith(CdiTestRunner.class)
-public class TestServices {
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+public class TestCRUD {
     @Inject
     private IProjectService projectService;
 
@@ -22,121 +27,124 @@ public class TestServices {
     @Inject
     private ITaskService taskService;
 
-    private String userId = "e7e8f51a-5ea8-464b-a0cb-2f903e120b10";
+    private String userId = null;
 
     @Test
     public void signUp() throws Exception {
         User user = userService.signUp("test", "test", "fn", "ln", "email");
-        if (user != null) {
-            System.out.println(user.getLogin());
-        }
     }
 
     @Test
     public void signIn() throws Exception {
-        User user = userService.signIn("test", "test");
-        if (user != null) {
-            System.out.println(user.getLogin());
+        if (userId == null) {
+            User user = userService.signIn("test", "test");
+            userId = user.getId();
         }
     }
 
+    @Ignore
     @Test
     public void changePassword() throws Exception {
-        userService.changePassword(userId, "test", "test", "test");
+        signIn();
+        userService.changePassword(userId, "test", "test", "TEST");
     }
 
     @Test
-    public void updateUser() throws Exception {
+    public void test01updateUser() throws Exception {
+        signIn();
         userService.updateUser(userId, "FN", "LN", "EMAIL");
     }
 
     @Test
-    public void persistProject() throws Exception {
+    public void test02persistProject() throws Exception {
+        signIn();
         Project project = projectService.persistProject(userId,
                 "TTT", "des", "20.02.2020", "20.02.2020");
-        if (project != null) {
-            System.out.println(project.getName());
-        }
+        Assert.assertEquals("TTT", project.getName());
     }
 
     @Test
-    public void mergeProject() throws Exception {
-        projectService.mergeProject(userId, "test",
+    public void test03mergeProject() throws Exception {
+        signIn();
+        projectService.mergeProject(userId, "TTT",
                 "test", "des", "20.02.2020", "20.02.2020", "done");
     }
 
     @Test
-    public void findOneProject() {
+    public void test04findOneProject() throws Exception {
+        signIn();
         Project project = projectService.findOneProject(userId, "test");
-        if (project != null) {
-            System.out.println(project.getName());
-        }
+        Assert.assertEquals("test", project.getName());
     }
 
     @Test
-    public void findAllProjects() throws Exception {
+    public void test05findAllProjects() throws Exception {
+        signIn();
         List<Project> list = projectService.findAllProjects(userId);
-        if (list != null) {
-            list.forEach(v -> System.out.println(v.getName()));
-        }
     }
 
     @Test
-    public void persistTask() throws Exception {
-        taskService.persistTask(userId, "test", "test",
+    public void test06persistTask() throws Exception {
+        signIn();
+        Task task = taskService.persistTask(userId, "test", "test",
                 "des", "20.02.2020", "20.02.2020");
+        Assert.assertEquals("test", task.getName());
     }
 
     @Test
-    public void findOneTask() {
+    public void test07findOneTask() throws Exception {
+        signIn();
         Task task = taskService.findOneTask(userId, "test",
                 "test");
-        if (task != null) {
-            System.out.println(task.getName());
-        }
+        Assert.assertEquals("test", task.getName());
     }
 
     @Test
-    public void findAllTasks() {
+    public void test08findAllTasks() throws Exception {
+        signIn();
         List<Task> list = taskService.findAllTasks(userId);
-        if (list != null) {
-            list.forEach(v -> System.out.println(v.getName()));
-        }
     }
 
     @Test
-    public void findAllTasksInProject() {
+    public void test09findAllTasksInProject() throws Exception {
+        signIn();
         taskService.findAllTasksInProject(userId, "test");
     }
 
     @Test
-    public void mergeTask() throws Exception {
+    public void test10mergeTask() throws Exception {
+        signIn();
         taskService.mergeTask(userId, "test", "test",
                 "TTT", "des", "20.02.2020", "20.02.2020", "done");
     }
 
     @Test
-    public void removeTask() throws Exception {
+    public void test11testremoveTask() throws Exception {
+        signIn();
         taskService.removeTask(userId, "test", "TTT");
     }
 
     @Test
-    public void removeAllTasksInProject() throws Exception {
+    public void test12removeAllTasksInProject() throws Exception {
+        signIn();
         taskService.removeAllTasksInProject(userId, "test");
     }
 
     @Test
-    public void removeAllTasks() throws Exception {
+    public void test13RemoveAllTasks() throws Exception {
+        signIn();
         taskService.removeAllTasks(userId);
     }
 
     @Test
-    public void remove() throws Exception {
+    public void test14removeProject() throws Exception {
+        signIn();
         projectService.removeProject(userId, "test");
     }
 
     @Test
-    public void removeAll() throws Exception {
+    public void test15RemoveAllProjects() throws Exception {
+        signIn();
         projectService.removeAllProjects(userId);
     }
 }
