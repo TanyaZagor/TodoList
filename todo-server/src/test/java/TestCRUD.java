@@ -39,6 +39,7 @@ public class TestCRUD {
     public void signIn() throws Exception {
         if (userId == null) {
             User user = userService.signIn("test", "test");
+            Assert.assertNotNull(user);
             userId = user.getId();
         }
     }
@@ -55,9 +56,8 @@ public class TestCRUD {
         signIn();
         userService.updateUser(userId, "FN", "LN", "EMAIL");
         @Nullable final User user = userService.findOne(userId);
-        if (user != null) {
-            Assert.assertEquals("FN", user.getFirstName());
-        }
+        Assert.assertNotNull(user);
+        Assert.assertEquals("FN", user.getFirstName());
     }
 
     @Test
@@ -65,9 +65,8 @@ public class TestCRUD {
         signIn();
         Project project = projectService.persistProject(userId,
                 "test", "des", "20.02.2020", "20.02.2020");
-        if (project != null) {
-            Assert.assertEquals("test", project.getName());
-        }
+        Assert.assertNotNull(project);
+        Assert.assertEquals("test", project.getName());
     }
 
     @Test
@@ -76,27 +75,24 @@ public class TestCRUD {
         projectService.mergeProject(userId, "test",
                 "test", "des", "20.02.2020", "20.02.2020", "done");
         @Nullable final Project project = projectService.findOneProject(userId, "test");
-        if (project != null) {
-            Assert.assertEquals("done", project.getStatus().toString());
-        }
+        Assert.assertNotNull(project);
+        Assert.assertEquals("done", project.getStatus().toString());
     }
 
     @Test
     public void t04_findOneProject() throws Exception {
         signIn();
         Project project = projectService.findOneProject(userId, "test");
-        if (project != null) {
-            Assert.assertEquals("test", project.getName());
-        }
+        Assert.assertNotNull(project);
+        Assert.assertEquals("test", project.getName());
     }
 
     @Test
     public void t05_findAllProjects() throws Exception {
         signIn();
         @Nullable final List<Project> list = projectService.findAllProjects(userId);
-        if (list != null) {
-            Assert.assertEquals("test", list.get(0).getName());
-        }
+        Assert.assertNotNull(list);
+        Assert.assertEquals("test", list.get(0).getName());
     }
 
     @Test
@@ -104,9 +100,8 @@ public class TestCRUD {
         signIn();
         Task task = taskService.persistTask(userId, "test", "test",
                 "des", "20.02.2020", "20.02.2020");
-        if (task != null) {
-            Assert.assertEquals("test", task.getName());
-        }
+        Assert.assertNotNull(task);
+        Assert.assertEquals("test", task.getName());
     }
 
     @Test
@@ -114,27 +109,24 @@ public class TestCRUD {
         signIn();
         Task task = taskService.findOneTask(userId, "test",
                 "test");
-        if (task != null) {
-            Assert.assertEquals("test", task.getName());
-        }
+        Assert.assertNotNull(task);
+        Assert.assertEquals("test", task.getName());
     }
 
     @Test
     public void t08_findAllTasks() throws Exception {
         signIn();
         @Nullable final List<Task> list = taskService.findAllTasks(userId);
-        if (list != null) {
-            Assert.assertEquals("test", list.get(0).getName());
-        }
+        Assert.assertNotNull(list);
+        Assert.assertEquals("test", list.get(0).getName());
     }
 
     @Test
     public void t09_findAllTasksInProject() throws Exception {
         signIn();
         @Nullable final List<Task> list = taskService.findAllTasksInProject(userId, "test");
-        if (list != null) {
-            Assert.assertEquals("test", list.get(0).getName());
-        }
+        Assert.assertNotNull(list);
+        Assert.assertEquals("test", list.get(0).getName());
     }
 
     @Test
@@ -143,9 +135,8 @@ public class TestCRUD {
         taskService.mergeTask(userId, "test", "test",
                 "test", "des", "20.02.2020", "20.02.2020", "done");
         @Nullable final Task task = taskService.findOneTask(userId, "test", "test");
-        if (task != null) {
-            Assert.assertEquals("done", task.getStatus().toString());
-        }
+        Assert.assertNotNull(task);
+        Assert.assertEquals("done", task.getStatus().toString());
     }
 
     @Test

@@ -28,11 +28,9 @@ public class ProjectTest {
     public void signIn() throws Exception {
         if (userId == null) {
             @Nullable final User user = userService.signIn("test", "test");
-            if (user != null) {
-                userId = user.getId();
-            }
+            Assert.assertNotNull(user);
+            userId = user.getId();
         }
-
     }
 
     @Test
@@ -40,9 +38,8 @@ public class ProjectTest {
         signIn();
         @Nullable final Project project = projectService.persistProject(userId,
                 "test", "des", "20.02.2020", "20.02.2020");
-        if (project != null) {
-            Assert.assertEquals("test", project.getName());
-        }
+        Assert.assertNotNull(project);
+        Assert.assertEquals("test", project.getName());
     }
 
     @Test
@@ -51,27 +48,24 @@ public class ProjectTest {
         projectService.mergeProject(userId, "test",
                 "test", "des", "20.02.2020", "20.02.2020", "done");
         @Nullable final Project project = projectService.findOneProject(userId, "test");
-        if (project != null) {
-            Assert.assertEquals("done", project.getStatus().toString());
-        }
+        Assert.assertNotNull(project);
+        Assert.assertEquals("done", project.getStatus().toString());
     }
 
     @Test
     public void t3_findOne() throws Exception {
         signIn();
         @Nullable final Project project = projectService.findOneProject(userId, "test");
-        if (project != null) {
-            Assert.assertEquals("test", project.getName());
-        }
+        Assert.assertNotNull(project);
+        Assert.assertEquals("test", project.getName());
     }
 
     @Test
     public void t4_findAll() throws Exception {
         signIn();
         @Nullable final List<Project> list = projectService.findAllProjects(userId);
-        if (list != null) {
-            Assert.assertEquals("test", list.get(0).getName());
-        }
+        Assert.assertNotNull(list);
+        Assert.assertEquals("test", list.get(0).getName());
     }
 
     @Test

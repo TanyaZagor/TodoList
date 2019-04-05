@@ -29,9 +29,8 @@ public class TaskTest {
     public void signIn() throws Exception {
         if (this.session == null) {
             @Nullable final Session session = sessionService.signIn("test", "test");
-            if (session != null) {
-                this.session = session;
-            }
+            Assert.assertNotNull(session);
+            this.session = session;
         }
     }
 
@@ -40,9 +39,8 @@ public class TaskTest {
         signIn();
         @Nullable final TaskDto task = taskService.persistTask(session, "test", "test",
                 "des", "20.02.2020", "20.02.2020");
-        if (task != null) {
-            Assert.assertEquals("test", task.getName());
-        }
+        Assert.assertNotNull(task);
+        Assert.assertEquals("test", task.getName());
         sessionService.remove(session);
     }
 
@@ -50,9 +48,8 @@ public class TaskTest {
     public void t2_findOne() throws Exception {
         signIn();
         @Nullable final TaskDto task = taskService.findOneTask(session, "test", "test");
-        if (task != null) {
-            Assert.assertEquals("test", task.getName());
-        }
+        Assert.assertNotNull(task);
+        Assert.assertEquals("test", task.getName());
         sessionService.remove(session);
     }
 
@@ -60,9 +57,8 @@ public class TaskTest {
     public void t3_findAll() throws Exception {
         signIn();
         @Nullable final List<TaskDto> list = taskService.findAllTasks(session);
-        if (list != null) {
-            Assert.assertEquals("test", list.get(0).getName());
-        }
+        Assert.assertNotNull(list);
+        Assert.assertEquals("test", list.get(0).getName());
         sessionService.remove(session);
     }
 
@@ -70,9 +66,8 @@ public class TaskTest {
     public void t4_findAllInProject() throws Exception {
         signIn();
         @Nullable final List<TaskDto> list = taskService.findAllTasksInProject(session, "test");
-        if (list != null) {
-            Assert.assertEquals("test", list.get(0).getName());
-        }
+        Assert.assertNotNull(list);
+        Assert.assertEquals("test", list.get(0).getName());
         sessionService.remove(session);
     }
 
@@ -82,9 +77,8 @@ public class TaskTest {
         taskService.mergeTask(session, "test", "test", "test", "des",
                 "20.02.2020", "20.02.2020", "done");
         @Nullable final TaskDto task = taskService.findOneTask(session, "test", "test");
-        if (task != null) {
-            Assert.assertEquals("DONE", task.getStatus().toString());
-        }
+        Assert.assertNotNull(task);
+        Assert.assertEquals("DONE", task.getStatus().toString());
         sessionService.remove(session);
     }
 

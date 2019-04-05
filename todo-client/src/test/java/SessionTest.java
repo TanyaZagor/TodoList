@@ -1,5 +1,6 @@
 import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
 import org.jetbrains.annotations.Nullable;
+import org.junit.Assert;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,17 +22,15 @@ public class SessionTest {
     @Test
     public void signUp() throws Exception {
         Session session = sessionService.signUp("test", "test", "fn", "ln", "email");
-        if (session != null) {
-            this.session = session;
-        }
+        Assert.assertNotNull(session);
+        this.session = session;
     }
 
     @Test
     public void signIn() throws Exception {
         @Nullable final Session session = sessionService.signIn("test", "test");
-        if (session != null) {
-            this.session = session;
-        }
+        Assert.assertNotNull(session);
+        this.session = session;
     }
 
     @Test

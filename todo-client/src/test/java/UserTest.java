@@ -27,8 +27,10 @@ public class UserTest {
     private Session session;
 
     public void signIn() throws Exception {
-        if (session == null) {
-
+        if (this.session == null) {
+            @Nullable final Session session = sessionService.signIn("test", "test");
+            Assert.assertNotNull(session);
+            this.session = session;
         }
     }
 
@@ -47,9 +49,8 @@ public class UserTest {
         signIn();
         userService.updateUser(session, "FN", "LN", "EMAIL");
         @Nullable final UserDto user = userService.findUser(session);
-        if (user != null) {
-            Assert.assertEquals("FN", user.getFirstName());
-        }
+        Assert.assertNotNull(user);
+        Assert.assertEquals("FN", user.getFirstName());
         sessionService.remove(session);
     }
 
@@ -57,9 +58,8 @@ public class UserTest {
     public void t2_findOne() throws Exception {
         signIn();
         @Nullable final UserDto user = userService.findUser(session);
-        if (user != null) {
-            Assert.assertEquals("test", user.getLogin());
-        }
+        Assert.assertNotNull(user);
+        Assert.assertEquals("test", user.getLogin());
         sessionService.remove(session);
     }
 

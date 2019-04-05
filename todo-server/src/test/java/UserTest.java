@@ -23,15 +23,17 @@ public class UserTest {
     @Test
     public void t1_signUp() throws Exception {
         User user = userService.signUp("test", "test", "fn", "ln", "email");
+        Assert.assertNotNull(user);
+        Assert.assertEquals("test", user.getLogin());
     }
 
     @Test
     public void t2_signIn() throws Exception {
         if (userId == null) {
             User user = userService.signIn("test", "test");
+            Assert.assertNotNull(user);
             userId = user.getId();
         }
-
     }
 
     @Ignore
@@ -46,18 +48,16 @@ public class UserTest {
         t2_signIn();
         userService.updateUser(userId, "FN", "LN", "EMAIL");
         @Nullable final User user = userService.findOne(userId);
-        if (user != null) {
-            Assert.assertEquals("FN", user.getFirstName());
-        }
+        Assert.assertNotNull(user);
+        Assert.assertEquals("FN", user.getFirstName());
     }
 
     @Test
     public void t5_findOne() throws Exception {
         t2_signIn();
         @Nullable final User user = userService.findOne(userId);
-        if (user != null) {
-            Assert.assertEquals("test", user.getLogin());
-        }
+        Assert.assertNotNull(user);
+        Assert.assertEquals("test", user.getLogin());
     }
 
     @Ignore

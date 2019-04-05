@@ -29,9 +29,8 @@ public class ProjectTest {
     public void signIn() throws Exception {
         if (this.session == null) {
             @Nullable final Session session = sessionService.signIn("test", "test");
-            if (session != null) {
-                this.session = session;
-            }
+            Assert.assertNotNull(session);
+            this.session = session;
         }
     }
 
@@ -40,9 +39,8 @@ public class ProjectTest {
         signIn();
         @Nullable final ProjectDto project = projectService.persistProject(session,
                 "test", "des", "20.02.2020", "20.02.2020");
-        if (project != null) {
-            Assert.assertEquals("test", project.getName());
-        }
+        Assert.assertNotNull(project);
+        Assert.assertEquals("test", project.getName());
         sessionService.remove(session);
     }
 
@@ -53,7 +51,7 @@ public class ProjectTest {
         projectService.mergeProject(session, "test",
                 "test", "des", "20.02.2020", "20.02.2020", "done");
         @Nullable final ProjectDto project = projectService.findOneProject(session, "test");
-        assert project != null;
+        Assert.assertNotNull(project);
         Assert.assertEquals("DONE", project.getStatus().toString());
         sessionService.remove(session);
     }
@@ -62,9 +60,8 @@ public class ProjectTest {
     public void t3_findOne() throws Exception {
         signIn();
         @Nullable final ProjectDto project = projectService.findOneProject(session, "test");
-        if (project != null) {
-            Assert.assertEquals("test", project.getName());
-        }
+        Assert.assertNotNull(project);
+        Assert.assertEquals("test", project.getName());
         sessionService.remove(session);
     }
 
@@ -72,9 +69,8 @@ public class ProjectTest {
     public void t4_findAll() throws Exception {
         signIn();
         @Nullable final List<ProjectDto> list = projectService.findAllProjects(session);
-        if (list != null) {
-            Assert.assertEquals("test", list.get(0).getName());
-        }
+        Assert.assertNotNull(list);
+        Assert.assertEquals("test", list.get(0).getName());
         sessionService.remove(session);
     }
 
