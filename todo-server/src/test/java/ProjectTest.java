@@ -29,39 +29,39 @@ public class ProjectTest {
     }
 
     @Test
-    public void persist() throws Exception {
+    public void t1_persist() throws Exception {
         signIn();
         Project project = projectService.persistProject(userId,
                 "test", "des", "20.02.2020", "20.02.2020");
     }
 
     @Test
-    public void merge() throws Exception {
+    public void t2_merge() throws Exception {
         signIn();
         projectService.mergeProject(userId, "test",
                 "TTT", "des", "20.02.2020", "20.02.2020", "done");
     }
 
     @Test
-    public void findOne() throws Exception {
+    public void t3_findOne() throws Exception {
         signIn();
         Project project = projectService.findOneProject(userId, "test");
     }
 
     @Test
-    public void findAll() throws Exception {
+    public void t4_findAll() throws Exception {
         signIn();
         List<Project> list = projectService.findAllProjects(userId);
     }
 
     @Test
-    public void remove() throws Exception {
+    public void t5_remove() throws Exception {
         signIn();
         projectService.removeProject(userId, "test");
     }
 
     @Test
-    public void removeAll() throws Exception {
+    public void t6_removeAll() throws Exception {
         signIn();
         projectService.removeAllProjects(userId);
     }

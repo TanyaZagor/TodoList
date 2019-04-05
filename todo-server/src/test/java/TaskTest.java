@@ -29,39 +29,46 @@ public class TaskTest {
     }
 
     @Test
-    public void findOne() {
+    public void t1_persist() throws Exception {
+        signIn();
+        taskService.persistTask(userId, "test", "test",
+                "des", "20.02.2020", "20.02.2020");
+    }
+
+    @Test
+    public void t2_findOne() {
         Task task = taskService.findOneTask(userId, "test",
                 "test");
     }
 
     @Test
-    public void findAll() {
+    public void t3_findAll() {
         List<Task> list = taskService.findAllTasks(userId);
     }
 
     @Test
-    public void findAllInProject() {
+    public void t4_findAllInProject() {
         taskService.findAllTasksInProject(userId, "test");
     }
 
     @Test
-    public void merge() throws Exception {
+    public void t5_merge() throws Exception {
         taskService.mergeTask(userId, "test", "test",
                 "TTT", "des", "20.02.2020", "20.02.2020", "done");
     }
 
     @Test
-    public void remove() throws Exception {
+    public void t6_remove() throws Exception {
         taskService.removeTask(userId, "test", "TTT");
     }
 
     @Test
-    public void removeAllInProject() throws Exception {
+    public void t7_removeAllInProject() throws Exception {
         taskService.removeAllTasksInProject(userId, "test");
     }
 
     @Test
-    public void removeAll() throws Exception {
+    public void t8_removeAll() throws Exception {
         taskService.removeAllTasks(userId);
     }
 

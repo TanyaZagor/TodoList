@@ -16,12 +16,12 @@ public class UserTest {
     private String userId = null;
 
     @Test
-    public void signUp() throws Exception {
+    public void t1_signUp() throws Exception {
         User user = userService.signUp("test", "test", "fn", "ln", "email");
     }
 
     @Test
-    public void signIn() throws Exception {
+    public void t2_signIn() throws Exception {
         if (userId == null) {
             User user = userService.signIn("test", "test");
             userId = user.getId();
@@ -31,27 +31,27 @@ public class UserTest {
 
     @Ignore
     @Test
-    public void changePassword() throws Exception {
-        signIn();
+    public void t3_changePassword() throws Exception {
+        t2_signIn();
         userService.changePassword(userId, "test", "test", "admin");
     }
 
     @Test
-    public void updateUser() throws Exception {
-        signIn();
+    public void t4_updateUser() throws Exception {
+        t2_signIn();
         userService.updateUser(userId, "FN", "LN", "EMAIL");
     }
 
     @Test
-    public void findOne() throws Exception {
-        signIn();
+    public void t5_findOne() throws Exception {
+        t2_signIn();
         User user = userService.findOne(userId);
     }
 
     @Ignore
     @Test
-    public void remove() throws Exception {
-        signIn();
+    public void t6_remove() throws Exception {
+        t2_signIn();
         userService.removeUser(userId);
     }
 

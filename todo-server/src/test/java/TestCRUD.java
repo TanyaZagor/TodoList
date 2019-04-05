@@ -50,13 +50,13 @@ public class TestCRUD {
     }
 
     @Test
-    public void test01updateUser() throws Exception {
+    public void t01_updateUser() throws Exception {
         signIn();
         userService.updateUser(userId, "FN", "LN", "EMAIL");
     }
 
     @Test
-    public void test02persistProject() throws Exception {
+    public void t02_persistProject() throws Exception {
         signIn();
         Project project = projectService.persistProject(userId,
                 "TTT", "des", "20.02.2020", "20.02.2020");
@@ -64,27 +64,27 @@ public class TestCRUD {
     }
 
     @Test
-    public void test03mergeProject() throws Exception {
+    public void t03_mergeProject() throws Exception {
         signIn();
         projectService.mergeProject(userId, "TTT",
                 "test", "des", "20.02.2020", "20.02.2020", "done");
     }
 
     @Test
-    public void test04findOneProject() throws Exception {
+    public void t04_findOneProject() throws Exception {
         signIn();
         Project project = projectService.findOneProject(userId, "test");
         Assert.assertEquals("test", project.getName());
     }
 
     @Test
-    public void test05findAllProjects() throws Exception {
+    public void t05_findAllProjects() throws Exception {
         signIn();
         List<Project> list = projectService.findAllProjects(userId);
     }
 
     @Test
-    public void test06persistTask() throws Exception {
+    public void t06_persistTask() throws Exception {
         signIn();
         Task task = taskService.persistTask(userId, "test", "test",
                 "des", "20.02.2020", "20.02.2020");
@@ -92,7 +92,7 @@ public class TestCRUD {
     }
 
     @Test
-    public void test07findOneTask() throws Exception {
+    public void t07_findOneTask() throws Exception {
         signIn();
         Task task = taskService.findOneTask(userId, "test",
                 "test");
@@ -100,50 +100,50 @@ public class TestCRUD {
     }
 
     @Test
-    public void test08findAllTasks() throws Exception {
+    public void t08_findAllTasks() throws Exception {
         signIn();
         List<Task> list = taskService.findAllTasks(userId);
     }
 
     @Test
-    public void test09findAllTasksInProject() throws Exception {
+    public void t09_findAllTasksInProject() throws Exception {
         signIn();
         taskService.findAllTasksInProject(userId, "test");
     }
 
     @Test
-    public void test10mergeTask() throws Exception {
+    public void t10_mergeTask() throws Exception {
         signIn();
         taskService.mergeTask(userId, "test", "test",
                 "TTT", "des", "20.02.2020", "20.02.2020", "done");
     }
 
     @Test
-    public void test11testremoveTask() throws Exception {
+    public void t11_removeTask() throws Exception {
         signIn();
         taskService.removeTask(userId, "test", "TTT");
     }
 
     @Test
-    public void test12removeAllTasksInProject() throws Exception {
+    public void t12_removeAllTasksInProject() throws Exception {
         signIn();
         taskService.removeAllTasksInProject(userId, "test");
     }
 
     @Test
-    public void test13RemoveAllTasks() throws Exception {
+    public void t13_removeAllTasks() throws Exception {
         signIn();
         taskService.removeAllTasks(userId);
     }
 
     @Test
-    public void test14removeProject() throws Exception {
+    public void t14_removeProject() throws Exception {
         signIn();
         projectService.removeProject(userId, "test");
     }
 
     @Test
-    public void test15RemoveAllProjects() throws Exception {
+    public void t15_removeAllProjects() throws Exception {
         signIn();
         projectService.removeAllProjects(userId);
     }

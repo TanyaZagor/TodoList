@@ -34,24 +34,28 @@ public class UserTest {
     public void changePassword() throws Exception {
         signIn();
         userService.changePassword(session, "test", "test", "admin");
+        sessionService.remove(session);
     }
 
     @Test
-    public void updateUser() throws Exception {
+    public void t1_updateUser() throws Exception {
         signIn();
         userService.updateUser(session, "FN", "LN", "EMAIL");
+        sessionService.remove(session);
     }
 
     @Test
-    public void findOne() throws Exception {
+    public void t2_findOne() throws Exception {
         signIn();
         UserDto user = userService.findUser(session);
+        sessionService.remove(session);
     }
 
     @Test
-    public void remove() throws Exception {
+    public void t3_remove() throws Exception {
         signIn();
         userService.removeUser(session);
+        sessionService.remove(session);
     }
 
 }

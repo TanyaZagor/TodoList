@@ -30,54 +30,61 @@ public class TaskTest {
     }
 
     @Test
-    public void persist() throws Exception {
+    public void t1_persist() throws Exception {
         signIn();
         taskService.persistTask(session, "test", "test",
                 "des", "20.02.2020", "20.02.2020");
+        sessionService.remove(session);
     }
 
     @Test
-    public void findOne() throws Exception {
+    public void t2_findOne() throws Exception {
         signIn();
-        TaskDto task = taskService.findOneTask(session, "test",
-                "test");
+        TaskDto task = taskService.findOneTask(session, "test", "test");
+        sessionService.remove(session);
     }
 
     @Test
-    public void findAll() throws Exception {
+    public void t3_findAll() throws Exception {
         signIn();
         List<TaskDto> list = taskService.findAllTasks(session);
+        sessionService.remove(session);
     }
 
     @Test
-    public void findAllInProject() throws Exception {
+    public void t4_findAllInProject() throws Exception {
         signIn();
         taskService.findAllTasksInProject(session, "test");
+        sessionService.remove(session);
     }
 
     @Test
-    public void merge() throws Exception {
+    public void t5_merge() throws Exception {
         signIn();
-        taskService.mergeTask(session, "test", "test",
-                "TTT", "des", "20.02.2020", "20.02.2020", "done");
+        taskService.mergeTask(session, "test", "test", "TTT", "des",
+                "20.02.2020", "20.02.2020", "done");
+        sessionService.remove(session);
     }
 
     @Test
-    public void remove() throws Exception {
+    public void t6_remove() throws Exception {
         signIn();
         taskService.removeTask(session, "test", "TTT");
+        sessionService.remove(session);
     }
 
     @Test
-    public void removeAllInProject() throws Exception {
+    public void t7_removeAllInProject() throws Exception {
         signIn();
         taskService.removeAllTasksInProject(session, "test");
+        sessionService.remove(session);
     }
 
     @Test
-    public void removeAll() throws Exception {
+    public void t8_removeAll() throws Exception {
         signIn();
         taskService.removeAllTasks(session);
+        sessionService.remove(session);
     }
 
 }

@@ -37,106 +37,123 @@ public class TestCRUD {
     }
 
     @Test
-    public void test01changePassword() throws Exception {
+    public void t01_changePassword() throws Exception {
         signIn();
         userService.changePassword(session, "test", "test", "test");
+        sessionService.remove(session);
     }
 
     @Test
-    public void test02updateUser() throws Exception {
+    public void t02_updateUser() throws Exception {
         signIn();
         userService.updateUser(session, "FN", "LN", "EMAIL");
+        sessionService.remove(session);
     }
 
     @Test
-    public void test03persistProject() throws Exception {
+    public void t03_persistProject() throws Exception {
         signIn();
         ProjectDto project = projectService.persistProject(session,
                 "test", "des", "20.02.2020", "20.02.2020");
         Assert.assertEquals("test", project.getName());
+        sessionService.remove(session);
     }
 
     @Test
-    public void test04mergeProject() throws Exception {
+    public void t04_mergeProject() throws Exception {
         signIn();
         projectService.mergeProject(session, "test",
                 "test", "DESCRIPTION", "20.02.2020", "20.02.2020", "done");
+        sessionService.remove(session);
     }
 
     @Test
-    public void test05findOneProject() throws Exception {
+    public void t05_findOneProject() throws Exception {
         signIn();
         ProjectDto project = projectService.findOneProject(session, "test");
         Assert.assertEquals("test", project.getName());
+        sessionService.remove(session);
     }
 
     @Test
     public void test06findAllProjects() throws Exception {
         signIn();
         List<ProjectDto> list = projectService.findAllProjects(session);
+        sessionService.remove(session);
     }
 
     @Test
-    public void test07persistTask() throws Exception {
+    public void t07_persistTask() throws Exception {
         signIn();
         TaskDto task = taskService.persistTask(session, "test", "test",
                 "des", "20.02.2020", "20.02.2020");
         Assert.assertEquals("test", task.getName());
+        sessionService.remove(session);
     }
 
     @Test
-    public void test08findOneTask() throws Exception {
+    public void t08_findOneTask() throws Exception {
         signIn();
         TaskDto task = taskService.findOneTask(session, "test", "test");
         Assert.assertEquals("test", task.getName());
+        sessionService.remove(session);
     }
 
     @Test
-    public void test09findAllTasks() throws Exception {
+    public void t09_findAllTasks() throws Exception {
         signIn();
         List<TaskDto> list = taskService.findAllTasks(session);
+        sessionService.remove(session);
     }
 
     @Test
-    public void test10findAllTasksInProject() throws Exception {
+    public void t10_findAllTasksInProject() throws Exception {
         signIn();
         taskService.findAllTasksInProject(session, "test");
+        sessionService.remove(session);
     }
 
     @Test
-    public void test11mergeTask() throws Exception {
+    public void t11_mergeTask() throws Exception {
         signIn();
         taskService.mergeTask(session, "test", "test",
                 "TTT", "des", "20.02.2020", "20.02.2020", "done");
+        sessionService.remove(session);
     }
 
     @Test
-    public void test12removeTask() throws Exception {
+    public void t12_removeTask() throws Exception {
         signIn();
         taskService.removeTask(session, "test", "TTT");
+        sessionService.remove(session);
     }
 
     @Test
-    public void test13removeAllTasksInProject() throws Exception {
+    public void t13_removeAllTasksInProject() throws Exception {
         signIn();
         taskService.removeAllTasksInProject(session, "test");
+        sessionService.remove(session);
     }
 
     @Test
-    public void test14pRemoveAllTasks() throws Exception {
+    public void t14_removeAllTasks() throws Exception {
         signIn();
         taskService.removeAllTasks(session);
+        sessionService.remove(session);
     }
 
     @Test
-    public void test15removeProject() throws Exception {
+    public void t15_removeProject() throws Exception {
         signIn();
         projectService.removeProject(session, "test");
+        sessionService.remove(session);
     }
 
     @Test
-    public void test16RemoveAllProjects() throws Exception {
+    public void t16_removeAllProjects() throws Exception {
         signIn();
         projectService.removeAllProjects(session);
+        sessionService.remove(session);
     }
+
 }
