@@ -1,4 +1,5 @@
 import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
+import org.jetbrains.annotations.Nullable;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +28,7 @@ public class SessionTest {
 
     @Test
     public void signIn() throws Exception {
-        Session session = sessionService.signIn("test", "test");
+        @Nullable final Session session = sessionService.signIn("test", "test");
         if (session != null) {
             this.session = session;
         }

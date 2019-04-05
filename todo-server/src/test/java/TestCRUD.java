@@ -1,4 +1,5 @@
 import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
+import org.jetbrains.annotations.Nullable;
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
 import org.junit.Ignore;
@@ -53,34 +54,49 @@ public class TestCRUD {
     public void t01_updateUser() throws Exception {
         signIn();
         userService.updateUser(userId, "FN", "LN", "EMAIL");
+        @Nullable final User user = userService.findOne(userId);
+        if (user != null) {
+            Assert.assertEquals("FN", user.getFirstName());
+        }
     }
 
     @Test
     public void t02_persistProject() throws Exception {
         signIn();
         Project project = projectService.persistProject(userId,
-                "TTT", "des", "20.02.2020", "20.02.2020");
-        Assert.assertEquals("TTT", project.getName());
+                "test", "des", "20.02.2020", "20.02.2020");
+        if (project != null) {
+            Assert.assertEquals("test", project.getName());
+        }
     }
 
     @Test
     public void t03_mergeProject() throws Exception {
         signIn();
-        projectService.mergeProject(userId, "TTT",
+        projectService.mergeProject(userId, "test",
                 "test", "des", "20.02.2020", "20.02.2020", "done");
+        @Nullable final Project project = projectService.findOneProject(userId, "test");
+        if (project != null) {
+            Assert.assertEquals("done", project.getStatus().toString());
+        }
     }
 
     @Test
     public void t04_findOneProject() throws Exception {
         signIn();
         Project project = projectService.findOneProject(userId, "test");
-        Assert.assertEquals("test", project.getName());
+        if (project != null) {
+            Assert.assertEquals("test", project.getName());
+        }
     }
 
     @Test
     public void t05_findAllProjects() throws Exception {
         signIn();
-        List<Project> list = projectService.findAllProjects(userId);
+        @Nullable final List<Project> list = projectService.findAllProjects(userId);
+        if (list != null) {
+            Assert.assertEquals("test", list.get(0).getName());
+        }
     }
 
     @Test
@@ -88,7 +104,9 @@ public class TestCRUD {
         signIn();
         Task task = taskService.persistTask(userId, "test", "test",
                 "des", "20.02.2020", "20.02.2020");
-        Assert.assertEquals("test", task.getName());
+        if (task != null) {
+            Assert.assertEquals("test", task.getName());
+        }
     }
 
     @Test
@@ -96,55 +114,77 @@ public class TestCRUD {
         signIn();
         Task task = taskService.findOneTask(userId, "test",
                 "test");
-        Assert.assertEquals("test", task.getName());
+        if (task != null) {
+            Assert.assertEquals("test", task.getName());
+        }
     }
 
     @Test
     public void t08_findAllTasks() throws Exception {
         signIn();
-        List<Task> list = taskService.findAllTasks(userId);
+        @Nullable final List<Task> list = taskService.findAllTasks(userId);
+        if (list != null) {
+            Assert.assertEquals("test", list.get(0).getName());
+        }
     }
 
     @Test
     public void t09_findAllTasksInProject() throws Exception {
         signIn();
-        taskService.findAllTasksInProject(userId, "test");
+        @Nullable final List<Task> list = taskService.findAllTasksInProject(userId, "test");
+        if (list != null) {
+            Assert.assertEquals("test", list.get(0).getName());
+        }
     }
 
     @Test
     public void t10_mergeTask() throws Exception {
         signIn();
         taskService.mergeTask(userId, "test", "test",
-                "TTT", "des", "20.02.2020", "20.02.2020", "done");
+                "test", "des", "20.02.2020", "20.02.2020", "done");
+        @Nullable final Task task = taskService.findOneTask(userId, "test", "test");
+        if (task != null) {
+            Assert.assertEquals("done", task.getStatus().toString());
+        }
     }
 
     @Test
     public void t11_removeTask() throws Exception {
         signIn();
-        taskService.removeTask(userId, "test", "TTT");
+        taskService.removeTask(userId, "test", "test");
+        @Nullable final Task task = taskService.findOneTask(userId, "test", "test");
+        Assert.assertNull(task);
     }
 
     @Test
     public void t12_removeAllTasksInProject() throws Exception {
         signIn();
         taskService.removeAllTasksInProject(userId, "test");
+        @Nullable final List<Task> list = taskService.findAllTasksInProject(userId, "test");
+        Assert.assertTrue(list.isEmpty());
     }
 
     @Test
     public void t13_removeAllTasks() throws Exception {
         signIn();
         taskService.removeAllTasks(userId);
+        @Nullable final List<Task> list = taskService.findAllTasks(userId);
+        Assert.assertTrue(list.isEmpty());
     }
 
     @Test
     public void t14_removeProject() throws Exception {
         signIn();
         projectService.removeProject(userId, "test");
+        @Nullable final Project project = projectService.findOneProject(userId, "test");
+        Assert.assertNull(project);
     }
 
     @Test
     public void t15_removeAllProjects() throws Exception {
         signIn();
         projectService.removeAllProjects(userId);
+        @Nullable final List<Project> list = projectService.findAllProjects(userId);
+        Assert.assertTrue(list.isEmpty());
     }
 }

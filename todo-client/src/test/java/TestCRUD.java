@@ -1,4 +1,5 @@
 import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
+import org.jetbrains.annotations.Nullable;
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -13,6 +14,7 @@ import java.util.List;
 @RunWith(CdiTestRunner.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestCRUD {
+
     @Inject
     private ProjectEndpoint projectService;
 
@@ -25,11 +27,12 @@ public class TestCRUD {
     @Inject
     private SessionEndpoint sessionService;
 
+    @Nullable
     private Session session;
 
     public void signIn() throws Exception {
         if (this.session == null) {
-            Session session = sessionService.signIn("test", "test");
+            @Nullable final Session session = sessionService.signIn("test", "test");
             if (session != null) {
                 this.session = session;
             }
@@ -40,6 +43,8 @@ public class TestCRUD {
     public void t01_changePassword() throws Exception {
         signIn();
         userService.changePassword(session, "test", "test", "test");
+        @Nullable final Session testSession = sessionService.signIn("test", "test");
+        Assert.assertNull(testSession);
         sessionService.remove(session);
     }
 
@@ -47,15 +52,21 @@ public class TestCRUD {
     public void t02_updateUser() throws Exception {
         signIn();
         userService.updateUser(session, "FN", "LN", "EMAIL");
+        @Nullable final UserDto user = userService.findUser(session);
+        if (user != null) {
+            Assert.assertEquals("FN", user.getFirstName());
+        }
         sessionService.remove(session);
     }
 
     @Test
     public void t03_persistProject() throws Exception {
         signIn();
-        ProjectDto project = projectService.persistProject(session,
+        @Nullable final ProjectDto project = projectService.persistProject(session,
                 "test", "des", "20.02.2020", "20.02.2020");
-        Assert.assertEquals("test", project.getName());
+        if (project != null) {
+            Assert.assertEquals("test", project.getName());
+        }
         sessionService.remove(session);
     }
 
@@ -64,52 +75,71 @@ public class TestCRUD {
         signIn();
         projectService.mergeProject(session, "test",
                 "test", "DESCRIPTION", "20.02.2020", "20.02.2020", "done");
+        @Nullable final ProjectDto project = projectService.findOneProject(session, "test");
+        if (project != null) {
+            Assert.assertEquals("DESCRIPTION", project.getDescription());
+        }
         sessionService.remove(session);
     }
 
     @Test
     public void t05_findOneProject() throws Exception {
         signIn();
-        ProjectDto project = projectService.findOneProject(session, "test");
-        Assert.assertEquals("test", project.getName());
+        @Nullable final ProjectDto project = projectService.findOneProject(session, "test");
+        if (project != null) {
+            Assert.assertEquals("test", project.getName());
+        }
         sessionService.remove(session);
     }
 
     @Test
-    public void test06findAllProjects() throws Exception {
+    public void t06_findAllProjects() throws Exception {
         signIn();
-        List<ProjectDto> list = projectService.findAllProjects(session);
+        @Nullable final List<ProjectDto> list = projectService.findAllProjects(session);
+        if (list != null) {
+            Assert.assertEquals("test", list.get(0).getName());
+        }
         sessionService.remove(session);
     }
 
     @Test
     public void t07_persistTask() throws Exception {
         signIn();
-        TaskDto task = taskService.persistTask(session, "test", "test",
+        @Nullable final TaskDto task = taskService.persistTask(session, "test", "test",
                 "des", "20.02.2020", "20.02.2020");
-        Assert.assertEquals("test", task.getName());
+        if (task != null) {
+            Assert.assertEquals("test", task.getName());
+        }
         sessionService.remove(session);
     }
 
     @Test
     public void t08_findOneTask() throws Exception {
         signIn();
-        TaskDto task = taskService.findOneTask(session, "test", "test");
-        Assert.assertEquals("test", task.getName());
+        @Nullable final TaskDto task = taskService.findOneTask(session, "test", "test");
+        if (task != null) {
+            Assert.assertEquals("test", task.getName());
+        }
         sessionService.remove(session);
     }
 
     @Test
     public void t09_findAllTasks() throws Exception {
         signIn();
-        List<TaskDto> list = taskService.findAllTasks(session);
+        @Nullable final List<TaskDto> list = taskService.findAllTasks(session);
+        if (list != null) {
+            Assert.assertEquals("test", list.get(0).getName());
+        }
         sessionService.remove(session);
     }
 
     @Test
     public void t10_findAllTasksInProject() throws Exception {
         signIn();
-        taskService.findAllTasksInProject(session, "test");
+        @Nullable final List<TaskDto> list = taskService.findAllTasksInProject(session, "test");
+        if (list != null) {
+            Assert.assertEquals("test", list.get(0).getName());
+        }
         sessionService.remove(session);
     }
 
@@ -117,14 +147,20 @@ public class TestCRUD {
     public void t11_mergeTask() throws Exception {
         signIn();
         taskService.mergeTask(session, "test", "test",
-                "TTT", "des", "20.02.2020", "20.02.2020", "done");
+                "test", "des", "20.02.2020", "20.02.2020", "done");
+        @Nullable final TaskDto task = taskService.findOneTask(session, "test", "test");
+        if (task != null) {
+            Assert.assertEquals("DONE", task.getStatus().toString());
+        }
         sessionService.remove(session);
     }
 
     @Test
     public void t12_removeTask() throws Exception {
         signIn();
-        taskService.removeTask(session, "test", "TTT");
+        taskService.removeTask(session, "test", "test");
+        @Nullable final TaskDto task = taskService.findOneTask(session, "test", "test");
+        Assert.assertNull(task);
         sessionService.remove(session);
     }
 
@@ -132,6 +168,8 @@ public class TestCRUD {
     public void t13_removeAllTasksInProject() throws Exception {
         signIn();
         taskService.removeAllTasksInProject(session, "test");
+        @Nullable final List<TaskDto> list = taskService.findAllTasksInProject(session, "test");
+        Assert.assertTrue(list.isEmpty());
         sessionService.remove(session);
     }
 
@@ -139,6 +177,8 @@ public class TestCRUD {
     public void t14_removeAllTasks() throws Exception {
         signIn();
         taskService.removeAllTasks(session);
+        @Nullable final List<TaskDto> list = taskService.findAllTasks(session);
+        Assert.assertTrue(list.isEmpty());
         sessionService.remove(session);
     }
 
@@ -146,6 +186,8 @@ public class TestCRUD {
     public void t15_removeProject() throws Exception {
         signIn();
         projectService.removeProject(session, "test");
+        @Nullable final ProjectDto project = projectService.findOneProject(session, "test");
+        Assert.assertNull(project);
         sessionService.remove(session);
     }
 
@@ -153,6 +195,8 @@ public class TestCRUD {
     public void t16_removeAllProjects() throws Exception {
         signIn();
         projectService.removeAllProjects(session);
+        @Nullable final List<ProjectDto> list = projectService.findAllProjects(session);
+        Assert.assertTrue(list.isEmpty());
         sessionService.remove(session);
     }
 

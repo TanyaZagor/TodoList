@@ -1,7 +1,10 @@
 import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
+import org.jetbrains.annotations.Nullable;
 import org.junit.Assert;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import ru.zagorodnikova.tm.endpoint.ProjectDto;
 import ru.zagorodnikova.tm.endpoint.ProjectEndpoint;
 import ru.zagorodnikova.tm.endpoint.Session;
@@ -11,6 +14,7 @@ import javax.inject.Inject;
 import java.util.List;
 
 @RunWith(CdiTestRunner.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ProjectTest {
 
     @Inject
@@ -19,11 +23,12 @@ public class ProjectTest {
     @Inject
     private SessionEndpoint sessionService;
 
+    @Nullable
     private Session session;
 
     public void signIn() throws Exception {
         if (this.session == null) {
-            Session session = sessionService.signIn("test", "test");
+            @Nullable final Session session = sessionService.signIn("test", "test");
             if (session != null) {
                 this.session = session;
             }
@@ -33,9 +38,11 @@ public class ProjectTest {
     @Test
     public void t1_persist() throws Exception {
         signIn();
-        ProjectDto project = projectService.persistProject(session,
+        @Nullable final ProjectDto project = projectService.persistProject(session,
                 "test", "des", "20.02.2020", "20.02.2020");
-        Assert.assertEquals("test", project.getName());
+        if (project != null) {
+            Assert.assertEquals("test", project.getName());
+        }
         sessionService.remove(session);
     }
 
@@ -44,22 +51,30 @@ public class ProjectTest {
     public void t2_merge() throws Exception {
         signIn();
         projectService.mergeProject(session, "test",
-                "TTT", "des", "20.02.2020", "20.02.2020", "done");
+                "test", "des", "20.02.2020", "20.02.2020", "done");
+        @Nullable final ProjectDto project = projectService.findOneProject(session, "test");
+        assert project != null;
+        Assert.assertEquals("DONE", project.getStatus().toString());
         sessionService.remove(session);
     }
 
     @Test
     public void t3_findOne() throws Exception {
         signIn();
-        ProjectDto project = projectService.findOneProject(session, "test");
-        Assert.assertEquals("test", project.getName());
+        @Nullable final ProjectDto project = projectService.findOneProject(session, "test");
+        if (project != null) {
+            Assert.assertEquals("test", project.getName());
+        }
         sessionService.remove(session);
     }
 
     @Test
     public void t4_findAll() throws Exception {
         signIn();
-        List<ProjectDto> list = projectService.findAllProjects(session);
+        @Nullable final List<ProjectDto> list = projectService.findAllProjects(session);
+        if (list != null) {
+            Assert.assertEquals("test", list.get(0).getName());
+        }
         sessionService.remove(session);
     }
 
@@ -67,6 +82,8 @@ public class ProjectTest {
     public void t5_remove() throws Exception {
         signIn();
         projectService.removeProject(session, "test");
+        @Nullable final ProjectDto project = projectService.findOneProject(session, "test");
+        Assert.assertNull(project);
         sessionService.remove(session);
     }
 
@@ -74,6 +91,8 @@ public class ProjectTest {
     public void t6_removeAll() throws Exception {
         signIn();
         projectService.removeAllProjects(session);
+        @Nullable final List<ProjectDto> list = projectService.findAllProjects(session);
+        Assert.assertTrue(list.isEmpty());
         sessionService.remove(session);
     }
 

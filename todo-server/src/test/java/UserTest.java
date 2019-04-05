@@ -1,13 +1,18 @@
 import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
+import org.jetbrains.annotations.Nullable;
+import org.junit.Assert;
+import org.junit.FixMethodOrder;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import ru.zagorodnikova.tm.api.service.IUserService;
 import ru.zagorodnikova.tm.entity.User;
 
 import javax.inject.Inject;
 
 @RunWith(CdiTestRunner.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class UserTest {
 
     @Inject
@@ -40,12 +45,19 @@ public class UserTest {
     public void t4_updateUser() throws Exception {
         t2_signIn();
         userService.updateUser(userId, "FN", "LN", "EMAIL");
+        @Nullable final User user = userService.findOne(userId);
+        if (user != null) {
+            Assert.assertEquals("FN", user.getFirstName());
+        }
     }
 
     @Test
     public void t5_findOne() throws Exception {
         t2_signIn();
-        User user = userService.findOne(userId);
+        @Nullable final User user = userService.findOne(userId);
+        if (user != null) {
+            Assert.assertEquals("test", user.getLogin());
+        }
     }
 
     @Ignore
@@ -53,6 +65,8 @@ public class UserTest {
     public void t6_remove() throws Exception {
         t2_signIn();
         userService.removeUser(userId);
+        @Nullable final User user = userService.findOne(userId);
+        Assert.assertNull(user);
     }
 
 }
