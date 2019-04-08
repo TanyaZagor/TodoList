@@ -1,10 +1,10 @@
 package ru.zagorodnikova.tm.repositoty;
 
-import org.apache.ibatis.annotations.Param;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import ru.zagorodnikova.tm.entity.Session;
 
 public interface SessionRepository extends JpaRepository<Session, String> {
