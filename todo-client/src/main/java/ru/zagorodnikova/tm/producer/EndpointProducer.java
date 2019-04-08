@@ -1,50 +1,49 @@
 package ru.zagorodnikova.tm.producer;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 import ru.zagorodnikova.tm.endpoint.*;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
-
-@ApplicationScoped
+@Component
 public class EndpointProducer {
 
-    @Inject
+    @Autowired
     private ProjectEndpointService  projectEndpointService;
 
-    @Inject
+    @Autowired
     private TaskEndpointService taskEndpointService;
 
-    @Inject
+    @Autowired
     private UserEndpointService userEndpointService;
 
-    @Inject
+    @Autowired
     private SessionEndpointService sessionEndpointService;
 
-    @Inject
+    @Autowired
     private AdminEndpointService adminEndpointService;
 
-    @Produces
+    @Bean
     public TaskEndpoint getTaskEndpoint() {
         return taskEndpointService.getTaskEndpointPort();
     }
 
-    @Produces
+    @Bean
     public ProjectEndpoint getProjectEndpoint() {
         return projectEndpointService.getProjectEndpointPort();
     }
 
-    @Produces
+    @Bean
     public UserEndpoint getUserEndpoint() {
         return userEndpointService.getUserEndpointPort();
     }
 
-    @Produces
+    @Bean
     public SessionEndpoint getSessionEndpoint() {
         return sessionEndpointService.getSessionEndpointPort();
     }
 
-    @Produces
+    @Bean
     private AdminEndpoint getAdminEndpoint() {
         return adminEndpointService.getAdminEndpointPort();
     }

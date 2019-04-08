@@ -3,23 +3,25 @@ package ru.zagorodnikova.tm.endpoint;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ru.zagorodnikova.tm.api.endpoint.ISessionEndpoint;
 import ru.zagorodnikova.tm.api.service.ISessionService;
 import ru.zagorodnikova.tm.api.service.IUserService;
 import ru.zagorodnikova.tm.entity.Session;
 import ru.zagorodnikova.tm.entity.User;
 
-import javax.inject.Inject;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
+@Service
 @WebService
 public class SessionEndpoint implements ISessionEndpoint {
 
-    @Inject
-    public IUserService userService;
+    @Autowired
+    private IUserService userService;
 
-    @Inject
+    @Autowired
     private ISessionService sessionService;
 
 

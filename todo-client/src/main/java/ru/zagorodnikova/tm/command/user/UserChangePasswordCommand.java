@@ -1,23 +1,23 @@
 package ru.zagorodnikova.tm.command.user;
 
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
-import ru.zagorodnikova.tm.endpoint.Exception_Exception;
 import ru.zagorodnikova.tm.endpoint.UserEndpoint;
 import ru.zagorodnikova.tm.service.TerminalService;
 
-import javax.inject.Inject;
-
+@Component
 public class UserChangePasswordCommand extends AbstractCommand {
 
-    @Inject
+    @Autowired
     private UserEndpoint userService;
 
-    @Inject
+    @Autowired
     private ServiceLocator serviceLocator;
 
-    @Inject
+    @Autowired
     private TerminalService terminalService;
 
     @NotNull

@@ -7,33 +7,30 @@ import lombok.NoArgsConstructor;
 import org.eclipse.persistence.jaxb.MarshallerProperties;
 import org.eclipse.persistence.jaxb.UnmarshallerProperties;
 import org.jetbrains.annotations.NotNull;
-import ru.zagorodnikova.tm.api.ServiceLocator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ru.zagorodnikova.tm.api.service.IDomainService;
 import ru.zagorodnikova.tm.api.service.IProjectService;
 import ru.zagorodnikova.tm.api.service.ITaskService;
 import ru.zagorodnikova.tm.api.service.IUserService;
 import ru.zagorodnikova.tm.dto.Domain;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Default;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
 
-@ApplicationScoped
+@Service
 @NoArgsConstructor
 public class DomainService implements IDomainService {
 
-    @Inject
+    @Autowired
     private IProjectService projectService;
 
-    @Inject
+    @Autowired
     private ITaskService taskService;
 
-    @Inject
+    @Autowired
     private IUserService userService;
 
     public void save() throws Exception {

@@ -1,26 +1,26 @@
 package ru.zagorodnikova.tm.service;
 
 import lombok.NoArgsConstructor;
-import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.zagorodnikova.tm.api.service.ISessionService;
 import ru.zagorodnikova.tm.entity.Session;
 import ru.zagorodnikova.tm.entity.User;
 import ru.zagorodnikova.tm.repositoty.SessionRepository;
 import ru.zagorodnikova.tm.util.PasswordUtil;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import java.rmi.AccessException;
 import java.util.Properties;
 
-@ApplicationScoped
+@Service
 @NoArgsConstructor
 public class SessionService implements ISessionService {
 
-    @Inject
+    @Autowired
     private SessionRepository sessionRepository;
 
     @Nullable
@@ -28,16 +28,16 @@ public class SessionService implements ISessionService {
     public Session persist(@NotNull final User user) throws Exception {
         @NotNull final Session session = new Session(user.getId());
         session.setSignature(signSession(session));
-        sessionRepository.persist(session);
+        sessionRepository.save(session);
         return session;
     }
 
     @Transactional
     public void remove(@NotNull final Session sessionIn) {
         try {
-            @Nullable final Session session = sessionRepository.findBy(sessionIn.getId());
+            @Nullable final Session session = sessionRepository.findOne(sessionIn.getId());
             if(session == null) return;
-            sessionRepository.remove(session);
+            sessionRepository.delete(session);
         } catch (NoResultException e) {
             return;
         }
@@ -68,7 +68,7 @@ public class SessionService implements ISessionService {
         @NotNull final String targetSignature = signSession(session);
         if(!sourceSignature.equals(targetSignature)) throw new AccessException("not valid session");
         try {
-            if (sessionRepository.findBy(session.getId()) == null) throw new AccessException("not valid session");
+            if (sessionRepository.findOne(session.getId()) == null) throw new AccessException("not valid session");
         } catch (NoResultException e) {
             throw new AccessException("not valid session");
         }

@@ -5,33 +5,34 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
-import ru.zagorodnikova.tm.endpoint.*;
+import ru.zagorodnikova.tm.endpoint.Session;
 import ru.zagorodnikova.tm.service.TerminalService;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Default;
-import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.spi.CDI;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import java.lang.Exception;
 import java.util.HashMap;
 import java.util.Map;
 
 @Setter
 @Getter
+@Component
 @NoArgsConstructor
-@ApplicationScoped
 public class Bootstrap implements ServiceLocator {
 
-    @NotNull private final Map<String, AbstractCommand> commands = new HashMap<>();
+    @NotNull
+    private final Map<String, AbstractCommand> commands = new HashMap<>();
 
-    @Inject
+    @Autowired
     private TerminalService terminalService;
 
-    @Nullable private Session session;
+    @Autowired
+    private ApplicationContext applicationContext;
+
+    @Nullable
+    private Session session;
 
     public void init(@NotNull Class[] commandClasses) {
         this.initCommands(this, commandClasses);
@@ -77,7 +78,7 @@ public class Bootstrap implements ServiceLocator {
     private void addCommand(@NotNull Class[] commandClasses, @NotNull ServiceLocator bootstrap){
         for (Class commandClass : commandClasses) {
             if (commandClass.getSuperclass().equals(AbstractCommand.class)) {
-                Object object = CDI.current().select(commandClass).get();
+                Object object = applicationContext.getBean(commandClass);
                 @NotNull final AbstractCommand abstractCommand = (AbstractCommand) object;
                 commands.put(abstractCommand.command(), abstractCommand);
             }

@@ -1,20 +1,18 @@
 package ru.zagorodnikova.tm.command.project;
 
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
-import ru.zagorodnikova.tm.endpoint.AdminEndpoint;
-import ru.zagorodnikova.tm.endpoint.Exception_Exception;
 import ru.zagorodnikova.tm.endpoint.ProjectEndpoint;
 
-import javax.inject.Inject;
-
-
+@Component
 public class ProjectClearCommand extends AbstractCommand {
-    @Inject
+    @Autowired
     private ProjectEndpoint projectService;
 
-    @Inject
+    @Autowired
     private ServiceLocator serviceLocator;
 
     public ProjectClearCommand() {

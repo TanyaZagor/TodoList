@@ -1,41 +1,41 @@
 package ru.zagorodnikova.tm.repositoty;
 
-import org.apache.deltaspike.data.api.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import ru.zagorodnikova.tm.entity.Task;
 
 import java.util.List;
 
-@Repository(forEntity = Task.class)
-public interface TaskRepository extends FullEntityRepository<Task, String> {
+public interface TaskRepository extends JpaRepository<Task, String> {
 
-    void persist(@NotNull final Task task);
+    Task save(@NotNull final Task task);
 
-    Task merge(@NotNull final Task task);
-
-    void remove(@NotNull Task task);
+    void delete(@NotNull Task task);
 
     @Modifying
     @Query(value = "DELETE FROM Task task WHERE task.userId = :userId")
-    void removeAll(@NotNull @QueryParam("userId") final String userId);
+    void removeAll(@NotNull @Param("userId") final String userId);
 
     @Modifying
     @Query(value = "DELETE FROM Task task WHERE task.projectId = :projectId")
-    void removeAllInProject(@NotNull @QueryParam("projectId") final String projectId);
+    void removeAllInProject(@NotNull @Param("projectId") final String projectId);
 
     @Nullable
-    @Query(value = "SELECT task FROM Task task WHERE task.projectId = :projectId AND task.name = :name", max = 1)
-    Task findOne(@NotNull @QueryParam("projectId") final String projectId,
-                 @NotNull @QueryParam("name") final String name);
+    @Query(value = "SELECT task FROM Task task WHERE task.projectId = :projectId AND task.name = :name")
+    Task findOne(@NotNull @Param("projectId") final String projectId,
+                 @NotNull @Param("name") final String name);
 
     @Nullable
     @Query(value = "SELECT task FROM Task task WHERE task.projectId = :projectId")
-    List<Task> findAllTasksInProject(@NotNull @QueryParam("projectId") final String projectId);
+    List<Task> findAllTasksInProject(@NotNull @Param("projectId") final String projectId);
 
     @Nullable
     @Query(value = "SELECT task FROM Task task WHERE task.userId = :userId")
-    List<Task> findAllTasksByUserId(@NotNull @QueryParam("userId") final String userId);
+    List<Task> findAllTasksByUserId(@NotNull @Param("userId") final String userId);
 
     @NotNull
     List<Task> findAll();

@@ -1,11 +1,11 @@
 package ru.zagorodnikova.tm.command.system;
 
 import org.jetbrains.annotations.NotNull;
+import org.springframework.stereotype.Component;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.util.VersionUtil;
 
-import javax.inject.Inject;
-
+@Component
 public class AboutCommand extends AbstractCommand {
 
     @NotNull

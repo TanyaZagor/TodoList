@@ -1,28 +1,28 @@
 package ru.zagorodnikova.tm.service;
 
 import lombok.NoArgsConstructor;
-import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.zagorodnikova.tm.api.service.IProjectService;
 import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.entity.enumeration.Status;
 import ru.zagorodnikova.tm.repositoty.ProjectRepository;
 import ru.zagorodnikova.tm.util.DateFormatterUtil;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-@ApplicationScoped
+@Service
 @NoArgsConstructor
 public class ProjectService implements IProjectService {
 
-    @Inject
+    @Autowired
     private ProjectRepository projectRepository;
 
     @Nullable
@@ -37,7 +37,7 @@ public class ProjectService implements IProjectService {
         @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
         @NotNull final Date finish = DateFormatterUtil.dateFormatter(dateFinish);
         @NotNull final Project project = new Project(userId, projectName, description, start, finish);
-        projectRepository.persist(project);
+        projectRepository.save(project);
         return project;
     }
 
@@ -46,7 +46,7 @@ public class ProjectService implements IProjectService {
         if (projectName.isEmpty()) return;
         Project project = findOneProject(userId, projectName);
         if (project == null) return;
-        projectRepository.remove(project);
+        projectRepository.delete(project);
     }
 
     @Transactional
@@ -98,7 +98,7 @@ public class ProjectService implements IProjectService {
         project.setDateStart(start);
         project.setDateFinish(finish);
         project.setStatus(newStatus);
-        projectRepository.merge(project);
+        projectRepository.save(project);
     }
     @Nullable
     public List<Project> sortProjectsByDateCreated(@NotNull final String userId) {
@@ -150,7 +150,7 @@ public class ProjectService implements IProjectService {
     @Transactional
     public void setProjects(@NotNull final List<Project> list) {
         for (Project v : list) {
-            projectRepository.persist(v);
+            projectRepository.save(v);
         }
     }
 

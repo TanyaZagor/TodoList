@@ -9,7 +9,6 @@ import ru.zagorodnikova.tm.entity.enumeration.RoleType;
 import ru.zagorodnikova.tm.util.PasswordUtil;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -44,9 +43,6 @@ public class User extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private RoleType roleType = RoleType.USER;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userId", orphanRemoval = true)
-    private List<Project> tasks;
 
     public User(@Nullable String login, @Nullable String password, @Nullable String firstName,
                 @Nullable String lastName, @Nullable String email) throws Exception {

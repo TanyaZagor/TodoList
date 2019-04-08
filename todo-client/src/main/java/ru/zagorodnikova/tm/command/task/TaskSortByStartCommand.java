@@ -2,25 +2,25 @@ package ru.zagorodnikova.tm.command.task;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
-import ru.zagorodnikova.tm.endpoint.Exception_Exception;
 import ru.zagorodnikova.tm.endpoint.TaskDto;
 import ru.zagorodnikova.tm.endpoint.TaskEndpoint;
 import ru.zagorodnikova.tm.service.TerminalService;
 
-import javax.inject.Inject;
 import java.util.List;
 
-
+@Component
 public class TaskSortByStartCommand extends AbstractCommand {
-    @Inject
+    @Autowired
     private TaskEndpoint taskService;
 
-    @Inject
+    @Autowired
     private ServiceLocator serviceLocator;
 
-    @Inject
+    @Autowired
     private TerminalService terminalService;
 
     @NotNull

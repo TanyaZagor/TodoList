@@ -1,18 +1,19 @@
 package ru.zagorodnikova.tm.repositoty;
 
-import org.apache.deltaspike.data.api.FullEntityRepository;
-import org.apache.deltaspike.data.api.Repository;
+import org.apache.ibatis.annotations.Param;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import ru.zagorodnikova.tm.entity.Session;
 
-@Repository(forEntity = Session.class)
-public interface SessionRepository extends FullEntityRepository<Session, String> {
+public interface SessionRepository extends JpaRepository<Session, String> {
 
-    void persist(@NotNull final Session session);
+    Session save(@NotNull final Session session);
 
-    void remove(@NotNull final Session session);
+    void delete(@NotNull final Session session);
 
     @Nullable
-    Session findBy(@NotNull final String id);
+    @Query(value = "SELECT session FROM Session session WHERE session.id = :id")
+    Session findOne(@NotNull @Param("id") final String id);
 }

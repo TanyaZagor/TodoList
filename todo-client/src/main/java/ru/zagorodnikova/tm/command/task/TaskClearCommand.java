@@ -1,23 +1,24 @@
 package ru.zagorodnikova.tm.command.task;
 
+import org.springframework.stereotype.Component;
+
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
-import ru.zagorodnikova.tm.endpoint.Exception_Exception;
 import ru.zagorodnikova.tm.endpoint.TaskEndpoint;
 import ru.zagorodnikova.tm.service.TerminalService;
 
-import javax.inject.Inject;
-
+@Component
 public class TaskClearCommand extends AbstractCommand {
 
-    @Inject
+    @Autowired
     private TaskEndpoint taskService;
 
-    @Inject
+    @Autowired
     private ServiceLocator serviceLocator;
 
-    @Inject
+    @Autowired
     private TerminalService terminalService;
 
     @NotNull

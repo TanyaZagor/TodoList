@@ -5,8 +5,6 @@ import org.jetbrains.annotations.Nullable;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.endpoint.*;
 import ru.zagorodnikova.tm.service.TerminalService;
-
-import javax.enterprise.context.ApplicationScoped;
 import java.lang.Exception;
 import java.util.Map;
 

@@ -1,15 +1,16 @@
 package ru.zagorodnikova.tm;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import ru.zagorodnikova.tm.bootstrap.Bootstrap;
-import javax.enterprise.inject.se.SeContainerInitializer;
+import ru.zagorodnikova.tm.util.ApplicationConfiguration;
 
 public class AppServer {
 
     public static void main(String[] args) throws Exception {
         System.setProperty("javax.xml.bind.context.factory","org.eclipse.persistence.jaxb.JAXBContextFactory");
-        SeContainerInitializer.newInstance() .addPackages(AppServer.class).initialize()
-                .select(Bootstrap.class).get().init();
-
-
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(ApplicationConfiguration.class);
+        Bootstrap bootstrap = applicationContext.getBean(Bootstrap.class);
+        bootstrap.init();
     }
 }

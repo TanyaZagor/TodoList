@@ -2,7 +2,8 @@ package ru.zagorodnikova.tm.endpoint;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.zagorodnikova.tm.api.ServiceLocator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ru.zagorodnikova.tm.api.endpoint.ITaskEndpoint;
 import ru.zagorodnikova.tm.api.service.ISessionService;
 import ru.zagorodnikova.tm.api.service.ITaskService;
@@ -10,19 +11,19 @@ import ru.zagorodnikova.tm.dto.TaskDto;
 import ru.zagorodnikova.tm.entity.Session;
 import ru.zagorodnikova.tm.entity.Task;
 
-import javax.inject.Inject;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 @WebService
 public class TaskEndpoint implements ITaskEndpoint {
 
-    @Inject
+    @Autowired
     private ISessionService sessionService;
 
-    @Inject
+    @Autowired
     private ITaskService taskService;
 
     @Nullable

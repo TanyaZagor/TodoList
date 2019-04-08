@@ -1,4 +1,3 @@
-import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
 import org.jetbrains.annotations.Nullable;
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
@@ -6,26 +5,30 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.zagorodnikova.tm.api.service.IProjectService;
 import ru.zagorodnikova.tm.api.service.ITaskService;
 import ru.zagorodnikova.tm.api.service.IUserService;
 import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.entity.Task;
 import ru.zagorodnikova.tm.entity.User;
+import ru.zagorodnikova.tm.util.ApplicationConfiguration;
 
-import javax.inject.Inject;
 import java.util.List;
 
-@RunWith(CdiTestRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = ApplicationConfiguration.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestCRUD {
-    @Inject
+    @Autowired
     private IProjectService projectService;
 
-    @Inject
+    @Autowired
     private IUserService userService;
 
-    @Inject
+    @Autowired
     private ITaskService taskService;
 
     private String userId = null;

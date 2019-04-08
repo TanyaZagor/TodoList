@@ -2,22 +2,22 @@ package ru.zagorodnikova.tm.command.project;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
-import ru.zagorodnikova.tm.endpoint.Exception_Exception;
 import ru.zagorodnikova.tm.endpoint.ProjectDto;
 import ru.zagorodnikova.tm.endpoint.ProjectEndpoint;
-import ru.zagorodnikova.tm.service.TerminalService;
 
-import javax.inject.Inject;
 import java.util.List;
 
+@Component
 public class ProjectListCommand extends AbstractCommand {
 
-    @Inject
+    @Autowired
     private ProjectEndpoint projectService;
 
-    @Inject
+    @Autowired
     private ServiceLocator serviceLocator;
 
     @NotNull

@@ -1,5 +1,7 @@
 package ru.zagorodnikova.tm;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import ru.zagorodnikova.tm.bootstrap.Bootstrap;
 import ru.zagorodnikova.tm.command.admin.AdminRemoveUsersCommand;
 import ru.zagorodnikova.tm.command.data.*;
@@ -8,7 +10,7 @@ import ru.zagorodnikova.tm.command.system.AboutCommand;
 import ru.zagorodnikova.tm.command.system.HelpCommand;
 import ru.zagorodnikova.tm.command.task.*;
 import ru.zagorodnikova.tm.command.user.*;
-import javax.enterprise.inject.se.SeContainerInitializer;
+import ru.zagorodnikova.tm.util.ApplicationConfiguration;
 
 public class AppClient {
     private static final Class[] commandClasses = new Class[] {
@@ -57,7 +59,8 @@ public class AppClient {
 
     public static void main(String[] args) {
         System.setProperty("org.apache.logging.log4j.simplelog.StatusLogger.level","INFO");
-        SeContainerInitializer.newInstance().addPackages(AppClient.class).initialize()
-                .select(Bootstrap.class).get().init(commandClasses);
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(ApplicationConfiguration.class);
+        Bootstrap bootstrap = applicationContext.getBean(Bootstrap.class);
+        bootstrap.init(commandClasses);
     }
 }

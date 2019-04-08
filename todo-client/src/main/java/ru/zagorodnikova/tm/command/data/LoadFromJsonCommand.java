@@ -1,19 +1,19 @@
 package ru.zagorodnikova.tm.command.data;
 
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.command.AbstractCommand;
 import ru.zagorodnikova.tm.endpoint.AdminEndpoint;
-import ru.zagorodnikova.tm.endpoint.Exception_Exception;
 
-import javax.inject.Inject;
-
+@Component
 public class LoadFromJsonCommand extends AbstractCommand {
 
-    @Inject
+    @Autowired
     private AdminEndpoint adminService;
 
-    @Inject
+    @Autowired
     private ServiceLocator serviceLocator;
 
     @NotNull

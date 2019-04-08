@@ -1,14 +1,11 @@
 package ru.zagorodnikova.tm.service;
 
-import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import ru.zagorodnikova.tm.api.ServiceLocator;
+import org.springframework.stereotype.Service;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import java.util.Scanner;
 
-@ApplicationScoped
+@Service
 public class TerminalService {
 
     @NotNull

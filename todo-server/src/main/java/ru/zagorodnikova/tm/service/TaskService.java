@@ -1,9 +1,11 @@
 package ru.zagorodnikova.tm.service;
 
 import lombok.NoArgsConstructor;
-import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.zagorodnikova.tm.api.service.ITaskService;
 import ru.zagorodnikova.tm.entity.Project;
 import ru.zagorodnikova.tm.entity.Task;
@@ -12,23 +14,20 @@ import ru.zagorodnikova.tm.repositoty.ProjectRepository;
 import ru.zagorodnikova.tm.repositoty.TaskRepository;
 import ru.zagorodnikova.tm.util.DateFormatterUtil;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-
-@ApplicationScoped
+@Service
 @NoArgsConstructor
 public class TaskService implements ITaskService {
 
-    @Inject
+    @Autowired
     private ProjectRepository projectRepository;
 
-    @Inject
+    @Autowired
     private TaskRepository taskRepository;
 
     @Nullable
@@ -51,7 +50,7 @@ public class TaskService implements ITaskService {
         @NotNull final Date start = DateFormatterUtil.dateFormatter(dateStart);
         @NotNull final Date finish = DateFormatterUtil.dateFormatter(dateFinish);
         @Nullable final Task task = new Task(userId, project.getId(), taskName, description, start, finish);
-        taskRepository.persist(task);
+        taskRepository.save(task);
         return task;
     }
 
@@ -61,7 +60,7 @@ public class TaskService implements ITaskService {
         if (taskName.isEmpty()) return;
         @Nullable final Task task = findOneTask(userId, projectName, taskName);
         if (task == null) return;
-        taskRepository.remove(task);
+        taskRepository.delete(task);
     }
 
     @Transactional
@@ -101,7 +100,7 @@ public class TaskService implements ITaskService {
         task.setDateStart(start);
         task.setDateFinish(finish);
         task.setStatus(newStatus);
-        taskRepository.merge(task);
+        taskRepository.save(task);
     }
 
     @Nullable
@@ -203,7 +202,7 @@ public class TaskService implements ITaskService {
     @Transactional
     public void setTasks(@NotNull final List<Task> list){
         for (Task task : list) {
-            taskRepository.persist(task);
+            taskRepository.save(task);
         }
     }
 

@@ -3,38 +3,36 @@ package ru.zagorodnikova.tm.bootstrap;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ru.zagorodnikova.tm.api.ServiceLocator;
 import ru.zagorodnikova.tm.api.endpoint.*;
 import ru.zagorodnikova.tm.service.PropertyService;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Default;
-import javax.inject.Inject;
 import javax.xml.ws.Endpoint;
 
 @Setter
 @Getter
-@Default
 @NoArgsConstructor
-@ApplicationScoped
+@Component
 public class Bootstrap implements ServiceLocator {
 
-    @Inject
+    @Autowired
     private ISessionEndpoint sessionEndpoint;
 
-    @Inject
+    @Autowired
     private IUserEndpoint userEndpoint;
 
-    @Inject
+    @Autowired
     private IProjectEndpoint projectEndpoint;
 
-    @Inject
+    @Autowired
     private ITaskEndpoint taskEndpoint;
 
-    @Inject
+    @Autowired
     private IAdminEndpoint adminEndpoint;
 
-    @Inject
+    @Autowired
     private PropertyService propertyService;
 
     public void init() throws Exception {

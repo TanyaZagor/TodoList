@@ -1,20 +1,16 @@
 package ru.zagorodnikova.tm.service;
 
 import lombok.NoArgsConstructor;
-import org.jetbrains.annotations.NotNull;
-import ru.zagorodnikova.tm.api.ServiceLocator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ru.zagorodnikova.tm.api.service.IAdminService;
 import ru.zagorodnikova.tm.api.service.IUserService;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-@ApplicationScoped
+@Service
 @NoArgsConstructor
 public class AdminService implements IAdminService {
 
-    @Inject
+    @Autowired
     private IUserService userService;
 
     public void removeAllUsers() {

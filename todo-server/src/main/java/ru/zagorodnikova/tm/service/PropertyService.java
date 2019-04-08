@@ -1,11 +1,11 @@
 package ru.zagorodnikova.tm.service;
 
 import org.jetbrains.annotations.NotNull;
+import org.springframework.stereotype.Service;
 
-import javax.enterprise.context.ApplicationScoped;
 import java.util.Properties;
 
-@ApplicationScoped
+@Service
 public class PropertyService {
 
     public Properties getProperties() throws Exception {
